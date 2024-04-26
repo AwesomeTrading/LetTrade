@@ -9,7 +9,7 @@ def dump_csv():
         "EURUSD=X",
         start="2023-01-01",
         end="2023-12-31",
-        interval="1d",
+        interval="1h",
         force=True,
     )
 

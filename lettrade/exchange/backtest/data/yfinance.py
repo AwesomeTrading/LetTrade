@@ -5,10 +5,10 @@ import yfinance as yf
 from .csv import csv_save
 
 
-def yf_download(tickers, path=None, force=False, *args, **kwargs):
+def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs):
     # path validate
     if path is None:
-        path = f"data/{tickers}.csv"
+        path = f"data/{tickers}_{interval}.csv"
 
     path = Path(path)
     if not force and path.exists():
@@ -16,16 +16,17 @@ def yf_download(tickers, path=None, force=False, *args, **kwargs):
         return
 
     # download
-    raws = yf.download(tickers=tickers, *args, **kwargs)
+    raws = yf.download(tickers=tickers, interval=interval, *args, **kwargs)
     print(raws)
 
     # refactor
+    raws = raws.drop("Adj Close", axis=1)
     raws = raws[raws.High != raws.Low]
     raws.reset_index(inplace=True)
     raws.head()
     raws = raws.rename(
         columns={
-            "Date": "datetime",
+            "Datetime": "datetime",
             "Open": "open",
             "High": "high",
             "Low": "low",

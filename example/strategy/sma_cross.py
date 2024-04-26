@@ -39,7 +39,7 @@ class SmaCross(Strategy):
 
 lt = LetTrade(
     strategy=SmaCross,
-    csv="data/EURUSD=X.csv",
+    csv="data/EURUSD=X_1h.csv",
 )
 
 lt.run()

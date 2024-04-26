@@ -6,12 +6,13 @@ class SmaCross(Strategy):
     n2 = 20
 
     def init(self):
-        close = self.data.Close
+        close = self.data.close
         # self.sma1 = self.I(SMA, close, self.n1)
         # self.sma2 = self.I(SMA, close, self.n2)
+        print("close data", close)
 
     def next(self):
-        pass
+        print(self.datas)
         # if crossover(self.sma1, self.sma2):
         #     self.buy()
         # elif crossover(self.sma2, self.sma1):

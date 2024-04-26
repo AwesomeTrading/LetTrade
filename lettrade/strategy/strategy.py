@@ -3,24 +3,14 @@ from typing import Callable, Optional
 
 import numpy as np
 
-from lettrade.data import DataFeed
-from lettrade.exchange import Exchange
+from ..data import DataFeed
+from ..exchange import Exchange
 
 
 class Strategy(metaclass=ABCMeta):
-    """
-    A trading strategy base class. Extend this class and
-    override methods
-    `backtesting.backtesting.Strategy.init` and
-    `backtesting.backtesting.Strategy.next` to define
-    your own strategy.
-    """
-
-    def __init__(self, datas, exchange, params):
+    def __init__(self, exchange, params):
         self._indicators = []
         self._exchange: Exchange = exchange
-        self._datas: list[DataFeed] = datas
-        self._data: DataFeed = datas[0]
         self._params = self._check_params(params)
 
     def __repr__(self):
@@ -226,8 +216,16 @@ class Strategy(metaclass=ABCMeta):
         return 0.0
 
     @property
+    def exchange(self) -> Exchange:
+        return self._exchange
+
+    @property
     def data(self) -> DataFeed:
-        return None
+        return self._exchange.data
+
+    @property
+    def datas(self) -> DataFeed:
+        return self._exchange.datas
 
     @property
     def position(self) -> "Position":

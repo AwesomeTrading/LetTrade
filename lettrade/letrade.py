@@ -37,15 +37,13 @@ class LetTrade:
 
         # Strategy
         self.strategy = strategy(
-            datas=self.datas,
             exchange=self.exchange,
             params=params,
         )
 
         # Brain
         self.brain = Brain(
-            datas=self.datas,
-            exchange=self.exchange,
+            strategy=self.strategy,
             cash=cash,
             *args,
             **kwargs,

@@ -1,4 +1,6 @@
 from lettrade import LetTrade, Strategy
+from lettrade.indicator import crossover
+from lettrade.indicator.buildin import SMA
 
 
 class SmaCross(Strategy):
@@ -7,19 +9,15 @@ class SmaCross(Strategy):
 
     def init(self):
         close = self.data.close
-        # self.sma1 = self.I(SMA, close, self.n1)
-        # self.sma2 = self.I(SMA, close, self.n2)
-        print("close data", close)
+        self.sma1 = self.I(SMA, close, self.n1)
+        self.sma2 = self.I(SMA, close, self.n2)
 
     def next(self):
-        print("-" * 64)
-        print("\non next data:", self.data)
-        print("\non next row:", self.data.loc[0])
-        print("\non next i row:", self.data.iloc[-1])
-        # if crossover(self.sma1, self.sma2):
-        #     self.buy()
-        # elif crossover(self.sma2, self.sma1):
-        #     self.sell()
+        print("self.data.close", self.data.close)
+        if crossover(self.sma1, self.sma2):
+            self.buy()
+        elif crossover(self.sma2, self.sma1):
+            self.sell()
 
 
 lt = LetTrade(

@@ -1,29 +1,33 @@
+from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 from lettrade.data import DataFeed
 
 
-class Exchange:
+class Exchange(metaclass=ABCMeta):
     datas: list[DataFeed] = None
+    data: DataFeed
 
-    def __init__(self) -> None:
-        pass
+    # def __init__(self) -> None:
+    #     pass
 
     def _load(self, feeder):
         if self.datas:
             print("[WARN] Reloading datas...")
-        print(feeder.datas)
+
         self.datas = feeder.datas
         self.data = feeder.datas[0]
 
+    @abstractmethod
     def new_order(
         self,
-        *,
         size: float,
         limit: Optional[float] = None,
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         tag: object = None,
+        *args,
+        **kwargs
     ):
-        pass
+        raise NotImplementedError("Exchange.new_order not implement yet")

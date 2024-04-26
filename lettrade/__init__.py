@@ -1,4 +1,4 @@
 from .brain import *
 from .exchange import *
-from .letrade import LetTrade
+from .lettrade import LetTrade
 from .strategy import *

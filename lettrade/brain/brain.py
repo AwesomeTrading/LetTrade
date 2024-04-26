@@ -38,7 +38,6 @@ class Brain:
         while self.feeder.alive():
             self.feeder.next()
             self.strategy.next()
-            return
 
     def run_until(self, index=0, next=0):
         pass

@@ -1,7 +1,3 @@
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
-
-import pandas as pd
-
 from lettrade.strategy import Strategy
 
 from ..commission import Commission

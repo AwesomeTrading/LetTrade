@@ -9,6 +9,7 @@ from .exchange.backtest import (
     BackTestExchange,
     CSVBackTestDataFeed,
 )
+from .plot import Plotting
 from .strategy import Strategy
 
 
@@ -19,6 +20,8 @@ class LetTrade:
     strategy: Strategy
     exchange: Exchange
     feeder: DataFeeder
+
+    plotter: Plotting = None
 
     def __init__(
         self,
@@ -86,4 +89,7 @@ class LetTrade:
         self.brain.run()
 
     def plot(self):
-        print("Plotting...")
+        if self.plotter is None:
+            self.plotter = Plotting(self.datas)
+
+        self.plotter.plot()

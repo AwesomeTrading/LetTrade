@@ -10,3 +10,7 @@ class DataFeed(pd.DataFrame):
         if isinstance(i, int):
             return self.loc[i]
         return super().__getitem__(i)
+
+    @property
+    def p(self):
+        return self.attrs

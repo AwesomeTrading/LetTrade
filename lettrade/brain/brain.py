@@ -5,7 +5,7 @@ import pandas as pd
 from lettrade.strategy import Strategy
 
 from ..commission import Commission
-from ..data import DataFeed
+from ..data import DataFeed, DataFeeder
 from ..exchange import Exchange
 from ..strategy import Strategy
 
@@ -16,7 +16,8 @@ class Brain:
     def __init__(
         self,
         strategy: Strategy,
-        commission: Commission,
+        feeder: DataFeeder,
+        commission: Commission = None,
         cash=10_000,
         hedging=True,
         *args,
@@ -24,6 +25,7 @@ class Brain:
     ) -> None:
         self.strategy: Strategy = strategy
         self.exchange: Exchange = strategy.exchange
+        self.feeder: DataFeeder = feeder
         self.datas: list[DataFeed] = self.exchange.datas
         self.data: DataFeed = self.exchange.data
 
@@ -33,6 +35,10 @@ class Brain:
 
     def run(self):
         self.strategy.init()
+        while self.feeder.alive():
+            self.feeder.next()
+            self.strategy.next()
+            return
 
     def run_until(self, index=0, next=0):
         pass

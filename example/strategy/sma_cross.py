@@ -12,7 +12,10 @@ class SmaCross(Strategy):
         print("close data", close)
 
     def next(self):
-        print(self.datas)
+        print("-" * 64)
+        print("\non next data:", self.data)
+        print("\non next row:", self.data.loc[0])
+        print("\non next i row:", self.data.iloc[-1])
         # if crossover(self.sma1, self.sma2):
         #     self.buy()
         # elif crossover(self.sma2, self.sma1):
@@ -22,9 +25,6 @@ class SmaCross(Strategy):
 lt = LetTrade(
     strategy=SmaCross,
     csv="data/EURUSD=X.csv",
-    cash=10000,
-    commission=0.002,
-    exclusive_orders=True,
 )
 
 output = lt.run()

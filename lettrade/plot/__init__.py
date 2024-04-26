@@ -1,1 +1,1 @@
-from .plot import Plotting
+from .plot import Plotter

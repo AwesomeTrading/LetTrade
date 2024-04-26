@@ -137,8 +137,6 @@ class Order:
         """
         return self.__tag
 
-    __pdoc__["Order.parent_trade"] = False
-
     # Extra properties
 
     @property

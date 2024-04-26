@@ -1,3 +1,11 @@
+from typing import Optional, Tuple, Union
+
+import numpy as np
+import pandas as pd
+
+from .order import Order
+
+
 class Trade:
     """
     When an `Order` is filled, it results in an active `Trade`.

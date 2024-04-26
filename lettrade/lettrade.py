@@ -1,7 +1,7 @@
 from typing import Type
 
 from .brain import Brain
-from .data import CSVDataFeed, DataFeed, DataFeeder
+from .data import DataFeed, DataFeeder
 from .exchange import Exchange
 from .exchange.backtest import (
     BackTestDataFeed,
@@ -9,7 +9,7 @@ from .exchange.backtest import (
     BackTestExchange,
     CSVBackTestDataFeed,
 )
-from .plot import Plotting
+from .plot import Plotter
 from .strategy import Strategy
 
 
@@ -21,7 +21,7 @@ class LetTrade:
     exchange: Exchange
     feeder: DataFeeder
 
-    plotter: Plotting = None
+    plotter: Plotter = None
 
     def __init__(
         self,
@@ -31,7 +31,7 @@ class LetTrade:
         feeder: DataFeeder = None,
         csv: str = "",
         cash: float = 10_000.0,
-        params: dict = {},
+        # params: dict = {},
         *args,
         **kwargs,
     ) -> None:
@@ -51,7 +51,7 @@ class LetTrade:
         # Strategy
         self.strategy = strategy(
             exchange=self.exchange,
-            params=params,
+            # params=params,
         )
 
         # Brain
@@ -90,6 +90,6 @@ class LetTrade:
 
     def plot(self):
         if self.plotter is None:
-            self.plotter = Plotting(self.datas)
+            self.plotter = Plotter(self.datas)
 
         self.plotter.plot()

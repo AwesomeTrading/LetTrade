@@ -1,5 +1,7 @@
-pandas
 numpy
-yfinance
+pandas
 pandas_ta
-matplotlib
+python-telegram-bot
+
+# conda install -c conda-forge ta-lib
+TA-Lib

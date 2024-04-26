@@ -1,10 +1,11 @@
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
-from lettrade.data import DataFeed
+from lettrade.data import DataFeed, DataFeeder
 
 
 class Exchange(metaclass=ABCMeta):
+    feeder: DataFeeder
     datas: list[DataFeed] = None
     data: DataFeed
 
@@ -15,6 +16,7 @@ class Exchange(metaclass=ABCMeta):
         if self.datas:
             print("[WARN] Reloading datas...")
 
+        self.feeder = feeder
         self.datas = feeder.datas
         self.data = feeder.datas[0]
 

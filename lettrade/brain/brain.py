@@ -37,7 +37,11 @@ class Brain:
         self.strategy.init()
         while self.feeder.alive():
             self.feeder.next()
-            self.strategy.next()
+
+            self.strategy.indicators(self.data)
+            self.strategy.next(self.data)
+
+        self.strategy.end()
 
     def run_until(self, index=0, next=0):
         pass

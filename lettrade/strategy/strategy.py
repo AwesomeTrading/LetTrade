@@ -8,32 +8,33 @@ import pandas as pd
 
 from ..data import DataFeed
 from ..exchange import Exchange
-from ..indicator import Indicator
+
+# from ..indicator import Indicator
 
 
-# TODO: Remove
-def _as_str(value) -> str:
-    if isinstance(value, (Number, str)):
-        return str(value)
-    if isinstance(value, pd.DataFrame):
-        return "df"
-    name = str(getattr(value, "name", "") or "")
-    if name in ("Open", "High", "Low", "Close", "Volume"):
-        return name[:1]
-    if callable(value):
-        name = getattr(value, "__name__", value.__class__.__name__).replace(
-            "<lambda>", "λ"
-        )
-    if len(name) > 10:
-        name = name[:9] + "…"
-    return name
+# # TODO: Remove
+# def _as_str(value) -> str:
+#     if isinstance(value, (Number, str)):
+#         return str(value)
+#     if isinstance(value, pd.DataFrame):
+#         return "df"
+#     name = str(getattr(value, "name", "") or "")
+#     if name in ("Open", "High", "Low", "Close", "Volume"):
+#         return name[:1]
+#     if callable(value):
+#         name = getattr(value, "__name__", value.__class__.__name__).replace(
+#             "<lambda>", "λ"
+#         )
+#     if len(name) > 10:
+#         name = name[:9] + "…"
+#     return name
 
 
-def try_(lazy_func, default=None, exception=Exception):
-    try:
-        return lazy_func()
-    except exception:
-        return default
+# def try_(lazy_func, default=None, exception=Exception):
+#     try:
+#         return lazy_func()
+#     except exception:
+#         return default
 
 
 class Strategy(metaclass=ABCMeta):
@@ -59,140 +60,128 @@ class Strategy(metaclass=ABCMeta):
             setattr(self, k, v)
         return params
 
-    def I(
-        self,  # noqa: E743
-        func: Callable,
-        *args,
-        name=None,
-        plot=True,
-        overlay=None,
-        color=None,
-        scatter=False,
-        **kwargs,
-    ) -> np.ndarray:
-        """
-        Declare an indicator. An indicator is just an array of values,
-        but one that is revealed gradually in
-        `backtesting.backtesting.Strategy.next` much like
-        `backtesting.backtesting.Strategy.data` is.
-        Returns `np.ndarray` of indicator values.
+    # def I(
+    #     self,  # noqa: E743
+    #     func: Callable,
+    #     *args,
+    #     name=None,
+    #     plot=True,
+    #     overlay=None,
+    #     color=None,
+    #     scatter=False,
+    #     data: DataFeed = None,
+    #     **kwargs,
+    # ) -> np.ndarray:
+    #     """
+    #     Declare an indicator. An indicator is just an array of values,
+    #     but one that is revealed gradually in
+    #     `backtesting.backtesting.Strategy.next` much like
+    #     `backtesting.backtesting.Strategy.data` is.
+    #     Returns `np.ndarray` of indicator values.
 
-        `func` is a function that returns the indicator array(s) of
-        same length as `backtesting.backtesting.Strategy.data`.
+    #     `func` is a function that returns the indicator array(s) of
+    #     same length as `backtesting.backtesting.Strategy.data`.
 
-        In the plot legend, the indicator is labeled with
-        function name, unless `name` overrides it.
+    #     In the plot legend, the indicator is labeled with
+    #     function name, unless `name` overrides it.
 
-        If `plot` is `True`, the indicator is plotted on the resulting
-        `backtesting.backtesting.Backtest.plot`.
+    #     If `plot` is `True`, the indicator is plotted on the resulting
+    #     `backtesting.backtesting.Backtest.plot`.
 
-        If `overlay` is `True`, the indicator is plotted overlaying the
-        price candlestick chart (suitable e.g. for moving averages).
-        If `False`, the indicator is plotted standalone below the
-        candlestick chart. By default, a heuristic is used which decides
-        correctly most of the time.
+    #     If `overlay` is `True`, the indicator is plotted overlaying the
+    #     price candlestick chart (suitable e.g. for moving averages).
+    #     If `False`, the indicator is plotted standalone below the
+    #     candlestick chart. By default, a heuristic is used which decides
+    #     correctly most of the time.
 
-        `color` can be string hex RGB triplet or X11 color name.
-        By default, the next available color is assigned.
+    #     `color` can be string hex RGB triplet or X11 color name.
+    #     By default, the next available color is assigned.
 
-        If `scatter` is `True`, the plotted indicator marker will be a
-        circle instead of a connected line segment (default).
+    #     If `scatter` is `True`, the plotted indicator marker will be a
+    #     circle instead of a connected line segment (default).
 
-        Additional `*args` and `**kwargs` are passed to `func` and can
-        be used for parameters.
+    #     Additional `*args` and `**kwargs` are passed to `func` and can
+    #     be used for parameters.
 
-        For example, using simple moving average function from TA-Lib:
+    #     For example, using simple moving average function from TA-Lib:
 
-            def init():
-                self.sma = self.I(ta.SMA, self.data.Close, self.n_sma)
-        """
-        if name is None:
-            params = ",".join(filter(None, map(_as_str, chain(args, kwargs.values()))))
-            func_name = _as_str(func)
-            name = f"{func_name}({params})" if params else f"{func_name}"
-        else:
-            name = name.format(
-                *map(_as_str, args),
-                **dict(zip(kwargs.keys(), map(_as_str, kwargs.values()))),
-            )
+    #         def init():
+    #             self.sma = self.I(ta.SMA, self.data.close, self.n_sma)
+    #     """
+    #     if name is None:
+    #         params = ",".join(filter(None, map(_as_str, chain(args, kwargs.values()))))
+    #         func_name = _as_str(func)
+    #         name = f"{func_name}({params})" if params else f"{func_name}"
+    #     else:
+    #         name = name.format(
+    #             *map(_as_str, args),
+    #             **dict(zip(kwargs.keys(), map(_as_str, kwargs.values()))),
+    #         )
 
-        try:
-            value = func(*args, **kwargs)
-        except Exception as e:
-            raise RuntimeError(f'Indicator "{name}" error') from e
+    #     if data is None:
+    #         data = self.data
 
-        if isinstance(value, pd.DataFrame):
-            value = value.values.T
+    #     try:
+    #         value = func(*args, **kwargs)
+    #     except Exception as e:
+    #         raise RuntimeError(f'Indicator "{name}" error') from e
 
-        if value is not None:
-            value = try_(lambda: np.asarray(value, order="C"), None)
-        is_arraylike = bool(value is not None and value.shape)
+    #     if isinstance(value, pd.DataFrame):
+    #         value = value.values.T
 
-        # Optionally flip the array if the user returned e.g. `df.values`
-        if is_arraylike and np.argmax(value.shape) == 0:
-            value = value.T
+    #     if value is not None:
+    #         value = try_(lambda: np.asarray(value, order="C"), None)
+    #     is_arraylike = bool(value is not None and value.shape)
 
-        if (
-            not is_arraylike
-            or not 1 <= value.ndim <= 2
-            or value.shape[-1] != len(self.data.close)
-        ):
-            raise ValueError(
-                "Indicators must return (optionally a tuple of) numpy.arrays of same "
-                f'length as `data` (data shape: {self.data.close.shape}; indicator "{name}" '
-                f'shape: {getattr(value, "shape" , "")}, returned value: {value})'
-            )
+    #     # Optionally flip the array if the user returned e.g. `df.values`
+    #     if is_arraylike and np.argmax(value.shape) == 0:
+    #         value = value.T
 
-        if plot and overlay is None and np.issubdtype(value.dtype, np.number):
-            x = value / self.data.close
-            # By default, overlay if strong majority of indicator values
-            # is within 30% of Close
-            with np.errstate(invalid="ignore"):
-                overlay = ((x < 1.4) & (x > 0.6)).mean() > 0.6
+    #     if (
+    #         not is_arraylike
+    #         or not 1 <= value.ndim <= 2
+    #         or value.shape[-1] != len(data.close)
+    #     ):
+    #         raise ValueError(
+    #             "Indicators must return (optionally a tuple of) numpy.arrays of same "
+    #             f'length as `data` (data shape: {data.close.shape}; indicator "{name}" '
+    #             f'shape: {getattr(value, "shape" , "")}, returned value: {value})'
+    #         )
 
-        value = Indicator(
-            value,
-            name=name,
-            plot=plot,
-            overlay=overlay,
-            color=color,
-            scatter=scatter,
-            # _Indicator.s Series accessor uses this:
-            index=self.data.index,
-        )
-        self._indicators.append(value)
-        return value
+    #     if plot and overlay is None and np.issubdtype(value.dtype, np.number):
+    #         x = value / data.close
+    #         # By default, overlay if strong majority of indicator values
+    #         # is within 30% of Close
+    #         with np.errstate(invalid="ignore"):
+    #             overlay = ((x < 1.4) & (x > 0.6)).mean() > 0.6
+
+    #     value = Indicator(
+    #         value,
+    #         name=name,
+    #         plot=plot,
+    #         overlay=overlay,
+    #         color=color,
+    #         scatter=scatter,
+    #         # _Indicator.s Series accessor uses this:
+    #         index=data.index,
+    #     )
+    #     self._indicators.append(value)
+    #     return value
 
     @abstractmethod
     def init(self):
-        """
-        Initialize the strategy.
-        Override this method.
-        Declare indicators (with `backtesting.backtesting.Strategy.I`).
-        Precompute what needs to be precomputed or can be precomputed
-        in a vectorized fashion before the strategy starts.
+        """ """
 
-        If you extend composable strategies from `backtesting.lib`,
-        make sure to call:
-
-            super().init()
-        """
+    def indicators(self):
+        pass
 
     @abstractmethod
     def next(self):
-        """
-        Main strategy runtime method, called as each new
-        `backtesting.backtesting.Strategy.data`
-        instance (row; full candlestick bar) becomes available.
-        This is the main method where strategy decisions
-        upon data precomputed in `backtesting.backtesting.Strategy.init`
-        take place.
+        """ """
 
-        If you extend composable strategies from `backtesting.lib`,
-        make sure to call:
-
-            super().next()
-        """
+    @abstractmethod
+    def end(self):
+        """ """
 
     def buy(
         self,
@@ -253,7 +242,7 @@ class Strategy(metaclass=ABCMeta):
         return self._exchange.data
 
     @property
-    def datas(self) -> DataFeed:
+    def datas(self) -> list[DataFeed]:
         return self._exchange.datas
 
     @property

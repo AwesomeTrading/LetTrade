@@ -43,12 +43,6 @@ class _Array(np.ndarray):
         except IndexError:
             return super().__float__()
 
-    def to_series(self):
-        warnings.warn(
-            "`.to_series()` is deprecated. For pd.Series conversion, use accessor `.s`"
-        )
-        return self.s
-
     @property
     def s(self) -> pd.Series:
         values = np.atleast_2d(self)

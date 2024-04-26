@@ -83,6 +83,9 @@ class LetTrade:
                 self.datas.append(d)
 
         # Alias
+        self.data = self.datas[0]
+
+        # Feeder
         self.feeder = BackTestDataFeeder(self.datas)
 
     def run(self):

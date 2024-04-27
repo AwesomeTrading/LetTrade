@@ -1,6 +1,8 @@
 import logging
 from typing import Type
 
+import pandas as pd
+
 from .base import BaseDataFeeds
 from .brain import Brain
 from .data import DataFeed, DataFeeder
@@ -28,11 +30,10 @@ class LetTrade(BaseDataFeeds):
     def __init__(
         self,
         strategy: Type[Strategy],
-        exchange: Exchange = None,
-        datas: DataFeed | list[DataFeed] = None,
+        datas: DataFeed | list[DataFeed] | str | list[str] = None,
         feeder: DataFeeder = None,
+        exchange: Exchange = None,
         plot: Type[Plotter] = Plotter,
-        csv: str = "",
         cash: float = 10_000.0,
         # params: dict = {},
         *args,
@@ -42,7 +43,10 @@ class LetTrade(BaseDataFeeds):
         if feeder:
             self.feeder = feeder
         else:
-            self._init_datafeeder(datas=datas, csv=csv)
+            if datas is None:
+                raise RuntimeError("datas and feeder is None")
+
+            self._init_datafeeder(datas=datas)
 
         # Exchange
         if exchange:
@@ -71,24 +75,23 @@ class LetTrade(BaseDataFeeds):
         if plot:
             self.plotter = plot(feeder=self.feeder)
 
-    def _init_datafeeder(self, datas=None, csv=None) -> None:
-        # Data init
-        if not datas:
-            if csv:
-                datas = [CSVBackTestDataFeed(csv)]
-
+    def _init_datafeeder(self, datas) -> None:
         # Support single and multiple data
         if not isinstance(datas, list):
             datas = [datas]
 
         # Check
         feeds = []
-        for d in datas:
-            # Cast to DataFeed
-            if not isinstance(d, DataFeed):
-                feeds.append(BackTestDataFeed(d))
-            else:
-                feeds.append(d)
+        for data in datas:
+            match data:
+                case DataFeed():
+                    feeds.append(data)
+                case pd.DataFrame():
+                    feeds.append(BackTestDataFeed(data))
+                case str():
+                    feeds.append(CSVBackTestDataFeed(data))
+                case _:
+                    raise RuntimeError(f"data {data} is invalid")
 
         # Feeder
         self.feeder = BackTestDataFeeder(datas=feeds)
@@ -98,7 +101,7 @@ class LetTrade(BaseDataFeeds):
 
     def plot(self, *args, **kwargs):
         if self.plotter is None:
-            logger.error("plot is undefined")
+            logger.error("plot is None")
             return
 
         self.plotter.plot(*args, **kwargs)

@@ -2,7 +2,7 @@ import talib.abstract as ta
 
 import lettrade.logger
 from lettrade import DataFeed, LetTrade, Strategy
-from lettrade.indicator import crossover
+from lettrade.indicator.buildin import crossover
 
 
 class SmaCross(Strategy):

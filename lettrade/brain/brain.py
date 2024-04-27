@@ -31,6 +31,9 @@ class Brain:
 
     def run(self, *args, **kwargs):
         self.strategy.init()
+
+        self.feeder.pre_feed()
+
         while self.feeder.alive():
             self.feeder.next()
 

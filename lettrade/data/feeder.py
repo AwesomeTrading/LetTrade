@@ -18,3 +18,7 @@ class DataFeeder(metaclass=ABCMeta):
     @abstractmethod
     def next(self):
         pass
+
+    @abstractmethod
+    def pre_feed(self):
+        pass

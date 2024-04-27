@@ -7,8 +7,8 @@ class BackTestDataFeed(DataFeed):
     def alive(self):
         return self.index[-1] > 0
 
-    def next(self) -> bool:
-        self.index -= 1
+    def next(self, size=1) -> bool:
+        self.index -= size
         return True
 
 

@@ -40,8 +40,7 @@ class YFBackTestDataFeed(BackTestDataFeed):
         )
 
         # Download
-        yfticker = yf.Ticker(ticker)
-        df = yfticker.history(**params)
+        df = yf.download(ticker, **params)
 
         # Parse to lettrade datafeed
         df = yf_parse(df)
@@ -49,7 +48,7 @@ class YFBackTestDataFeed(BackTestDataFeed):
         # Reindex to 0,1,2,3...
         df.reset_index(inplace=True)
 
-        # Datafeed information
+        # Information
         info = dict(ticker=ticker, **params)
 
         super().__init__(

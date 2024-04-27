@@ -1,12 +1,28 @@
-from setuptools import setup
+import setuptools
 
-setup(
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
     name="lettrade",
-    version="1.0",
-    description="Lettrade",
-    url="https://github.com/AwesomeTrading/lettrade.git",
+    version="0.0.1",
     author="Santatic",
-    license="AGPL-3.0",
-    packages=["lettrade"],
-    install_requires=[],
+    # author_email = "author@example.com",
+    description="Lightweight trading framwork",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/AwesomeTrading/lettrade",
+    classifiers=[
+        "Intended Audience :: Financial and Insurance Industry",
+        "Intended Audience :: Science/Research",
+        "Framework :: Jupyter",
+        "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Office/Business :: Financial :: Investment",
+        "Topic :: Scientific/Engineering :: Visualization",
+    ],
+    package_dir={"": "lettrade"},
+    packages=setuptools.find_packages(where="lettrade"),
+    python_requires=">=3.10",
 )

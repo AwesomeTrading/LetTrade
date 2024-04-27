@@ -25,7 +25,6 @@ class SmaCross(Strategy):
             self.sell(size=0.1)
 
     def end(self):
-        print("*" * 64)
         print(self.data.tail(10))
 
 

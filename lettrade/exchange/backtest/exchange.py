@@ -20,4 +20,5 @@ class BackTestExchange(Exchange):
     ):
         if not data:
             data = self.data
-        print("new order: \n", data[0], size, limit, stop, sl, tp, tag)
+        print("New order:", size, limit, stop, sl, tp, tag)
+        print(data[0])

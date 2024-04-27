@@ -54,7 +54,7 @@ class Plotter(BaseDataFeeds):
         if data is None:
             data = self.data
 
-        name = data.p["name"]
+        name = data.info["name"]
 
         stored_data: DataFeed = self._stored_datas.setdefault(name, data)
         self.data = DataFeed(name=name, data=stored_data[index : index + range].copy())

@@ -1,4 +1,4 @@
-# Lettrade
+# LetTrade
 A lightweight trading framework compatible with Stock, Forex, Crypto... markets
 
 Inspired by `freqtrade`, `backtrader`, `backtesting.py`... 

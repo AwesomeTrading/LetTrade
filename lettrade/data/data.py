@@ -1,10 +1,13 @@
 import pandas as pd
+import pandas_ta as ta
 
 
 class DataFeed(pd.DataFrame):
-    def __init__(self, name, *args, **kwargs) -> None:
+    def __init__(self, name, info={}, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.attrs = {"name": name}
+
+        info["name"] = name
+        self.attrs = {"info": info}
 
     def __getitem__(self, i):
         if isinstance(i, int):
@@ -13,5 +16,5 @@ class DataFeed(pd.DataFrame):
         return super().__getitem__(i)
 
     @property
-    def p(self):
-        return self.attrs
+    def info(self):
+        return self.attrs["info"]

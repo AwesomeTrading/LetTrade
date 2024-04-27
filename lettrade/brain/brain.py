@@ -33,11 +33,10 @@ class Brain:
         self.strategy.init()
 
         self.feeder.pre_feed()
+        self.strategy.indicators(self.data)
 
         while self.feeder.alive():
             self.feeder.next()
-
-            self.strategy.indicators(self.data)
             self.strategy.next(self.data)
 
         self.strategy.end()

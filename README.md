@@ -1,40 +1,50 @@
 # Lettrade
-A simple lightweight trading framework compatible with Stock, Forex, Crypto... markets
+A lightweight trading framework compatible with Stock, Forex, Crypto... markets
 
-Inspired by freqtrade, backtrader, backtesting.py... 
+Inspired by `freqtrade`, `backtrader`, `backtesting.py`... 
 
 Let make trading simpler :)
 
-# Example
-All sample in `example` directory
+## Example
+All sample are in `example/` directory
 
 ```python
-from lettrade import LetTrade, Strategy
+import talib.abstract as ta
+
+from lettrade import DataFeed, LetTrade, Strategy
+from lettrade.indicator import crossover
+
 
 class SmaCross(Strategy):
-    n1 = 10
-    n2 = 20
+    ema1_period = 9
+    ema2_period = 21
 
-    def init(self):
-        self.sma1 = self.I(SMA, close, self.n1)
-        self.sma2 = self.I(SMA, close, self.n2)
+    def indicators(self, df: DataFeed):
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
+        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        return df
 
-    def next(self):
-        if crossover(self.sma1, self.sma2):
-            self.buy()
-        elif crossover(self.sma2, self.sma1):
-            self.sell()
+    def next(self, df: DataFeed):
+        if crossover(df.ema1, df.ema2):
+            self.buy(1)
+        elif crossover(df.ema2, df.ema1):
+            self.sell(1)
+
+    def end(self):
+        print(self.data.tail(10))
+
 
 lt = LetTrade(
     strategy=SmaCross,
-    csv="data/EURUSD=X.csv",
+    csv="data/EURUSD=X_1h.csv",
 )
 
-output = lt.run()
+lt.run()
 lt.plot()
+
 ```
 
-# Development
+## Development
 
 Set up conda environment
 ```sh

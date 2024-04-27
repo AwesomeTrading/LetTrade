@@ -8,6 +8,7 @@ class DataFeed(pd.DataFrame):
 
     def __getitem__(self, i):
         if isinstance(i, int):
+            print(f"[TEST] DataFeed get item {i}")
             return self.loc[i]
         return super().__getitem__(i)
 

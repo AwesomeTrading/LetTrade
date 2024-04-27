@@ -91,15 +91,15 @@ class LetTrade:
         # Feeder
         self.feeder = BackTestDataFeeder(self.datas)
 
-    def run(self):
-        self.brain.run()
+    def run(self, *args, **kwargs):
+        self.brain.run(*args, **kwargs)
 
         # Run is done
         self.plotter = Plotter(self.datas)
 
-    def plot(self):
+    def plot(self, *args, **kwargs):
         if self.plotter is None:
             logger.error("run() function should be executed before plot()")
             return
 
-        self.plotter.plot()
+        self.plotter.plot(*args, **kwargs)

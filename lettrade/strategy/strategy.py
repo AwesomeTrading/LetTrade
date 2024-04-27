@@ -14,7 +14,10 @@ class Strategy(metaclass=ABCMeta):
         pass
 
     def indicators(self):
-        pass
+        """
+        All indicator and signal should implement here to cacheable
+        Because of lettrade will cache/pre-load DataFeeds
+        """
 
     @abstractmethod
     def next(self):

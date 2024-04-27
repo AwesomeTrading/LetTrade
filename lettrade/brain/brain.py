@@ -29,7 +29,7 @@ class Brain:
         self._commission = commission
         self._hedging = hedging
 
-    def run(self):
+    def run(self, *args, **kwargs):
         self.strategy.init()
         while self.feeder.alive():
             self.feeder.next()

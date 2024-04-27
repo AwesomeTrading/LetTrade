@@ -4,6 +4,18 @@ from typing import Callable, Optional, Sequence, Union
 import pandas as pd
 
 
+def cross(series1: Sequence, series2: Sequence) -> bool:
+    """
+    Return `True` if `series1` and `series2` just crossed
+    (above or below) each other.
+
+        >>> cross(self.data.Close, self.sma)
+        True
+
+    """
+    return crossover(series1, series2) or crossover(series2, series1)
+
+
 def crossover(series1: Sequence, series2: Sequence) -> bool:
     """
     Return `True` if `series1` just crossed over (above)

@@ -9,29 +9,19 @@ class SmaCross(Strategy):
     ema1_period = 9
     ema2_period = 21
 
-    def init(self):
-        pass
-
     def indicators(self, df: DataFeed):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
         df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
 
-        self.sma1 = df["ema1"]
-        self.sma2 = df["ema2"]
-
+        df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
+        df["signal_ema_crossunder"] = crossover(df.ema2, df.ema1)
         return df
 
-    def next(self, df):
-        print("-" * 64)
-        print("self.data.close:")
-        print(self.data.close[0])
-        print("self.sma1:")
-        print(self.sma1[-1])
-
-        if crossover(self.sma1, self.sma2):
-            self.buy(1)
-        elif crossover(self.sma2, self.sma1):
-            self.sell(1)
+    def next(self, df: DataFeed):
+        if df.signal_ema_crossover is True:
+            self.buy(size=1)
+        elif df.signal_ema_crossunder is True:
+            self.sell(size=1)
 
     def end(self):
         print("*" * 64)

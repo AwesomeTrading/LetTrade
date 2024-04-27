@@ -1,5 +1,6 @@
 from typing import Mapping
 
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -27,9 +28,9 @@ class Plotter:
                     high=df["high"],
                     low=df["low"],
                     close=df["close"],
+                    name="Price",
+                    hoverinfo="x+y",
                     customdata=df["datetime"],
-                    text="At: %{customdata}",
-                    hoverinfo="text",
                 ),
                 go.Scatter(
                     x=df.index,
@@ -47,6 +48,7 @@ class Plotter:
                 ),
             ]
         )
+        self.figure.update_layout(hovermode="x unified")
 
     def jump(self, index, range=300, data=None):
         if data is None:
@@ -59,7 +61,7 @@ class Plotter:
 
         self.load()
 
-    def plot(self):
+    def plot(self, *args, **kwargs):
         if self.figure is None:
             self.load()
 
@@ -70,5 +72,5 @@ class Plotter:
         #     marker=dict(size=5, color="MediumPurple"),
         #     name="Signal",
         # )
-        self.figure.update_layout()
+        self.figure.update_layout(*args, **kwargs)
         self.figure.show()

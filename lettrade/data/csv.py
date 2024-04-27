@@ -8,6 +8,6 @@ class CSVDataFeed(DataFeed):
         dataframe = pd.read_csv(path, index_col=0)
         dataframe.reset_index(inplace=True)
 
-        # TODO: Remove invalid data
+        # TODO: validate data
 
         super().__init__(data=dataframe, name=path, *args, **kwargs)

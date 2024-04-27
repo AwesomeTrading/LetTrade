@@ -1,3 +1,4 @@
+import logging
 from typing import Type
 
 from .brain import Brain
@@ -11,6 +12,8 @@ from .exchange.backtest import (
 )
 from .plot import Plotter
 from .strategy import Strategy
+
+logger = logging.getLogger(__name__)
 
 
 class LetTrade:
@@ -91,8 +94,12 @@ class LetTrade:
     def run(self):
         self.brain.run()
 
+        # Run is done
+        self.plotter = Plotter(self.datas)
+
     def plot(self):
         if self.plotter is None:
-            self.plotter = Plotter(self.datas)
+            logger.error("run() function should be executed before plot()")
+            return
 
         self.plotter.plot()

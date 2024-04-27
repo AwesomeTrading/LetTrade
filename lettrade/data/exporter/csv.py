@@ -1,9 +1,12 @@
+import logging
 from pathlib import Path
 
 import pandas as pd
 
+logger = logging.getLogger(__name__)
 
-def csv_save(dataframe: pd.DataFrame, path: str | Path = "data/data.csv", **kwargs):
+
+def csv_export(dataframe: pd.DataFrame, path: str | Path = "data/data.csv", **kwargs):
     dataframe = dataframe.astype(
         dtype={
             "open": "float",
@@ -20,4 +23,4 @@ def csv_save(dataframe: pd.DataFrame, path: str | Path = "data/data.csv", **kwar
     path.parent.mkdir(parents=True, exist_ok=True)
     dataframe.to_csv(path, **kwargs)
 
-    print(f"[INFO] saved data to {path}")
+    logger.info("Saved data to %s", path)

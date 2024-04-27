@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 
+import lettrade.logger
 from lettrade.exchange.backtest.data.yfinance import yf_download
 
 

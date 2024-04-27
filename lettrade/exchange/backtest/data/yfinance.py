@@ -1,8 +1,11 @@
+import logging
 from pathlib import Path
 
 import yfinance as yf
 
-from .csv import csv_save
+from lettrade.data.exporter import csv_export
+
+logger = logging.getLogger(__name__)
 
 
 def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs):
@@ -17,7 +20,7 @@ def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs)
 
     # download
     raws = yf.download(tickers=tickers, interval=interval, *args, **kwargs)
-    print(raws)
+    logger.info("YFinance downloaded:\n%s", raws)
 
     # refactor
     raws = raws.drop("Adj Close", axis=1)
@@ -36,4 +39,4 @@ def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs)
     )
 
     # save to  csv
-    csv_save(raws, path=path)
+    csv_export(raws, path=path, index=False)

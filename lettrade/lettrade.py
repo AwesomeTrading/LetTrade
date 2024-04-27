@@ -1,6 +1,7 @@
 import logging
 from typing import Type
 
+from .base import BaseDataFeeds
 from .brain import Brain
 from .data import DataFeed, DataFeeder
 from .exchange import Exchange
@@ -16,9 +17,7 @@ from .strategy import Strategy
 logger = logging.getLogger(__name__)
 
 
-class LetTrade:
-    data: DataFeed
-    datas: list[DataFeed]
+class LetTrade(BaseDataFeeds):
     brain: Brain
     strategy: Strategy
     exchange: Exchange
@@ -32,6 +31,7 @@ class LetTrade:
         exchange: Exchange = None,
         data: DataFeed | list[DataFeed] = None,
         feeder: DataFeeder = None,
+        plot: Type[Plotter] = Plotter,
         csv: str = "",
         cash: float = 10_000.0,
         # params: dict = {},
@@ -49,7 +49,7 @@ class LetTrade:
             self.exchange = exchange
         else:
             self.exchange = BackTestExchange()
-        self.exchange._load(feeder=self.feeder)
+        self.exchange.feeder = self.feeder
 
         # Strategy
         self.strategy = strategy(
@@ -66,6 +66,11 @@ class LetTrade:
             **kwargs,
         )
 
+        #
+        # Run is done, then prepare plot
+        if plot:
+            self.plotter = plot(feeder=self.feeder)
+
     def _init_datafeeder(self, data=None, csv=None) -> None:
         # Data init
         if not data:
@@ -77,29 +82,23 @@ class LetTrade:
             data = [data]
 
         # Check
-        self.datas = []
+        datas = []
         for d in data:
             # Cast to DataFeed
             if not isinstance(d, DataFeed):
-                self.datas.append(BackTestDataFeed(d))
+                datas.append(BackTestDataFeed(d))
             else:
-                self.datas.append(d)
-
-        # Alias
-        self.data = self.datas[0]
+                datas.append(d)
 
         # Feeder
-        self.feeder = BackTestDataFeeder(self.datas)
+        self.feeder = BackTestDataFeeder(datas)
 
     def run(self, *args, **kwargs):
         self.brain.run(*args, **kwargs)
 
-        # Run is done, then prepare plot
-        self.plotter = Plotter(self.datas)
-
     def plot(self, *args, **kwargs):
         if self.plotter is None:
-            logger.error("plot() function should be executed after run()")
+            logger.error("plot is undefined")
             return
 
         self.plotter.plot(*args, **kwargs)

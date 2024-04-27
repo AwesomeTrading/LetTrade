@@ -1,24 +1,14 @@
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
+from lettrade.base import BaseDataFeeds
 from lettrade.data import DataFeed, DataFeeder
 
 
-class Exchange(metaclass=ABCMeta):
-    feeder: DataFeeder
-    datas: list[DataFeed] = None
-    data: DataFeed
+class Exchange(BaseDataFeeds, metaclass=ABCMeta):
 
-    # def __init__(self) -> None:
-    #     pass
-
-    def _load(self, feeder):
-        if self.datas:
-            print("[WARN] Reloading datas...")
-
-        self.feeder = feeder
-        self.datas = feeder.datas
-        self.data = feeder.datas[0]
+    def __init__(self):
+        self.feeder: DataFeeder = None
 
     @abstractmethod
     def new_order(

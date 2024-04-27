@@ -5,22 +5,22 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from ..data import DataFeed
+from ..base import BaseDataFeeds
+from ..data import DataFeed, DataFeeder
 
 
-class Plotter:
+class Plotter(BaseDataFeeds):
     figure: go.Figure = None
 
     _stored_datas: dict = {}
 
-    def __init__(self, datas: list[DataFeed]) -> None:
-        self.datas: list[DataFeed] = datas
-        self.data: DataFeed = datas[0]
+    def __init__(self, feeder: DataFeeder) -> None:
+        self.feeder: DataFeeder = feeder
 
     def load(self):
         df = self.data
 
-        self.figure = go.Figure(
+        self.figure: go.Figure = go.Figure(
             data=[
                 go.Candlestick(
                     x=df.index,

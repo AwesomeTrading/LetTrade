@@ -18,10 +18,10 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
-        if df.signal_ema_crossover is True:
-            self.buy(size=1)
-        elif df.signal_ema_crossunder is True:
-            self.sell(size=1)
+        if df.signal_ema_crossover[0]:
+            self.buy(size=0.1)
+        elif df.signal_ema_crossunder[0]:
+            self.sell(size=0.1)
 
     def end(self):
         print("*" * 64)

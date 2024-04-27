@@ -29,7 +29,7 @@ class LetTrade(BaseDataFeeds):
         self,
         strategy: Type[Strategy],
         exchange: Exchange = None,
-        data: DataFeed | list[DataFeed] = None,
+        datas: DataFeed | list[DataFeed] = None,
         feeder: DataFeeder = None,
         plot: Type[Plotter] = Plotter,
         csv: str = "",
@@ -42,7 +42,7 @@ class LetTrade(BaseDataFeeds):
         if feeder:
             self.feeder = feeder
         else:
-            self._init_datafeeder(data=data, csv=csv)
+            self._init_datafeeder(datas=datas, csv=csv)
 
         # Exchange
         if exchange:
@@ -71,27 +71,27 @@ class LetTrade(BaseDataFeeds):
         if plot:
             self.plotter = plot(feeder=self.feeder)
 
-    def _init_datafeeder(self, data=None, csv=None) -> None:
+    def _init_datafeeder(self, datas=None, csv=None) -> None:
         # Data init
-        if not data:
+        if not datas:
             if csv:
-                data = CSVBackTestDataFeed(csv)
+                datas = [CSVBackTestDataFeed(csv)]
 
         # Support single and multiple data
-        if not isinstance(data, list):
-            data = [data]
+        if not isinstance(datas, list):
+            datas = [datas]
 
         # Check
-        datas = []
-        for d in data:
+        feeds = []
+        for d in datas:
             # Cast to DataFeed
             if not isinstance(d, DataFeed):
-                datas.append(BackTestDataFeed(d))
+                feeds.append(BackTestDataFeed(d))
             else:
-                datas.append(d)
+                feeds.append(d)
 
         # Feeder
-        self.feeder = BackTestDataFeeder(datas)
+        self.feeder = BackTestDataFeeder(datas=feeds)
 
     def run(self, *args, **kwargs):
         self.brain.run(*args, **kwargs)

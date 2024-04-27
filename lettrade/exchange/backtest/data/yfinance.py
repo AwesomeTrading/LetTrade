@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 
+import pandas as pd
 import yfinance as yf
 
 from lettrade.data.exporter.csv import csv_export
@@ -18,18 +19,22 @@ def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs)
         print(f"File {path} existed")
         return
 
-    # download
-    raws = yf.download(tickers=tickers, interval=interval, *args, **kwargs)
-    logger.info("YFinance downloaded:\n%s", raws)
+    # Download
+    df: pd.DataFrame = yf.download(tickers=tickers, interval=interval, *args, **kwargs)
+    logger.info("YFinance downloaded:\n%s", df)
 
-    # refactor
-    raws = raws.drop("Adj Close", axis=1)
-    raws = raws[raws.High != raws.Low]
-    raws.reset_index(inplace=True)
-    raws.head()
-    raws = raws.rename(
+    # Parse
+    df = yf_parse(df)
+
+    # Save to csv
+    csv_export(df, path=path, index=False)
+
+
+def yf_parse(df: pd.DataFrame):
+    df = df[df.High != df.Low]
+    df.index = df.index.rename("datetime")
+    df = df.rename(
         columns={
-            "Datetime": "datetime",
             "Open": "open",
             "High": "high",
             "Low": "low",
@@ -37,6 +42,5 @@ def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs)
             "Volume": "volume",
         }
     )
-
-    # save to  csv
-    csv_export(raws, path=path, index=False)
+    df = df.filter(["datetime", "open", "high", "low", "close", "volume"], axis=1)
+    return df

@@ -36,7 +36,13 @@ class Brain:
         self.strategy.indicators(self.data)
 
         while self.feeder.alive():
+            # Load feader next data
             self.feeder.next()
+
+            # Realtime continous update data, then rebuild indicator data
+            if self.feeder.is_continous:
+                self.strategy.indicators(self.data)
+
             self.strategy.next(self.data)
 
         self.strategy.end()

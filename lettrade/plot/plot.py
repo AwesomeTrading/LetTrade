@@ -48,7 +48,7 @@ class Plotter(BaseDataFeeds):
                 ),
             ]
         )
-        self.figure.update_layout(hovermode="x unified")
+        # self.figure.update_layout(hovermode="x unified")
 
     def jump(self, index, range=300, data=None):
         if data is None:

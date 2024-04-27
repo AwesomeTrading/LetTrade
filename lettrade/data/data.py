@@ -1,9 +1,28 @@
+import numpy as np
 import pandas as pd
-import pandas_ta as ta
 
 
 class DataFeed(pd.DataFrame):
-    def __init__(self, name, info={}, *args, **kwargs) -> None:
+
+    def __init__(
+        self,
+        name,
+        info={},
+        *args,
+        **kwargs,
+    ) -> None:
+        # dtype.update(
+        #     {
+        #         # "datetime": "datetime64[ns]",
+        #         "open": "float",
+        #         "high": "float",
+        #         "low": "float",
+        #         "close": "float",
+        #         "volume": "float",
+        #     }
+        # )
+        # print(dtype)
+
         super().__init__(*args, **kwargs)
 
         info["name"] = name

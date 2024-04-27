@@ -2,7 +2,8 @@ import talib.abstract as ta
 
 import lettrade.logger
 from lettrade import DataFeed, LetTrade, Strategy
-from lettrade.indicator.buildin import crossover
+from lettrade.exchange.backtest import YFBackTestDataFeed
+from lettrade.indicator import crossover
 
 
 class SmaCross(Strategy):
@@ -30,7 +31,15 @@ class SmaCross(Strategy):
 
 lt = LetTrade(
     strategy=SmaCross,
-    csv="data/EURUSD=X_1h.csv",
+    datas=[
+        YFBackTestDataFeed(
+            name="EURUSD",
+            ticker="EURUSD=X",
+            start="2023-01-01",
+            end="2023-02-01",
+            interval="1h",
+        )
+    ],
 )
 
 lt.run()

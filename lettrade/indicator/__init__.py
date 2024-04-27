@@ -1,1 +1,2 @@
-from .func import *
+from .function import *
+from .indicator import *

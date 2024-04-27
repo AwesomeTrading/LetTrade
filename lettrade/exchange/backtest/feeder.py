@@ -9,6 +9,11 @@ class BackTestDataFeeder(DataFeeder):
     datas: list[BackTestDataFeed]
     data: BackTestDataFeed
 
+    @property
+    def is_continous(self):
+        """Flag check is realtime continous datafeeder"""
+        return False
+
     def alive(self):
         return self.data.alive()
 

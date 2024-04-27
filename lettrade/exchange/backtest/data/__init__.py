@@ -1,1 +1,1 @@
-from .data import BackTestDataFeed, CSVBackTestDataFeed
+from .data import BackTestDataFeed, CSVBackTestDataFeed, YFBackTestDataFeed

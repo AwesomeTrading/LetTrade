@@ -2,8 +2,7 @@ from abc import ABCMeta, abstractmethod
 from typing import Optional, Tuple
 
 from ..data import DataFeed
-from ..exchange import Exchange
-from ..trade import Order, Position, Trade
+from ..exchange import Exchange, Execute, Order, Position, Trade
 
 
 class Strategy(metaclass=ABCMeta):
@@ -124,3 +123,19 @@ class Strategy(metaclass=ABCMeta):
     @property
     def closed_trades(self) -> Tuple[Trade, ...]:
         return ()
+
+    # Events
+    def on_transaction(self, o):
+        pass
+
+    def on_execute(self, execute: Execute):
+        pass
+
+    def on_order(self, order: Order):
+        pass
+
+    def on_trade(self, trade: Trade):
+        pass
+
+    def on_position(self, position: Position):
+        pass

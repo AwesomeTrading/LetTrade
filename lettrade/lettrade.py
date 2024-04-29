@@ -24,7 +24,6 @@ class LetTrade(BaseDataFeeds):
     strategy: Strategy
     exchange: Exchange
     feeder: DataFeeder
-
     plotter: Plotter = None
 
     _plot_cls: Type[Plotter] = None
@@ -73,6 +72,7 @@ class LetTrade(BaseDataFeeds):
         )
 
         # Plot class
+        self.exchange._brain = self.brain
         self._plot_cls = plot
 
     def _init_datafeeder(self, datas) -> None:

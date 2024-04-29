@@ -1,5 +1,9 @@
+import logging
+
 import numpy as np
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 class DataFeed(pd.DataFrame):
@@ -31,7 +35,7 @@ class DataFeed(pd.DataFrame):
 
     def __getitem__(self, i):
         if isinstance(i, int):
-            print(f"[TEST] DataFeed get item {i}")
+            logger.warning("[TEST] DataFeed get item %s", i)
             return self.loc[i]
         return super().__getitem__(i)
 

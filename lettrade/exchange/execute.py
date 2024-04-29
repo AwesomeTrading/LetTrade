@@ -1,7 +1,7 @@
 from typing import Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
 
 
-class Order:
+class Execute:
     """
     Place new orders through `Strategy.buy()` and `Strategy.sell()`.
     Query existing orders through `Strategy.orders`.
@@ -19,7 +19,7 @@ class Order:
 
     def __init__(
         self,
-        broker: "_Broker",
+        exchange: "Exchange",
         size: float,
         limit_price: Optional[float] = None,
         stop_price: Optional[float] = None,
@@ -28,7 +28,7 @@ class Order:
         parent_trade: Optional["Trade"] = None,
         tag: object = None,
     ):
-        self.__broker = broker
+        self.__exchange = exchange
         assert size != 0
         self.__size = size
         self.__limit_price = limit_price
@@ -62,7 +62,7 @@ class Order:
 
     def cancel(self):
         """Cancel the order."""
-        self.__broker.orders.remove(self)
+        self.__exchange.orders.remove(self)
         trade = self.__parent_trade
         if trade:
             if self is trade._sl_order:

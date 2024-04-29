@@ -3,18 +3,8 @@ import pandas as pd
 
 
 class Position:
-    """
-    Currently held asset position, available as
-    `backtesting.backtesting.Strategy.position` within
-    `backtesting.backtesting.Strategy.next`.
-    Can be used in boolean contexts, e.g.
-
-        if self.position:
-            ...  # we have a position, either long or short
-    """
-
-    def __init__(self, broker: "_Broker"):
-        self.__broker = broker
+    def __init__(self, exchange: "Exchange"):
+        self.__exchange = exchange
 
     def __bool__(self):
         return self.size != 0
@@ -22,19 +12,19 @@ class Position:
     @property
     def size(self) -> float:
         """Position size in units of asset. Negative if position is short."""
-        return sum(trade.size for trade in self.__broker.trades)
+        return sum(trade.size for trade in self.__exchange.trades)
 
     @property
     def pl(self) -> float:
         """Profit (positive) or loss (negative) of the current position in cash units."""
-        return sum(trade.pl for trade in self.__broker.trades)
+        return sum(trade.pl for trade in self.__exchange.trades)
 
     @property
     def pl_pct(self) -> float:
         """Profit (positive) or loss (negative) of the current position in percent."""
-        weights = np.abs([trade.size for trade in self.__broker.trades])
+        weights = np.abs([trade.size for trade in self.__exchange.trades])
         weights = weights / weights.sum()
-        pl_pcts = np.array([trade.pl_pct for trade in self.__broker.trades])
+        pl_pcts = np.array([trade.pl_pct for trade in self.__exchange.trades])
         return (pl_pcts * weights).sum()
 
     @property
@@ -51,8 +41,8 @@ class Position:
         """
         Close portion of position by closing `portion` of each active trade. See `Trade.close`.
         """
-        for trade in self.__broker.trades:
+        for trade in self.__exchange.trades:
             trade.close(portion)
 
     def __repr__(self):
-        return f"<Position: {self.size} ({len(self.__broker.trades)} trades)>"
+        return f"<Position: {self.size} ({len(self.__exchange.trades)} trades)>"

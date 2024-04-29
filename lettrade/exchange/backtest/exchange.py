@@ -2,10 +2,13 @@ from typing import Optional
 
 from lettrade.data import DataFeed
 
+from .. import Order, Position, Trade
 from ..exchange import Exchange
 
 
 class BackTestExchange(Exchange):
+    __id = 0
+
     def new_order(
         self,
         size: float,
@@ -20,5 +23,18 @@ class BackTestExchange(Exchange):
     ):
         if not data:
             data = self.data
-        print("New order:", size, limit, stop, sl, tp, tag)
-        print(data[0])
+
+        self.__id += 1
+
+        order = Order(
+            id=str(self.__id),
+            exchange=self,
+            data=data,
+            size=size,
+            limit_price=limit,
+            stop_price=stop,
+            sl_price=stop,
+            tp_price=tp,
+            tag=tag,
+        )
+        self._on_order(order)

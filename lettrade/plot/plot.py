@@ -14,8 +14,9 @@ class Plotter(BaseDataFeeds):
 
     _stored_datas: dict = {}
 
-    def __init__(self, feeder: DataFeeder) -> None:
+    def __init__(self, feeder: DataFeeder, data: list[go.Scatter] = []) -> None:
         self.feeder: DataFeeder = feeder
+        self.plot_data: list[go.Scatter] = data
 
     def load(self):
         df = self.data
@@ -32,29 +33,16 @@ class Plotter(BaseDataFeeds):
                     hoverinfo="x+y",
                     customdata=df["datetime"],
                 ),
-                go.Scatter(
-                    x=df.index,
-                    meta=df["datetime"],
-                    y=df["ema1"],
-                    line=dict(color="blue", width=1),
-                    name="ema1",
-                ),
-                go.Scatter(
-                    x=df.index,
-                    meta=df["datetime"],
-                    y=df["ema2"],
-                    line=dict(color="green", width=1),
-                    name="ema2",
-                ),
+                *self.plot_data,
             ]
         )
         # self.figure.update_layout(hovermode="x unified")
 
-    def jump(self, index, range=300, data=None):
+    def jump(self, index, range=300, data: DataFeed = None):
         if data is None:
             data = self.data
 
-        name = data.info["name"]
+        name = data.meta["name"]
 
         stored_data: DataFeed = self._stored_datas.setdefault(name, data)
         self.data = DataFeed(name=name, data=stored_data[index : index + range].copy())

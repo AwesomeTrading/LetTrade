@@ -1,3 +1,5 @@
+import pandas_ta as pta
+import plotly.graph_objects as go
 import talib.abstract as ta
 
 import lettrade.logger
@@ -14,6 +16,11 @@ class SmaCross(Strategy):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
         df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
 
+        bb = pta.bbands(df.close, length=20, std=2.0)
+        df["bbands_low"] = bb.iloc[:, 0]
+        df["bbands_mid"] = bb.iloc[:, 1]
+        df["bbands_high"] = bb.iloc[:, 2]
+
         df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
         df["signal_ema_crossunder"] = crossover(df.ema2, df.ema1)
         return df
@@ -26,6 +33,43 @@ class SmaCross(Strategy):
 
     def end(self):
         print(self.data.tail(10))
+
+    def plot(self):
+        df = self.data
+        return [
+            # EMA
+            go.Scatter(
+                x=df.index,
+                y=df["ema1"],
+                line=dict(color="blue", width=1),
+                name="ema1",
+            ),
+            go.Scatter(
+                x=df.index,
+                y=df["ema2"],
+                line=dict(color="green", width=1),
+                name="ema2",
+            ),
+            # BBands
+            go.Scatter(
+                x=df.index,
+                y=df["bbands_low"],
+                line=dict(color="blue", width=1),
+                name="bbands_low",
+            ),
+            go.Scatter(
+                x=df.index,
+                y=df["bbands_mid"],
+                line=dict(color="green", width=1),
+                name="bbands_mid",
+            ),
+            go.Scatter(
+                x=df.index,
+                y=df["bbands_high"],
+                line=dict(color="blue", width=1),
+                name="bbands_high",
+            ),
+        ]
 
 
 lt = LetTrade(

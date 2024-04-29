@@ -27,6 +27,8 @@ class LetTrade(BaseDataFeeds):
 
     plotter: Plotter = None
 
+    _plot_cls: Type[Plotter] = None
+
     def __init__(
         self,
         strategy: Type[Strategy],
@@ -70,10 +72,8 @@ class LetTrade(BaseDataFeeds):
             **kwargs,
         )
 
-        #
-        # Run is done, then prepare plot
-        if plot:
-            self.plotter = plot(feeder=self.feeder)
+        # Plot class
+        self._plot_cls = plot
 
     def _init_datafeeder(self, datas) -> None:
         # Support single and multiple data
@@ -101,7 +101,7 @@ class LetTrade(BaseDataFeeds):
 
     def plot(self, *args, **kwargs):
         if self.plotter is None:
-            logger.error("plot is None")
-            return
+            plot_data = self.strategy.plot()
+            self.plotter = self._plot_cls(feeder=self.feeder, data=plot_data)
 
         self.plotter.plot(*args, **kwargs)

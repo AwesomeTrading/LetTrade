@@ -26,6 +26,9 @@ class Strategy(metaclass=ABCMeta):
     def end(self):
         pass
 
+    def plot(self):
+        pass
+
     def buy(
         self,
         *,

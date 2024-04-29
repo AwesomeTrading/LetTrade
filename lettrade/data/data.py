@@ -7,7 +7,7 @@ class DataFeed(pd.DataFrame):
     def __init__(
         self,
         name,
-        info={},
+        meta={},
         *args,
         **kwargs,
     ) -> None:
@@ -22,11 +22,12 @@ class DataFeed(pd.DataFrame):
         #     }
         # )
         # print(dtype)
+        # df.set_index(pd.DatetimeIndex(df["datetime"]), inplace=True)
 
         super().__init__(*args, **kwargs)
 
-        info["name"] = name
-        self.attrs = {"info": info}
+        meta["name"] = name
+        self.attrs = {"lt_meta": meta}
 
     def __getitem__(self, i):
         if isinstance(i, int):
@@ -35,5 +36,5 @@ class DataFeed(pd.DataFrame):
         return super().__getitem__(i)
 
     @property
-    def info(self):
-        return self.attrs["info"]
+    def meta(self):
+        return self.attrs["meta"]

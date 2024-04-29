@@ -1,4 +1,3 @@
-import pandas as pd
 import yfinance as yf
 
 from lettrade.data import CSVDataFeed, DataFeed
@@ -48,12 +47,12 @@ class YFBackTestDataFeed(BackTestDataFeed):
         # Reindex to 0,1,2,3...
         df.reset_index(inplace=True)
 
-        # Information
-        info = dict(ticker=ticker, **params)
+        # Metadata
+        meta = dict(yf=dict(ticker=ticker, **params))
 
         super().__init__(
             name=name,
-            info=dict(yf=info),
+            meta=meta,
             data=df,
             *args,
             **kwargs,

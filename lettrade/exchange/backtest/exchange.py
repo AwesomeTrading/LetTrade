@@ -1,9 +1,7 @@
 from typing import Optional
 
 from lettrade.data import DataFeed
-
-from .. import Order, Position, Trade
-from ..exchange import Exchange
+from lettrade.exchange import Exchange, Order, Position, Trade
 
 
 class BackTestExchange(Exchange):
@@ -33,8 +31,20 @@ class BackTestExchange(Exchange):
             size=size,
             limit_price=limit,
             stop_price=stop,
-            sl_price=stop,
+            sl_price=sl,
             tp_price=tp,
             tag=tag,
         )
         self._on_order(order)
+
+        self.__id += 1
+        trade = Trade(
+            id=str(self.__id),
+            exchange=self,
+            data=data,
+            size=size,
+            tag=tag,
+            entry_price=self.data.close[0],
+            entry_bar=self.data[0],
+        )
+        self._on_trade(trade)

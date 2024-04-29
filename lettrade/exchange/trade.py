@@ -13,9 +13,18 @@ class Trade:
     """
 
     def __init__(
-        self, broker: "_Broker", size: int, entry_price: float, entry_bar, tag
+        self,
+        id: str,
+        exchange: "Exchange",
+        data: "DataFeed",
+        size: int,
+        entry_price: float,
+        entry_bar,
+        tag,
     ):
-        self.__broker = broker
+        self.__id = id
+        self.__exchange = exchange
+        self.__data = data
         self.__size = size
         self.__entry_price = entry_price
         self.__exit_price: Optional[float] = None
@@ -26,28 +35,35 @@ class Trade:
         self.__tag = tag
 
     def __repr__(self):
-        return (
-            f'<Trade size={self.__size} time={self.__entry_bar}-{self.__exit_bar or ""} '
-            f'price={self.__entry_price}-{self.__exit_price or ""} pl={self.pl:.0f}'
-            f'{" tag="+str(self.__tag) if self.__tag is not None else ""}>'
-        )
-
-    def _replace(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, f"_{self.__class__.__qualname__}__{k}", v)
-        return self
-
-    def _copy(self, **kwargs):
-        return copy(self)._replace(**kwargs)
-
-    def close(self, portion: float = 1.0):
-        """Place new `Order` to close `portion` of the trade at next market price."""
-        assert 0 < portion <= 1, "portion must be a fraction between 0 and 1"
-        size = copysign(max(1, round(abs(self.__size) * portion)), -self.__size)
-        order = Order(self.__broker, size, parent_trade=self, tag=self.__tag)
-        self.__broker.orders.insert(0, order)
+        return f"<Trade id={self.__id} size={self.__size}>"
+        # return (
+        #     f'<Trade id={self.__id} size={self.__size} time={self.__entry_bar}-{self.__exit_bar or ""} '
+        #     f'price={self.__entry_price}-{self.__exit_price or ""} pl={self.pl:.0f}'
+        #     f'{" tag="+str(self.__tag) if self.__tag is not None else ""}>'
+        # )
 
     # Fields getters
+    @property
+    def id(self) -> str:
+        """
+        Order data (negative for short orders).
+
+        If data is a value between 0 and 1, it is interpreted as a fraction of current
+        available liquidity (cash plus `Position.pl` minus used margin).
+        A value greater than or equal to 1 indicates an absolute number of units.
+        """
+        return self.__id
+
+    @property
+    def data(self) -> "DataFeed":
+        """
+        Order data (negative for short orders).
+
+        If data is a value between 0 and 1, it is interpreted as a fraction of current
+        available liquidity (cash plus `Position.pl` minus used margin).
+        A value greater than or equal to 1 indicates an absolute number of units.
+        """
+        return self.__data
 
     @property
     def size(self):
@@ -99,18 +115,17 @@ class Trade:
         return self.__tp_order
 
     # Extra properties
-
     @property
     def entry_time(self) -> Union[pd.Timestamp, int]:
         """Datetime of when the trade was entered."""
-        return self.__broker._data.index[self.__entry_bar]
+        return self.__exchange.data.index[self.__entry_bar]
 
     @property
     def exit_time(self) -> Optional[Union[pd.Timestamp, int]]:
         """Datetime of when the trade was exited."""
         if self.__exit_bar is None:
             return None
-        return self.__broker._data.index[self.__exit_bar]
+        return self.__exchange._data.index[self.__exit_bar]
 
     @property
     def is_long(self):
@@ -125,19 +140,19 @@ class Trade:
     @property
     def pl(self):
         """Trade profit (positive) or loss (negative) in cash units."""
-        price = self.__exit_price or self.__broker.last_price
+        price = self.__exit_price or self.__exchange.last_price
         return self.__size * (price - self.__entry_price)
 
     @property
     def pl_pct(self):
         """Trade profit (positive) or loss (negative) in percent."""
-        price = self.__exit_price or self.__broker.last_price
+        price = self.__exit_price or self.__exchange.last_price
         return copysign(1, self.__size) * (price / self.__entry_price - 1)
 
     @property
     def value(self):
         """Trade total value in cash (volume × price)."""
-        price = self.__exit_price or self.__broker.last_price
+        price = self.__exit_price or self.__exchange.last_price
         return abs(self.__size) * price
 
     # SL/TP management API
@@ -181,7 +196,7 @@ class Trade:
             order.cancel()
         if price:
             kwargs = {"stop": price} if type == "sl" else {"limit": price}
-            order = self.__broker.new_order(
+            order = self.__exchange.new_order(
                 -self.size, trade=self, tag=self.tag, **kwargs
             )
             setattr(self, attr, order)

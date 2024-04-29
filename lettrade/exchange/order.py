@@ -1,7 +1,5 @@
 from typing import Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
 
-from lettrade.data import DataFeed
-
 
 class Order:
     """
@@ -93,7 +91,7 @@ class Order:
         return self.__id
 
     @property
-    def data(self) -> DataFeed:
+    def data(self) -> "DataFeed":
         """
         Order data (negative for short orders).
 

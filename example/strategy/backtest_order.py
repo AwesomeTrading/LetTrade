@@ -1,3 +1,4 @@
+import pandas as pd
 import talib.abstract as ta
 
 import lettrade.logger
@@ -24,8 +25,8 @@ class SmaCross(Strategy):
         elif df.signal_ema_crossunder[0]:
             self.sell(size=0.1)
 
-    def on_order(self, order: Order):
-        print(order)
+    def on_transaction(self, transaction):
+        print("transaction", transaction)
 
     def end(self):
         print(self.data.tail(10))
@@ -47,6 +48,38 @@ class SmaCross(Strategy):
                 y=df["ema2"],
                 line=dict(color="green", width=1),
                 name="ema2",
+            ),
+            go.Scatter(
+                x=pd.Series([-20, -5]),
+                y=pd.Series([1.1, 1.12]),
+                mode="lines+markers",
+                name="Order",
+                marker=dict(
+                    symbol="diamond",
+                    size=5,
+                    color="yellow",
+                ),
+                line=dict(
+                    color="royalblue",
+                    width=1,
+                    dash="dash",
+                ),
+            ),
+            go.Scatter(
+                x=pd.Series([-30, -15]),
+                y=pd.Series([1.11, 1.112]),
+                mode="lines+markers",
+                name="Order",
+                marker=dict(
+                    symbol="circle-dot",
+                    size=10,
+                    color="royalblue",
+                ),
+                line=dict(
+                    color="royalblue",
+                    width=1,
+                    dash="dash",
+                ),
             ),
         ]
 

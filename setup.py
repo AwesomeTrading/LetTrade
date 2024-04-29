@@ -24,5 +24,9 @@ setuptools.setup(
     ],
     package_dir={"": "lettrade"},
     packages=setuptools.find_packages(where="lettrade"),
-    python_requires=">=3.10",
+    python_requires=">=3.8,<=3.10",
+    install_requires=["pandas", "numpy"],
+    extras_require={
+        "dev": ["yfinance"],
+    },
 )

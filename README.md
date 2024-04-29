@@ -1,9 +1,26 @@
 # LetTrade
+
+
+[![Code Coverage](https://img.shields.io/codecov/c/gh/AwesomeTrading/lettrade.svg?style=for-the-badge)](https://codecov.io/gh/AwesomeTrading/lettrade)
+[![PyPI](https://img.shields.io/pypi/v/lettrade.svg?color=blue&style=for-the-badge)](https://pypi.org/project/lettrade)
+[![PyPI downloads](https://img.shields.io/pypi/dd/lettrade.svg?color=skyblue&style=for-the-badge)](https://pypi.org/project/lettrade)
+
 A lightweight trading framework compatible with Stock, Forex, Crypto... markets
 
 Inspired by `freqtrade`, `backtrader`, `backtesting.py`... 
 
 Let make trading simpler :)
+
+## Installation
+
+```sh
+pip install lettrade
+```
+
+Developing version
+```sh
+pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
+```
 
 ## Example
 All sample are in `example/` directory

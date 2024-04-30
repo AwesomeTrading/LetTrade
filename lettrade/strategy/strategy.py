@@ -109,20 +109,20 @@ class Strategy(metaclass=ABCMeta):
         return self._exchange.datas
 
     @property
-    def position(self) -> Position:
-        return None
+    def positions(self) -> Position:
+        return self._exchange.positions
 
     @property
     def orders(self) -> Tuple[Order, ...]:
-        return ()
+        return self._exchange.orders
 
     @property
     def trades(self) -> Tuple[Trade, ...]:
-        return ()
+        return self._exchange.trades
 
     @property
     def closed_trades(self) -> Tuple[Trade, ...]:
-        return ()
+        return self._exchange.closed_trades
 
     # Events
     def on_transaction(self, o):

@@ -35,7 +35,7 @@ class BackTestExchange(Exchange):
             tp_price=tp,
             tag=tag,
         )
-        self._on_order(order)
+        self.on_order(order)
 
         self.__id += 1
         trade = Trade(
@@ -47,4 +47,4 @@ class BackTestExchange(Exchange):
             entry_price=self.data.close[0],
             entry_bar=self.data[0],
         )
-        self._on_trade(trade)
+        self.on_trade(trade)

@@ -5,6 +5,7 @@ import pandas as pd
 
 from .base import BaseDataFeeds
 from .brain import Brain
+from .commission import Commission
 from .data import DataFeed, DataFeeder
 from .exchange import Exchange
 from .exchange.backtest import (
@@ -14,6 +15,7 @@ from .exchange.backtest import (
     CSVBackTestDataFeed,
 )
 from .plot import Plotter
+from .stats import Statistic
 from .strategy import Strategy
 
 logger = logging.getLogger(__name__)
@@ -25,6 +27,7 @@ class LetTrade(BaseDataFeeds):
     exchange: Exchange
     feeder: DataFeeder
     plotter: Plotter = None
+    _stats: Statistic = None
 
     _plot_cls: Type[Plotter] = None
 
@@ -36,6 +39,7 @@ class LetTrade(BaseDataFeeds):
         exchange: Exchange = None,
         plot: Type[Plotter] = Plotter,
         cash: float = 10_000.0,
+        commission: Commission = None,
         # params: dict = {},
         *args,
         **kwargs,
@@ -49,12 +53,18 @@ class LetTrade(BaseDataFeeds):
 
             self._init_datafeeder(datas=datas)
 
+        # Commission
+        if commission is None:
+            commission = Commission()
+
         # Exchange
         if exchange:
             self.exchange = exchange
         else:
             self.exchange = BackTestExchange()
         self.exchange.feeder = self.feeder
+        self.exchange.cash = cash
+        self.commission = commission
 
         # Strategy
         self.strategy = strategy(
@@ -72,7 +82,7 @@ class LetTrade(BaseDataFeeds):
         )
 
         # Plot class
-        self.exchange._brain = self.brain
+        self.exchange.brain = self.brain
         self._plot_cls = plot
 
     def _init_datafeeder(self, datas) -> None:
@@ -98,6 +108,19 @@ class LetTrade(BaseDataFeeds):
 
     def run(self, *args, **kwargs):
         self.brain.run(*args, **kwargs)
+
+        self.stats.compute()
+        self.stats.show()
+
+    @property
+    def stats(self) -> Statistic:
+        if self._stats is None:
+            self._stats = Statistic(
+                feeder=self.feeder,
+                exchange=self.exchange,
+                strategy=self.strategy,
+            )
+        return self._stats
 
     def plot(self, *args, **kwargs):
         if self.plotter is None:

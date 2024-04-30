@@ -59,7 +59,7 @@ class FastQuery(Generic[T]):
         if isinstance(name, int):
             i = name
             name = self.__list[i]
-        if isinstance(name, T):
+        if self.isinstance(name):
             obj = name
             name = obj.id
         if isinstance(name, str) and i is None:

@@ -47,25 +47,22 @@ class Brain:
 
         self.strategy.end()
 
-    def run_until(self, index=0, next=0):
-        pass
-
     def shutdown(self):
         pass
 
     # Events
-    def _on_execute(self, execute: Execute):
+    def on_execute(self, execute: Execute):
         self.strategy.on_transaction(execute)
         self.strategy.on_execute(execute)
 
-    def _on_order(self, order: Order):
+    def on_order(self, order: Order):
         self.strategy.on_transaction(order)
         self.strategy.on_order(order)
 
-    def _on_trade(self, trade: Trade):
+    def on_trade(self, trade: Trade):
         self.strategy.on_transaction(trade)
         self.strategy.on_trade(trade)
 
-    def _on_position(self, position: Position):
+    def on_position(self, position: Position):
         self.strategy.on_transaction(position)
         self.strategy.on_position(position)

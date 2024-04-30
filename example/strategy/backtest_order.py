@@ -26,7 +26,7 @@ class SmaCross(Strategy):
             self.sell(size=0.1)
 
     def on_transaction(self, transaction):
-        print("transaction", transaction)
+        print("Transaction", transaction)
 
     def end(self):
         print(self.data.tail(10))

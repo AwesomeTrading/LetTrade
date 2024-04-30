@@ -12,12 +12,13 @@ class DataFeed(pd.DataFrame):
         self,
         name,
         meta={},
+        dtype={},
         *args,
         **kwargs,
     ) -> None:
         # dtype.update(
         #     {
-        #         # "datetime": "datetime64[ns]",
+        #         # "datetime": "datetime64[m]",
         #         "open": "float",
         #         "high": "float",
         #         "low": "float",

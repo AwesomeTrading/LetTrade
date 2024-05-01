@@ -21,30 +21,29 @@ class Trade(BaseTransaction):
         data: "DataFeed",
         size: float,
         entry_price: float,
+        entry_bar: int,
         parent: "Order",
-        created_at: datetime = None,
-        entry_bar=None,
         tag: object = "",
         state: State = State.Open,
+        sl_order: Optional[Order] = None,
+        tp_order: Optional[Order] = None,
     ):
         super().__init__(
             id=id,
             exchange=exchange,
             data=data,
             size=size,
-            created_at=created_at,
         )
-
-        self.entry_price = entry_price
         self.state = state
         self.tag: object = tag
         self.parent: "Order" = parent
 
-        self.exit_price: Optional[float] = None
+        self.entry_price = entry_price
         self.entry_bar: int = entry_bar
+        self.exit_price: Optional[float] = None
         self.exit_bar: Optional[int] = None
-        self.sl_order: Optional[Order] = None
-        self.tp_order: Optional[Order] = None
+        self.sl_order: Optional[Order] = sl_order
+        self.tp_order: Optional[Order] = tp_order
 
     def __repr__(self):
         return f"<Trade id={self.id} state={self.state} size={self.size}>"

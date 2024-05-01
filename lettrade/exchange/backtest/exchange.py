@@ -56,23 +56,56 @@ class BackTestExchange(Exchange):
             sl_price=sl,
             tp_price=tp,
             tag=tag,
+            open_bar=self.data.index[0],
+            open_price=self.data.open[0],
         )
         self.on_order(order)
 
         logger.info("New order %s at %s", order, self.data.datetime[0])
-
         self._simulate_order()
+
+    def _new_trade_sl(self, trade: Trade) -> Order:
+        sl_order = Order(
+            id=self._id(),
+            exchange=self,
+            data=trade.data,
+            size=-trade.size,
+            type=OrderType.Stop,
+            stop_price=trade.sl_price,
+            tag=trade.tag,
+            open_bar=self.data.index[0],
+            open_price=trade.sl_price,
+        )
+        trade.sl_order = sl_order
+        self.on_order(sl_order)
+        return sl_order
+
+    def _new_trade_tp(self, trade: Trade) -> Order:
+        tp_order = Order(
+            id=self._id(),
+            exchange=self,
+            data=trade.data,
+            size=-trade.size,
+            type=OrderType.Limit,
+            limit_price=trade.tp_price,
+            tag=trade.tag,
+            open_bar=self.data.index[0],
+            open_price=trade.sl_price,
+        )
+        trade.tp_order = tp_order
+        self.on_order(tp_order)
+        return tp_order
 
     def _simulate_order(self):
         for order in self.orders.to_list():
             if order.type == OrderType.Market:
-                order.entry_now()
+                order.execute()
                 execute = Execute(
                     id=self._id(),
                     size=order.size,
                     exchange=self,
                     data=order.data,
-                    price=self.data.close[0],
+                    price=self.data.open[0],
                     parent=order,
                 )
                 self.on_execute(execute)
@@ -83,6 +116,11 @@ class BackTestExchange(Exchange):
                     exchange=self,
                     data=order.data,
                     entry_price=execute.price,
+                    entry_bar=self.data.index[0],
                     parent=order,
                 )
+                if order.sl:
+                    self._new_trade_sl(order)
+                if order.tp:
+                    self._new_trade_tp(order)
                 self.on_trade(trade)

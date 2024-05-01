@@ -11,7 +11,6 @@ class Order(BaseTransaction):
         exchange: "Exchange",
         data: "DataFeed",
         size: float,
-        created_at: datetime = None,
         state: State = State.Open,
         type: OrderType = OrderType.Market,
         limit_price: Optional[float] = None,
@@ -21,13 +20,14 @@ class Order(BaseTransaction):
         trade: Optional["Trade"] = None,
         parent: Optional["Order | Trade"] = None,
         tag: object = None,
+        open_bar: int = None,
+        open_price: int = None,
     ):
         super().__init__(
             id=id,
             exchange=exchange,
             data=data,
             size=size,
-            created_at=created_at,
         )
 
         self.type: OrderType = type
@@ -40,8 +40,8 @@ class Order(BaseTransaction):
         self.parent: Optional["Order | Trade"] = parent
         self.tag: object = tag
 
-        self.entry_bar: int = None
-        self.entry_price: int = None
+        self.open_bar: int = open_bar
+        self.open_price: int = open_price
         self.sl_order: "Order" = None
         self.tp_order: "Order" = None
 
@@ -69,14 +69,14 @@ class Order(BaseTransaction):
         self.exchange.orders.remove(self)
         parent = self.parent
         if self.parent:
-            if self is parent._sl_order:
+            if self is parent.sl_order:
                 parent._replace(sl_order=None)
-            elif self is parent._tp_order:
+            elif self is parent.tp_order:
                 parent._replace(tp_order=None)
 
-    def entry_now(self):
-        self.entry_bar = self.data.index[0]
-        self.entry_price = self.data.close[0]
+    def execute(self):
+        self.close_bar = self.data.index[0]
+        self.close_price = self.data.open[0]
         self.state = State.Close
         self.exchange.on_order(self)
 

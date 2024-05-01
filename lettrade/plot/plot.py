@@ -1,9 +1,6 @@
-from typing import Mapping
-
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 from lettrade.base import BaseDataFeeds
 from lettrade.data import DataFeed, DataFeeder
@@ -57,33 +54,57 @@ class Plotter(BaseDataFeeds):
         if self.figure is None:
             self.load()
 
-        # self.figure.add_scatter(
-        #     x=df.index,
-        #     y=df["pointpos"],
-        #     mode="markers",
-        #     marker=dict(size=5, color="MediumPurple"),
-        #     name="Signal",
-        # )
-
         self._plot_orders()
+        # self._plot_trades()
+
         self.figure.update_layout(*args, **kwargs)
         self.figure.show()
 
     def _plot_orders(self):
-        orders = self.exchange.history_orders
+        orders = pd.concat([self.exchange.history_orders, self.exchange.orders])
+        first_index = self.data.index[0]
         for order in orders.to_list():
-            x = self.data.index[0] - order.entry_bar
-            print(
-                "---> order:",
-                order,
-                self.data.index[0],
-                order.entry_bar,
-                x,
-                self.data.datetime[x],
-            )
-            self.figure.add_vline(
+            x = [first_index - order.open_bar]
+            y = [order.open_price or order.limit or order.stop]
+            self.figure.add_scatter(
                 x=x,
-                line_width=1,
-                line_dash="dash",
-                line_color="green",
+                y=y,
+                mode="markers",
+                name="Order",
+                marker=dict(
+                    symbol="circle-dot",
+                    size=10,
+                    color="green",
+                ),
+            )
+
+    def _plot_trades(self):
+        trades = pd.concat([self.exchange.history_trades, self.exchange.trades])
+        first_index = self.data.index[0]
+        for trade in trades.to_list():
+            # x
+            x = [first_index - trade.open_bar]
+            if trade.close_bar:
+                x.append(first_index - trade.close_bar)
+
+            # y
+            y = [trade.open_price]
+            if trade.close_price:
+                y.append(first_index - trade.close_price)
+
+            self.figure.add_scatter(
+                x=x,
+                y=y,
+                mode="lines+markers",
+                name="Order",
+                marker=dict(
+                    symbol="circle-dot",
+                    size=10,
+                    color="royalblue",
+                ),
+                line=dict(
+                    color="royalblue",
+                    width=1,
+                    dash="dash",
+                ),
             )

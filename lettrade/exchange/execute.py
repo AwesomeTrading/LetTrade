@@ -28,14 +28,12 @@ class Execute(BaseTransaction):
         size: float,
         price: float,
         parent: "Order",
-        created_at: datetime = None,
     ):
         super().__init__(
             id=id,
             exchange=exchange,
             data=data,
             size=size,
-            created_at=created_at,
         )
         self.parent: "Order" = parent
         self.price = price

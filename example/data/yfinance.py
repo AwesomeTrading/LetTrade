@@ -9,7 +9,7 @@ def dump_csv():
     yf_download(
         "EURUSD=X",
         start="2023-01-01",
-        end="2023-12-31",
+        end="2023-03-31",
         interval="1h",
         force=True,
     )

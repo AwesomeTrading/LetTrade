@@ -1,4 +1,4 @@
-from .base import FastSet, OrderType, State
+from .base import OrderType, State
 from .exchange import Exchange
 from .execute import Execute
 from .order import Order

@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from lettrade.data import DataFeed
@@ -10,6 +11,8 @@ from lettrade.exchange import (
     State,
     Trade,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class BackTestExchange(Exchange):
@@ -38,7 +41,7 @@ class BackTestExchange(Exchange):
         if not data:
             data = self.data
 
-        if OrderType.Market:
+        if type == OrderType.Market:
             limit = 0
             stop = 0
 
@@ -55,16 +58,15 @@ class BackTestExchange(Exchange):
             tag=tag,
         )
         self.on_order(order)
+
+        logger.info("New order %s at %s", order, self.data.datetime[0])
+
         self._simulate_order()
 
     def _simulate_order(self):
         for order in self.orders.to_list():
             if order.type == OrderType.Market:
-                order._entry_bar = self.data.index[0]
-                order._entry_price = self.data.close[0]
-                order._replace(state=State.Close)
-                self.on_order(order)
-
+                order.entry_now()
                 execute = Execute(
                     id=self._id(),
                     size=order.size,

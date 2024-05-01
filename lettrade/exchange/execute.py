@@ -37,16 +37,8 @@ class Execute(BaseTransaction):
             size=size,
             created_at=created_at,
         )
-        self.__parent: "Order" = parent
-        self.__price = price
+        self.parent: "Order" = parent
+        self.price = price
 
     def __repr__(self):
         return f"<Execute id={self.id} size={self.size}>"
-
-    @property
-    def price(self) -> float:
-        return self.__price
-
-    @property
-    def parent(self) -> "Order":
-        return self.__parent

@@ -72,9 +72,17 @@ class Plotter(BaseDataFeeds):
     def _plot_orders(self):
         orders = self.exchange.history_orders
         for order in orders.to_list():
-            print(order, self.data.size, order._open_bar)
+            x = self.data.index[0] - order.entry_bar
+            print(
+                "---> order:",
+                order,
+                self.data.index[0],
+                order.entry_bar,
+                x,
+                self.data.datetime[x],
+            )
             self.figure.add_vline(
-                x=self.data.size - order._open_bar,
+                x=x,
                 line_width=1,
                 line_dash="dash",
                 line_color="green",

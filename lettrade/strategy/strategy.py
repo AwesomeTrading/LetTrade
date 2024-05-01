@@ -4,7 +4,7 @@ from typing import Optional, Tuple
 import pandas as pd
 
 from ..data import DataFeed
-from ..exchange import Exchange, Execute, FastSet, Order, Position, Trade
+from ..exchange import Exchange, Execute, Order, Position, Trade
 
 
 class Strategy(metaclass=ABCMeta):
@@ -52,12 +52,12 @@ class Strategy(metaclass=ABCMeta):
             0 < size < 1 or round(size) == size
         ), "size must be a positive fraction of equity, or a positive whole number of units"
         return self._exchange.new_order(
-            size,
-            limit,
-            stop,
-            sl,
-            tp,
-            tag,
+            size=size,
+            limit=limit,
+            stop=stop,
+            sl=sl,
+            tp=tp,
+            tag=tag,
             **kwargs,
         )
 
@@ -85,12 +85,12 @@ class Strategy(metaclass=ABCMeta):
             0 < size < 1 or round(size) == size
         ), "size must be a positive fraction of equity, or a positive whole number of units"
         return self._exchange.new_order(
-            -size,
-            limit,
-            stop,
-            sl,
-            tp,
-            tag,
+            size=-size,
+            limit=limit,
+            stop=stop,
+            sl=sl,
+            tp=tp,
+            tag=tag,
             **kwargs,
         )
 

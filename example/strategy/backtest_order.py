@@ -20,7 +20,7 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
-        if self.orders.size > 0:
+        if self.orders.size > 0 or self.trades.size > 0:
             return
 
         if df.signal_ema_crossover[0]:

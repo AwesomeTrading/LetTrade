@@ -43,7 +43,11 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
     def on_order(self, order: Order, broadcast=True, *args, **kwargs):
         if order.state == State.Close:
             self.history_orders[order.id] = order
+            if order.id in self.orders:
+                self.orders = self.orders.drop(index=order.id)
         else:
+            if order.id in self.history_orders:
+                raise RuntimeError(f"Order {order.id} closed")
             self.orders[order.id] = order
 
         if broadcast:
@@ -74,7 +78,7 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         tp: Optional[float] = None,
         tag: object = None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         raise NotImplementedError("Exchange.new_order not implement yet")
 

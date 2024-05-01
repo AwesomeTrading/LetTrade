@@ -27,7 +27,7 @@ def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs)
     df = yf_parse(df)
 
     # Save to csv
-    csv_export(df, path=path, index=False)
+    csv_export(df, path=path)
 
 
 def yf_parse(df: pd.DataFrame):

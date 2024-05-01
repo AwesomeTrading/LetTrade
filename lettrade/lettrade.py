@@ -125,6 +125,10 @@ class LetTrade(BaseDataFeeds):
     def plot(self, *args, **kwargs):
         if self.plotter is None:
             plot_data = self.strategy.plot()
-            self.plotter = self._plot_cls(feeder=self.feeder, data=plot_data)
+            self.plotter = self._plot_cls(
+                feeder=self.feeder,
+                exchange=self.exchange,
+                data=plot_data,
+            )
 
         self.plotter.plot(*args, **kwargs)

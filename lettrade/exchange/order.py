@@ -1,64 +1,61 @@
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
+from datetime import datetime
+from typing import Callable, Dict, List, Optional, Sequence, Set, Tuple, Type, Union
+
+from .base import BaseTransaction, OrderType, State
 
 
-class Order:
-    """
-    Place new orders through `Strategy.buy()` and `Strategy.sell()`.
-    Query existing orders through `Strategy.orders`.
-
-    When an order is executed or [filled], it results in a `Trade`.
-
-    If you wish to modify aspects of a placed but not yet filled order,
-    cancel it and place a new one instead.
-
-    All placed orders are [Good 'Til Canceled].
-
-    [filled]: https://www.investopedia.com/terms/f/fill.asp
-    [Good 'Til Canceled]: https://www.investopedia.com/terms/g/gtc.asp
-    """
-
+class Order(BaseTransaction):
     def __init__(
         self,
         id: str,
         exchange: "Exchange",
         data: "DataFeed",
         size: float,
+        created_at: datetime = None,
+        state: State = State.Open,
+        type: OrderType = OrderType.Market,
         limit_price: Optional[float] = None,
         stop_price: Optional[float] = None,
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
-        parent_trade: Optional["Trade"] = None,
+        trade: Optional["Trade"] = None,
+        parent: Optional["Order | Trade"] = None,
         tag: object = None,
     ):
-        self.__id = id
-        self.__exchange = exchange
-        self.__data = data
-        assert size != 0
-        self.__size = size
+        super().__init__(
+            id=id,
+            exchange=exchange,
+            data=data,
+            size=size,
+            created_at=created_at,
+        )
+
+        self.__type = type
+        self.__state = state
         self.__limit_price = limit_price
         self.__stop_price = stop_price
         self.__sl_price = sl_price
         self.__tp_price = tp_price
-        self.__parent_trade = parent_trade
+        self.__trade = trade
+        self.__parent: "Order | Trade" = parent
         self.__tag = tag
 
-    def _replace(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, f"_{self.__class__.__qualname__}__{k}", v)
-        return self
+        self._entry_bar: int = None
+        self._entry_price: int = None
+        self._sl_order: "Order" = None
+        self._tp_order: "Order" = None
 
     def __repr__(self):
         return "<Order {}>".format(
             ", ".join(
                 f"{param}={value if isinstance(value, str) else round(value, 5)}"
                 for param, value in (
-                    ("id", self.__id),
-                    ("size", self.__size),
+                    ("id", self.id),
+                    ("size", self.size),
                     ("limit", self.__limit_price),
                     ("stop", self.__stop_price),
                     ("sl", self.__sl_price),
                     ("tp", self.__tp_price),
-                    ("contingent", self.is_contingent),
                     ("tag", self.__tag),
                 )
                 if value is not None
@@ -68,49 +65,21 @@ class Order:
     def cancel(self):
         """Cancel the order."""
         self.__exchange.orders.remove(self)
-        trade = self.__parent_trade
-        if trade:
-            if self is trade._sl_order:
-                trade._replace(sl_order=None)
-            elif self is trade._tp_order:
-                trade._replace(tp_order=None)
-            else:
-                # XXX: https://github.com/kernc/backtesting.py/issues/251#issuecomment-835634984 ???
-                assert False
+        parent = self.__parent
+        if self.__parent:
+            if self is parent._sl_order:
+                parent._replace(sl_order=None)
+            elif self is parent._tp_order:
+                parent._replace(tp_order=None)
 
     # Fields getters
     @property
-    def id(self) -> str:
-        """
-        Order data (negative for short orders).
-
-        If data is a value between 0 and 1, it is interpreted as a fraction of current
-        available liquidity (cash plus `Position.pl` minus used margin).
-        A value greater than or equal to 1 indicates an absolute number of units.
-        """
-        return self.__id
+    def type(self) -> OrderType:
+        return self.__type
 
     @property
-    def data(self) -> "DataFeed":
-        """
-        Order data (negative for short orders).
-
-        If data is a value between 0 and 1, it is interpreted as a fraction of current
-        available liquidity (cash plus `Position.pl` minus used margin).
-        A value greater than or equal to 1 indicates an absolute number of units.
-        """
-        return self.__data
-
-    @property
-    def size(self) -> float:
-        """
-        Order size (negative for short orders).
-
-        If size is a value between 0 and 1, it is interpreted as a fraction of current
-        available liquidity (cash plus `Position.pl` minus used margin).
-        A value greater than or equal to 1 indicates an absolute number of units.
-        """
-        return self.__size
+    def state(self) -> State:
+        return self.__state
 
     @property
     def limit(self) -> Optional[float]:
@@ -152,8 +121,8 @@ class Order:
         return self.__tp_price
 
     @property
-    def parent_trade(self):
-        return self.__parent_trade
+    def parent(self) -> "Order | Trade":
+        return self.__parent
 
     @property
     def tag(self):
@@ -164,7 +133,6 @@ class Order:
         return self.__tag
 
     # Extra properties
-
     @property
     def is_long(self):
         """True if the order is long (order size is positive)."""
@@ -174,17 +142,3 @@ class Order:
     def is_short(self):
         """True if the order is short (order size is negative)."""
         return self.__size < 0
-
-    @property
-    def is_contingent(self):
-        """
-        True for [contingent] orders, i.e. [OCO] stop-loss and take-profit bracket orders
-        placed upon an active trade. Remaining contingent orders are canceled when
-        their parent `Trade` is closed.
-
-        You can modify contingent orders through `Trade.sl` and `Trade.tp`.
-
-        [contingent]: https://www.investopedia.com/terms/c/contingentorder.asp
-        [OCO]: https://www.investopedia.com/terms/o/oco.asp
-        """
-        return bool(self.__parent_trade)

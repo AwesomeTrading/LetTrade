@@ -1,12 +1,14 @@
+from datetime import datetime
 from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 
+from .base import BaseTransaction, State
 from .order import Order
 
 
-class Trade:
+class Trade(BaseTransaction):
     """
     When an `Order` is filled, it results in an active `Trade`.
     Find active trades in `Strategy.trades` and closed, settled trades in `Strategy.closed_trades`.
@@ -17,25 +19,35 @@ class Trade:
         id: str,
         exchange: "Exchange",
         data: "DataFeed",
-        size: int,
+        size: float,
         entry_price: float,
-        entry_bar,
-        tag,
+        parent: "Order",
+        created_at: datetime = None,
+        entry_bar=None,
+        tag: str = "",
+        state: State = State.Open,
     ):
-        self.__id = id
-        self.__exchange = exchange
-        self.__data = data
-        self.__size = size
+        super().__init__(
+            id=id,
+            exchange=exchange,
+            data=data,
+            size=size,
+            created_at=created_at,
+        )
+
         self.__entry_price = entry_price
+        self.__state = state
+        self.__tag = tag
+        self.__parent: "Order" = parent
+
         self.__exit_price: Optional[float] = None
         self.__entry_bar: int = entry_bar
         self.__exit_bar: Optional[int] = None
         self.__sl_order: Optional[Order] = None
         self.__tp_order: Optional[Order] = None
-        self.__tag = tag
 
     def __repr__(self):
-        return f"<Trade id={self.__id} size={self.__size}>"
+        return f"<Trade id={self.id} size={self.size}>"
         # return (
         #     f'<Trade id={self.__id} size={self.__size} time={self.__entry_bar}-{self.__exit_bar or ""} '
         #     f'price={self.__entry_price}-{self.__exit_price or ""} pl={self.pl:.0f}'
@@ -44,31 +56,8 @@ class Trade:
 
     # Fields getters
     @property
-    def id(self) -> str:
-        """
-        Order data (negative for short orders).
-
-        If data is a value between 0 and 1, it is interpreted as a fraction of current
-        available liquidity (cash plus `Position.pl` minus used margin).
-        A value greater than or equal to 1 indicates an absolute number of units.
-        """
-        return self.__id
-
-    @property
-    def data(self) -> "DataFeed":
-        """
-        Order data (negative for short orders).
-
-        If data is a value between 0 and 1, it is interpreted as a fraction of current
-        available liquidity (cash plus `Position.pl` minus used margin).
-        A value greater than or equal to 1 indicates an absolute number of units.
-        """
-        return self.__data
-
-    @property
-    def size(self):
-        """Trade size (volume; negative for short trades)."""
-        return self.__size
+    def state(self) -> State:
+        return self.__state
 
     @property
     def entry_price(self) -> float:

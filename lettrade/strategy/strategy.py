@@ -1,8 +1,10 @@
 from abc import ABCMeta, abstractmethod
 from typing import Optional, Tuple
 
+import pandas as pd
+
 from ..data import DataFeed
-from ..exchange import Exchange, Execute, Order, Position, Trade
+from ..exchange import Exchange, Execute, FastSet, Order, Position, Trade
 
 
 class Strategy(metaclass=ABCMeta):
@@ -113,16 +115,24 @@ class Strategy(metaclass=ABCMeta):
         return self._exchange.positions
 
     @property
-    def orders(self) -> Tuple[Order, ...]:
+    def orders(self) -> pd.Series:
         return self._exchange.orders
 
     @property
-    def trades(self) -> Tuple[Trade, ...]:
+    def history_orders(self) -> pd.Series:
+        return self._exchange.history_orders
+
+    @property
+    def trades(self) -> pd.Series:
         return self._exchange.trades
 
     @property
-    def closed_trades(self) -> Tuple[Trade, ...]:
-        return self._exchange.closed_trades
+    def positions(self) -> pd.Series:
+        return self._exchange.positions
+
+    @property
+    def history_trades(self) -> pd.Series:
+        return self._exchange.history_trades
 
     # Events
     def on_transaction(self, o):

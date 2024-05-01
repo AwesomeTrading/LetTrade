@@ -1,11 +1,14 @@
 from abc import ABCMeta, abstractmethod
+from datetime import datetime
 from typing import Optional
+
+import pandas as pd
 
 from lettrade.base import BaseDataFeeds
 from lettrade.commission import Commission
 from lettrade.data import DataFeed, DataFeeder
 
-from .base import FastQuery
+from .base import OrderType, State
 from .execute import Execute
 from .order import Order
 from .position import Position
@@ -21,32 +24,42 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         self.cash: float = 0
         self.hedging: bool = False
 
-        self.executes: FastQuery[Execute] = FastQuery[Execute]()
-        self.orders: FastQuery[Order] = FastQuery[Order]()
-        self.trades: FastQuery[Trade] = FastQuery[Trade]()
-        self.closed_trades: FastQuery[Trade] = FastQuery[Trade]()
-        self.positions: FastQuery[Position] = FastQuery[Position]()
+        self.executes: pd.Series = pd.Series(dtype=object)
+        self.orders: pd.Series = pd.Series(dtype=object)
+        self.history_orders: pd.Series = pd.Series(dtype=object)
+        self.trades: pd.Series = pd.Series(dtype=object)
+        self.history_trades: pd.Series = pd.Series(dtype=object)
+        self.positions: pd.Series = pd.Series(dtype=object)
+
+    def next(self):
+        pass
 
     def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
-        self.executes.add(execute)
+        self.executes[execute.id] = execute
 
         if broadcast:
             self.brain.on_execute(execute)
 
     def on_order(self, order: Order, broadcast=True, *args, **kwargs):
-        self.orders.add(order)
+        if order.state == State.Close:
+            self.history_orders[order.id] = order
+        else:
+            self.orders[order.id] = order
 
         if broadcast:
             self.brain.on_order(order)
 
     def on_trade(self, trade: Trade, broadcast=True, *args, **kwargs):
-        self.trades.add(trade)
+        if trade.state == State.Close:
+            self.history_trades[trade.id] = trade
+        else:
+            self.trades[trade.id] = trade
 
         if broadcast:
             self.brain.on_trade(trade)
 
     def on_position(self, position: Position, broadcast=True, *args, **kwargs):
-        self.positions.add(position)
+        self.positions[position.id] = position
 
         if broadcast:
             self.brain.on_position(position)
@@ -64,3 +77,8 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         **kwargs
     ):
         raise NotImplementedError("Exchange.new_order not implement yet")
+
+    # Alias
+    @property
+    def now(self) -> datetime:
+        return self.data.now

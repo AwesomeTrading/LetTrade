@@ -5,8 +5,9 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from ..base import BaseDataFeeds
-from ..data import DataFeed, DataFeeder
+from lettrade.base import BaseDataFeeds
+from lettrade.data import DataFeed, DataFeeder
+from lettrade.exchange import Exchange
 
 
 class Plotter(BaseDataFeeds):
@@ -14,8 +15,11 @@ class Plotter(BaseDataFeeds):
 
     _stored_datas: dict = {}
 
-    def __init__(self, feeder: DataFeeder, data: list[go.Scatter] = []) -> None:
+    def __init__(
+        self, feeder: DataFeeder, exchange: Exchange, data: list[go.Scatter] = []
+    ) -> None:
         self.feeder: DataFeeder = feeder
+        self.exchange: Exchange = exchange
         self.plot_data: list[go.Scatter] = data
 
     def load(self):
@@ -60,5 +64,18 @@ class Plotter(BaseDataFeeds):
         #     marker=dict(size=5, color="MediumPurple"),
         #     name="Signal",
         # )
+
+        self._plot_orders()
         self.figure.update_layout(*args, **kwargs)
         self.figure.show()
+
+    def _plot_orders(self):
+        orders = self.exchange.history_orders
+        for order in orders.to_list():
+            print(order, self.data.size, order._open_bar)
+            self.figure.add_vline(
+                x=self.data.size - order._open_bar,
+                line_width=1,
+                line_dash="dash",
+                line_color="green",
+            )

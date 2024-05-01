@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -43,3 +44,7 @@ class DataFeed(pd.DataFrame):
     @property
     def meta(self):
         return self.attrs["meta"]
+
+    @property
+    def now(self) -> datetime:
+        return self.datetime[0]

@@ -69,31 +69,37 @@ class BackTestExchange(Exchange):
         self._simulate_orders()
 
     def _simulate_orders(self):
-        price = self.data.open[0]
-        bar = self.data.index[0]
         for order in self.orders.to_list():
-            self._simulate_order(order, price, bar)
+            self._simulate_order(order)
 
-    def _simulate_order(self, order: BackTestOrder, price: float, bar: int):
+    def _simulate_order(self, order: BackTestOrder):
         if order.type == OrderType.Market:
-            order.execute(price=price, bar=bar)
+            order.execute(
+                price=self.data.open[0],
+                bar=self.data.index[0],
+            )
             return
 
-        elif order.type == OrderType.Limit:
-            if order.is_long:
+        if order.is_long:
+            price = self.data.high[-1]
+            bar = self.data.index[0] + 1
+            if order.type == OrderType.Limit:
                 if order.limit_price > price:
                     order.execute(price=order.limit_price, bar=bar)
                     return
-            else:
-                if order.limit_price < price:
-                    order.execute(price=order.limit_price, bar=bar)
-                    return
-        elif order.type == OrderType.Stop:
-            if order.is_long:
+            elif order.type == OrderType.Stop:
                 if order.stop_price < price:
                     order.execute(price=order.stop_price, bar=bar)
                     return
-            else:
+
+        else:
+            price = self.data.low[-1]
+            bar = self.data.index[0] + 1
+            if order.type == OrderType.Limit:
+                if order.limit_price < price:
+                    order.execute(price=order.limit_price, bar=bar)
+                    return
+            elif order.type == OrderType.Stop:
                 if order.stop_price > price:
                     order.execute(price=order.stop_price, bar=bar)
                     return

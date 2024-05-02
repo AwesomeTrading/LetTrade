@@ -1,24 +1,27 @@
 from datetime import datetime
 from typing import Callable, Dict, List, Optional, Sequence, Set, Tuple, Type, Union
 
-from .base import BaseTransaction, OrderType, State
+from .base import BaseTransaction, OrderState, OrderType
 
 
 class Order(BaseTransaction):
+    _trade_cls: Type["Trade"] = None
+    _execute_cls: Type["Execute"] = None
+
     def __init__(
         self,
         id: str,
         exchange: "Exchange",
         data: "DataFeed",
         size: float,
-        state: State = State.Open,
+        state: OrderState = OrderState.Pending,
         type: OrderType = OrderType.Market,
         limit_price: Optional[float] = None,
         stop_price: Optional[float] = None,
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
         trade: Optional["Trade"] = None,
-        parent: Optional["Order | Trade"] = None,
+        parent: Optional["Order"] = None,
         tag: object = None,
         open_bar: int = None,
         open_price: int = None,
@@ -31,21 +34,19 @@ class Order(BaseTransaction):
         )
 
         self.type: OrderType = type
-        self.state: State = state
+        self.state: OrderState = state
         self.limit_price: Optional[float] = limit_price
         self.stop_price: Optional[float] = stop_price
         self.sl_price: Optional[float] = sl_price
         self.tp_price: Optional[float] = tp_price
         self.trade: Optional["Trade"] = trade
-        self.parent: Optional["Order | Trade"] = parent
+        self.parent: Optional["Order"] = parent
         self.tag: object = tag
 
         self.open_bar: int = open_bar
         self.open_price: int = open_price
         self.entry_bar: int = None
         self.entry_price: int = None
-        self.sl_order: "Order" = None
-        self.tp_order: "Order" = None
 
     def __repr__(self):
         return "<Order {}>".format(
@@ -65,22 +66,6 @@ class Order(BaseTransaction):
                 if value is not None
             )
         )
-
-    def cancel(self):
-        """Cancel the order."""
-        self.exchange.orders.remove(self)
-        parent = self.parent
-        if self.parent:
-            if self is parent.sl_order:
-                parent._replace(sl_order=None)
-            elif self is parent.tp_order:
-                parent._replace(tp_order=None)
-
-    def execute(self, price, bar):
-        self.entry_bar = bar
-        self.entry_price = price
-        self.state = State.Close
-        self.exchange.on_order(self)
 
     # Fields getters
     @property
@@ -109,3 +94,11 @@ class Order(BaseTransaction):
     def is_short(self):
         """True if the order is short (order size is negative)."""
         return self.size < 0
+
+    @property
+    def is_sl_order(self):
+        return self.trade and self is self.trade.sl_order
+
+    @property
+    def is_tp_order(self):
+        return self.trade and self is self.trade.tp_order

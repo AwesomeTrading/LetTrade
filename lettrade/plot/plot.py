@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -80,7 +79,8 @@ class Plotter(BaseDataFeeds):
             )
 
     def _plot_trades(self):
-        trades = pd.concat([self.exchange.history_trades, self.exchange.trades])
+        trades = pd.concat([self.exchange.history_trades])
+        # trades = pd.concat([self.exchange.history_trades, self.exchange.trades])
         first_index = self.data.index[0]
         for trade in trades.to_list():
             # x
@@ -91,8 +91,9 @@ class Plotter(BaseDataFeeds):
             # y
             y = [trade.entry_price]
             if trade.exit_price:
-                y.append(first_index - trade.exit_price)
+                y.append(trade.exit_price)
 
+            color = "green" if trade.is_long else "red"
             self.figure.add_scatter(
                 x=x,
                 y=y,
@@ -101,10 +102,10 @@ class Plotter(BaseDataFeeds):
                 marker=dict(
                     symbol="circle-dot",
                     size=10,
-                    color="royalblue",
+                    color=color,
                 ),
                 line=dict(
-                    color="royalblue",
+                    color=color,
                     width=1,
                     dash="dash",
                 ),

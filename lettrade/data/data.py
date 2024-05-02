@@ -38,6 +38,7 @@ class DataFeed(pd.DataFrame):
         #     self.index = data.index.tz_convert(pytz.utc)
         self.reset_index(inplace=True)
 
+        # Metadata
         meta["name"] = name
         self.attrs = {"lt_meta": meta}
 

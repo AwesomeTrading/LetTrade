@@ -30,8 +30,8 @@ class SmaCross(Strategy):
             price = self.data.close[-1]
             self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
 
-    def on_transaction(self, transaction):
-        print("Transaction", transaction)
+    # def on_transaction(self, transaction):
+    #     print("Transaction", transaction)
 
     def end(self):
         print(self.data)

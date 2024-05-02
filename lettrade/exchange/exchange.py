@@ -8,7 +8,7 @@ from lettrade.base import BaseDataFeeds
 from lettrade.commission import Commission
 from lettrade.data import DataFeed, DataFeeder
 
-from .base import OrderType, State
+from .base import OrderState, OrderType, TradeState
 from .execute import Execute
 from .order import Order
 from .position import Position
@@ -41,7 +41,7 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             self.brain.on_execute(execute)
 
     def on_order(self, order: Order, broadcast=True, *args, **kwargs):
-        if order.state == State.Close:
+        if order.state in [OrderState.Executed, OrderState.Canceled]:
             self.history_orders[order.id] = order
             if order.id in self.orders:
                 self.orders = self.orders.drop(index=order.id)
@@ -54,9 +54,13 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             self.brain.on_order(order)
 
     def on_trade(self, trade: Trade, broadcast=True, *args, **kwargs):
-        if trade.state == State.Close:
+        if trade.state == TradeState.Exit:
             self.history_trades[trade.id] = trade
+            if trade.id in self.trades:
+                self.trades = self.trades.drop(index=trade.id)
         else:
+            if trade.id in self.history_trades:
+                raise RuntimeError(f"Order {trade.id} closed")
             self.trades[trade.id] = trade
 
         if broadcast:

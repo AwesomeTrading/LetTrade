@@ -5,10 +5,16 @@ from typing import Generic, TypeVar
 T = TypeVar("T")
 
 
-class State(str, Enum):
-    Open = "open"
+class OrderState(str, Enum):
     Pending = "pending"
-    Close = "close"
+    Place = "place"
+    Executed = "executed"
+    Canceled = "canceled"
+
+
+class TradeState(str, Enum):
+    Open = "open"
+    Exit = "exit"
 
 
 class OrderType(str, Enum):

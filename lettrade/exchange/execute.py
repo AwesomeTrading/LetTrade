@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
-
 from .base import BaseTransaction
 
 
@@ -27,6 +24,7 @@ class Execute(BaseTransaction):
         data: "DataFeed",
         size: float,
         price: float,
+        bar: float,
         parent: "Order",
     ):
         super().__init__(
@@ -37,6 +35,10 @@ class Execute(BaseTransaction):
         )
         self.parent: "Order" = parent
         self.price = price
+        self.bar = bar
 
     def __repr__(self):
         return f"<Execute id={self.id} size={self.size}>"
+
+    def execute(self):
+        self.exchange.on_execute(self)

@@ -2,15 +2,9 @@ import logging
 from typing import Optional
 
 from lettrade.data import DataFeed
-from lettrade.exchange import (
-    Exchange,
-    Execute,
-    Order,
-    OrderType,
-    Position,
-    State,
-    Trade,
-)
+from lettrade.exchange import Exchange, OrderType
+
+from .trades import BackTestExecute, BackTestOrder, BackTestTrade
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +12,20 @@ logger = logging.getLogger(__name__)
 class BackTestExchange(Exchange):
     __id = 0
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._init_trade_classes()
+
+    def _init_trade_classes(self):
+        BackTestOrder._trade_cls = BackTestTrade
+        BackTestOrder._execute_cls = BackTestExecute
+
     def _id(self) -> str:
         self.__id += 1
         return str(self.__id)
 
     def next(self):
-        pass
+        self._simulate_orders()
 
     def new_order(
         self,
@@ -45,7 +47,7 @@ class BackTestExchange(Exchange):
             limit = 0
             stop = 0
 
-        order = Order(
+        order = BackTestOrder(
             id=self._id(),
             exchange=self,
             data=data,
@@ -56,85 +58,33 @@ class BackTestExchange(Exchange):
             sl_price=sl,
             tp_price=tp,
             tag=tag,
-            open_bar=self.data.index[0],
             open_price=self.data.open[0],
-        )
-        self.on_order(order)
-
-        logger.info("New order %s at %s", order, self.data.datetime[0])
-        self._simulate_order()
-
-    def _new_trade_sl(self, order: Order, trade: Trade) -> Order:
-        sl_order = Order(
-            id=self._id(),
-            exchange=self,
-            data=order.data,
-            size=-order.size,
-            type=OrderType.Stop,
-            stop_price=order.sl_price,
-            tag=order.tag,
             open_bar=self.data.index[0],
-            open_price=order.sl_price,
         )
-        order.sl_order = sl_order
-        trade.sl_order = sl_order
-        self.on_order(sl_order)
-        return sl_order
+        order.place()
 
-    def _new_trade_tp(self, order: Order, trade: Trade) -> Order:
-        tp_order = Order(
-            id=self._id(),
-            exchange=self,
-            data=order.data,
-            size=-order.size,
-            type=OrderType.Limit,
-            limit_price=order.tp_price,
-            tag=order.tag,
-            open_bar=self.data.index[0],
-            open_price=order.tp_price,
-            trade=order.trade,
-        )
-        order.tp_order = tp_order
-        trade.tp_order = tp_order
-        self.on_order(tp_order)
-        return tp_order
+        if __debug__:
+            logger.info("New order %s at %s", order, self.data.now)
 
-    def _simulate_order(self):
-        for order in self.orders.to_list():
-            if order.type == OrderType.Market:
-                order.execute(
-                    price=self.data.open[0],
-                    bar=self.data.index[0],
-                )
-                execute = Execute(
-                    id=self._id(),
-                    size=order.size,
-                    exchange=self,
-                    data=order.data,
-                    price=self.data.open[0],
-                    parent=order,
-                )
-                self.on_execute(execute)
+        self._simulate_orders()
 
-                trade = Trade(
-                    id=self._id(),
-                    size=order.size,
-                    exchange=self,
-                    data=order.data,
-                    entry_price=execute.price,
-                    entry_bar=self.data.index[0],
-                    parent=order,
-                )
-
-                order.trade = trade
-                if order.sl:
-                    self._new_trade_sl(order, trade)
-                if order.tp:
-                    self._new_trade_tp(order, trade)
-
-                self.on_trade(trade)
-
-    def _simulate_trades(self):
+    def _simulate_orders(self):
         price = self.data.open[0]
-        for trade in self.trades.to_list():
-            pass
+        bar = self.data.index[0]
+        for order in self.orders.to_list():
+            self._simulate_order(order, price, bar)
+
+    def _simulate_order(self, order: BackTestOrder, price: float, bar: int):
+        if order.type == OrderType.Market:
+            order.execute(price=price, bar=bar)
+            return
+
+        elif order.type == OrderType.Limit:
+            if order.is_long:
+                if order.limit_price > price:
+                    order.execute(price=order.limit_price, bar=bar)
+                    return
+            else:
+                if order.limit_price < price:
+                    order.execute(price=order.limit_price, bar=bar)
+                    return

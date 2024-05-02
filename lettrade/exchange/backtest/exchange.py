@@ -90,7 +90,7 @@ class BackTestExchange(Exchange):
             limit_price=trade.tp_price,
             tag=trade.tag,
             open_bar=self.data.index[0],
-            open_price=trade.sl_price,
+            open_price=trade.tp_price,
         )
         trade.tp_order = tp_order
         self.on_order(tp_order)

@@ -42,6 +42,8 @@ class Order(BaseTransaction):
 
         self.open_bar: int = open_bar
         self.open_price: int = open_price
+        self.entry_bar: int = None
+        self.entry_price: int = None
         self.sl_order: "Order" = None
         self.tp_order: "Order" = None
 
@@ -74,9 +76,14 @@ class Order(BaseTransaction):
             elif self is parent.tp_order:
                 parent._replace(tp_order=None)
 
-    def execute(self):
-        self.close_bar = self.data.index[0]
-        self.close_price = self.data.open[0]
+    def execute(self, bar=None, price=None):
+        if not bar:
+            bar = self.data.index[0]
+        if not price:
+            price = self.data.open[0]
+
+        self.entry_bar = bar
+        self.entry_price = price
         self.state = State.Close
         self.exchange.on_order(self)
 

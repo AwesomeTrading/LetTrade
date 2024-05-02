@@ -55,7 +55,7 @@ class Plotter(BaseDataFeeds):
             self.load()
 
         self._plot_orders()
-        # self._plot_trades()
+        self._plot_trades()
 
         self.figure.update_layout(*args, **kwargs)
         self.figure.show()
@@ -83,14 +83,14 @@ class Plotter(BaseDataFeeds):
         first_index = self.data.index[0]
         for trade in trades.to_list():
             # x
-            x = [first_index - trade.open_bar]
-            if trade.close_bar:
-                x.append(first_index - trade.close_bar)
+            x = [first_index - trade.entry_bar]
+            if trade.exit_bar:
+                x.append(first_index - trade.exit_bar)
 
             # y
-            y = [trade.open_price]
-            if trade.close_price:
-                y.append(first_index - trade.close_price)
+            y = [trade.entry_price]
+            if trade.exit_price:
+                y.append(first_index - trade.exit_price)
 
             self.figure.add_scatter(
                 x=x,

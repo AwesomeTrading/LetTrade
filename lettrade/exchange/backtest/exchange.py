@@ -88,3 +88,12 @@ class BackTestExchange(Exchange):
                 if order.limit_price < price:
                     order.execute(price=order.limit_price, bar=bar)
                     return
+        elif order.type == OrderType.Stop:
+            if order.is_long:
+                if order.stop_price < price:
+                    order.execute(price=order.stop_price, bar=bar)
+                    return
+            else:
+                if order.stop_price > price:
+                    order.execute(price=order.stop_price, bar=bar)
+                    return

@@ -53,6 +53,12 @@ class Trade(BaseTransaction):
         #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
         # )
 
+    def exit(self, price, bar):
+        self.exit_price = price
+        self.exit_bar = bar
+        self.state = State.Close
+        self.exchange.on_trade(self)
+
     # Extra properties
     @property
     def entry_time(self) -> Union[pd.Timestamp, int]:

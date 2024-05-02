@@ -64,34 +64,37 @@ class BackTestExchange(Exchange):
         logger.info("New order %s at %s", order, self.data.datetime[0])
         self._simulate_order()
 
-    def _new_trade_sl(self, trade: Trade) -> Order:
+    def _new_trade_sl(self, order: Order, trade: Trade) -> Order:
         sl_order = Order(
             id=self._id(),
             exchange=self,
-            data=trade.data,
-            size=-trade.size,
+            data=order.data,
+            size=-order.size,
             type=OrderType.Stop,
-            stop_price=trade.sl_price,
-            tag=trade.tag,
+            stop_price=order.sl_price,
+            tag=order.tag,
             open_bar=self.data.index[0],
-            open_price=trade.sl_price,
+            open_price=order.sl_price,
         )
+        order.sl_order = sl_order
         trade.sl_order = sl_order
         self.on_order(sl_order)
         return sl_order
 
-    def _new_trade_tp(self, trade: Trade) -> Order:
+    def _new_trade_tp(self, order: Order, trade: Trade) -> Order:
         tp_order = Order(
             id=self._id(),
             exchange=self,
-            data=trade.data,
-            size=-trade.size,
+            data=order.data,
+            size=-order.size,
             type=OrderType.Limit,
-            limit_price=trade.tp_price,
-            tag=trade.tag,
+            limit_price=order.tp_price,
+            tag=order.tag,
             open_bar=self.data.index[0],
-            open_price=trade.tp_price,
+            open_price=order.tp_price,
+            trade=order.trade,
         )
+        order.tp_order = tp_order
         trade.tp_order = tp_order
         self.on_order(tp_order)
         return tp_order
@@ -99,7 +102,10 @@ class BackTestExchange(Exchange):
     def _simulate_order(self):
         for order in self.orders.to_list():
             if order.type == OrderType.Market:
-                order.execute()
+                order.execute(
+                    price=self.data.open[0],
+                    bar=self.data.index[0],
+                )
                 execute = Execute(
                     id=self._id(),
                     size=order.size,
@@ -119,8 +125,16 @@ class BackTestExchange(Exchange):
                     entry_bar=self.data.index[0],
                     parent=order,
                 )
+
+                order.trade = trade
                 if order.sl:
-                    self._new_trade_sl(order)
+                    self._new_trade_sl(order, trade)
                 if order.tp:
-                    self._new_trade_tp(order)
+                    self._new_trade_tp(order, trade)
+
                 self.on_trade(trade)
+
+    def _simulate_trades(self):
+        price = self.data.open[0]
+        for trade in self.trades.to_list():
+            pass

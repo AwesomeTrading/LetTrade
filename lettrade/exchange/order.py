@@ -76,12 +76,7 @@ class Order(BaseTransaction):
             elif self is parent.tp_order:
                 parent._replace(tp_order=None)
 
-    def execute(self, bar=None, price=None):
-        if not bar:
-            bar = self.data.index[0]
-        if not price:
-            price = self.data.open[0]
-
+    def execute(self, price, bar):
         self.entry_bar = bar
         self.entry_price = price
         self.state = State.Close

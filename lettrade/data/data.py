@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime
 
-import numpy as np
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -12,14 +11,15 @@ class DataFeed(pd.DataFrame):
     def __init__(
         self,
         name,
+        # data: pd.DataFrame,
         meta={},
-        dtype={},
+        # dtype={},
         *args,
         **kwargs,
     ) -> None:
         # dtype.update(
         #     {
-        #         # "datetime": "datetime64[m]",
+        #         "datetime": "datetime64[ns, UTC]",
         #         "open": "float",
         #         "high": "float",
         #         "low": "float",
@@ -28,9 +28,15 @@ class DataFeed(pd.DataFrame):
         #     }
         # )
         # print(dtype)
-        # df.set_index(pd.DatetimeIndex(df["datetime"]), inplace=True)
+        # data.set_index(
+        #     pd.DatetimeIndex(data.datetime, dtype="datetime64[ns, UTC]"), inplace=True
+        # )
+        # print(data.index.tz_convert(pytz.utc))
 
         super().__init__(*args, **kwargs)
+        # if not isinstance(self.index, pd.DatetimeIndex):
+        #     self.index = data.index.tz_convert(pytz.utc)
+        self.reset_index(inplace=True)
 
         meta["name"] = name
         self.attrs = {"lt_meta": meta}
@@ -48,3 +54,7 @@ class DataFeed(pd.DataFrame):
     @property
     def now(self) -> datetime:
         return self.datetime[0]
+
+    @property
+    def bar(self):
+        return self.index

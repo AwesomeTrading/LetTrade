@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 
 import pandas as pd
+import pytz
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,7 @@ def csv_export(dataframe: pd.DataFrame, path: str | Path = "data/data.csv", **kw
             "volume": "float",
         }
     )
+    dataframe.index = dataframe.index.tz_convert(pytz.utc)
 
     if not isinstance(path, Path):
         path = Path(path)
@@ -24,3 +26,6 @@ def csv_export(dataframe: pd.DataFrame, path: str | Path = "data/data.csv", **kw
     dataframe.to_csv(path, **kwargs)
 
     logger.info("Saved data to %s", path)
+    print(dataframe)
+    print(dataframe.dtypes)
+    print(dataframe.index)

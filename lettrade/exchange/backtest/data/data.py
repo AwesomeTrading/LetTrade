@@ -7,10 +7,10 @@ from .yfinance import yf_parse
 
 class BackTestDataFeed(DataFeed):
     def alive(self):
-        return self.index[-1] > 0
+        return self.index.is_end()
 
     def next(self, size=1) -> bool:
-        self.index -= size
+        self.index.next(size)
         return True
 
 

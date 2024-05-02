@@ -31,7 +31,6 @@ class Plotter(BaseDataFeeds):
                     close=df["close"],
                     name="Price",
                     hoverinfo="x+y",
-                    customdata=df["datetime"],
                 ),
                 *self.plot_data,
             ]

@@ -20,8 +20,8 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
-        # if self.orders.size > 0 or self.trades.size > 0:
-        #     return
+        if self.orders.size > 0 or self.trades.size > 0:
+            return
 
         if df.signal_ema_crossover[0]:
             price = self.data.close[-1]
@@ -42,7 +42,6 @@ class SmaCross(Strategy):
 
         df = self.data
         return [
-            # EMA
             go.Scatter(
                 x=df.index,
                 y=df["ema1"],

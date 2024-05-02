@@ -55,38 +55,6 @@ class SmaCross(Strategy):
                 line=dict(color="green", width=1),
                 name="ema2",
             ),
-            go.Scatter(
-                x=pd.Series([-20, -5]),
-                y=pd.Series([1.1, 1.12]),
-                mode="lines+markers",
-                name="Order",
-                marker=dict(
-                    symbol="diamond",
-                    size=5,
-                    color="yellow",
-                ),
-                line=dict(
-                    color="royalblue",
-                    width=1,
-                    dash="dash",
-                ),
-            ),
-            go.Scatter(
-                x=pd.Series([-30, -15]),
-                y=pd.Series([1.11, 1.112]),
-                mode="lines+markers",
-                name="Order",
-                marker=dict(
-                    symbol="circle-dot",
-                    size=10,
-                    color="royalblue",
-                ),
-                line=dict(
-                    color="royalblue",
-                    width=1,
-                    dash="dash",
-                ),
-            ),
         ]
 
 

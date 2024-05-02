@@ -70,12 +70,13 @@ class Plotter(BaseDataFeeds):
                 x=x,
                 y=y,
                 mode="markers",
-                name="Order",
+                name=f"Order-{order.id}",
                 marker=dict(
                     symbol="circle-dot",
                     size=10,
                     color="green",
                 ),
+                showlegend=False,
             )
 
     def _plot_trades(self):
@@ -96,7 +97,7 @@ class Plotter(BaseDataFeeds):
                 x=x,
                 y=y,
                 mode="lines+markers",
-                name="Order",
+                name=f"Trade-{trade.id}",
                 marker=dict(
                     symbol="circle-dot",
                     size=10,
@@ -107,4 +108,5 @@ class Plotter(BaseDataFeeds):
                     width=1,
                     dash="dash",
                 ),
+                showlegend=False,
             )

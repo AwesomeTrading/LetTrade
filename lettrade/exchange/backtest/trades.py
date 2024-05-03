@@ -133,7 +133,7 @@ class BackTestTrade(Trade):
             type=OrderType.Stop,
             stop_price=self.parent.sl_price,
             tag=self.parent.tag,
-            open_bar=self.data.index[0],
+            open_bar=self.data.bar(),
             open_price=self.parent.sl_price,
             trade=self,
         )
@@ -153,7 +153,7 @@ class BackTestTrade(Trade):
             type=OrderType.Limit,
             limit_price=self.parent.tp_price,
             tag=self.parent.tag,
-            open_bar=self.data.index[0],
+            open_bar=self.data.bar(),
             open_price=self.parent.tp_price,
             trade=self,
         )

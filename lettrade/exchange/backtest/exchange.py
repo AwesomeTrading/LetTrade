@@ -80,26 +80,29 @@ class BackTestExchange(Exchange):
             )
             return
 
-        if order.is_long:
-            price = self.data.high[-1]
-            bar = self.data.bar(-1)
-            if order.type == OrderType.Limit:
+        if order.type == OrderType.Limit:
+            if order.is_long:
+                # Buy Limit
+                price = self.data.low[-1]
                 if order.limit_price > price:
-                    order.execute(price=order.limit_price, bar=bar)
+                    order.execute(price=order.limit_price, bar=self.data.bar(-1))
                     return
-            elif order.type == OrderType.Stop:
-                if order.stop_price < price:
-                    order.execute(price=order.stop_price, bar=bar)
-                    return
-
-        else:
-            price = self.data.low[-1]
-            bar = self.data.bar(-1)
-            if order.type == OrderType.Limit:
+            else:
+                # Sell Limit
+                price = self.data.high[-1]
                 if order.limit_price < price:
-                    order.execute(price=order.limit_price, bar=bar)
+                    order.execute(price=order.limit_price, bar=self.data.bar(-1))
                     return
-            elif order.type == OrderType.Stop:
+        elif order.type == OrderType.Stop:
+            if order.is_long:
+                # Buy Stop
+                price = self.data.high[-1]
+                if order.stop_price < price:
+                    order.execute(price=order.stop_price, bar=self.data.bar(-1))
+                    return
+            else:
+                # Sell Stop
+                price = self.data.low[-1]
                 if order.stop_price > price:
-                    order.execute(price=order.stop_price, bar=bar)
+                    order.execute(price=order.stop_price, bar=self.data.bar(-1))
                     return

@@ -57,4 +57,4 @@ class DataFeed(pd.DataFrame):
         return self.datetime[0]
 
     def bar(self, i=0):
-        return -self.index.start - i, self.datetime[i]
+        return -self.index.start + i, self.datetime[i]

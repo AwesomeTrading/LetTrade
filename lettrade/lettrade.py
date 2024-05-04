@@ -24,9 +24,10 @@ logger = logging.getLogger(__name__)
 
 class LetTrade(BaseDataFeeds):
     brain: Brain
-    strategy: Strategy
-    exchange: Exchange
     feeder: DataFeeder
+    exchange: Exchange
+    account: Account
+    strategy: Strategy
     plotter: Plotter = None
     _stats: Statistic = None
 
@@ -57,15 +58,12 @@ class LetTrade(BaseDataFeeds):
         # Money
         if account is None:
             account = BackTestAccount()
+        self.account = account
 
         # Exchange
-        if exchange:
-            self.exchange = exchange
-        else:
-            self.exchange = BackTestExchange()
-        self.exchange.feeder = self.feeder
-        self.exchange.cash = cash
-        self.exchange.account = account
+        if exchange is None:
+            exchange = BackTestExchange()
+        self.exchange = exchange
 
         # Strategy
         self.strategy = strategy(
@@ -78,10 +76,17 @@ class LetTrade(BaseDataFeeds):
         # Brain
         self.brain = Brain(
             strategy=self.strategy,
+            exchange=self.exchange,
             feeder=self.feeder,
             cash=cash,
             *args,
             **kwargs,
+        )
+
+        self.exchange.init(
+            brain=self.brain,
+            feeder=self.feeder,
+            account=self.account,
         )
 
         # Plot class

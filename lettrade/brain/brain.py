@@ -9,18 +9,16 @@ class Brain:
     def __init__(
         self,
         strategy: Strategy,
+        exchange: Exchange,
         feeder: DataFeeder,
-        hedging=True,
         *args,
         **kwargs,
     ) -> None:
         self.strategy: Strategy = strategy
-        self.exchange: Exchange = strategy.exchange
+        self.exchange: Exchange = exchange
         self.feeder: DataFeeder = feeder
-        self.datas: list[DataFeed] = self.exchange.datas
-        self.data: DataFeed = self.exchange.data
-
-        self._hedging = hedging
+        self.datas: list[DataFeed] = self.feeder.datas
+        self.data: DataFeed = self.feeder.data
 
     def run(self):
         self.strategy.init()

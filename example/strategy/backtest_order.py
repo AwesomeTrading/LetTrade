@@ -36,7 +36,6 @@ class SmaCross(Strategy):
     def end(self):
         print(self.data)
         print(self.orders)
-        print(self.exchange.equities)
 
     def plot(self):
         import plotly.graph_objects as go

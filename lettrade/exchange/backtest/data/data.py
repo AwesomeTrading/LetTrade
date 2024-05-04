@@ -9,13 +9,13 @@ class BackTestDataFeed(DataFeed):
     def alive(self):
         return self.index.stop > 1
 
-    def next(self, size=1) -> bool:
-        self.index._range = range(
-            self.index.start - size,
-            self.index.stop - size,
-            1,
-        )
-        return True
+    # def next(self, size=1) -> bool:
+    #     self.index._range = range(
+    #         self.index.start - size,
+    #         self.index.stop - size,
+    #         1,
+    #     )
+    #     return True
 
 
 class CSVBackTestDataFeed(CSVDataFeed, BackTestDataFeed):

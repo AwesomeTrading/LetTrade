@@ -3,7 +3,6 @@ import talib.abstract as ta
 
 import lettrade.logger
 from lettrade import DataFeed, LetTrade, Strategy
-from lettrade.exchange import Order
 from lettrade.indicator import crossover, crossunder
 
 
@@ -23,10 +22,10 @@ class SmaCross(Strategy):
         if len(self.orders) > 0 or len(self.trades) > 0:
             return
 
-        if df.signal_ema_crossover[0]:
+        if df.signal_ema_crossover[-1]:
             price = self.data.close[-1]
             self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
-        elif df.signal_ema_crossunder[0]:
+        elif df.signal_ema_crossunder[-1]:
             price = self.data.close[-1]
             self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
 

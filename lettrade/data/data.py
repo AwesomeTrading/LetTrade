@@ -48,6 +48,7 @@ class DataFeed(pd.DataFrame):
             return self.loc[i]
         return super().__getitem__(i)
 
+    # Properties
     @property
     def meta(self):
         return self.attrs["meta"]
@@ -56,5 +57,14 @@ class DataFeed(pd.DataFrame):
     def now(self) -> datetime:
         return self.datetime[0]
 
+    # Functions
     def bar(self, i=0):
         return -self.index.start + i, self.datetime[i]
+
+    def next(self, size=1) -> bool:
+        self.index._range = range(
+            self.index.start - size,
+            self.index.stop - size,
+            1,
+        )
+        return True

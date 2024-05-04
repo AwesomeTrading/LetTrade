@@ -1,9 +1,12 @@
 import pandas as pd
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
+from lettrade.account import Account
 from lettrade.base import BaseDataFeeds
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
+from lettrade.strategy import Strategy
 
 
 class Plotter(BaseDataFeeds):
@@ -12,30 +15,43 @@ class Plotter(BaseDataFeeds):
     _stored_datas: dict = {}
 
     def __init__(
-        self, feeder: DataFeeder, exchange: Exchange, data: list[go.Scatter] = []
+        self,
+        feeder: DataFeeder,
+        exchange: Exchange,
+        account: Account,
+        strategy: Strategy,
     ) -> None:
         self.feeder: DataFeeder = feeder
         self.exchange: Exchange = exchange
-        self.plot_data: list[go.Scatter] = data
+        self.account: Account = account
+        self.strategy: Strategy = strategy
 
     def load(self):
         df = self.data
-
-        self.figure: go.Figure = go.Figure(
-            data=[
-                go.Candlestick(
-                    x=df.index,
-                    open=df["open"],
-                    high=df["high"],
-                    low=df["low"],
-                    close=df["close"],
-                    name="Price",
-                    hoverinfo="x+y",
-                ),
-                *self.plot_data,
-            ]
+        self.figure = make_subplots(
+            rows=2,
+            shared_xaxes=True,
+            vertical_spacing=0.05,
+            row_width=[0.2, 0.7],
         )
-        # self.figure.update_layout(hovermode="x unified")
+        self.figure.add_trace(
+            go.Candlestick(
+                x=df.index,
+                open=df["open"],
+                high=df["high"],
+                low=df["low"],
+                close=df["close"],
+                name="Price",
+                hoverinfo="x+y",
+            ),
+            row=1,
+            col=1,
+        )
+
+        scratters = self.strategy.plot(df)
+        if scratters:
+            for s in scratters:
+                self.figure.add_scatter(**s, row=1, col=1)
 
     def jump(self, index, range=300, data: DataFeed = None):
         if data is None:
@@ -52,11 +68,29 @@ class Plotter(BaseDataFeeds):
         if self.figure is None:
             self.load()
 
+        self._plot_equity()
         self._plot_orders()
         self._plot_trades()
 
         self.figure.update_layout(*args, **kwargs)
+        self.figure.update(layout_xaxis_rangeslider_visible=False)
         self.figure.show()
+
+    def _plot_equity(self):
+        first_index = self.data.index[0]
+        x = list(first_index + i for i in self.account._equities.keys())
+        y = list(e["equity"] for e in self.account._equities.values())
+
+        self.figure.add_trace(
+            go.Scatter(
+                x=x,
+                y=y,
+                line=dict(color="#ff9900", width=2),
+                showlegend=False,
+            ),
+            row=2,
+            col=1,
+        )
 
     def _plot_orders(self):
         orders = list(self.exchange.history_orders.values()) + list(

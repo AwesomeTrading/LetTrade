@@ -28,7 +28,7 @@ class Strategy(metaclass=ABCMeta):
     def end(self):
         pass
 
-    def plot(self):
+    def plot(self, df: DataFeed):
         pass
 
     def buy(
@@ -99,11 +99,11 @@ class Strategy(metaclass=ABCMeta):
 
     @property
     def data(self) -> DataFeed:
-        return self.__exchange.data
+        return self.__feeder.data
 
     @property
     def datas(self) -> list[DataFeed]:
-        return self.__exchange.datas
+        return self.__feeder.datas
 
     @property
     def orders(self) -> dict[str, Order]:

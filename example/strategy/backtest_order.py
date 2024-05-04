@@ -36,18 +36,15 @@ class SmaCross(Strategy):
         print(self.data)
         print(self.orders)
 
-    def plot(self):
-        import plotly.graph_objects as go
-
-        df = self.data
+    def plot(self, df: DataFeed):
         return [
-            go.Scatter(
+            dict(
                 x=df.index,
                 y=df["ema1"],
                 line=dict(color="blue", width=1),
                 name="ema1",
             ),
-            go.Scatter(
+            dict(
                 x=df.index,
                 y=df["ema2"],
                 line=dict(color="green", width=1),

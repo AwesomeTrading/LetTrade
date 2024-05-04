@@ -48,9 +48,9 @@ class Plotter(BaseDataFeeds):
             col=1,
         )
 
-        scratters = self.strategy.plot(df)
-        if scratters:
-            for s in scratters:
+        scatters = self.strategy.plot(df)
+        if scatters:
+            for s in scatters:
                 self.figure.add_scatter(**s, row=1, col=1)
 
     def jump(self, index, range=300, data: DataFeed = None):

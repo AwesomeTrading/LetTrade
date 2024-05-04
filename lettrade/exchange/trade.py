@@ -25,8 +25,6 @@ class Trade(BaseTransaction):
         parent: "Order",
         tag: object = "",
         state: TradeState = TradeState.Open,
-        entry_price: float = None,
-        entry_bar: int = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
     ):
@@ -40,10 +38,12 @@ class Trade(BaseTransaction):
         self.tag: object = tag
         self.parent: "Order" = parent
 
-        self.entry_price = entry_price
-        self.entry_bar: int = entry_bar
+        self.entry_price: Optional[float] = None
+        self.entry_bar: Optional[int] = None
         self.exit_price: Optional[float] = None
         self.exit_bar: Optional[int] = None
+        self.exit_pl: Optional[float] = None
+        self.exit_fee: Optional[float] = None
         self.sl_order: Optional[Order] = sl_order
         self.tp_order: Optional[Order] = tp_order
 
@@ -55,22 +55,24 @@ class Trade(BaseTransaction):
         #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
         # )
 
-    def entry(self, price=None, bar=None):
-        if price:
-            self.entry_price = price
-        if bar:
-            self.entry_bar: int = bar
+    def entry(self, price, bar) -> bool:
+        self.entry_price = price
+        self.entry_bar: int = bar
         self.state = TradeState.Open
         self.exchange.on_trade(self)
+        return True
 
-    def exit(self, price, bar):
+    def exit(self, price, bar, pl, fee) -> bool:
         if self.state != TradeState.Open:
-            return
+            return False
 
         self.exit_price = price
         self.exit_bar = bar
+        self.exit_pl = pl
+        self.exit_fee = fee
         self.state = TradeState.Exit
         self.exchange.on_trade(self)
+        return True
 
     # Extra properties
     @property
@@ -82,3 +84,18 @@ class Trade(BaseTransaction):
     def is_short(self):
         """True if the trade is short (trade size is negative)."""
         return not self.is_long
+
+    @property
+    def pl(self):
+        if self.state == TradeState.Exit:
+            return self.exit_pl
+
+        price = self.data.open[0]
+        return self.size * (price - self.entry_price)
+
+    @property
+    def fee(self):
+        if self.state == TradeState.Exit:
+            return self.exit_fee
+
+        return 0

@@ -1,9 +1,6 @@
+from lettrade.data import DataFeed, DataFeeder
+from lettrade.exchange import Exchange, Execute, Order, Position, Trade
 from lettrade.strategy import Strategy
-
-from ..commission import Commission
-from ..data import DataFeed, DataFeeder
-from ..exchange import Exchange, Execute, Order, Position, Trade
-from ..strategy import Strategy
 
 
 class Brain:
@@ -13,8 +10,6 @@ class Brain:
         self,
         strategy: Strategy,
         feeder: DataFeeder,
-        commission: Commission = None,
-        cash=10_000,
         hedging=True,
         *args,
         **kwargs,
@@ -25,8 +20,6 @@ class Brain:
         self.datas: list[DataFeed] = self.exchange.datas
         self.data: DataFeed = self.exchange.data
 
-        self._cash = cash
-        self._commission = commission
         self._hedging = hedging
 
     def run(self):

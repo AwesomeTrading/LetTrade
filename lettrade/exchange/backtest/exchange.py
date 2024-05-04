@@ -26,6 +26,7 @@ class BackTestExchange(Exchange):
 
     def next(self):
         self._simulate_orders()
+        super().next()
 
     def new_order(
         self,
@@ -69,7 +70,7 @@ class BackTestExchange(Exchange):
         self._simulate_orders()
 
     def _simulate_orders(self):
-        for order in self.orders.to_list():
+        for order in list(self.orders.values()):
             self._simulate_order(order)
 
     def _simulate_order(self, order: BackTestOrder):

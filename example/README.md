@@ -1,5 +1,5 @@
 # Examples
-## yfinance downloads
+## YFinance downloads
 Download example data and save to 'data/data.csv'
 ```sh
 python -m example.data.yfinance

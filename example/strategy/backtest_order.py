@@ -20,7 +20,7 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
-        if self.orders.size > 0 or self.trades.size > 0:
+        if len(self.orders) > 0 or len(self.trades) > 0:
             return
 
         if df.signal_ema_crossover[0]:
@@ -36,6 +36,7 @@ class SmaCross(Strategy):
     def end(self):
         print(self.data)
         print(self.orders)
+        print(self.exchange.equities)
 
     def plot(self):
         import plotly.graph_objects as go

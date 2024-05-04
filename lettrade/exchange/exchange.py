@@ -4,8 +4,8 @@ from typing import Optional
 
 import pandas as pd
 
+from lettrade.account import Account
 from lettrade.base import BaseDataFeeds
-from lettrade.commission import Commission
 from lettrade.data import DataFeed, DataFeeder
 
 from .base import OrderState, OrderType, TradeState
@@ -20,19 +20,28 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
 
     def __init__(self):
         self.feeder: DataFeeder = None
-        self.commission: Commission = None
-        self.cash: float = 0
+        self.account: Account = None
         self.hedging: bool = False
 
-        self.executes: pd.Series = pd.Series(dtype=object)
-        self.orders: pd.Series = pd.Series(dtype=object)
-        self.history_orders: pd.Series = pd.Series(dtype=object)
-        self.trades: pd.Series = pd.Series(dtype=object)
-        self.history_trades: pd.Series = pd.Series(dtype=object)
-        self.positions: pd.Series = pd.Series(dtype=object)
+        self.equities: dict[str, object] = dict()
+        self.executes: dict[str, Execute] = dict()
+        self.orders: dict[str, Order] = dict()
+        self.history_orders: dict[str, Order] = dict()
+        self.trades: dict[str, Trade] = dict()
+        self.history_trades: dict[str, Trade] = dict()
+        self.positions: dict[str, Position] = dict()
+
+    @property
+    def equity(self):
+        equity = self.account._cash
+        if len(self.trades) > 0:
+            equity += sum(trade.pl for trade in self.trades.values())
+        return equity
 
     def next(self):
-        pass
+        if len(self.trades) > 0:
+            bar = self.data.bar()
+            self.equities[bar[0]] = {"at": bar[1], "equity": self.equity}
 
     def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
         self.executes[execute.id] = execute
@@ -44,7 +53,8 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         if order.state in [OrderState.Executed, OrderState.Canceled]:
             self.history_orders[order.id] = order
             if order.id in self.orders:
-                self.orders = self.orders.drop(index=order.id)
+                # self.orders = self.orders.drop(index=order.id)
+                del self.orders[order.id]
         else:
             if order.id in self.history_orders:
                 raise RuntimeError(f"Order {order.id} closed")
@@ -57,7 +67,8 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         if trade.state == TradeState.Exit:
             self.history_trades[trade.id] = trade
             if trade.id in self.trades:
-                self.trades = self.trades.drop(index=trade.id)
+                # self.trades = self.trades.drop(index=trade.id)
+                del self.trades[trade.id]
         else:
             if trade.id in self.history_trades:
                 raise RuntimeError(f"Order {trade.id} closed")

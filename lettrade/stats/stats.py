@@ -34,6 +34,7 @@ class Statistic:
         # self.result.loc["Start"] = data.datetime.iloc[0].astype("datetime64[ns]")
         # self.result.loc["End"] = data.datetime.iloc[-1].astype("datetime64[ns]")
         self.result.loc["Duration"] = self.result.End - self.result.Start
+        self.result.loc["PnL"] = self.result.End - self.result.Start
 
         return self.result
 

@@ -59,9 +59,11 @@ class Plotter(BaseDataFeeds):
         self.figure.show()
 
     def _plot_orders(self):
-        orders = pd.concat([self.exchange.history_orders, self.exchange.orders])
+        orders = list(self.exchange.history_orders.values()) + list(
+            self.exchange.orders.values()
+        )
         first_index = self.data.index[0]
-        for order in orders.to_list():
+        for order in orders:
             x = [first_index + order.open_bar[0]]
             y = [order.open_price or order.limit or order.stop]
             self.figure.add_scatter(
@@ -78,10 +80,11 @@ class Plotter(BaseDataFeeds):
             )
 
     def _plot_trades(self):
-        trades = pd.concat([self.exchange.history_trades])
-        # trades = pd.concat([self.exchange.history_trades, self.exchange.trades])
+        trades = list(self.exchange.history_trades.values()) + list(
+            self.exchange.trades.values()
+        )
         first_index = self.data.index[0]
-        for trade in trades.to_list():
+        for trade in trades:
             # x
             x = [first_index + trade.entry_bar[0]]
             if trade.exit_bar:

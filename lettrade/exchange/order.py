@@ -67,6 +67,12 @@ class Order(BaseTransaction):
             )
         )
 
+    def execute(self, price, bar):
+        self.entry_bar = bar
+        self.entry_price = price
+        self.state = OrderState.Executed
+        self.exchange.on_order(self)
+
     # Fields getters
     @property
     def limit(self) -> Optional[float]:

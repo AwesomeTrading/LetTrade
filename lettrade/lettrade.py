@@ -3,20 +3,21 @@ from typing import Type
 
 import pandas as pd
 
-from .base import BaseDataFeeds
-from .brain import Brain
-from .commission import Commission
-from .data import DataFeed, DataFeeder
-from .exchange import Exchange
-from .exchange.backtest import (
+from lettrade.account import Account
+from lettrade.base import BaseDataFeeds
+from lettrade.brain import Brain
+from lettrade.data import DataFeed, DataFeeder
+from lettrade.exchange import Exchange
+from lettrade.exchange.backtest import (
+    BackTestAccount,
     BackTestDataFeed,
     BackTestDataFeeder,
     BackTestExchange,
     CSVBackTestDataFeed,
 )
-from .plot import Plotter
-from .stats import Statistic
-from .strategy import Strategy
+from lettrade.plot import Plotter
+from lettrade.stats import Statistic
+from lettrade.strategy import Strategy
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +40,7 @@ class LetTrade(BaseDataFeeds):
         exchange: Exchange = None,
         plot: Type[Plotter] = Plotter,
         cash: float = 10_000.0,
-        commission: Commission = None,
+        account: Account = None,
         # params: dict = {},
         *args,
         **kwargs,
@@ -53,9 +54,9 @@ class LetTrade(BaseDataFeeds):
 
             self._init_datafeeder(datas=datas)
 
-        # Commission
-        if commission is None:
-            commission = Commission()
+        # Money
+        if account is None:
+            account = BackTestAccount()
 
         # Exchange
         if exchange:
@@ -64,11 +65,13 @@ class LetTrade(BaseDataFeeds):
             self.exchange = BackTestExchange()
         self.exchange.feeder = self.feeder
         self.exchange.cash = cash
-        self.commission = commission
+        self.exchange.account = account
 
         # Strategy
         self.strategy = strategy(
+            feeder=self.feeder,
             exchange=self.exchange,
+            account=account,
             # params=params,
         )
 

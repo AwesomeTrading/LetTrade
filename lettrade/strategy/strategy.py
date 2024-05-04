@@ -1,15 +1,16 @@
 from abc import ABCMeta, abstractmethod
-from typing import Optional, Tuple
+from typing import Optional
 
-import pandas as pd
-
-from ..data import DataFeed
-from ..exchange import Exchange, Execute, Order, Position, Trade
+from lettrade.account import Account
+from lettrade.data import DataFeed, DataFeeder
+from lettrade.exchange import Exchange, Execute, Order, Position, Trade
 
 
 class Strategy(metaclass=ABCMeta):
-    def __init__(self, exchange):
-        self._exchange: Exchange = exchange
+    def __init__(self, feeder: DataFeeder, exchange: Exchange, account: Account):
+        self.__feeder: DataFeeder = feeder
+        self.__exchange: Exchange = exchange
+        self.__account: Account = account
 
     def init(self):
         pass
@@ -33,7 +34,7 @@ class Strategy(metaclass=ABCMeta):
     def buy(
         self,
         *,
-        size: float,
+        size: Optional[float] = None,
         limit: Optional[float] = None,
         stop: Optional[float] = None,
         sl: Optional[float] = None,
@@ -43,15 +44,11 @@ class Strategy(metaclass=ABCMeta):
     ):
         """
         Place a new long order. For explanation of parameters, see `Order` and its properties.
-
-        See `Position.close()` and `Trade.close()` for closing existing positions.
-
-        See also `Strategy.sell()`.
         """
-        assert (
-            0 < size < 1 or round(size) == size
-        ), "size must be a positive fraction of equity, or a positive whole number of units"
-        return self._exchange.new_order(
+        if size is None:
+            size = self.__account.risk()
+
+        return self.__exchange.new_order(
             size=size,
             limit=limit,
             stop=stop,
@@ -64,7 +61,7 @@ class Strategy(metaclass=ABCMeta):
     def sell(
         self,
         *,
-        size: float,
+        size: Optional[float] = None,
         limit: Optional[float] = None,
         stop: Optional[float] = None,
         sl: Optional[float] = None,
@@ -74,17 +71,11 @@ class Strategy(metaclass=ABCMeta):
     ):
         """
         Place a new short order. For explanation of parameters, see `Order` and its properties.
-
-        See also `Strategy.buy()`.
-
-        .. note::
-            If you merely want to close an existing long position,
-            use `Position.close()` or `Trade.close()`.
         """
-        assert (
-            0 < size < 1 or round(size) == size
-        ), "size must be a positive fraction of equity, or a positive whole number of units"
-        return self._exchange.new_order(
+        if size is None:
+            size = self.__account.risk()
+
+        return self.__exchange.new_order(
             size=-size,
             limit=limit,
             stop=stop,
@@ -95,47 +86,47 @@ class Strategy(metaclass=ABCMeta):
         )
 
     @property
-    def equity(self) -> float:
-        return 0.0
+    def feeder(self) -> DataFeeder:
+        return self.__feeder
 
     @property
     def exchange(self) -> Exchange:
-        return self._exchange
+        return self.__exchange
+
+    @property
+    def account(self) -> Account:
+        return self.__account
 
     @property
     def data(self) -> DataFeed:
-        return self._exchange.data
+        return self.__exchange.data
 
     @property
     def datas(self) -> list[DataFeed]:
-        return self._exchange.datas
+        return self.__exchange.datas
 
     @property
-    def positions(self) -> Position:
-        return self._exchange.positions
+    def orders(self) -> dict[str, Order]:
+        return self.__exchange.orders
 
     @property
-    def orders(self) -> pd.Series:
-        return self._exchange.orders
+    def history_orders(self) -> dict[str, Order]:
+        return self.__exchange.history_orders
 
     @property
-    def history_orders(self) -> pd.Series:
-        return self._exchange.history_orders
+    def trades(self) -> dict[str, Trade]:
+        return self.__exchange.trades
 
     @property
-    def trades(self) -> pd.Series:
-        return self._exchange.trades
+    def history_trades(self) -> dict[str, Trade]:
+        return self.__exchange.history_trades
 
     @property
-    def positions(self) -> pd.Series:
-        return self._exchange.positions
-
-    @property
-    def history_trades(self) -> pd.Series:
-        return self._exchange.history_trades
+    def positions(self) -> dict[str, Position]:
+        return self.__exchange.positions
 
     # Events
-    def on_transaction(self, o):
+    def on_transaction(self, t):
         pass
 
     def on_execute(self, execute: Execute):

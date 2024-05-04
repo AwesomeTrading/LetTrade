@@ -4,8 +4,9 @@ from .. import Execute, Order, OrderState, OrderType, Trade, TradeState
 
 
 class BackTestExecute(Execute):
-    def execute(self):
-        self.exchange.on_execute(self)
+    """
+    Execute for BackTest
+    """
 
 
 class BackTestOrder(Order):
@@ -40,10 +41,7 @@ class BackTestOrder(Order):
             raise RuntimeError(f"Execute a {self.state} order")
 
         # Order
-        self.entry_bar = bar
-        self.entry_price = price
-        self.state = OrderState.Executed
-        self.exchange.on_order(self)
+        super().execute(price=price, bar=bar)
 
         # Execute
         execute: BackTestExecute = self.build_execute(
@@ -113,7 +111,11 @@ class BackTestTrade(Trade):
         if self.state != TradeState.Open:
             return
 
-        super().exit(price=price, bar=bar)
+        # PnL
+        pl = self.size * (price - self.entry_price)
+
+        # State
+        super().exit(price=price, bar=bar, pl=pl, fee=0)
 
         # Caller is trade close by tp/sl order
         if caller is None or (self.sl_order and self.sl_order is not caller):

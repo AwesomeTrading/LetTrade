@@ -37,7 +37,7 @@ class Account(metaclass=ABCMeta):
             equity += sum(trade.pl for trade in self._exchange.trades.values())
         return equity
 
-    def snapshot_equity(self):
+    def _snapshot_equity(self):
         if len(self._exchange.trades) > 0:
             bar = self._exchange.data.bar()
             self._equities[bar[0]] = {"at": bar[1], "equity": self.equity}

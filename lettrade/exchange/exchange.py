@@ -40,7 +40,7 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         return self._feeder
 
     def next(self):
-        self._account.snapshot_equity()
+        self._account._snapshot_equity()
 
     def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
         self.executes[execute.id] = execute

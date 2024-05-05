@@ -31,7 +31,7 @@ class Plotter(BaseDataFeeds):
         self.figure = make_subplots(
             rows=2,
             shared_xaxes=True,
-            vertical_spacing=0.05,
+            vertical_spacing=0.03,
             row_width=[0.2, 0.7],
         )
         self.figure.add_trace(
@@ -86,7 +86,8 @@ class Plotter(BaseDataFeeds):
                 x=x,
                 y=y,
                 line=dict(color="#ff9900", width=2),
-                showlegend=False,
+                # showlegend=False,
+                name="Equity",
             ),
             row=2,
             col=1,

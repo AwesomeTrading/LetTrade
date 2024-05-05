@@ -3,6 +3,7 @@ import talib.abstract as ta
 
 import lettrade.logger
 from lettrade import DataFeed, LetTrade, Strategy
+from lettrade.exchange.backtest import ForexBackTestAccount
 from lettrade.indicator import crossover, crossunder
 
 
@@ -56,6 +57,7 @@ class SmaCross(Strategy):
 lt = LetTrade(
     strategy=SmaCross,
     datas="data/EURUSD=X_1h.csv",
+    account=ForexBackTestAccount(),
 )
 
 lt.run()

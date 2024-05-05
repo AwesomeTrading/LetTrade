@@ -41,3 +41,12 @@ class Account(metaclass=ABCMeta):
         if len(self._exchange.trades) > 0:
             bar = self._exchange.data.bar()
             self._equities[bar[0]] = {"at": bar[1], "equity": self.equity}
+
+    def _on_trade_exit(self, trade: "Trade"):
+        self._cash += trade.pl - trade.fee
+
+    def size_to_pl(self, size, entry_price: float, exit_price=None):
+        if exit_price is None:
+            exit_price = self._exchange.data.open[0]
+
+        return size * (exit_price - entry_price)

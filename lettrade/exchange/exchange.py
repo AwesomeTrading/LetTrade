@@ -52,7 +52,6 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         if order.state in [OrderState.Executed, OrderState.Canceled]:
             self.history_orders[order.id] = order
             if order.id in self.orders:
-                # self.orders = self.orders.drop(index=order.id)
                 del self.orders[order.id]
         else:
             if order.id in self.history_orders:
@@ -66,8 +65,9 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         if trade.state == TradeState.Exit:
             self.history_trades[trade.id] = trade
             if trade.id in self.trades:
-                # self.trades = self.trades.drop(index=trade.id)
                 del self.trades[trade.id]
+
+            self._account._on_trade_exit(trade)
         else:
             if trade.id in self.history_trades:
                 raise RuntimeError(f"Order {trade.id} closed")

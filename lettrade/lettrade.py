@@ -90,7 +90,6 @@ class LetTrade(BaseDataFeeds):
         )
 
         # Plot class
-        self.exchange.brain = self.brain
         self._plot_cls = plot
 
     def _init_datafeeder(self, datas) -> None:

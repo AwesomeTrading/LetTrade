@@ -34,6 +34,8 @@ class Trade(BaseTransaction):
             data=data,
             size=size,
         )
+        self._account = self.exchange._account
+
         self.state = state
         self.tag: object = tag
         self.parent: "Order" = parent
@@ -90,8 +92,7 @@ class Trade(BaseTransaction):
         if self.state == TradeState.Exit:
             return self.exit_pl
 
-        price = self.data.open[0]
-        return self.size * (price - self.entry_price)
+        return self._account.size_to_pl(size=self.size, entry_price=self.entry_price)
 
     @property
     def fee(self):

@@ -29,8 +29,10 @@ class Account(metaclass=ABCMeta):
     def __repr__(self):
         return "<Account " + str(self) + ">"
 
-    def risk(self, size=None):
-        return self._risk
+    def risk(self, size, **kwargs):
+        if size is None:
+            return self._risk
+        return size
 
     @property
     def equity(self) -> float:

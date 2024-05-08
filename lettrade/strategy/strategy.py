@@ -45,11 +45,7 @@ class Strategy(metaclass=ABCMeta):
         """
         Place a new long order. For explanation of parameters, see `Order` and its properties.
         """
-        if size is None:
-            size = self.__account.risk()
-
-        return self.__exchange.new_order(
-            size=size,
+        params = dict(
             limit=limit,
             stop=stop,
             sl=sl,
@@ -57,6 +53,9 @@ class Strategy(metaclass=ABCMeta):
             tag=tag,
             **kwargs,
         )
+        params["size"] = self.__account.risk(size=abs(size), **params)
+
+        return self.__exchange.new_order(**params)
 
     def sell(
         self,
@@ -72,11 +71,7 @@ class Strategy(metaclass=ABCMeta):
         """
         Place a new short order. For explanation of parameters, see `Order` and its properties.
         """
-        if size is None:
-            size = self.__account.risk()
-
-        return self.__exchange.new_order(
-            size=-size,
+        params = dict(
             limit=limit,
             stop=stop,
             sl=sl,
@@ -84,6 +79,9 @@ class Strategy(metaclass=ABCMeta):
             tag=tag,
             **kwargs,
         )
+        params["size"] = self.__account.risk(size=-abs(size), **params)
+
+        return self.__exchange.new_order(**params)
 
     @property
     def feeder(self) -> DataFeeder:

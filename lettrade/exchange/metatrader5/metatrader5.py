@@ -11,21 +11,22 @@ class MetaTrader5:
         return self._singleton
 
     def init(self, host="localhost", port=18812) -> None:
-        self._mt5 = Mt5(
-            host=host,
-            port=port,
+        self._mt5 = Mt5(host=host, port=port)
+
+    def start(self, login: int, password: str, server: str, timeout=60):
+        login = self._mt5.initialize(
+            login=int(login),
+            password=password,
+            server=server,
+            timeout=timeout,
         )
 
-        self._mt5.initialize()
+        print("login", login)
 
-    def start(self):
-        self._mt5.terminal_info()
-        self._mt5.copy_rates_from_pos("GOOG", self._mt5.TIMEFRAME_M1, 0, 1000)
+        info = self._mt5.terminal_info()
+        print("info", info)
+        rates = self._mt5.copy_rates_from_pos("EURUSD", self._mt5.TIMEFRAME_M1, 0, 1000)
+        print("rates", rates)
 
     def stop(self):
         self._mt5.shutdown()
-
-
-mt5 = MetaTrader5()
-mt5.start()
-mt5.stop()

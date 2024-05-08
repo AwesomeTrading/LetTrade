@@ -3,6 +3,7 @@ from abc import ABCMeta
 
 class Account(metaclass=ABCMeta):
     _exchange: "Exchange"
+    _do_snapshot_equity: bool
 
     def __init__(
         self,
@@ -20,6 +21,7 @@ class Account(metaclass=ABCMeta):
         self._leverage: float = leverage
 
         self._equities: dict[str, object] = dict()
+        self._do_snapshot_equity = True
 
     def init(self, exchange: "Exchange"):
         self._exchange = exchange
@@ -38,12 +40,16 @@ class Account(metaclass=ABCMeta):
         return equity
 
     def _snapshot_equity(self):
-        if len(self._exchange.trades) > 0:
+        if self._do_snapshot_equity or len(self._exchange.trades) > 0:
             bar = self._exchange.data.bar()
             self._equities[bar[0]] = {"at": bar[1], "equity": self.equity}
 
+            self._do_snapshot_equity = False
+
     def _on_trade_exit(self, trade: "Trade"):
         self._cash += trade.pl - trade.fee
+
+        self._do_snapshot_equity = True
 
     def size_to_pl(self, size, entry_price: float, exit_price=None):
         if exit_price is None:

@@ -6,8 +6,7 @@ from dotenv import load_dotenv
 
 import lettrade.logger
 from lettrade import DataFeed, LetTrade, Strategy
-from lettrade.exchange.backtest import ForexBackTestAccount
-from lettrade.exchange.metatrader5 import MetaTrader5
+from lettrade.exchange.metatrader import MetaTrader
 from lettrade.indicator import crossover, crossunder
 
 load_dotenv()
@@ -26,6 +25,9 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
+        print("-" * 64)
+        print(df)
+
         if len(self.orders) > 0 or len(self.trades) > 0:
             return
 
@@ -61,27 +63,19 @@ class SmaCross(Strategy):
 
 
 if __name__ == "__main__":
-    print(
-        dict(
-            login=os.environ["MT5_LOGIN"],
-            password=os.environ["MT5_PASSWORD"],
-            server=os.environ["MT5_SERVER"],
-        )
-    )
-    mt5 = MetaTrader5()
-    mt5.start(
-        login=int(os.environ["MT5_LOGIN"]),
+    mt5 = MetaTrader(
+        account=int(os.environ["MT5_LOGIN"]),
         password=os.environ["MT5_PASSWORD"],
         server=os.environ["MT5_SERVER"],
     )
-    import time
 
-    time.sleep(1000000)
-    # lt = LetTrade(
-    #     strategy=SmaCross,
-    #     datas="data/EURUSD=X_1h.csv",
-    #     account=ForexBackTestAccount(),
-    # )
+    lt = LetTrade(
+        strategy=SmaCross,
+        datas=[mt5.data("EURUSD", ticker="EURUSD", timeframe="5m")],
+        feeder=mt5.feeder(),
+        exchange=mt5.exchange(),
+        account=mt5.account(),
+    )
 
-    # lt.run()
+    lt.run()
     # lt.plot()

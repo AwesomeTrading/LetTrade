@@ -33,10 +33,12 @@ class DataFeed(pd.DataFrame):
         # print(data.index.tz_convert(pytz.utc))
 
         super().__init__(*args, **kwargs)
-        # if not isinstance(self.index, pd.DatetimeIndex):
-        #     self.index = data.index.tz_convert(pytz.utc)
 
-        self.reset_index(inplace=True)
+        if isinstance(self.index, pd.DatetimeIndex):
+            self.reset_index(inplace=True)
+
+        if not isinstance(self.index, pd.RangeIndex):
+            self.index = pd.RangeIndex(start=-len(self.index) + 1, stop=1, step=1)
 
         # Metadata
         meta["name"] = name
@@ -50,8 +52,8 @@ class DataFeed(pd.DataFrame):
 
     # Properties
     @property
-    def meta(self):
-        return self.attrs["meta"]
+    def meta(self) -> dict:
+        return self.attrs["lt_meta"]
 
     @property
     def now(self) -> datetime:
@@ -59,12 +61,8 @@ class DataFeed(pd.DataFrame):
 
     # Functions
     def bar(self, i=0):
-        return -self.index.start + i, self.datetime[i]
+        print(self.index[0])
+        return self.index[0] + i, self.datetime[i]
 
     def next(self, size=1) -> bool:
-        self.index._range = range(
-            self.index.start - size,
-            self.index.stop - size,
-            1,
-        )
-        return True
+        raise NotImplementedError("Method is not implement yet")

@@ -7,7 +7,7 @@ class DataFeeder(metaclass=ABCMeta):
     datas: list[DataFeed]
     data: DataFeed
 
-    def __init__(self, datas: list[DataFeed]) -> None:
+    def init(self, datas: list[DataFeed]):
         self.datas = datas
         self.data = datas[0]
 

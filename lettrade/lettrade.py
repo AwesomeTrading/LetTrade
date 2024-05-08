@@ -46,16 +46,19 @@ class LetTrade(BaseDataFeeds):
         *args,
         **kwargs,
     ) -> None:
-        # Init DataFeeder
+        # DataFeeder
         if feeder:
             self.feeder = feeder
         else:
             if datas is None:
                 raise RuntimeError("datas and feeder is None")
+            self.feeder = BackTestDataFeeder()
+            datas = self._init_datafeeds(datas=datas)
 
-            self._init_datafeeder(datas=datas)
+        # DataFeeds
+        self.feeder.init(datas=datas)
 
-        # Money
+        # Account
         if account is None:
             account = BackTestAccount()
         self.account = account
@@ -92,7 +95,7 @@ class LetTrade(BaseDataFeeds):
         # Plot class
         self._plot_cls = plot
 
-    def _init_datafeeder(self, datas) -> None:
+    def _init_datafeeds(self, datas) -> None:
         # Support single and multiple data
         if not isinstance(datas, list):
             datas = [datas]
@@ -111,7 +114,7 @@ class LetTrade(BaseDataFeeds):
                     raise RuntimeError(f"data {data} is invalid")
 
         # Feeder
-        self.feeder = BackTestDataFeeder(datas=feeds)
+        return feeds
 
     def run(self, *args, **kwargs):
         self.brain.run(*args, **kwargs)

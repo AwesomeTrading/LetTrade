@@ -1,17 +1,11 @@
 from datetime import datetime, timezone
 
-import numpy as np
-import pandas as pd
-
 from lettrade.data import DataFeed
 
 from .api import MetaTraderAPI
 
 
 class MetaTraderDataFeed(DataFeed):
-    __api: MetaTraderAPI
-    __feeder: "MetaTraderDataFeeder"
-
     def __init__(
         self,
         name: str,
@@ -64,21 +58,29 @@ class MetaTraderDataFeed(DataFeed):
     def _api(self) -> "MetaTraderAPI":
         return getattr(self, "__api")
 
-    def next(self, size=1) -> bool:
-        return self._next(size)
+    def next(self, size=1, tick=0) -> bool:
+        return self._next(size=size, tick=tick)
 
-    def _next(self, size=1):
+    def _next(self, size=1, tick=0):
         rates = self._api.rates_from_pos(
             ticker=self.ticker,
             timeframe=self.timeframe,
             since=0,
-            to=size,
+            to=size + 1,  # Get last completed bar
         )
 
         i_next = 0
         if not self.empty:
-            now = int(self.now.timestamp())
+            now = self.now.timestamp()
+
+            # Remove incompleted bar
+            if tick < 0:
+                rates = rates[:-1]
+
             rates = rates[rates["time"] >= now]
+            print("rates", rates)
+
+            # No new data
             if len(rates) == 0:
                 return False
 
@@ -106,5 +108,5 @@ class MetaTraderDataFeed(DataFeed):
                 rate[5],  # volume
             ]
 
-        self.index -= len(rates) - 1 + i_next
+        self.index = range(-len(self.index) + 1, 1, 1)
         return True

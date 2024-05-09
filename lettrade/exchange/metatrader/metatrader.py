@@ -11,7 +11,11 @@ class MetaTrader:
     _exchange: MetaTraderExchange = None
     _account: MetaTraderAccount = None
 
-    def __init__(self, *args, **kwargs) -> None:
+    _tick: bool
+
+    def __init__(self, tick=5, *args, **kwargs) -> None:
+        self._tick = tick
+
         self._api = MetaTraderAPI()
         self._api.start(*args, **kwargs)
 
@@ -26,7 +30,7 @@ class MetaTrader:
 
     def feeder(self) -> MetaTraderDataFeeder:
         if not self._feeder:
-            self._feeder = MetaTraderDataFeeder(api=self._api)
+            self._feeder = MetaTraderDataFeeder(api=self._api, tick=self._tick)
         return self._feeder
 
     def exchange(self) -> MetaTraderExchange:

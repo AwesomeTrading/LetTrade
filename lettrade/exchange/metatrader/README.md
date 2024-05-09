@@ -19,7 +19,7 @@ WINEPREFIX=$HOME/.mt5 wine python.exe -m pip install --upgrade pip
 WINEPREFIX=$HOME/.mt5 wine python.exe -m pip install https://github.com/AwesomeTrading/mt5linux/archive/master.zip
 ```
 
-# Run
+# Start Server
 ```sh
 WINEPREFIX=$HOME/.mt5 python -m mt5linux "$HOME/.mt5/dosdevices/c:/users/$USER/AppData/Local/Programs/Python/Python310-32/python.exe"
 ```

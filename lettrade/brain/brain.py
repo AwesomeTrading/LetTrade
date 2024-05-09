@@ -33,7 +33,6 @@ class Brain:
 
             # Realtime continous update data, then rebuild indicator data
             if self.feeder.is_continous:
-                # TODO: remove old datas to keep datas lightweight
                 self.strategy.indicators(self.data)
 
             self.strategy.next(self.data)

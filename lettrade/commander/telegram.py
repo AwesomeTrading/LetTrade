@@ -22,6 +22,8 @@ from telegram.ext import (
 )
 from telegram.helpers import escape_markdown
 
+from lettrade.stats import Statistic
+
 from .commander import Commander
 
 logger = logging.getLogger(__name__)
@@ -106,7 +108,7 @@ class TelegramCommander(Commander):
         section.
         """
         self._keyboard: List[List[Union[str, KeyboardButton]]] = [
-            ["/daily", "/profit", "/balance"],
+            ["/stats", "/profit", "/balance"],
             ["/status", "/status table", "/performance"],
             ["/count", "/start", "/stop", "/help"],
         ]
@@ -145,7 +147,7 @@ class TelegramCommander(Commander):
             # CommandHandler(["buys", "entries"], self._enter_tag_performance),
             # CommandHandler(["sells", "exits"], self._exit_reason_performance),
             # CommandHandler("mix_tags", self._mix_tag_performance),
-            # CommandHandler("stats", self._stats),
+            CommandHandler("stats", self._cmd_stats),
             # CommandHandler("daily", self._daily),
             # CommandHandler("weekly", self._weekly),
             # CommandHandler("monthly", self._monthly),
@@ -161,7 +163,7 @@ class TelegramCommander(Commander):
             # CommandHandler("logs", self._logs),
             # CommandHandler("edge", self._edge),
             # CommandHandler("health", self._health),
-            # CommandHandler("help", self._help),
+            CommandHandler("help", self._cmd_help),
             # CommandHandler("version", self._version),
             # CommandHandler("marketdir", self._changemarketdir),
             # CommandHandler("order", self._order),
@@ -281,6 +283,43 @@ class TelegramCommander(Commander):
             )
 
     @authorized_only
+    async def _cmd_help(self, update: Update, context: CallbackContext) -> None:
+        """
+        Handler for /help.
+        Show commands of the bot
+        :param bot: telegram bot
+        :param update: message update
+        :return: None
+        """
+
+        message = (
+            "_Bot Control_\n"
+            "------------\n"
+            "*/balance:* `Show bot managed balance per currency`\n"
+            "*/balance total:* `Show account balance per currency`\n"
+            "*/logs [limit]:* `Show latest logs - defaults to 10` \n"
+            "*/count:* `Show number of active trades compared to allowed number of trades`\n"
+            "*/edge:* `Shows validated pairs by Edge if it is enabled` \n"
+            "*/health* `Show latest process timestamp - defaults to 1970-01-01 00:00:00` \n"
+            "*/marketdir [long | short | even | none]:* `Updates the user managed variable "
+            "that represents the current market direction. If no direction is provided `"
+            "`the currently set market direction will be output.` \n"
+            "*/list_custom_data <trade_id> <key>:* `List custom_data for Trade ID & Key combo.`\n"
+            "`If no Key is supplied it will list all key-value pairs found for that Trade ID.`"
+            "_Statistics_\n"
+            "------------\n"
+            "*/status <trade_id>|[table]:* `Lists all open trades`\n"
+            "*/trades [limit]:* `Lists last closed trades (limited to 10 by default)`\n"
+            "*/profit [<n>]:* `Lists cumulative profit from all finished trades, "
+            "*/stats:* `Shows Wins / losses by Sell reason as well as "
+            "Avg. holding durations for buys and sells.`\n"
+            "*/help:* `This help message`\n"
+            "*/version:* `Show version`\n"
+        )
+
+        await self._send_msg(message, parse_mode=ParseMode.MARKDOWN)
+
+    @authorized_only
     async def _cmd_status(self, update: Update, context: CallbackContext) -> None:
         """
         Handler for /status.
@@ -289,28 +328,10 @@ class TelegramCommander(Commander):
         :param update: message update
         :return: None
         """
-
-        if context.args and "table" in context.args:
-            await self._status_table(update, context)
-            return
-        else:
-            await self._status_msg(update, context)
-
-    async def _status_msg(self, update: Update, context: CallbackContext) -> None:
-        """
-        handler for `/status` and `/status <id>`.
-
-        """
         lines = ["Hello", "LetTrade"]
         r = dict()
-        await self.__send_status_msg(lines, r)
 
-    async def __send_status_msg(self, lines: List[str], r: Dict[str, Any]) -> None:
-        """
-        Send status message.
-        """
         msg = ""
-
         for line in lines:
             if line:
                 # if (len(msg) + len(line) + 1) < MAX_MESSAGE_LENGTH:
@@ -320,3 +341,9 @@ class TelegramCommander(Commander):
                 # msg = "*Trade ID:* `{trade_id}` - continued\n" + line + "\n"
 
         await self._send_msg(msg.format(**r))
+
+    @authorized_only
+    async def _cmd_stats(self, update: Update, context: CallbackContext) -> None:
+        stats: Statistic = self.lettrade.stats
+        stats.compute()
+        await self._send_msg(stats.result.to_string())

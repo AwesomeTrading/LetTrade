@@ -29,7 +29,7 @@ class LetTrade(BaseDataFeeds):
     exchange: Exchange
     account: Account
     strategy: Strategy
-    commander: Commander
+    commander: Commander = None
     plotter: Plotter = None
     _stats: Statistic = None
 
@@ -135,7 +135,8 @@ class LetTrade(BaseDataFeeds):
         return feeds
 
     def run(self, *args, **kwargs):
-        self.commander.start()
+        if self.commander:
+            self.commander.start()
 
         self.brain.run(*args, **kwargs)
 

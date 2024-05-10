@@ -13,6 +13,7 @@ Let make trading simpler :)
 
 ## Installation
 
+Stable version
 ```sh
 pip install lettrade
 ```
@@ -60,6 +61,11 @@ lt.run()
 lt.plot()
 
 ```
+
+## Live Trading
+### Official
+- `MetaTrader`: Support MetaTrader 5 Terminal trading
+- `CCXT`: Support most of cryptocurrency exchange from CCXT library
 
 ## Development
 

@@ -6,6 +6,7 @@ import pandas as pd
 from lettrade.account import Account
 from lettrade.base import BaseDataFeeds
 from lettrade.brain import Brain
+from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
 from lettrade.exchange.backtest import (
@@ -28,6 +29,7 @@ class LetTrade(BaseDataFeeds):
     exchange: Exchange
     account: Account
     strategy: Strategy
+    commander: Commander
     plotter: Plotter = None
     _stats: Statistic = None
 
@@ -39,6 +41,7 @@ class LetTrade(BaseDataFeeds):
         datas: DataFeed | list[DataFeed] | str | list[str] = None,
         feeder: DataFeeder = None,
         exchange: Exchange = None,
+        commander: Commander = None,
         plot: Type[Plotter] = Plotter,
         cash: float = 10_000.0,
         account: Account = None,
@@ -92,6 +95,21 @@ class LetTrade(BaseDataFeeds):
             account=self.account,
         )
 
+        # Commander
+        if commander:
+            if not self.feeder.is_continous:
+                logger.warning(
+                    "Commander %s will be disable in backtest datafeeder", commander
+                )
+            else:
+                self.commander = commander
+                self.commander.init(
+                    lettrade=self,
+                    brain=self.brain,
+                    exchange=self.exchange,
+                    strategy=self.strategy,
+                )
+
         # Plot class
         self._plot_cls = plot
 
@@ -117,6 +135,8 @@ class LetTrade(BaseDataFeeds):
         return feeds
 
     def run(self, *args, **kwargs):
+        self.commander.start()
+
         self.brain.run(*args, **kwargs)
 
         self.stats.compute()

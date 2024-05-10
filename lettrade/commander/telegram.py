@@ -48,7 +48,18 @@ def authorized_only(command_handler: Callable[..., Coroutine[Any, Any, None]]):
         if cchat_id != self._chat_id:
             logger.info(f"Rejected unauthorized message from: {update.message.chat_id}")
             return wrapper
-        # Rollback session to avoid getting data stored in a transaction.
+
+        logger.debug(
+            "Executing handler: %s for chat_id: %s",
+            command_handler.__name__,
+            self._chat_id,
+        )
+        try:
+            return await command_handler(self, *args, **kwargs)
+        except Exception as e:
+            await self._send_msg(str(e))
+            # except BaseException:
+            logger.exception("Exception occurred within Telegram module", exc_info=e)
 
     return wrapper
 
@@ -66,6 +77,21 @@ class TelegramCommander(Commander):
     def start(self):
         self._init_keyboard()
         self._start_thread()
+
+    async def _cleanup_telegram(self) -> None:
+        if self._app.updater:
+            await self._app.updater.stop()
+        await self._app.stop()
+        await self._app.shutdown()
+
+    def cleanup(self) -> None:
+        """
+        Stops all running telegram threads.
+        :return: None
+        """
+        # This can take up to `timeout` from the call to `start_polling`.
+        asyncio.run_coroutine_threadsafe(self._cleanup_telegram(), self._loop)
+        self._thread.join()
 
     def _start_thread(self):
         """
@@ -288,9 +314,9 @@ class TelegramCommander(Commander):
         for line in lines:
             if line:
                 # if (len(msg) + len(line) + 1) < MAX_MESSAGE_LENGTH:
-                #     msg += line + "\n"
-                # else:
-                await self._send_msg(msg.format(**r))
-                msg = "*Trade ID:* `{trade_id}` - continued\n" + line + "\n"
+                msg += line + "\n"
+                # # else:
+                # await self._send_msg(msg.format(**r))
+                # msg = "*Trade ID:* `{trade_id}` - continued\n" + line + "\n"
 
         await self._send_msg(msg.format(**r))

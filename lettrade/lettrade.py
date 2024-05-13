@@ -140,8 +140,13 @@ class LetTrade(BaseDataFeeds):
 
         self.brain.run(*args, **kwargs)
 
-        self.stats.compute()
-        self.stats.show()
+        if self.commander:
+            self.commander.stop()
+
+        # Only show stats when backtest data
+        if not self.feeder.is_continous:
+            self.stats.compute()
+            self.stats.show()
 
     @property
     def stats(self) -> Statistic:

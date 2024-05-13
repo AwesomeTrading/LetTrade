@@ -29,3 +29,11 @@ class Commander(metaclass=ABCMeta):
     @abstractmethod
     def start(self):
         pass
+
+    @abstractmethod
+    def stop(self):
+        pass
+
+    @abstractmethod
+    def send_message(self, msg: str, **kwargs):
+        pass

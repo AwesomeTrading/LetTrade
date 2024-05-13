@@ -80,6 +80,12 @@ class TelegramCommander(Commander):
         self._init_keyboard()
         self._start_thread()
 
+    def stop(self):
+        self.cleanup()
+
+    def send_message(self, msg: str, **kwargs):
+        return self._send_msg(msg, **kwargs)
+
     async def _cleanup_telegram(self) -> None:
         if self._app.updater:
             await self._app.updater.stop()
@@ -292,32 +298,25 @@ class TelegramCommander(Commander):
         :return: None
         """
 
-        message = (
+        msg = (
             "_Bot Control_\n"
             "------------\n"
             "*/balance:* `Show bot managed balance per currency`\n"
-            "*/balance total:* `Show account balance per currency`\n"
             "*/logs [limit]:* `Show latest logs - defaults to 10` \n"
             "*/count:* `Show number of active trades compared to allowed number of trades`\n"
-            "*/edge:* `Shows validated pairs by Edge if it is enabled` \n"
             "*/health* `Show latest process timestamp - defaults to 1970-01-01 00:00:00` \n"
-            "*/marketdir [long | short | even | none]:* `Updates the user managed variable "
-            "that represents the current market direction. If no direction is provided `"
-            "`the currently set market direction will be output.` \n"
-            "*/list_custom_data <trade_id> <key>:* `List custom_data for Trade ID & Key combo.`\n"
-            "`If no Key is supplied it will list all key-value pairs found for that Trade ID.`"
             "_Statistics_\n"
             "------------\n"
             "*/status <trade_id>|[table]:* `Lists all open trades`\n"
             "*/trades [limit]:* `Lists last closed trades (limited to 10 by default)`\n"
-            "*/profit [<n>]:* `Lists cumulative profit from all finished trades, "
+            "*/profit [<n>]:* `Lists cumulative profit from all finished trades`\n"
             "*/stats:* `Shows Wins / losses by Sell reason as well as "
             "Avg. holding durations for buys and sells.`\n"
             "*/help:* `This help message`\n"
             "*/version:* `Show version`\n"
         )
 
-        await self._send_msg(message, parse_mode=ParseMode.MARKDOWN)
+        await self._send_msg(msg, parse_mode=ParseMode.MARKDOWN)
 
     @authorized_only
     async def _cmd_status(self, update: Update, context: CallbackContext) -> None:

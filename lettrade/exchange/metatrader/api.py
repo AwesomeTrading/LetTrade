@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from time import sleep
 
 from mt5linux import MetaTrader5 as Mt5
@@ -32,8 +33,6 @@ TIMEFRAME_L2M = {
 
 
 class MetaTraderAPI:
-    _mt5: Mt5
-
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
             cls._singleton = object.__new__(cls)
@@ -41,9 +40,18 @@ class MetaTraderAPI:
         return cls._singleton
 
     def __init__(self, host="localhost", port=18812) -> None:
-        self._mt5 = Mt5(host=host, port=port)
+        self._mt5: Mt5 = Mt5(host=host, port=port)
+        self._callbacker: "MetaTraderExchange" = None
 
-    def start(self, account: int, password: str, server: str, timeout=60, retry=20):
+    def start(
+        self,
+        account: int,
+        password: str,
+        server: str,
+        timeout=60,
+        retry=20,
+        callbacker=None,
+    ):
         while retry > 0:
             login = self._mt5.initialize(
                 login=int(account),
@@ -114,5 +122,31 @@ class MetaTraderAPI:
     def positions_get(self, **kwargs):
         return self._mt5.positions_get(**kwargs)
 
-    def _check_transaction(self):
-        pass
+    def _check_transactions(self):
+        if not self._callbacker:
+            return
+
+        deals = self._check_deals()
+        if not deals:
+            return
+
+        self._callbacker._on_deals(deals)
+
+    __deal_time_checked = datetime(2020, 1, 1)
+
+    def _check_deals(self):
+        to = datetime.now()
+        deal_total = self._mt5.history_deals_total(self.__deal_time_checked, to)
+
+        # No thing new in deal
+        if deal_total <= 0:
+            return
+
+        raws = self._mt5.history_deals_get(self.__deal_time_checked, to)
+
+        # Update last check time +1 msc
+        self.__deal_time_checked = datetime.fromtimestamp(
+            (raws[-1].time_msc + 1) / 1000.0 + 1
+        )
+
+        return raws

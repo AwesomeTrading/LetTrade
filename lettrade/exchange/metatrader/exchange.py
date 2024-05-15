@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Generator, Optional
 
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderType
@@ -16,6 +16,7 @@ class MetaTraderExchange(Exchange):
     def __init__(self, api: MetaTraderAPI, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._api = api
+        self._api._callbacker = self
 
     def start(self):
         self._sync_orders()
@@ -23,6 +24,7 @@ class MetaTraderExchange(Exchange):
         return super().start()
 
     def next(self):
+        self._api._check_transactions()
         super().next()
 
     def new_order(
@@ -77,17 +79,22 @@ class MetaTraderExchange(Exchange):
             logger.warning("Cannot get orders")
             return
 
-        for raw in raws:
-            print("\n---> order:\n", raw)
-            if raw.ticket not in self.orders:
-                order = MetaTraderOrder._from_raw(
-                    raw=raw,
-                    exchange=self,
-                    api=self._api,
-                )
+        for order in self._parse_orders(raws):
+            print("\n---> order:\n", order)
+            if order.id not in self.orders:
                 # TODO: detect exist and change
                 self.orders[order.id] = order
         print(self.orders)
+
+    def _parse_orders(self, raws) -> list[MetaTraderOrder]:
+        return [self._parse_order(raw) for raw in raws]
+
+    def _parse_order(self, raw) -> MetaTraderOrder:
+        return MetaTraderOrder._from_raw(
+            raw=raw,
+            exchange=self,
+            api=self._api,
+        )
 
     def _sync_trades(self):
         total = self._api.positions_total()
@@ -110,3 +117,7 @@ class MetaTraderExchange(Exchange):
                 # TODO: detect exist and change
                 self.trades[trade.id] = trade
         print(self.trades)
+
+    # Events
+    def _on_deals(self, raws):
+        print("\n---> raw deals:", raws)

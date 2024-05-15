@@ -33,6 +33,6 @@ class MetaTraderDataFeeder(DataFeeder):
 
         return self.data.next(tick=self._tick)
 
-    def pre_feed(self, size=100):
+    def start(self, size=100):
         for data in self.datas:
             data._next(size=size, tick=self._tick)

@@ -23,11 +23,14 @@ class Account(metaclass=ABCMeta):
         self._equities: dict[str, object] = dict()
         self._do_snapshot_equity = True
 
+    def __repr__(self):
+        return "<Account " + str(self) + ">"
+
     def init(self, exchange: "Exchange"):
         self._exchange = exchange
 
-    def __repr__(self):
-        return "<Account " + str(self) + ">"
+    def start(self):
+        pass
 
     def risk(self, size, **kwargs):
         if size is None:

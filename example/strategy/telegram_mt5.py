@@ -26,11 +26,17 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
-        print("-" * 64)
+        print("-" * 64, len(self.data))
         print(df)
 
         if len(self.orders) > 0 or len(self.trades) > 0:
             return
+
+        if len(self.data) >= 102:
+            price = self.data.close[-1]
+            result = self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
+            if not result.ok:
+                print("[ERROR] ---> order:", result)
 
         if df.signal_ema_crossover[-1]:
             price = self.data.close[-1]
@@ -72,7 +78,7 @@ if __name__ == "__main__":
 
     lt = LetTrade(
         strategy=SmaCross,
-        datas=[mt5.data("EURUSD", ticker="EURUSD", timeframe="1m")],
+        datas=[mt5.data("EURGBP", "1m")],
         feeder=mt5.feeder(),
         exchange=mt5.exchange(),
         account=mt5.account(),

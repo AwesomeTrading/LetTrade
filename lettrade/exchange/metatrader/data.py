@@ -9,7 +9,7 @@ class MetaTraderDataFeed(DataFeed):
     def __init__(
         self,
         name: str,
-        ticker: str,
+        symbol: str,
         timeframe: str,
         feeder: "MetaTraderDataFeeder",
         api: "MetaTraderAPI",
@@ -34,7 +34,7 @@ class MetaTraderDataFeed(DataFeed):
 
         self.meta.update(
             dict(
-                ticker=ticker,
+                symbol=symbol,
                 timeframe=timeframe,
             )
         )
@@ -43,8 +43,8 @@ class MetaTraderDataFeed(DataFeed):
         setattr(self, "__api", api)
 
     @property
-    def ticker(self) -> str:
-        return self.meta["ticker"]
+    def symbol(self) -> str:
+        return self.meta["symbol"]
 
     @property
     def timeframe(self) -> str:
@@ -63,7 +63,7 @@ class MetaTraderDataFeed(DataFeed):
 
     def _next(self, size=1, tick=0):
         rates = self._api.rates_from_pos(
-            ticker=self.ticker,
+            symbol=self.symbol,
             timeframe=self.timeframe,
             since=0,
             to=size + 1,  # Get last completed bar

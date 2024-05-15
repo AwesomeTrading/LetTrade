@@ -16,12 +16,6 @@ class BackTestOrder(Order):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def place(self):
-        if self.state != OrderState.Pending:
-            raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
-        self.state = OrderState.Place
-        self.exchange.on_order(self)
-
     def cancel(self):
         """Cancel the order."""
         if self.state is not OrderState.Place:

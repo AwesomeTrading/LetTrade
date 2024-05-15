@@ -20,5 +20,5 @@ class BackTestDataFeeder(DataFeeder):
     def next(self):
         return self.data.next()
 
-    def pre_feed(self, size=100):
+    def start(self, size=100):
         self.data.next(size)

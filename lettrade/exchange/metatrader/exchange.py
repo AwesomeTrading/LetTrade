@@ -7,6 +7,7 @@ from lettrade.exchange import Exchange, OrderType
 logger = logging.getLogger(__name__)
 
 from .api import MetaTraderAPI
+from .trade import MetaTraderExecute, MetaTraderOrder, MetaTraderTrade
 
 
 class MetaTraderExchange(Exchange):
@@ -40,8 +41,9 @@ class MetaTraderExchange(Exchange):
             stop = 0
 
         order = MetaTraderOrder(
-            id=self._id(),
+            id=-1,
             exchange=self,
+            api=self._api,
             data=data,
             size=size,
             type=type,
@@ -53,7 +55,9 @@ class MetaTraderExchange(Exchange):
             open_price=self.data.open[0],
             open_bar=self.data.bar(),
         )
-        order.place()
+        ok = order.place()
 
         if __debug__:
             logger.info("New order %s at %s", order, self.data.now)
+
+        return ok

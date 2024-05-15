@@ -37,10 +37,10 @@ class MetaTraderAPI:
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
             cls._singleton = object.__new__(cls)
-            cls._singleton.init(*args, **kwargs)
+            cls._singleton.__init__(*args, **kwargs)
         return cls._singleton
 
-    def init(self, host="localhost", port=18812) -> None:
+    def __init__(self, host="localhost", port=18812) -> None:
         self._mt5 = Mt5(host=host, port=port)
 
     def start(self, account: int, password: str, server: str, timeout=60, retry=20):
@@ -69,7 +69,14 @@ class MetaTraderAPI:
             server,
             self._mt5.version(),
         )
-        logger.info("Terminal information: %s", str(self._mt5.terminal_info()))
+
+        terminal = self._mt5.terminal_info()
+        logger.info("Terminal information: %s", str(terminal))
+        if not terminal.trade_allowed:
+            logger.warning("Terminal trading mode is not allowed")
+
+    def stop(self):
+        self._mt5.shutdown()
 
     def heartbeat(self):
         return True
@@ -77,11 +84,20 @@ class MetaTraderAPI:
     def account(self):
         return self._mt5.account_info()
 
-    def rates_from_pos(self, ticker, timeframe, since=0, to=1000):
+    def markets(self, symbol):
+        return self._mt5.symbol_info(symbol)
+
+    def tick(self, symbol):
+        return self._mt5.symbol_info_tick(symbol)
+
+    def rates_from_pos(self, symbol, timeframe, since=0, to=1000):
         rates = self._mt5.copy_rates_from_pos(
-            ticker, TIMEFRAME_L2M[timeframe], since, to
+            symbol,
+            TIMEFRAME_L2M[timeframe],
+            since,
+            to,
         )
         return rates
 
-    def stop(self):
-        self._mt5.shutdown()
+    def order_send(self, request: "TradeRequest"):
+        return self._mt5.order_send(request)

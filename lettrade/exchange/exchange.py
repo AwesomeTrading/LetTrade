@@ -2,8 +2,6 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from typing import Optional
 
-import pandas as pd
-
 from lettrade.account import Account
 from lettrade.base import BaseDataFeeds
 from lettrade.data import DataFeeder
@@ -38,6 +36,9 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
     @property
     def feeder(self) -> DataFeeder:
         return self._feeder
+
+    def start(self):
+        self._account.start()
 
     def next(self):
         self._account._snapshot_equity()
@@ -81,6 +82,9 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
 
         if broadcast:
             self._brain.on_position(position)
+
+    def on_notify(self, *args, **kwargs):
+        self._brain.on_notify(*args, **kwargs)
 
     @abstractmethod
     def new_order(

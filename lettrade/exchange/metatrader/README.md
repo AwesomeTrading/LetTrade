@@ -27,6 +27,10 @@ WINEPREFIX=$HOME/.mt5 python -m mt5linux "$HOME/.mt5/dosdevices/c:/users/$USER/A
 ```
 
 # MetaTrader Terminal
-Load broker before start by steps:
-    `File` -> `Open an Account` -> Search your broker (ex: `Tickmill`, `Roboforex`...) -> `Enter` to load -> `Cancel` (Done)
+Load broker information before start by steps:
+    
+`File` -> `Open an Account` -> Search your broker (ex: `Tickmill`, `Roboforex`...) -> `Enter` to load -> `Cancel` (Done)
 
+Enable Automatic Algo Trading
+
+`Tools` -> `Options` -> `Expert Advisors` -> `Allow Auto Trading` -> uncheck `Disable automated trading when switching accounts` and `Disable automated trading when switching profiles`

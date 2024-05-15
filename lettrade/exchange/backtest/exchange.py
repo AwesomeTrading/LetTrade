@@ -4,7 +4,7 @@ from typing import Optional
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderType
 
-from .trades import BackTestExecute, BackTestOrder, BackTestTrade
+from .trade import BackTestExecute, BackTestOrder, BackTestTrade
 
 logger = logging.getLogger(__name__)
 

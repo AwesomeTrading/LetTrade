@@ -67,6 +67,14 @@ class Order(BaseTransaction):
             )
         )
 
+    def place(self):
+        if self.state != OrderState.Pending:
+            raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
+
+        self.state = OrderState.Place
+        self.exchange.on_order(self)
+        return OrderResultOk(order=self)
+
     def execute(self, price, bar):
         self.entry_bar = bar
         self.entry_price = price
@@ -108,3 +116,22 @@ class Order(BaseTransaction):
     @property
     def is_tp_order(self):
         return self.trade and self is self.trade.tp_order
+
+
+class OrderResult:
+    def __init__(self, ok=True, order: "Order" = None, code=0, raw=None) -> None:
+        self.ok: bool = ok
+        self.order: "Order" = order
+        self.code: int = code
+        self.raw: object = raw
+
+
+class OrderResultOk(OrderResult):
+    def __init__(self, order: Order = None, raw=None) -> None:
+        super().__init__(ok=True, order=order, raw=raw)
+
+
+class OrderResultError(OrderResult):
+    def __init__(self, error, code=0, order: Order = None, raw=None) -> None:
+        super().__init__(ok=False, order=order, code=code, raw=raw)
+        self.error: str = error

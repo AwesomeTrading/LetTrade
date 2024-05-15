@@ -19,10 +19,15 @@ class MetaTrader:
         self._api = MetaTraderAPI()
         self._api.start(*args, **kwargs)
 
-    def data(self, name: str, ticker: str, timeframe: str) -> MetaTraderDataFeed:
+    def data(
+        self,
+        symbol: str,
+        timeframe: str,
+        name: str = None,
+    ) -> MetaTraderDataFeed:
         return MetaTraderDataFeed(
-            name=name,
-            ticker=ticker,
+            name=name or symbol,
+            symbol=symbol,
             timeframe=timeframe,
             feeder=self.feeder(),
             api=self._api,

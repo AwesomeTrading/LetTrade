@@ -8,7 +8,7 @@
             "name": "Python Debugger: Module",
             "type": "debugpy",
             "request": "launch",
-            "module": "example.strategy.backtest_order",
+            "module": "example.strategy.telegram_mt5",
             "justMyCode": false
         }
     ]

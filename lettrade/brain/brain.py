@@ -23,7 +23,8 @@ class Brain:
     def run(self):
         self.strategy.init()
 
-        self.feeder.pre_feed()
+        self.feeder.start()
+        self.exchange.start()
         self.strategy.indicators(self.data)
 
         while self.feeder.alive():
@@ -58,3 +59,6 @@ class Brain:
     def on_position(self, position: Position):
         self.strategy.on_transaction(position)
         self.strategy.on_position(position)
+
+    def on_notify(self, *args, **kwargs):
+        self.strategy.on_notify(*args, **kwargs)

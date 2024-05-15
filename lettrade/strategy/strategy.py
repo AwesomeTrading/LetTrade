@@ -3,7 +3,7 @@ from typing import Optional
 
 from lettrade.account import Account
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange, Execute, Order, Position, Trade
+from lettrade.exchange import Exchange, Execute, Order, OrderResult, Position, Trade
 
 
 class Strategy(metaclass=ABCMeta):
@@ -41,7 +41,7 @@ class Strategy(metaclass=ABCMeta):
         tp: Optional[float] = None,
         tag: object = None,
         **kwargs,
-    ):
+    ) -> OrderResult:
         """
         Place a new long order. For explanation of parameters, see `Order` and its properties.
         """
@@ -67,7 +67,7 @@ class Strategy(metaclass=ABCMeta):
         tp: Optional[float] = None,
         tag: object = None,
         **kwargs,
-    ):
+    ) -> OrderResult:
         """
         Place a new short order. For explanation of parameters, see `Order` and its properties.
         """
@@ -137,4 +137,7 @@ class Strategy(metaclass=ABCMeta):
         pass
 
     def on_position(self, position: Position):
+        pass
+
+    def on_notify(self, *args, **kwargs):
         pass

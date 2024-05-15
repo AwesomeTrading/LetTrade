@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Type
+from typing import Any, Optional, Type
 
 from mt5linux import MetaTrader5 as mt5
 
@@ -37,12 +37,12 @@ class MetaTraderOrder(Order):
         size: float,
         state: OrderState = OrderState.Pending,
         type: OrderType = OrderType.Market,
-        limit_price: float | None = None,
-        stop_price: float | None = None,
-        sl_price: float | None = None,
-        tp_price: float | None = None,
-        trade: Any | None = None,
-        parent: Order | None = None,
+        limit_price: Optional[float] = None,
+        stop_price: Optional[float] = None,
+        sl_price: Optional[float] = None,
+        tp_price: Optional[float] = None,
+        trade: Optional["Trade"] = None,
+        parent: Optional[Order] = None,
         tag: object = None,
         open_bar: int = None,
         open_price: int = None,
@@ -107,6 +107,77 @@ class MetaTraderOrder(Order):
         }
         return request
 
+    @classmethod
+    def _from_raw(
+        cls, raw, exchange: "Exchange", api: "MetaTraderAPI"
+    ) -> "MetaTraderOrder":
+        return MetaTraderOrder(
+            exchange=exchange,
+            api=api,
+            id=raw.ticket,
+            state=OrderState.Place,
+            # TODO: Fix by get data from symbol
+            data=exchange.data,
+            # TODO: size and type from raw.type
+            size=raw.volume_current,
+            type=OrderType.Market,
+            limit_price=raw.price_open,
+            stop_price=raw.price_open,
+            sl_price=raw.sl,
+            tp_price=raw.tp,
+            tag=raw.comment,
+            open_price=raw.price_open,
+            open_bar=raw.price_open,
+        )
+
 
 class MetaTraderTrade(Trade):
-    pass
+    _api: MetaTraderAPI
+
+    def __init__(
+        self,
+        id: str,
+        exchange: "Exchange",
+        api: MetaTraderAPI,
+        data: "DataFeed",
+        size: float,
+        parent: Order,
+        tag: object = "",
+        state: TradeState = TradeState.Open,
+        entry_price: float | None = None,
+        entry_bar: int | None = None,
+        sl_order: Order | None = None,
+        tp_order: Order | None = None,
+    ):
+        super().__init__(
+            id,
+            exchange,
+            data,
+            size,
+            parent,
+            tag,
+            state,
+            entry_price,
+            entry_bar,
+            sl_order,
+            tp_order,
+        )
+        self._api = api
+
+    @classmethod
+    def _from_raw(
+        cls, raw, exchange: "Exchange", api: "MetaTraderAPI"
+    ) -> "MetaTraderTrade":
+        return MetaTraderTrade(
+            exchange=exchange,
+            api=api,
+            id=raw.ticket,
+            state=TradeState.Open,
+            # TODO: Fix by get data from symbol
+            data=exchange.data,
+            # TODO: size and type from raw.type
+            size=raw.volume,
+            entry_price=raw.price_open,
+            parent=None,
+            tag=raw.comment,
+        )

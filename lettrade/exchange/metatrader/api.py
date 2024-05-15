@@ -101,3 +101,18 @@ class MetaTraderAPI:
 
     def order_send(self, request: "TradeRequest"):
         return self._mt5.order_send(request)
+
+    def orders_total(self):
+        return self._mt5.orders_total()
+
+    def orders_get(self, **kwargs):
+        return self._mt5.orders_get(**kwargs)
+
+    def positions_total(self):
+        return self._mt5.positions_total()
+
+    def positions_get(self, **kwargs):
+        return self._mt5.positions_get(**kwargs)
+
+    def _check_transaction(self):
+        pass

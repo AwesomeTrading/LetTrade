@@ -132,6 +132,6 @@ class OrderResultOk(OrderResult):
 
 
 class OrderResultError(OrderResult):
-    def __init__(self, error, code=0, order: Order = None, raw=None) -> None:
+    def __init__(self, error, code, order: Order = None, raw=None) -> None:
         super().__init__(ok=False, order=order, code=code, raw=raw)
         self.error: str = error

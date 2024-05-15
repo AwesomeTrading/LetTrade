@@ -17,6 +17,11 @@ class MetaTraderExchange(Exchange):
         super().__init__(*args, **kwargs)
         self._api = api
 
+    def start(self):
+        self._sync_orders()
+        self._sync_trades()
+        return super().start()
+
     def next(self):
         super().next()
 
@@ -61,3 +66,47 @@ class MetaTraderExchange(Exchange):
             logger.info("New order %s at %s", order, self.data.now)
 
         return ok
+
+    def _sync_orders(self):
+        total = self._api.orders_total()
+        if total <= 0:
+            return
+
+        raws = self._api.orders_get()
+        if not raws:
+            logger.warning("Cannot get orders")
+            return
+
+        for raw in raws:
+            print("\n---> order:\n", raw)
+            if raw.ticket not in self.orders:
+                order = MetaTraderOrder._from_raw(
+                    raw=raw,
+                    exchange=self,
+                    api=self._api,
+                )
+                # TODO: detect exist and change
+                self.orders[order.id] = order
+        print(self.orders)
+
+    def _sync_trades(self):
+        total = self._api.positions_total()
+        if total <= 0:
+            return
+
+        raws = self._api.positions_get()
+        if not raws:
+            logger.warning("Cannot get trades")
+            return
+
+        for raw in raws:
+            print("\n---> trade:\n", raw)
+            if raw.ticket not in self.trades:
+                trade = MetaTraderTrade._from_raw(
+                    raw=raw,
+                    exchange=self,
+                    api=self._api,
+                )
+                # TODO: detect exist and change
+                self.trades[trade.id] = trade
+        print(self.trades)

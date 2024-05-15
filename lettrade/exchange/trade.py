@@ -14,8 +14,6 @@ class Trade(BaseTransaction):
     Find active trades in `Strategy.trades` and closed, settled trades in `Strategy.closed_trades`.
     """
 
-    _order_cls: "Order" = None
-
     def __init__(
         self,
         id: str,
@@ -25,6 +23,8 @@ class Trade(BaseTransaction):
         parent: "Order",
         tag: object = "",
         state: TradeState = TradeState.Open,
+        entry_price: Optional[float] = None,
+        entry_bar: Optional[int] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
     ):
@@ -40,8 +40,8 @@ class Trade(BaseTransaction):
         self.tag: object = tag
         self.parent: "Order" = parent
 
-        self.entry_price: Optional[float] = None
-        self.entry_bar: Optional[int] = None
+        self.entry_price: Optional[float] = entry_price
+        self.entry_bar: Optional[int] = entry_bar
         self.exit_price: Optional[float] = None
         self.exit_bar: Optional[int] = None
         self.exit_pl: Optional[float] = None

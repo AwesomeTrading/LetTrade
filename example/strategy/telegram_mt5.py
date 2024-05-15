@@ -32,11 +32,11 @@ class SmaCross(Strategy):
         if len(self.orders) > 0 or len(self.trades) > 0:
             return
 
-        if len(self.data) >= 102:
-            price = self.data.close[-1]
-            result = self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
-            if not result.ok:
-                print("[ERROR] ---> order:", result)
+        # if len(self.data) >= 102:
+        #     price = self.data.close[-1]
+        #     result = self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
+        #     if not result.ok:
+        #         print("[ERROR] ---> order:", result)
 
         if df.signal_ema_crossover[-1]:
             price = self.data.close[-1]

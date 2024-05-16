@@ -122,20 +122,31 @@ class MetaTraderAPI:
     def positions_get(self, **kwargs):
         return self._mt5.positions_get(**kwargs)
 
+    # Transaction
     def _check_transactions(self):
         if not self._callbacker:
             return
 
+        # Deals
         deals = self._check_deals()
         if deals:
-            self._callbacker._on_new_deals(deals)
+            self._callbacker.on_new_deals(deals)
 
+        # Orders
         orders, removed_orders = self._check_orders()
         if orders:
-            self._callbacker._on_new_orders(orders)
+            self._callbacker.on_new_orders(orders)
         if removed_orders:
-            self._callbacker._on_old_orders(removed_orders)
+            self._callbacker.on_old_orders(removed_orders)
 
+        # Trades
+        trades, removed_trades = self._check_trades()
+        if trades:
+            self._callbacker.on_new_trades(trades)
+        if removed_trades:
+            self._callbacker.on_old_trades(removed_trades)
+
+    # Deal
     __deal_time_checked = datetime(2020, 1, 1)
 
     def _check_deals(self):
@@ -153,6 +164,7 @@ class MetaTraderAPI:
 
         return raws
 
+    # Order
     __orders_stored: dict[int, object] = {}
 
     def _check_orders(self):
@@ -164,9 +176,11 @@ class MetaTraderAPI:
 
         raws = self._mt5.orders_get()
         tickets = [raw.ticket for raw in raws]
+
         removed_orders = [
             raw for raw in self.__orders_stored.values() if raw.ticket not in tickets
         ]
+
         added_orders = []
         for raw in raws:
             if raw.ticket in self.__orders_stored:
@@ -184,3 +198,38 @@ class MetaTraderAPI:
 
         self.__orders_stored = {raw.ticket: raw for raw in raws}
         return added_orders, removed_orders
+
+    # Trade
+    __trades_stored: dict[int, object] = {}
+
+    def _check_trades(self):
+        trade_total = self._mt5.positions_total()
+
+        # No thing new in trade
+        if trade_total <= 0 and len(self.__trades_stored) == 0:
+            return None, None
+
+        raws = self._mt5.positions_get()
+        tickets = [raw.ticket for raw in raws]
+
+        removed_trades = [
+            raw for raw in self.__trades_stored.values() if raw.ticket not in tickets
+        ]
+
+        added_trades = []
+        for raw in raws:
+            if raw.ticket in self.__trades_stored:
+                stored = self.__trades_stored[raw.ticket]
+                if (
+                    raw.time_update == stored.time_update
+                    and raw.sl == stored.sl
+                    and raw.tp == stored.tp
+                    and raw.volume == stored.volume
+                    and raw.price_open == stored.price_open
+                ):
+                    continue
+
+            added_trades.append(raw)
+
+        self.__trades_stored = {raw.ticket: raw for raw in raws}
+        return added_trades, removed_trades

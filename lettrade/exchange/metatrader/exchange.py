@@ -110,11 +110,17 @@ class MetaTraderExchange(Exchange):
         print(self.trades)
 
     # Events
-    def _on_new_deals(self, raws):
+    def on_new_deals(self, raws):
         print("\n---> raw deals:", raws)
 
-    def _on_new_orders(self, raws):
+    def on_new_orders(self, raws):
         print("\n---> raw orders:", raws)
 
-    def _on_old_orders(self, raws):
+    def on_old_orders(self, raws):
         print("\n---> raw old orders:", raws)
+
+    def on_new_trades(self, raws):
+        print("\n---> raw trades:", raws)
+
+    def on_old_trades(self, raws):
+        print("\n---> raw old trades:", raws)

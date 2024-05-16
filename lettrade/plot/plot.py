@@ -1,4 +1,3 @@
-import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -99,7 +98,7 @@ class Plotter(BaseDataFeeds):
         )
         first_index = self.data.index[0]
         for order in orders:
-            x = [first_index + order.open_bar[0]]
+            x = [first_index + order.open_at[0]]
             y = [order.open_price or order.limit or order.stop]
             self.figure.add_scatter(
                 x=x,
@@ -121,9 +120,9 @@ class Plotter(BaseDataFeeds):
         first_index = self.data.index[0]
         for trade in trades:
             # x
-            x = [first_index + trade.entry_bar[0]]
-            if trade.exit_bar:
-                x.append(first_index + trade.exit_bar[0])
+            x = [first_index + trade.entry_at[0]]
+            if trade.exit_at:
+                x.append(first_index + trade.exit_at[0])
 
             # y
             y = [trade.entry_price]

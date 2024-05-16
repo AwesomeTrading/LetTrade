@@ -23,7 +23,7 @@ class Order(BaseTransaction):
         trade: Optional["Trade"] = None,
         parent: Optional["Order"] = None,
         tag: object = None,
-        open_bar: int = None,
+        open_at: int = None,
         open_price: int = None,
     ):
         super().__init__(
@@ -43,9 +43,9 @@ class Order(BaseTransaction):
         self.parent: Optional["Order"] = parent
         self.tag: object = tag
 
-        self.open_bar: int = open_bar
+        self.open_at: int = open_at
         self.open_price: int = open_price
-        self.entry_bar: int = None
+        self.entry_at: int = None
         self.entry_price: int = None
 
     def __repr__(self):
@@ -75,8 +75,8 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def execute(self, price, bar):
-        self.entry_bar = bar
+    def execute(self, price, at):
+        self.entry_at = at
         self.entry_price = price
         self.state = OrderState.Executed
         self.exchange.on_order(self)

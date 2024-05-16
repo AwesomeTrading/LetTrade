@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import sleep
 
 from mt5linux import MetaTrader5 as Mt5
@@ -127,15 +127,19 @@ class MetaTraderAPI:
             return
 
         deals = self._check_deals()
-        if not deals:
-            return
+        if deals:
+            self._callbacker._on_new_deals(deals)
 
-        self._callbacker._on_deals(deals)
+        orders, removed_orders = self._check_orders()
+        if orders:
+            self._callbacker._on_new_orders(orders)
+        if removed_orders:
+            self._callbacker._on_old_orders(removed_orders)
 
     __deal_time_checked = datetime(2020, 1, 1)
 
     def _check_deals(self):
-        to = datetime.now()
+        to = datetime.now() + timedelta(days=1)
         deal_total = self._mt5.history_deals_total(self.__deal_time_checked, to)
 
         # No thing new in deal
@@ -144,9 +148,39 @@ class MetaTraderAPI:
 
         raws = self._mt5.history_deals_get(self.__deal_time_checked, to)
 
-        # Update last check time +1 msc
-        self.__deal_time_checked = datetime.fromtimestamp(
-            (raws[-1].time_msc + 1) / 1000.0 + 1
-        )
+        # Update last check time +1 second
+        self.__deal_time_checked = datetime.fromtimestamp(raws[-1].time + 1)
 
         return raws
+
+    __orders_stored: dict[int, object] = {}
+
+    def _check_orders(self):
+        order_total = self._mt5.orders_total()
+
+        # No thing new in order
+        if order_total <= 0 and len(self.__orders_stored) == 0:
+            return None, None
+
+        raws = self._mt5.orders_get()
+        tickets = [raw.ticket for raw in raws]
+        removed_orders = [
+            raw for raw in self.__orders_stored.values() if raw.ticket not in tickets
+        ]
+        added_orders = []
+        for raw in raws:
+            if raw.ticket in self.__orders_stored:
+                stored = self.__orders_stored[raw.ticket]
+                if (
+                    raw.sl == stored.sl
+                    and raw.tp == stored.tp
+                    and raw.volume_current == stored.volume_current
+                    and raw.price_open == stored.price_open
+                    and raw.price_stoplimit == stored.price_stoplimit
+                ):
+                    continue
+
+            added_orders.append(raw)
+
+        self.__orders_stored = {raw.ticket: raw for raw in raws}
+        return added_orders, removed_orders

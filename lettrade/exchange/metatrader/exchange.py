@@ -50,7 +50,6 @@ class MetaTraderExchange(Exchange):
         order = MetaTraderOrder(
             id=-1,
             exchange=self,
-            api=self._api,
             data=data,
             size=size,
             type=type,
@@ -90,11 +89,7 @@ class MetaTraderExchange(Exchange):
         return [self._parse_order(raw) for raw in raws]
 
     def _parse_order(self, raw) -> MetaTraderOrder:
-        return MetaTraderOrder._from_raw(
-            raw=raw,
-            exchange=self,
-            api=self._api,
-        )
+        return MetaTraderOrder._from_raw(raw=raw, exchange=self)
 
     def _sync_trades(self):
         total = self._api.positions_total()
@@ -109,15 +104,17 @@ class MetaTraderExchange(Exchange):
         for raw in raws:
             print("\n---> trade:\n", raw)
             if raw.ticket not in self.trades:
-                trade = MetaTraderTrade._from_raw(
-                    raw=raw,
-                    exchange=self,
-                    api=self._api,
-                )
+                trade = MetaTraderTrade._from_raw(raw=raw, exchange=self)
                 # TODO: detect exist and change
                 self.trades[trade.id] = trade
         print(self.trades)
 
     # Events
-    def _on_deals(self, raws):
+    def _on_new_deals(self, raws):
         print("\n---> raw deals:", raws)
+
+    def _on_new_orders(self, raws):
+        print("\n---> raw orders:", raws)
+
+    def _on_old_orders(self, raws):
+        print("\n---> raw old orders:", raws)

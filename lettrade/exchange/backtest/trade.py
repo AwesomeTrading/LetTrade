@@ -30,24 +30,24 @@ class BackTestOrder(Order):
 
         self.exchange.on_order(self)
 
-    def execute(self, price, bar):
+    def execute(self, price, at):
         if self.state != OrderState.Place:
             raise RuntimeError(f"Execute a {self.state} order")
 
         # Order
-        super().execute(price=price, bar=bar)
+        super().execute(price=price, at=at)
 
         # Execute
         execute: BackTestExecute = self.build_execute(
             id=self.exchange._id(),
             price=price,
-            bar=bar,
+            at=at,
         )
         execute.execute()
 
         # Trade hit SL/TP
         if self.trade:
-            self.trade.exit(price=price, bar=bar, caller=self)
+            self.trade.exit(price=price, at=at, caller=self)
         else:
             # Trade: Place and create new trade
             trade = self.build_trade(id=self.exchange._id())
@@ -55,7 +55,7 @@ class BackTestOrder(Order):
                 trade._new_sl_order()
             if self.tp_price:
                 trade._new_tp_order()
-            trade.entry(price=price, bar=bar)
+            trade.entry(price=price, at=at)
 
         return execute
 
@@ -63,7 +63,7 @@ class BackTestOrder(Order):
         self,
         id,
         price,
-        bar,
+        at,
         size=None,
         exchange=None,
         data=None,
@@ -74,7 +74,7 @@ class BackTestOrder(Order):
             exchange=exchange or self.exchange,
             data=data or self.data,
             price=price,
-            bar=bar,
+            at=at,
             parent=self,
         )
 
@@ -101,12 +101,12 @@ class BackTestOrder(Order):
 class BackTestTrade(Trade):
     _order_cls: Type["BackTestOrder"] = None
 
-    def exit(self, price, bar, caller=None):
+    def exit(self, price, at, caller=None):
         if self.state != TradeState.Open:
             return
 
         # State
-        super().exit(price=price, bar=bar, pl=self.pl, fee=0)
+        super().exit(price=price, at=at, pl=self.pl, fee=0)
 
         # Caller is trade close by tp/sl order
         if caller is None or (self.sl_order and self.sl_order is not caller):
@@ -126,7 +126,7 @@ class BackTestTrade(Trade):
             type=OrderType.Stop,
             stop_price=self.parent.sl_price,
             tag=self.parent.tag,
-            open_bar=self.data.bar(),
+            open_at=self.data.at(),
             open_price=self.parent.sl_price,
             trade=self,
         )
@@ -146,7 +146,7 @@ class BackTestTrade(Trade):
             type=OrderType.Limit,
             limit_price=self.parent.tp_price,
             tag=self.parent.tag,
-            open_bar=self.data.bar(),
+            open_at=self.data.at(),
             open_price=self.parent.tp_price,
             trade=self,
         )

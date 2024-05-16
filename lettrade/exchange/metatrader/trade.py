@@ -24,15 +24,66 @@ class MetaTraderExecute(Execute):
     Execute for MetaTrader
     """
 
-
-class MetaTraderOrder(Order):
-    _api: MetaTraderAPI
-
     def __init__(
         self,
         id: str,
-        exchange: "Exchange",
-        api: MetaTraderAPI,
+        exchange: "MetaTraderExchange",
+        data: "DataFeed",
+        size: float,
+        price: float,
+        at: float,
+        order_id: str = None,
+        order: "Order" = None,
+        trade_id: str = None,
+        trade: "Trade" = None,
+        tag: str = "",
+        raw: object = None,
+    ):
+        super().__init__(
+            id=id,
+            exchange=exchange,
+            data=data,
+            size=size,
+            price=price,
+            at=at,
+            order_id=order_id,
+            order=order,
+            trade_id=trade_id,
+            trade=trade,
+        )
+        self.tag: str = tag
+        self.raw: object = raw
+        self._api: MetaTraderAPI = exchange._api
+
+    @classmethod
+    def _from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderExecute":
+        """
+        Building new MetaTraderExecute from metatrader api deal object
+
+            Raw deal: TradeDeal(ticket=33889131, order=41290404, time=1715837856, time_msc=1715837856798, type=0, entry=0, magic=0, position_id=41290404, reason=0, volume=0.01, price=0.85795, commission=0.0, swap=0.0, profit=0.0, fee=0.0, symbol='EURGBP', comment='', external_id='')
+        """
+        return MetaTraderExecute(
+            exchange=exchange,
+            id=raw.ticket,
+            # TODO: Fix by get data from symbol
+            data=exchange.data,
+            # TODO: size and type from raw.type
+            size=raw.volume,
+            price=raw.price,
+            # TODO: set bar time
+            at=None,
+            order_id=raw.order,
+            trade_id=raw.position_id,
+            tag=raw.comment,
+            raw=raw,
+        )
+
+
+class MetaTraderOrder(Order):
+    def __init__(
+        self,
+        id: str,
+        exchange: "MetaTraderExchange",
         data: "DataFeed",
         size: float,
         state: OrderState = OrderState.Pending,
@@ -43,28 +94,28 @@ class MetaTraderOrder(Order):
         tp_price: Optional[float] = None,
         trade: Optional["Trade"] = None,
         parent: Optional[Order] = None,
-        tag: object = None,
-        open_bar: int = None,
+        tag: str = "",
+        open_at: int = None,
         open_price: int = None,
     ):
         super().__init__(
-            id,
-            exchange,
-            data,
-            size,
-            state,
-            type,
-            limit_price,
-            stop_price,
-            sl_price,
-            tp_price,
-            trade,
-            parent,
-            tag,
-            open_bar,
-            open_price,
+            id=id,
+            exchange=exchange,
+            data=data,
+            size=size,
+            state=state,
+            type=type,
+            limit_price=limit_price,
+            stop_price=stop_price,
+            sl_price=sl_price,
+            tp_price=tp_price,
+            trade=trade,
+            parent=parent,
+            tag=tag,
+            open_at=open_at,
+            open_price=open_price,
         )
-        self._api = api
+        self._api: MetaTraderAPI = exchange._api
 
     def place(self):
         if self.state != OrderState.Pending:
@@ -108,12 +159,9 @@ class MetaTraderOrder(Order):
         return request
 
     @classmethod
-    def _from_raw(
-        cls, raw, exchange: "Exchange", api: "MetaTraderAPI"
-    ) -> "MetaTraderOrder":
+    def _from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderOrder":
         return MetaTraderOrder(
             exchange=exchange,
-            api=api,
             id=raw.ticket,
             state=OrderState.Place,
             # TODO: Fix by get data from symbol
@@ -127,50 +175,44 @@ class MetaTraderOrder(Order):
             tp_price=raw.tp,
             tag=raw.comment,
             open_price=raw.price_open,
-            open_bar=raw.price_open,
+            open_at=raw.price_open,
         )
 
 
 class MetaTraderTrade(Trade):
-    _api: MetaTraderAPI
-
     def __init__(
         self,
         id: str,
-        exchange: "Exchange",
-        api: MetaTraderAPI,
+        exchange: "MetaTraderExchange",
         data: "DataFeed",
         size: float,
         parent: Order,
-        tag: object = "",
+        tag: str = "",
         state: TradeState = TradeState.Open,
         entry_price: float | None = None,
-        entry_bar: int | None = None,
+        entry_at: int | None = None,
         sl_order: Order | None = None,
         tp_order: Order | None = None,
     ):
         super().__init__(
-            id,
-            exchange,
-            data,
-            size,
-            parent,
-            tag,
-            state,
-            entry_price,
-            entry_bar,
-            sl_order,
-            tp_order,
+            id=id,
+            exchange=exchange,
+            data=data,
+            size=size,
+            parent=parent,
+            tag=tag,
+            state=state,
+            entry_price=entry_price,
+            entry_at=entry_at,
+            sl_order=sl_order,
+            tp_order=tp_order,
         )
-        self._api = api
+        self._api: MetaTraderAPI = exchange._api
 
     @classmethod
-    def _from_raw(
-        cls, raw, exchange: "Exchange", api: "MetaTraderAPI"
-    ) -> "MetaTraderTrade":
+    def _from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderTrade":
         return MetaTraderTrade(
             exchange=exchange,
-            api=api,
             id=raw.ticket,
             state=TradeState.Open,
             # TODO: Fix by get data from symbol

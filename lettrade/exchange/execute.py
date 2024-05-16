@@ -24,8 +24,11 @@ class Execute(BaseTransaction):
         data: "DataFeed",
         size: float,
         price: float,
-        bar: float,
-        parent: "Order",
+        at: float,
+        order_id: str = None,
+        order: "Order" = None,
+        trade_id: str = None,
+        trade: "Trade" = None,
     ):
         super().__init__(
             id=id,
@@ -33,9 +36,12 @@ class Execute(BaseTransaction):
             data=data,
             size=size,
         )
-        self.parent: "Order" = parent
+        self.order_id = order_id
+        self.order: "Order" = order
+        self.trade_id = trade_id
+        self.trade: "Trade" = trade
         self.price = price
-        self.bar = bar
+        self.at = at
 
     def __repr__(self):
         return f"<Execute id={self.id} size={self.size}>"

@@ -24,7 +24,7 @@ class Trade(BaseTransaction):
         tag: object = "",
         state: TradeState = TradeState.Open,
         entry_price: Optional[float] = None,
-        entry_bar: Optional[int] = None,
+        entry_at: Optional[int] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
     ):
@@ -41,9 +41,9 @@ class Trade(BaseTransaction):
         self.parent: "Order" = parent
 
         self.entry_price: Optional[float] = entry_price
-        self.entry_bar: Optional[int] = entry_bar
+        self.entry_at: Optional[int] = entry_at
         self.exit_price: Optional[float] = None
-        self.exit_bar: Optional[int] = None
+        self.exit_at: Optional[int] = None
         self.exit_pl: Optional[float] = None
         self.exit_fee: Optional[float] = None
         self.sl_order: Optional[Order] = sl_order
@@ -52,24 +52,24 @@ class Trade(BaseTransaction):
     def __repr__(self):
         return f"<Trade id={self.id} state={self.state} size={self.size}>"
         # return (
-        #     f'<Trade id={self.id} size={self.size} time={self.entry_bar}-{self.exit_bar or ""} '
+        #     f'<Trade id={self.id} size={self.size} time={self.entry_at}-{self.exit_at or ""} '
         #     f'price={self.entry_price}-{self.exit_price or ""} pl={self.pl:.0f}'
         #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
         # )
 
-    def entry(self, price, bar) -> bool:
+    def entry(self, price, at) -> bool:
         self.entry_price = price
-        self.entry_bar: int = bar
+        self.entry_at: int = at
         self.state = TradeState.Open
         self.exchange.on_trade(self)
         return True
 
-    def exit(self, price, bar, pl, fee) -> bool:
+    def exit(self, price, at, pl, fee) -> bool:
         if self.state != TradeState.Open:
             return False
 
         self.exit_price = price
-        self.exit_bar = bar
+        self.exit_at = at
         self.exit_pl = pl
         self.exit_fee = fee
         self.state = TradeState.Exit

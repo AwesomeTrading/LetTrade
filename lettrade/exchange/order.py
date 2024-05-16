@@ -81,6 +81,25 @@ class Order(BaseTransaction):
         self.state = OrderState.Executed
         self.exchange.on_order(self)
 
+    def merge(self, other: "Order"):
+        if self.id != other.id:
+            raise RuntimeError(f"Merge difference id {self.id} != {other.id} order")
+
+        self.size = other.size
+        self.sl_price = other.sl_price
+        self.tp_price = other.tp_price
+
+        if other.open_price:
+            self.open_price = other.open_price
+        if other.open_at:
+            self.open_at = other.open_at
+        if other.entry_price:
+            self.entry_price = other.entry_price
+        if other.entry_at:
+            self.entry_at = other.entry_at
+        if other.trade:
+            self.trade = other.trade
+
     # Fields getters
     @property
     def limit(self) -> Optional[float]:

@@ -48,3 +48,21 @@ class Execute(BaseTransaction):
 
     def execute(self):
         self.exchange.on_execute(self)
+
+    def merge(self, other: "Execute"):
+        if self.id != other.id:
+            raise RuntimeError(f"Merge difference id {self.id} != {other.id} execute")
+
+        self.price = other.price
+        self.size = other.size
+
+        if other.at:
+            self.at = other.at
+        if other.order_id:
+            self.order_id = other.order_id
+        if other.order:
+            self.order = other.order
+        if other.trade_id:
+            self.trade_id = other.trade_id
+        if other.trade:
+            self.trade = other.trade

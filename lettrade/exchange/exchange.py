@@ -44,7 +44,11 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         self._account._snapshot_equity()
 
     def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
-        self.executes[execute.id] = execute
+        if execute.id in self.executes:
+            self.executes[execute.id].merge(execute)
+            execute = self.executes[execute.id]
+        else:
+            self.executes[execute.id] = execute
 
         if broadcast:
             self._brain.on_execute(execute)
@@ -57,7 +61,12 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         else:
             if order.id in self.history_orders:
                 raise RuntimeError(f"Order {order.id} closed")
-            self.orders[order.id] = order
+
+            if order.id in self.orders:
+                self.orders[order.id].merge(order)
+                order = self.orders[order.id]
+            else:
+                self.orders[order.id] = order
 
         if broadcast:
             self._brain.on_order(order)
@@ -72,7 +81,11 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         else:
             if trade.id in self.history_trades:
                 raise RuntimeError(f"Order {trade.id} closed")
-            self.trades[trade.id] = trade
+            if trade.id in self.trades:
+                self.trades[trade.id].merge(trade)
+                trade = self.trades[trade.id]
+            else:
+                self.trades[trade.id] = trade
 
         if broadcast:
             self._brain.on_trade(trade)

@@ -76,6 +76,28 @@ class Trade(BaseTransaction):
         self.exchange.on_trade(self)
         return True
 
+    def merge(self, other: "Trade"):
+        if self.id != other.id:
+            raise RuntimeError(f"Merge difference id {self.id} != {other.id} order")
+
+        self.size = other.size
+        if other.sl_order:
+            self.sl_order = other.sl_order
+        if other.tp_order:
+            self.tp_order = other.tp_order
+
+        if other.entry_price:
+            self.entry_price = other.entry_price
+        if other.entry_at:
+            self.entry_at = other.entry_at
+
+        if other.exit_price:
+            self.exit_price = other.exit_price
+        if other.exit_at:
+            self.exit_at = other.exit_at
+        if other.parent:
+            self.parent = other.parent
+
     # Extra properties
     @property
     def is_long(self):

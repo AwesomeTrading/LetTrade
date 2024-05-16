@@ -1,5 +1,5 @@
 import logging
-from typing import Generator, Optional
+from typing import Optional
 
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderType
@@ -59,7 +59,7 @@ class MetaTraderExchange(Exchange):
             tp_price=tp,
             tag=tag,
             open_price=self.data.open[0],
-            open_bar=self.data.bar(),
+            open_at=self.data.bar(),
         )
         ok = order.place()
 
@@ -112,6 +112,13 @@ class MetaTraderExchange(Exchange):
     # Events
     def on_new_deals(self, raws):
         print("\n---> raw deals:", raws)
+        for raw in raws:
+            if raw.ticket in self.executes:
+                execute: MetaTraderExecute = self.executes[raw.ticket]
+                execute._update_by_raw(raw)
+            else:
+                execute = MetaTraderExecute._from_raw(raw, exchange=self)
+            self.on_execute(execute)
 
     def on_new_orders(self, raws):
         print("\n---> raw orders:", raws)

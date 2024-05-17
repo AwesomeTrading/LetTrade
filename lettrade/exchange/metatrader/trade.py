@@ -55,12 +55,12 @@ class MetaTraderExecute(Execute):
         self.raw: object = raw
         self._api: MetaTraderAPI = exchange._api
 
-    def _update_by_raw(self, raw):
-        if self.id != raw.ticket:
-            raise RuntimeError(f"Wrong raw execute {raw}")
+    # def _update_by_raw(self, raw):
+    #     if self.id != raw.ticket:
+    #         raise RuntimeError(f"Wrong raw execute {raw}")
 
-        self.size = raw.volume
-        self.price = raw.price
+    #     self.size = raw.volume
+    #     self.price = raw.price
 
     @classmethod
     def _from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderExecute":

@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
+from enum import Enum
 from typing import Optional
 
 from lettrade.account import Account
@@ -11,6 +12,13 @@ from .execute import Execute
 from .order import Order
 from .position import Position
 from .trade import Trade
+
+
+class ExchangeState(int, Enum):
+    Init = 1
+    Start = 2
+    Run = 3
+    Stop = 4
 
 
 class Exchange(BaseDataFeeds, metaclass=ABCMeta):
@@ -26,6 +34,8 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         self.history_trades: dict[str, Trade] = dict()
         self.positions: dict[str, Position] = dict()
 
+        self._state = ExchangeState.Init
+
     def init(self, brain: "Brain", feeder: DataFeeder, account: Account):
         self._brain = brain
         self._feeder = feeder
@@ -33,27 +43,43 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
 
         self._account.init(exchange=self)
 
+        self._state = ExchangeState.Start
+
     @property
     def feeder(self) -> DataFeeder:
         return self._feeder
 
     def start(self):
         self._account.start()
+        self._state = ExchangeState.Run
 
     def next(self):
         self._account._snapshot_equity()
 
+    def stop(self):
+        self._account.stop()
+        self._state = ExchangeState.Stop
+
     def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
+        if not isinstance(execute, Execute):
+            raise RuntimeError(f"{execute} is not instance of type Execute")
+
         if execute.id in self.executes:
             self.executes[execute.id].merge(execute)
             execute = self.executes[execute.id]
         else:
             self.executes[execute.id] = execute
 
+        if self._state != ExchangeState.Run:
+            return
+
         if broadcast:
             self._brain.on_execute(execute)
 
     def on_order(self, order: Order, broadcast=True, *args, **kwargs):
+        if not isinstance(order, Order):
+            raise RuntimeError(f"{order} is not instance of type Order")
+
         if order.state in [OrderState.Executed, OrderState.Canceled]:
             self.history_orders[order.id] = order
             if order.id in self.orders:
@@ -68,10 +94,16 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             else:
                 self.orders[order.id] = order
 
+        if self._state != ExchangeState.Run:
+            return
+
         if broadcast:
             self._brain.on_order(order)
 
     def on_trade(self, trade: Trade, broadcast=True, *args, **kwargs):
+        if not isinstance(trade, Trade):
+            raise RuntimeError(f"{trade} is not instance of type Trade")
+
         if trade.state == TradeState.Exit:
             self.history_trades[trade.id] = trade
             if trade.id in self.trades:
@@ -87,11 +119,23 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             else:
                 self.trades[trade.id] = trade
 
+        if self._state != ExchangeState.Run:
+            return
+
         if broadcast:
             self._brain.on_trade(trade)
 
     def on_position(self, position: Position, broadcast=True, *args, **kwargs):
-        self.positions[position.id] = position
+        if not isinstance(position, Position):
+            raise RuntimeError(f"{position} is not instance of type Position")
+
+        if position.id in self.positions:
+            self.positions[position.id].merge(position)
+        else:
+            self.positions[position.id] = position
+
+        if self._state != ExchangeState.Run:
+            return
 
         if broadcast:
             self._brain.on_position(position)

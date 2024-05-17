@@ -113,21 +113,29 @@ class MetaTraderExchange(Exchange):
     def on_new_deals(self, raws):
         print("\n---> raw deals:", raws)
         for raw in raws:
-            if raw.ticket in self.executes:
-                execute: MetaTraderExecute = self.executes[raw.ticket]
-                execute._update_by_raw(raw)
-            else:
-                execute = MetaTraderExecute._from_raw(raw, exchange=self)
+            execute = MetaTraderExecute._from_raw(raw, exchange=self)
             self.on_execute(execute)
 
     def on_new_orders(self, raws):
         print("\n---> raw orders:", raws)
+        for raw in raws:
+            order = MetaTraderOrder._from_raw(raw, exchange=self)
+            self.on_order(order)
 
     def on_old_orders(self, raws):
         print("\n---> raw old orders:", raws)
+        for raw in raws:
+            order = MetaTraderOrder._from_raw(raw, exchange=self)
+            self.on_order(order)
 
     def on_new_trades(self, raws):
         print("\n---> raw trades:", raws)
+        for raw in raws:
+            trade = MetaTraderTrade._from_raw(raw, exchange=self)
+            self.on_trade(trade)
 
     def on_old_trades(self, raws):
         print("\n---> raw old trades:", raws)
+        for raw in raws:
+            trade = MetaTraderTrade._from_raw(raw, exchange=self)
+            self.on_trade(trade)

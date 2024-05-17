@@ -50,6 +50,9 @@ class Execute(BaseTransaction):
         self.exchange.on_execute(self)
 
     def merge(self, other: "Execute"):
+        if other is self:
+            return
+
         if self.id != other.id:
             raise RuntimeError(f"Merge difference id {self.id} != {other.id} execute")
 

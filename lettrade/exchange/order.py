@@ -82,6 +82,9 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
 
     def merge(self, other: "Order"):
+        if other is self:
+            return
+
         if self.id != other.id:
             raise RuntimeError(f"Merge difference id {self.id} != {other.id} order")
 

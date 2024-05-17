@@ -77,6 +77,9 @@ class Trade(BaseTransaction):
         return True
 
     def merge(self, other: "Trade"):
+        if other is self:
+            return
+
         if self.id != other.id:
             raise RuntimeError(f"Merge difference id {self.id} != {other.id} order")
 

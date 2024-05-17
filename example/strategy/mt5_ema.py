@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     lt = LetTrade(
         strategy=SmaCross,
-        datas=[mt5.data("EURUSD", ticker="EURUSD", timeframe="1m")],
+        datas=[mt5.data("EURUSD", "1m")],
         feeder=mt5.feeder(),
         exchange=mt5.exchange(),
         account=mt5.account(),

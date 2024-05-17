@@ -32,6 +32,9 @@ class Account(metaclass=ABCMeta):
     def start(self):
         pass
 
+    def stop(self):
+        pass
+
     def risk(self, size, **kwargs):
         if size is None:
             return self._risk

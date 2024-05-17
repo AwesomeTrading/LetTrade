@@ -41,10 +41,13 @@ class Plotter(BaseDataFeeds):
             vertical_spacing=0.03,
             row_width=[0.2, 0.7],
         )
-        params.update(**config.get("params", {}))
+        if "params" in config:
+            params.update(**config["params"])
 
         # Init
         self.figure = make_subplots(**params)
+
+        # Plot candles
         self.figure.add_trace(
             go.Candlestick(
                 x=df.index,
@@ -68,6 +71,19 @@ class Plotter(BaseDataFeeds):
                     s["col"] = 1
                 self.figure.add_scatter(**s)
 
+        # Layout
+        layout_params = dict(
+            title=dict(
+                text=str(self.strategy),
+                font=dict(size=24),
+                x=0.5,
+                xref="paper",
+            )
+        )
+        if "layout" in config:
+            layout_params.update(config["layout"])
+        self.figure.update_layout(**layout_params)
+
     def jump(self, index, range=300, data: DataFeed = None):
         if data is None:
             data = self.data
@@ -79,7 +95,7 @@ class Plotter(BaseDataFeeds):
 
         self.load()
 
-    def plot(self, *args, **kwargs):
+    def plot(self, **kwargs):
         if self.figure is None:
             self.load()
 
@@ -87,8 +103,10 @@ class Plotter(BaseDataFeeds):
         self._plot_orders()
         self._plot_trades()
 
-        self.figure.update_layout(*args, **kwargs)
-        self.figure.update(layout_xaxis_rangeslider_visible=False)
+        params = dict(layout_xaxis_rangeslider_visible=False)
+        params.update(**kwargs)
+        self.figure.update(**params)
+
         self.figure.show()
 
     def _plot_equity(self):

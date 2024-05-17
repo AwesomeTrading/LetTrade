@@ -200,6 +200,8 @@ class LetTrade(BaseDataFeeds):
 
     def stop(self):
         self.brain.stop()
+        if self.plotter is not None:
+            self.plotter.stop()
 
     @property
     def stats(self) -> Statistic:

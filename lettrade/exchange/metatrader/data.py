@@ -11,16 +11,16 @@ logger = logging.getLogger(__name__)
 class MetaTraderDataFeed(DataFeed):
     def __init__(
         self,
-        name: str,
         symbol: str,
         timeframe: str,
         feeder: "MetaTraderDataFeeder",
         api: "MetaTraderAPI",
+        name: str = None,
         *args,
         **kwargs,
     ) -> None:
         super().__init__(
-            name=name,
+            name=name or f"{symbol}_{timeframe}",
             columns=["datetime", "open", "high", "low", "close", "volume"],
             # dtype=[
             #     ("datetime", "datetime64[ns]"),
@@ -124,5 +124,5 @@ class MetaTraderDataFeed(DataFeed):
         from lettrade.data.exporter.csv import csv_export
 
         if path is None:
-            path = f"data/{self.name}_{self.symbol}_{self.timeframe}_{since}_{to}.csv"
+            path = f"data/{self.name}_{since}_{to}.csv"
         csv_export(dataframe=self, path=path)

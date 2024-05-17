@@ -25,6 +25,9 @@ class Plotter(BaseDataFeeds):
         self.account: Account = account
         self.strategy: Strategy = strategy
 
+    def stop(self):
+        pass
+
     def load(self):
         df = self.data
         self.figure = make_subplots(

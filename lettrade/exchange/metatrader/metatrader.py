@@ -26,7 +26,7 @@ class MetaTrader:
         name: str = None,
     ) -> MetaTraderDataFeed:
         return MetaTraderDataFeed(
-            name=name or symbol,
+            name=name,
             symbol=symbol,
             timeframe=timeframe,
             feeder=self.feeder(),

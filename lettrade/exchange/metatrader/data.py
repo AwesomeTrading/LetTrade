@@ -119,7 +119,7 @@ class MetaTraderDataFeed(DataFeed):
 
     def dump_csv(self, path: str = None, since=0, to=1000):
         if self.empty:
-            self._next(size=1000)
+            self._next(size=to)
 
         from lettrade.data.exporter.csv import csv_export
 

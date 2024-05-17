@@ -63,6 +63,7 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         self._state = ExchangeState.Run
 
     def next(self):
+        "Call when new data feeded"
         self._account._snapshot_equity()
 
     def stop(self):

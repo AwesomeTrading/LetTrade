@@ -33,12 +33,10 @@ class DataFeed(pd.DataFrame):
         # print(data.index.tz_convert(pytz.utc))
 
         super().__init__(*args, **kwargs)
-
-        if isinstance(self.index, pd.DatetimeIndex):
+        if not isinstance(self.index, pd.RangeIndex):
             self.reset_index(inplace=True)
 
-        if not isinstance(self.index, pd.RangeIndex):
-            self.index = pd.RangeIndex(start=-len(self.index) + 1, stop=1, step=1)
+        # self.index = pd.RangeIndex(start=-len(self.index) + 1, stop=1, step=1)
 
         # Metadata
         meta["name"] = name

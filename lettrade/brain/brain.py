@@ -30,7 +30,7 @@ class Brain:
         self.feeder.start()
         self.exchange.start()
         self.strategy.indicators(self.data)
-        self.strategy.start()
+        self.strategy.start(self.data)
 
         while self.feeder.alive():
             # Load feeder next data
@@ -43,7 +43,7 @@ class Brain:
 
             self.strategy.next(self.data)
 
-        self.strategy.end()
+        self.strategy.end(self.data)
 
     def stop(self):
         self.feeder.stop()

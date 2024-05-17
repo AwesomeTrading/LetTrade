@@ -1,7 +1,7 @@
 import talib.abstract as ta
 
 import example.logger
-from lettrade import DataFeed, LetTrade, Strategy
+from lettrade import DataFeed, LetTrade, Strategy, let_backtest
 from lettrade.indicator import crossover
 
 
@@ -47,7 +47,7 @@ class SmaCross(Strategy):
         ]
 
 
-lt = LetTrade(
+lt = let_backtest(
     strategy=SmaCross,
     datas="data/EURUSD=X_1h.csv",
 )

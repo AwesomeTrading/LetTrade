@@ -15,7 +15,7 @@ from lettrade.strategy import Strategy
 logger = logging.getLogger(__name__)
 
 
-def backtest(
+def let_backtest(
     strategy: Type[Strategy],
     datas: DataFeed | list[DataFeed] | str | list[str] = None,
     feeder: DataFeeder = None,
@@ -38,6 +38,9 @@ def backtest(
 
     # Data
     feeds = []
+    # Support single and multiple data
+    if not isinstance(datas, list):
+        datas = [datas]
     for data in datas:
         if isinstance(data, str):
             feeds.append(CSVBackTestDataFeed(data))

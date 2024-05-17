@@ -198,6 +198,9 @@ class LetTrade(BaseDataFeeds):
             self.stats.compute()
             self.stats.show()
 
+    def stop(self):
+        self.brain.stop()
+
     @property
     def stats(self) -> Statistic:
         if self._stats is None:

@@ -45,8 +45,9 @@ class Brain:
 
         self.strategy.end()
 
-    def shutdown(self):
-        pass
+    def stop(self):
+        self.feeder.stop()
+        self.exchange.stop()
 
     # Events
     def on_execute(self, execute: Execute):

@@ -1,6 +1,4 @@
 import pandas as pd
-import yfinance as yf
-
 from lettrade.data import CSVDataFeed, DataFeed
 
 
@@ -45,6 +43,8 @@ class YFBackTestDataFeed(BackTestDataFeed):
         )
 
         # Download
+        import yfinance as yf
+
         df = yf.download(ticker, **params)
 
         # Parse to lettrade datafeed

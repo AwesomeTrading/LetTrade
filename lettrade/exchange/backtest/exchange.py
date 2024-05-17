@@ -12,14 +12,6 @@ logger = logging.getLogger(__name__)
 class BackTestExchange(Exchange):
     __id = 0
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._init_trade_classes()
-
-    def _init_trade_classes(self):
-        BackTestOrder._trade_cls = BackTestTrade
-        BackTestOrder._execute_cls = BackTestExecute
-
     def _id(self) -> str:
         self.__id += 1
         return str(self.__id)

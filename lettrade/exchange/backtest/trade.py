@@ -10,9 +10,6 @@ class BackTestExecute(Execute):
 
 
 class BackTestOrder(Order):
-    _trade_cls: Type["Trade"] = None
-    _execute_cls: Type["Execute"] = None
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -68,14 +65,14 @@ class BackTestOrder(Order):
         exchange=None,
         data=None,
     ) -> "Execute":
-        return BackTestOrder._execute_cls(
+        return BackTestExecute(
             id=id,
             size=size or self.size,
             exchange=exchange or self.exchange,
             data=data or self.data,
             price=price,
             at=at,
-            parent=self,
+            order=self,
         )
 
     def build_trade(
@@ -86,7 +83,7 @@ class BackTestOrder(Order):
         size=None,
         state=TradeState.Open,
     ) -> "BackTestTrade":
-        trade = BackTestOrder._trade_cls(
+        trade = BackTestTrade(
             id=id,
             size=size or self.size,
             exchange=exchange or self.exchange,
@@ -99,8 +96,6 @@ class BackTestOrder(Order):
 
 
 class BackTestTrade(Trade):
-    _order_cls: Type["BackTestOrder"] = None
-
     def exit(self, price, at, caller=None):
         if self.state != TradeState.Open:
             return
@@ -126,7 +121,7 @@ class BackTestTrade(Trade):
             type=OrderType.Stop,
             stop_price=self.parent.sl_price,
             tag=self.parent.tag,
-            open_at=self.data.at(),
+            open_at=self.data.bar(),
             open_price=self.parent.sl_price,
             trade=self,
         )
@@ -146,7 +141,7 @@ class BackTestTrade(Trade):
             type=OrderType.Limit,
             limit_price=self.parent.tp_price,
             tag=self.parent.tag,
-            open_at=self.data.at(),
+            open_at=self.data.bar(),
             open_price=self.parent.tp_price,
             trade=self,
         )

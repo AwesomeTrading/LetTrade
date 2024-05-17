@@ -16,14 +16,15 @@ class DataFeeder(metaclass=ABCMeta):
         """Flag check is realtime continous datafeeder"""
         return True
 
-    @abstractmethod
     def alive(self):
         pass
 
-    @abstractmethod
     def start(self):
         pass
 
     @abstractmethod
     def next(self):
+        pass
+
+    def stop(self):
         pass

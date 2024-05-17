@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from typing import Optional
 
 from lettrade.account import Account
@@ -7,7 +7,7 @@ from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange, Execute, Order, OrderResult, Position, Trade
 
 
-class Strategy(metaclass=ABCMeta):
+class Strategy(ABC):
     def __init__(
         self,
         feeder: DataFeeder,

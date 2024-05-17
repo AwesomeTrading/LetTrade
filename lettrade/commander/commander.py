@@ -1,17 +1,15 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 from lettrade.account import Account
-
-# from lettrade.brain import Brain
 from lettrade.data import DataFeed, DataFeeder
 
+# from lettrade.brain import Brain
 # from lettrade.exchange import Exchange
-
 # from lettrade.plot import Plotter
 # from lettrade.strategy import Strategy
 
 
-class Commander(metaclass=ABCMeta):
+class Commander(ABC):
     lettrade: "LetTrade"
     brain: "Brain"
     feeder: DataFeeder

@@ -28,6 +28,7 @@ def backtest(
 ):
     from lettrade.exchange.backtest import (
         BackTestAccount,
+        BackTestCommander,
         BackTestDataFeed,
         BackTestDataFeeder,
         BackTestExchange,
@@ -60,6 +61,10 @@ def backtest(
     # Exchange
     if exchange is None:
         exchange = BackTestExchange()
+
+    # Commander
+    if commander is None:
+        commander = BackTestCommander()
 
     # Plot
     if plot is None:
@@ -150,18 +155,13 @@ class LetTrade(BaseDataFeeds):
 
         # Commander
         if commander:
-            if not self.feeder.is_continous:
-                logger.warning(
-                    "Commander %s will be disable in backtest datafeeder", commander
-                )
-            else:
-                self.commander = commander
-                self.commander.init(
-                    lettrade=self,
-                    brain=self.brain,
-                    exchange=self.exchange,
-                    strategy=self.strategy,
-                )
+            self.commander = commander
+            self.commander.init(
+                lettrade=self,
+                brain=self.brain,
+                exchange=self.exchange,
+                strategy=self.strategy,
+            )
 
         # Plot class
         if plot:

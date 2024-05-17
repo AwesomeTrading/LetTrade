@@ -71,7 +71,9 @@ class MetaTraderDataFeed(DataFeed):
             since=0,
             to=size + 1,  # Get last completed bar
         )
+        self.on_rates(rates, tick=tick)
 
+    def on_rates(self, rates, tick=0):
         i_next = 0
         if not self.empty:
             now = self.now.timestamp()
@@ -114,3 +116,13 @@ class MetaTraderDataFeed(DataFeed):
 
         self.index = range(-len(self.index) + 1, 1, 1)
         return True
+
+    def dump_csv(self, path: str = None, since=0, to=1000):
+        if self.empty:
+            self._next(size=1000)
+
+        from lettrade.data.exporter.csv import csv_export
+
+        if path is None:
+            path = f"data/{self.name}_{self.symbol}_{self.timeframe}_{since}_{to}.csv"
+        csv_export(dataframe=self, path=path)

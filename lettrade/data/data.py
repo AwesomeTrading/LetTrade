@@ -56,6 +56,10 @@ class DataFeed(pd.DataFrame):
         return self.attrs["lt_meta"]
 
     @property
+    def name(self) -> dict:
+        return self.meta["name"]
+
+    @property
     def now(self) -> datetime:
         return self.datetime[0]
 

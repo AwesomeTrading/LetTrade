@@ -14,11 +14,16 @@ class Strategy(ABC):
         exchange: Exchange,
         account: Account,
         commander: Commander,
+        is_optimize: bool = False,
     ):
         self.__feeder: DataFeeder = feeder
         self.__exchange: Exchange = exchange
         self.__account: Account = account
         self.__commander: Commander = commander
+
+        if is_optimize and self.is_live:
+            raise RuntimeError("Optimize a live datafeeder")
+        self.__is_optimize: bool = is_optimize
 
     def init(self):
         pass
@@ -40,7 +45,7 @@ class Strategy(ABC):
         pass
 
     def plot(self, df: DataFeed):
-        pass
+        return dict()
 
     def buy(
         self,
@@ -141,6 +146,18 @@ class Strategy(ABC):
     @property
     def positions(self) -> dict[str, Position]:
         return self.__exchange.positions
+
+    @property
+    def is_live(self) -> bool:
+        return self.__feeder.is_continous
+
+    @property
+    def is_backtest(self) -> bool:
+        return not self.is_live
+
+    @property
+    def is_optimize(self) -> bool:
+        return self.__is_optimize
 
     # Events
     def on_transaction(self, t):

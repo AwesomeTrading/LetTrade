@@ -71,7 +71,11 @@ class MetaTraderDataFeed(DataFeed):
             since=0,
             to=size + 1,  # Get last completed bar
         )
-        self.on_rates(rates, tick=tick)
+        if len(rates) == 0:
+            logger.warning("No rates data for %s", self.name)
+            return False
+
+        return self.on_rates(rates, tick=tick)
 
     def on_rates(self, rates, tick=0):
         i_next = 0

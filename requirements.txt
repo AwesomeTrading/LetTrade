@@ -1,7 +1,3 @@
 numpy
 pandas
-pandas_ta
 python-telegram-bot
-
-# conda install -c conda-forge ta-lib
-TA-Lib

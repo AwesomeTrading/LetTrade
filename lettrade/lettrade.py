@@ -9,18 +9,73 @@ from lettrade.brain import Brain
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
-from lettrade.exchange.backtest import (
-    BackTestAccount,
-    BackTestDataFeed,
-    BackTestDataFeeder,
-    BackTestExchange,
-    CSVBackTestDataFeed,
-)
-from lettrade.plot import Plotter
 from lettrade.stats import Statistic
 from lettrade.strategy import Strategy
 
 logger = logging.getLogger(__name__)
+
+
+def backtest(
+    strategy: Type[Strategy],
+    datas: DataFeed | list[DataFeed] | str | list[str] = None,
+    feeder: DataFeeder = None,
+    exchange: Exchange = None,
+    commander: Commander = None,
+    plot: Type["Plotter"] = None,
+    cash: float = 10_000.0,
+    account: Account = None,
+    **kwargs,
+):
+    from lettrade.exchange.backtest import (
+        BackTestAccount,
+        BackTestDataFeed,
+        BackTestDataFeeder,
+        BackTestExchange,
+        CSVBackTestDataFeed,
+    )
+    from lettrade.plot import Plotter
+
+    # Data
+    feeds = []
+    for data in datas:
+        if isinstance(data, str):
+            feeds.append(CSVBackTestDataFeed(data))
+            continue
+
+        if isinstance(data, pd.DataFrame) and not isinstance(data, DataFeed):
+            feeds.append(BackTestDataFeed(data))
+            continue
+
+        if not isinstance(data, DataFeed):
+            raise RuntimeError(f"Data {data} type is invalid")
+
+    # DataFeeder
+    if not feeder:
+        feeder = BackTestDataFeeder()
+
+    # Account
+    if account is None:
+        account = BackTestAccount()
+
+    # Exchange
+    if exchange is None:
+        exchange = BackTestExchange()
+
+    # Plot
+    if plot is None:
+        plot = Plotter
+
+    return LetTrade(
+        strategy=strategy,
+        datas=feeds,
+        feeder=feeder,
+        exchange=exchange,
+        commander=commander,
+        plot=plot,
+        cash=cash,
+        account=account,
+        **kwargs,
+    )
 
 
 class LetTrade(BaseDataFeeds):
@@ -30,45 +85,40 @@ class LetTrade(BaseDataFeeds):
     account: Account
     strategy: Strategy
     commander: Commander = None
-    plotter: Plotter = None
+    plotter: "Plotter" = None
     _stats: Statistic = None
 
-    _plot_cls: Type[Plotter] = None
+    _plot_cls: Type["Plotter"] = None
 
     def __init__(
         self,
         strategy: Type[Strategy],
-        datas: DataFeed | list[DataFeed] | str | list[str] = None,
-        feeder: DataFeeder = None,
-        exchange: Exchange = None,
-        commander: Commander = None,
-        plot: Type[Plotter] = Plotter,
-        cash: float = 10_000.0,
-        account: Account = None,
+        datas: DataFeed | list[DataFeed] | str | list[str],
+        feeder: DataFeeder,
+        exchange: Exchange,
+        commander: Commander,
+        plot: Type["Plotter"],
+        account: Account,
         # params: dict = {},
         *args,
         **kwargs,
     ) -> None:
         # DataFeeder
-        if feeder:
-            self.feeder = feeder
-        else:
-            if datas is None:
-                raise RuntimeError("datas and feeder is None")
-            self.feeder = BackTestDataFeeder()
-            datas = self._init_datafeeds(datas=datas)
+        if not feeder:
+            raise RuntimeError("Feeder is invalid")
 
         # DataFeeds
+        datas = self._init_datafeeds(datas=datas)
         self.feeder.init(datas=datas)
 
         # Account
         if account is None:
-            account = BackTestAccount()
+            raise RuntimeError("Account is invalid")
         self.account = account
 
         # Exchange
         if exchange is None:
-            exchange = BackTestExchange()
+            raise RuntimeError("Exchange is invalid")
         self.exchange = exchange
 
         # Strategy
@@ -84,7 +134,6 @@ class LetTrade(BaseDataFeeds):
             strategy=self.strategy,
             exchange=self.exchange,
             feeder=self.feeder,
-            cash=cash,
             *args,
             **kwargs,
         )
@@ -118,16 +167,12 @@ class LetTrade(BaseDataFeeds):
         if not isinstance(datas, list):
             datas = [datas]
 
-        # Check
+        # Check data
         feeds = []
         for data in datas:
             match data:
                 case DataFeed():
                     feeds.append(data)
-                case pd.DataFrame():
-                    feeds.append(BackTestDataFeed(data))
-                case str():
-                    feeds.append(CSVBackTestDataFeed(data))
                 case _:
                     raise RuntimeError(f"data {data} is invalid")
 

@@ -1,6 +1,6 @@
 import talib.abstract as ta
 
-import lettrade.logger
+import example.logger
 from lettrade import DataFeed, LetTrade, Strategy
 from lettrade.indicator import crossover
 

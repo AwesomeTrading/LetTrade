@@ -4,7 +4,8 @@ from lettrade.account import Account
 from lettrade.brain import Brain
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
-from lettrade.plot import Plotter
+
+# from lettrade.plot import Plotter
 from lettrade.strategy import Strategy
 
 
@@ -15,7 +16,7 @@ class Commander(metaclass=ABCMeta):
     exchange: Exchange
     account: Account
     strategy: Strategy
-    plotter: Plotter = None
+    plotter: "Plotter" = None
 
     def __init__(self) -> None:
         super().__init__()

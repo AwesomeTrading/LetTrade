@@ -1,7 +1,7 @@
 import pandas as pd
 import talib.abstract as ta
 
-import lettrade.logger
+import example.logger
 from lettrade import DataFeed, LetTrade, Strategy
 from lettrade.exchange.backtest import ForexBackTestAccount
 from lettrade.indicator import crossover, crossunder

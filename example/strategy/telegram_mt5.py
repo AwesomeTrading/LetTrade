@@ -4,7 +4,7 @@ import pandas as pd
 import talib.abstract as ta
 from dotenv import load_dotenv
 
-import lettrade.logger
+import example.logger
 from lettrade import DataFeed, LetTrade, Strategy
 from lettrade.commander import TelegramCommander
 from lettrade.exchange.metatrader import MetaTrader

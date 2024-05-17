@@ -3,8 +3,6 @@ import yfinance as yf
 
 from lettrade.data import CSVDataFeed, DataFeed
 
-from .yfinance import yf_parse
-
 
 class BackTestDataFeed(DataFeed):
     def alive(self):
@@ -50,6 +48,8 @@ class YFBackTestDataFeed(BackTestDataFeed):
         df = yf.download(ticker, **params)
 
         # Parse to lettrade datafeed
+        from .yfinance import yf_parse
+
         df = yf_parse(df)
 
         # Reindex to 0,1,2,3...

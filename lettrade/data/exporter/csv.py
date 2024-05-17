@@ -1,8 +1,8 @@
 import logging
+from datetime import timezone
 from pathlib import Path
 
 import pandas as pd
-import pytz
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ def csv_export(dataframe: pd.DataFrame, path: str | Path = "data/data.csv", **kw
             "volume": "float",
         }
     )
-    dataframe.index = dataframe.index.tz_convert(pytz.utc)
+    dataframe.index = dataframe.index.tz_convert(timezone.utc)
 
     if not isinstance(path, Path):
         path = Path(path)

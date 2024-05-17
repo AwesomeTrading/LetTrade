@@ -27,6 +27,12 @@ setuptools.setup(
     python_requires=">=3.8.0,<3.11",
     install_requires=["pandas", "numpy"],
     extras_require={
-        "dev": ["yfinance"],
+        "extra": ["pandas_ta"],
+        "exchange-metatrader": [
+            "mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master"
+        ],
+        "commander": ["python-telegram-bot"],
+        "backtest-extra": ["yfinance"],
+        "dev": ["yfinance", "pytz"],
     },
 )

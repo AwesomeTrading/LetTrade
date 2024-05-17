@@ -10,9 +10,6 @@ class BackTestExecute(Execute):
 
 
 class BackTestOrder(Order):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     def cancel(self):
         """Cancel the order."""
         if self.state is not OrderState.Place:

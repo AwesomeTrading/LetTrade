@@ -21,7 +21,6 @@ class Order(BaseTransaction):
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
         trade: Optional["Trade"] = None,
-        parent: Optional["Order"] = None,
         tag: object = None,
         open_at: int = None,
         open_price: int = None,
@@ -40,7 +39,6 @@ class Order(BaseTransaction):
         self.sl_price: Optional[float] = sl_price
         self.tp_price: Optional[float] = tp_price
         self.trade: Optional["Trade"] = trade
-        self.parent: Optional["Order"] = parent
         self.tag: object = tag
 
         self.open_at: int = open_at

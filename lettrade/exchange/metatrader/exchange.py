@@ -80,10 +80,7 @@ class MetaTraderExchange(Exchange):
 
         for order in self._parse_orders(raws):
             print("\n---> order:\n", order)
-            if order.id not in self.orders:
-                # TODO: detect exist and change
-                self.orders[order.id] = order
-        print(self.orders)
+            self.on_order(order)
 
     def _parse_orders(self, raws) -> list[MetaTraderOrder]:
         return [self._parse_order(raw) for raw in raws]
@@ -105,9 +102,7 @@ class MetaTraderExchange(Exchange):
             print("\n---> trade:\n", raw)
             if raw.ticket not in self.trades:
                 trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
-                # TODO: detect exist and change
-                self.trades[trade.id] = trade
-        print(self.trades)
+                self.on_trade(trade)
 
     # Events
     def on_new_deals(self, raws):

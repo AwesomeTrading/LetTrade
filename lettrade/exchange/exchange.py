@@ -14,6 +14,8 @@ from .order import Order
 from .position import Position
 from .trade import Trade
 
+# from lettrade.brain import Brain
+
 
 class ExchangeState(int, Enum):
     Init = 1

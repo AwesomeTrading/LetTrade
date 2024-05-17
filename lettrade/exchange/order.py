@@ -137,6 +137,10 @@ class Order(BaseTransaction):
     def is_tp_order(self):
         return self.trade and self is self.trade.tp_order
 
+    @property
+    def is_alive(self) -> bool:
+        return self.state in [OrderState.Pending, OrderState.Place]
+
 
 class OrderResult:
     def __init__(self, ok=True, order: "Order" = None, code=0, raw=None) -> None:

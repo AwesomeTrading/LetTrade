@@ -2,15 +2,23 @@ from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 from lettrade.account import Account
+from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange, Execute, Order, OrderResult, Position, Trade
 
 
 class Strategy(metaclass=ABCMeta):
-    def __init__(self, feeder: DataFeeder, exchange: Exchange, account: Account):
+    def __init__(
+        self,
+        feeder: DataFeeder,
+        exchange: Exchange,
+        account: Account,
+        commander: Commander,
+    ):
         self.__feeder: DataFeeder = feeder
         self.__exchange: Exchange = exchange
         self.__account: Account = account
+        self.__commander: Commander = commander
 
     def init(self):
         pass
@@ -21,11 +29,14 @@ class Strategy(metaclass=ABCMeta):
         Because of lettrade will cache/pre-load DataFeeds
         """
 
+    def start(self, df: DataFeed):
+        "start function will called before first next() is called"
+
     @abstractmethod
-    def next(self):
+    def next(self, df: DataFeed):
         pass
 
-    def end(self):
+    def end(self, df: DataFeed):
         pass
 
     def plot(self, df: DataFeed):
@@ -92,8 +103,16 @@ class Strategy(metaclass=ABCMeta):
         return self.__exchange
 
     @property
+    def now(self):
+        return self.data.now
+
+    @property
     def account(self) -> Account:
         return self.__account
+
+    @property
+    def commander(self) -> Commander:
+        return self.__commander
 
     @property
     def data(self) -> DataFeed:
@@ -141,3 +160,7 @@ class Strategy(metaclass=ABCMeta):
 
     def on_notify(self, *args, **kwargs):
         pass
+
+    # Commander
+    def send_notify(self, msg, **kwargs):
+        return self.commander.send_message(msg=msg, **kwargs)

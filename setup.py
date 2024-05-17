@@ -27,7 +27,7 @@ setuptools.setup(
     python_requires=">=3.8.0,<3.11",
     install_requires=["pandas", "numpy"],
     extras_require={
-        "extra": ["pandas_ta"],
+        "extra": ["pandas_ta", "plotly"],
         "exchange-metatrader": [
             "mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master"
         ],

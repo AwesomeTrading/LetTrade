@@ -63,7 +63,7 @@ class MetaTraderExecute(Execute):
     #     self.price = raw.price
 
     @classmethod
-    def _from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderExecute":
+    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderExecute":
         """
         Building new MetaTraderExecute from metatrader api deal object
 
@@ -166,7 +166,7 @@ class MetaTraderOrder(Order):
         return request
 
     @classmethod
-    def _from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderOrder":
+    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderOrder":
         return MetaTraderOrder(
             exchange=exchange,
             id=raw.ticket,
@@ -217,7 +217,7 @@ class MetaTraderTrade(Trade):
         self._api: MetaTraderAPI = exchange._api
 
     @classmethod
-    def _from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderTrade":
+    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderTrade":
         return MetaTraderTrade(
             exchange=exchange,
             id=raw.ticket,

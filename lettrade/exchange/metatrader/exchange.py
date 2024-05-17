@@ -89,7 +89,7 @@ class MetaTraderExchange(Exchange):
         return [self._parse_order(raw) for raw in raws]
 
     def _parse_order(self, raw) -> MetaTraderOrder:
-        return MetaTraderOrder._from_raw(raw=raw, exchange=self)
+        return MetaTraderOrder.from_raw(raw=raw, exchange=self)
 
     def _sync_trades(self):
         total = self._api.positions_total()
@@ -104,38 +104,43 @@ class MetaTraderExchange(Exchange):
         for raw in raws:
             print("\n---> trade:\n", raw)
             if raw.ticket not in self.trades:
-                trade = MetaTraderTrade._from_raw(raw=raw, exchange=self)
+                trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
                 # TODO: detect exist and change
                 self.trades[trade.id] = trade
         print(self.trades)
 
     # Events
     def on_new_deals(self, raws):
-        print("\n---> raw deals:", raws)
+        if __debug__:
+            print("\n---> raw deals:", raws)
         for raw in raws:
-            execute = MetaTraderExecute._from_raw(raw, exchange=self)
+            execute = MetaTraderExecute.from_raw(raw, exchange=self)
             self.on_execute(execute)
 
     def on_new_orders(self, raws):
-        print("\n---> raw orders:", raws)
+        if __debug__:
+            print("\n---> raw orders:", raws)
         for raw in raws:
-            order = MetaTraderOrder._from_raw(raw, exchange=self)
+            order = MetaTraderOrder.from_raw(raw, exchange=self)
             self.on_order(order)
 
     def on_old_orders(self, raws):
-        print("\n---> raw old orders:", raws)
+        if __debug__:
+            print("\n---> raw old orders:", raws)
         for raw in raws:
-            order = MetaTraderOrder._from_raw(raw, exchange=self)
+            order = MetaTraderOrder.from_raw(raw, exchange=self)
             self.on_order(order)
 
     def on_new_trades(self, raws):
-        print("\n---> raw trades:", raws)
+        if __debug__:
+            print("\n---> raw trades:", raws)
         for raw in raws:
-            trade = MetaTraderTrade._from_raw(raw, exchange=self)
+            trade = MetaTraderTrade.from_raw(raw, exchange=self)
             self.on_trade(trade)
 
     def on_old_trades(self, raws):
-        print("\n---> raw old trades:", raws)
+        if __debug__:
+            print("\n---> raw old trades:", raws)
         for raw in raws:
-            trade = MetaTraderTrade._from_raw(raw, exchange=self)
+            trade = MetaTraderTrade.from_raw(raw, exchange=self)
             self.on_trade(trade)

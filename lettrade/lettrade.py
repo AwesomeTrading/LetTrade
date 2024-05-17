@@ -126,7 +126,8 @@ class LetTrade(BaseDataFeeds):
         self.strategy = strategy(
             feeder=self.feeder,
             exchange=self.exchange,
-            account=account,
+            account=self.account,
+            commander=commander,
             # params=params,
         )
 
@@ -135,6 +136,7 @@ class LetTrade(BaseDataFeeds):
             strategy=self.strategy,
             exchange=self.exchange,
             feeder=self.feeder,
+            commander=commander,
             *args,
             **kwargs,
         )
@@ -143,6 +145,7 @@ class LetTrade(BaseDataFeeds):
             brain=self.brain,
             feeder=self.feeder,
             account=self.account,
+            commander=commander,
         )
 
         # Commander

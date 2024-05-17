@@ -1,8 +1,11 @@
+import logging
 from datetime import datetime, timezone
 
 from lettrade.data import DataFeed
 
 from .api import MetaTraderAPI
+
+logger = logging.getLogger(__name__)
 
 
 class MetaTraderDataFeed(DataFeed):
@@ -78,7 +81,8 @@ class MetaTraderDataFeed(DataFeed):
                 rates = rates[:-1]
 
             rates = rates[rates["time"] >= now]
-            print("rates", rates)
+            if __debug__:
+                logger.info("Rates: %s", rates)
 
             # No new data
             if len(rates) == 0:

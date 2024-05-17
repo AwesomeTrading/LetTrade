@@ -5,6 +5,7 @@ from typing import Optional
 
 from lettrade.account import Account
 from lettrade.base import BaseDataFeeds
+from lettrade.commander import Commander
 from lettrade.data import DataFeeder
 
 from .base import OrderState, TradeState
@@ -25,6 +26,7 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
     _brain: "Brain"
     _feeder: DataFeeder
     _account: Account
+    _commander: Commander
 
     def __init__(self):
         self.executes: dict[str, Execute] = dict()
@@ -36,10 +38,17 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
 
         self._state = ExchangeState.Init
 
-    def init(self, brain: "Brain", feeder: DataFeeder, account: Account):
+    def init(
+        self,
+        brain: "Brain",
+        feeder: DataFeeder,
+        account: Account,
+        commander: Commander,
+    ):
         self._brain = brain
         self._feeder = feeder
         self._account = account
+        self._commander = commander
 
         self._account.init(exchange=self)
 

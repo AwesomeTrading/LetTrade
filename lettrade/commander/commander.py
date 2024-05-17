@@ -1,27 +1,35 @@
 from abc import ABCMeta, abstractmethod
 
 from lettrade.account import Account
-from lettrade.brain import Brain
+
+# from lettrade.brain import Brain
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange
+
+# from lettrade.exchange import Exchange
 
 # from lettrade.plot import Plotter
-from lettrade.strategy import Strategy
+# from lettrade.strategy import Strategy
 
 
 class Commander(metaclass=ABCMeta):
     lettrade: "LetTrade"
-    brain: Brain
+    brain: "Brain"
     feeder: DataFeeder
-    exchange: Exchange
+    exchange: "Exchange"
     account: Account
-    strategy: Strategy
+    strategy: "Strategy"
     plotter: "Plotter" = None
 
     def __init__(self) -> None:
         super().__init__()
 
-    def init(self, lettrade: "LetTrade", brain: Brain, exchange, strategy: Strategy):
+    def init(
+        self,
+        lettrade: "LetTrade",
+        brain: "Brain",
+        exchange: "Exchange",
+        strategy: "Strategy",
+    ):
         self.lettrade = lettrade
         self.brain = brain
         self.exchange = exchange

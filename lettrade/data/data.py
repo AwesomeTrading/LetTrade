@@ -61,7 +61,6 @@ class DataFeed(pd.DataFrame):
 
     # Functions
     def bar(self, i=0):
-        print(self.index[0])
         return self.index[0] + i, self.datetime[i]
 
     def next(self, size=1) -> bool:

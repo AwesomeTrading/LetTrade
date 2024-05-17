@@ -57,8 +57,8 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         self._account._snapshot_equity()
 
     def stop(self):
-        self._account.stop()
         self._state = ExchangeState.Stop
+        self._account.stop()
 
     def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
         if not isinstance(execute, Execute):

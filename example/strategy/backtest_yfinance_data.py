@@ -2,7 +2,7 @@ import pandas_ta as pta
 import talib.abstract as ta
 
 import example.logger
-from lettrade import DataFeed, LetTrade, Strategy
+from lettrade import DataFeed, LetTrade, Strategy, let_backtest
 from lettrade.exchange.backtest import YFBackTestDataFeed
 from lettrade.indicator import crossover
 
@@ -37,47 +37,46 @@ class SmaCross(Strategy):
     def end(self):
         print(self.data.tail(10))
 
-    def plot(self):
-        import plotly.graph_objects as go
+    def plot(self, df: DataFeed):
+        return dict(
+            scatters=[
+                # EMA
+                dict(
+                    x=df.index,
+                    y=df["ema1"],
+                    line=dict(color="blue", width=1),
+                    name="ema1",
+                ),
+                dict(
+                    x=df.index,
+                    y=df["ema2"],
+                    line=dict(color="green", width=1),
+                    name="ema2",
+                ),
+                # BBands
+                dict(
+                    x=df.index,
+                    y=df["bbands_low"],
+                    line=dict(color="blue", width=1),
+                    name="bbands_low",
+                ),
+                dict(
+                    x=df.index,
+                    y=df["bbands_mid"],
+                    line=dict(color="green", width=1),
+                    name="bbands_mid",
+                ),
+                dict(
+                    x=df.index,
+                    y=df["bbands_high"],
+                    line=dict(color="blue", width=1),
+                    name="bbands_high",
+                ),
+            ]
+        )
 
-        df = self.data
-        return [
-            # EMA
-            go.Scatter(
-                x=df.index,
-                y=df["ema1"],
-                line=dict(color="blue", width=1),
-                name="ema1",
-            ),
-            go.Scatter(
-                x=df.index,
-                y=df["ema2"],
-                line=dict(color="green", width=1),
-                name="ema2",
-            ),
-            # BBands
-            go.Scatter(
-                x=df.index,
-                y=df["bbands_low"],
-                line=dict(color="blue", width=1),
-                name="bbands_low",
-            ),
-            go.Scatter(
-                x=df.index,
-                y=df["bbands_mid"],
-                line=dict(color="green", width=1),
-                name="bbands_mid",
-            ),
-            go.Scatter(
-                x=df.index,
-                y=df["bbands_high"],
-                line=dict(color="blue", width=1),
-                name="bbands_high",
-            ),
-        ]
 
-
-lt = LetTrade(
+lt = let_backtest(
     strategy=SmaCross,
     datas=[
         YFBackTestDataFeed(

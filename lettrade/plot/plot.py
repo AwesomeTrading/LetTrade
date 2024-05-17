@@ -30,12 +30,21 @@ class Plotter(BaseDataFeeds):
 
     def load(self):
         df = self.data
-        self.figure = make_subplots(
-            rows=2,
+
+        # Strategy plot
+        config: dict = self.strategy.plot(df)
+
+        # Params
+        params = dict(
+            rows=max(config.get("rows", 2), 2),
             shared_xaxes=True,
             vertical_spacing=0.03,
             row_width=[0.2, 0.7],
         )
+        params.update(**config.get("params", {}))
+
+        # Init
+        self.figure = make_subplots(**params)
         self.figure.add_trace(
             go.Candlestick(
                 x=df.index,
@@ -50,10 +59,14 @@ class Plotter(BaseDataFeeds):
             col=1,
         )
 
-        scatters = self.strategy.plot(df)
-        if scatters:
-            for s in scatters:
-                self.figure.add_scatter(**s, row=1, col=1)
+        if "scatters" in config:
+            for s in config["scatters"]:
+                # s.setdefault("row", 1)
+                if "row" not in s:
+                    s["row"] = 1
+                if "col" not in s:
+                    s["col"] = 1
+                self.figure.add_scatter(**s)
 
     def jump(self, index, range=300, data: DataFeed = None):
         if data is None:
@@ -83,6 +96,9 @@ class Plotter(BaseDataFeeds):
         x = list(first_index + i for i in self.account._equities.keys())
         y = list(e["equity"] for e in self.account._equities.values())
 
+        # Get figure rows size
+        rows, cols = self.figure._get_subplot_rows_columns()
+
         self.figure.add_trace(
             go.Scatter(
                 x=x,
@@ -91,7 +107,7 @@ class Plotter(BaseDataFeeds):
                 # showlegend=False,
                 name="Equity",
             ),
-            row=2,
+            row=len(rows),
             col=1,
         )
 

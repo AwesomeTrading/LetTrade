@@ -97,8 +97,8 @@ class LetTrade(BaseDataFeeds):
         feeder: DataFeeder,
         exchange: Exchange,
         commander: Commander,
-        plot: Type["Plotter"],
         account: Account,
+        plot: Type["Plotter"] = None,
         # params: dict = {},
         *args,
         **kwargs,
@@ -106,6 +106,7 @@ class LetTrade(BaseDataFeeds):
         # DataFeeder
         if not feeder:
             raise RuntimeError("Feeder is invalid")
+        self.feeder = feeder
 
         # DataFeeds
         datas = self._init_datafeeds(datas=datas)
@@ -160,7 +161,8 @@ class LetTrade(BaseDataFeeds):
                 )
 
         # Plot class
-        self._plot_cls = plot
+        if plot:
+            self._plot_cls = plot
 
     def _init_datafeeds(self, datas) -> None:
         # Support single and multiple data
@@ -205,6 +207,9 @@ class LetTrade(BaseDataFeeds):
 
     def plot(self, *args, **kwargs):
         if self.plotter is None:
+            if self._plot_cls is None:
+                raise RuntimeError("Plotter class is None")
+
             self.plotter = self._plot_cls(
                 feeder=self.feeder,
                 exchange=self.exchange,

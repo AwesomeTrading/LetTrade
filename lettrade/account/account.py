@@ -21,7 +21,7 @@ class Account(metaclass=ABCMeta):
         self._leverage: float = leverage
 
         self._equities: dict[str, object] = dict()
-        self._do_snapshot_equity = True
+        self._do_snapshot_equity = True  # Snapshot balance
 
     def __repr__(self):
         return "<Account " + str(self) + ">"

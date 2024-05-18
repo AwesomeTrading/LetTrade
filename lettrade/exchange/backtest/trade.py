@@ -32,11 +32,7 @@ class BackTestOrder(Order):
         super().execute(price=price, at=at)
 
         # Execute
-        execute: BackTestExecute = self.build_execute(
-            id=self.exchange._id(),
-            price=price,
-            at=at,
-        )
+        execute: BackTestExecute = self.build_execute(price=price, at=at)
         execute.execute()
 
         # Trade hit SL/TP
@@ -44,7 +40,7 @@ class BackTestOrder(Order):
             self.trade.exit(price=price, at=at, caller=self)
         else:
             # Trade: Place and create new trade
-            trade = self.build_trade(id=self.exchange._id())
+            trade = self.build_trade()
             if self.sl_price:
                 trade._new_sl_order()
             if self.tp_price:
@@ -55,15 +51,14 @@ class BackTestOrder(Order):
 
     def build_execute(
         self,
-        id,
         price,
         at,
         size=None,
         exchange=None,
         data=None,
-    ) -> "Execute":
+    ) -> "BackTestExecute":
         return BackTestExecute(
-            id=id,
+            id=self.id,
             size=size or self.size,
             exchange=exchange or self.exchange,
             data=data or self.data,
@@ -74,14 +69,13 @@ class BackTestOrder(Order):
 
     def build_trade(
         self,
-        id,
         exchange=None,
         data=None,
         size=None,
         state=TradeState.Open,
     ) -> "BackTestTrade":
         trade = BackTestTrade(
-            id=id,
+            id=self.id,
             size=size or self.size,
             exchange=exchange or self.exchange,
             data=data or self.data,
@@ -111,7 +105,7 @@ class BackTestTrade(Trade):
             raise RuntimeError(f"Trade {self.id} SL Order {self.sl_order} existed")
 
         sl_order = BackTestOrder(
-            id=self.exchange._id(),
+            id=f"{self.id}-sl",
             exchange=self.exchange,
             data=self.parent.data,
             size=-self.size,
@@ -131,7 +125,7 @@ class BackTestTrade(Trade):
             raise RuntimeError(f"Trade {self.id} TP Order {self.tp_order} existed")
 
         tp_order = BackTestOrder(
-            id=self.exchange._id(),
+            id=f"{self.id}-tp",
             exchange=self.exchange,
             data=self.parent.data,
             size=-self.size,

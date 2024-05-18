@@ -78,7 +78,8 @@ class Plotter(BaseDataFeeds):
                 font=dict(size=24),
                 x=0.5,
                 xref="paper",
-            )
+            ),
+            # hovermode="x unified",
         )
         if "layout" in config:
             layout_params.update(config["layout"])
@@ -124,6 +125,7 @@ class Plotter(BaseDataFeeds):
                 line=dict(color="#ff9900", width=2),
                 # showlegend=False,
                 name="Equity",
+                # fill="toself",
             ),
             row=len(rows),
             col=1,

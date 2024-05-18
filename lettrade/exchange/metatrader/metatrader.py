@@ -12,17 +12,19 @@ from .feeder import MetaTraderDataFeeder
 def let_metatrader(
     strategy: Type["Strategy"],
     datas: set[set[str]],
-    mt_login: int,
-    mt_password: str,
-    mt_server: str,
+    login: int,
+    password: str,
+    server: str,
     commander: Optional[Commander] = None,
     plot: Optional[Type["Plotter"]] = None,
+    api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     **kwargs,
 ):
     mt5 = MetaTrader(
-        account=int(mt_login),
-        password=mt_password,
-        server=mt_server,
+        account=int(login),
+        password=password,
+        server=server,
+        api=api,
     )
 
     feeds = []
@@ -42,18 +44,21 @@ def let_metatrader(
 
 
 class MetaTrader:
-    _api: MetaTraderAPI
-    _feeder: MetaTraderDataFeeder = None
-    _exchange: MetaTraderExchange = None
-    _account: MetaTraderAccount = None
+    def __init__(
+        self,
+        tick: int = 5,
+        api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
+        *args,
+        **kwargs,
+    ) -> None:
+        self._tick: int = tick
 
-    _tick: bool
-
-    def __init__(self, tick=5, *args, **kwargs) -> None:
-        self._tick = tick
-
-        self._api = MetaTraderAPI()
+        self._api: MetaTraderAPI = api()
         self._api.start(*args, **kwargs)
+
+        self._feeder: MetaTraderDataFeeder = None
+        self._exchange: MetaTraderExchange = None
+        self._account: MetaTraderAccount = None
 
     def data(
         self,

@@ -7,7 +7,7 @@ T = TypeVar("T")
 
 class OrderState(str, Enum):
     Pending = "pending"
-    Place = "place"
+    Placed = "place"
     Executed = "executed"
     Canceled = "canceled"
 

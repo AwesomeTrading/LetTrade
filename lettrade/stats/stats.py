@@ -43,5 +43,4 @@ class Statistic:
             logger.warning("call compute() before show()")
             self.compute()
 
-        print("=" * 64)
-        print(self.result)
+        logger.info("\n========== Statistic result ==========\n%s", self.result)

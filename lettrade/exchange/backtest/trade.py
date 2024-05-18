@@ -12,7 +12,7 @@ class BackTestExecute(Execute):
 class BackTestOrder(Order):
     def cancel(self):
         """Cancel the order."""
-        if self.state is not OrderState.Place:
+        if self.state is not OrderState.Placed:
             return
 
         self.state = OrderState.Canceled
@@ -25,7 +25,7 @@ class BackTestOrder(Order):
         self.exchange.on_order(self)
 
     def execute(self, price, at):
-        if self.state != OrderState.Place:
+        if self.state != OrderState.Placed:
             raise RuntimeError(f"Execute a {self.state} order")
 
         # Order

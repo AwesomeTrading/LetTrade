@@ -68,15 +68,26 @@ class Order(BaseTransaction):
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
-        self.state = OrderState.Place
+        self.state = OrderState.Placed
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
     def execute(self, price, at):
+        if self.state != OrderState.Placed:
+            raise RuntimeError(f"Order {self.id} state {self.state} is not Placed")
+
         self.entry_at = at
         self.entry_price = price
         self.state = OrderState.Executed
         self.exchange.on_order(self)
+
+    def cancel(self):
+        if self.state != OrderState.Placed:
+            raise RuntimeError(f"Order {self.id} state {self.state} is not Placed")
+
+        self.state = OrderState.Canceled
+        self.exchange.on_order(self)
+        return OrderResultOk(order=self)
 
     def merge(self, other: "Order"):
         if other is self:
@@ -138,7 +149,7 @@ class Order(BaseTransaction):
 
     @property
     def is_alive(self) -> bool:
-        return self.state in [OrderState.Pending, OrderState.Place]
+        return self.state in [OrderState.Pending, OrderState.Placed]
 
 
 class OrderResult:

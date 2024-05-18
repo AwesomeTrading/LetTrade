@@ -16,7 +16,7 @@ def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs)
 
     path = Path(path)
     if not force and path.exists():
-        print(f"File {path} existed")
+        logger.error("File %s existed", path)
         return
 
     # Download

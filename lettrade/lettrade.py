@@ -1,5 +1,5 @@
 import logging
-from typing import Type
+from typing import Optional, Type
 
 import pandas as pd
 
@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 
 def let_backtest(
     strategy: Type[Strategy],
-    datas: DataFeed | list[DataFeed] | str | list[str] = None,
-    feeder: DataFeeder = None,
-    exchange: Exchange = None,
-    commander: Commander = None,
-    plot: Type["Plotter"] = None,
-    cash: float = 10_000.0,
-    account: Account = None,
+    datas: Optional[DataFeed | list[DataFeed] | str | list[str]],
+    feeder: Optional[DataFeeder] = None,
+    exchange: Optional[Exchange] = None,
+    commander: Optional[Commander] = None,
+    plot: Optional[Type["Plotter"]] = None,
+    cash: Optional[float] = 10_000.0,
+    account: Optional[Account] = None,
     **kwargs,
 ):
     from lettrade.exchange.backtest import (

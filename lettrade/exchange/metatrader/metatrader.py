@@ -1,8 +1,44 @@
+from typing import Optional, Type
+
+from lettrade import Commander, LetTrade
+
 from .account import MetaTraderAccount
 from .api import MetaTraderAPI
 from .data import MetaTraderDataFeed
 from .exchange import MetaTraderExchange
 from .feeder import MetaTraderDataFeeder
+
+
+def let_metatrader(
+    strategy: Type["Strategy"],
+    datas: list[list[str]],
+    mt_login: int,
+    mt_password: str,
+    mt_server: str,
+    commander: Optional[Commander] = None,
+    plot: Optional[Type["Plotter"]] = None,
+    **kwargs,
+):
+    mt5 = MetaTrader(
+        account=int(mt_login),
+        password=mt_password,
+        server=mt_server,
+    )
+
+    feeds = []
+    for d in datas:
+        feeds.append(mt5.data(d[0], d[1]))
+
+    return LetTrade(
+        strategy=strategy,
+        datas=feeds,
+        feeder=mt5.feeder(),
+        exchange=mt5.exchange(),
+        account=mt5.account(),
+        commander=commander,
+        plot=plot,
+        **kwargs,
+    )
 
 
 class MetaTrader:

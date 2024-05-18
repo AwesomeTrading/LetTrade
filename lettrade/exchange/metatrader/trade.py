@@ -122,12 +122,17 @@ class MetaTraderOrder(Order):
         )
         self._api: MetaTraderAPI = exchange._api
 
+        self.raw = None
+
     def place(self):
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
         request = self._build_request()
         result = self._api.order_send(request)
+
+        self.raw = result
+
         if result.retcode != mt5.TRADE_RETCODE_DONE:
             logger.error("Place order %s", str(result))
             error = OrderResultError(
@@ -145,19 +150,21 @@ class MetaTraderOrder(Order):
         return ok
 
     def _build_request(self):
-        price = self._api.tick(self.data.symbol).ask
+        tick = self._api.tick(self.data.symbol)
+        price = tick.ask if self.is_long else tick.bid
+        type = mt5.ORDER_TYPE_BUY if self.is_long else mt5.ORDER_TYPE_SELL
         deviation = 20
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": self.data.symbol,
             "volume": self.size,
-            "type": mt5.ORDER_TYPE_BUY,
+            "type": type,
             "price": price,
             "sl": self.sl,
             "tp": self.tp,
             "deviation": deviation,
             "magic": 234000,
-            "comment": "python script open",
+            "comment": self.tag,
             "type_time": mt5.ORDER_TIME_GTC,
             "type_filling": mt5.ORDER_FILLING_IOC,
         }
@@ -168,7 +175,7 @@ class MetaTraderOrder(Order):
         return MetaTraderOrder(
             exchange=exchange,
             id=raw.ticket,
-            state=OrderState.Place,
+            state=OrderState.Placed,
             # TODO: Fix by get data from symbol
             data=exchange.data,
             # TODO: size and type from raw.type

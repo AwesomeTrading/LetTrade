@@ -32,12 +32,12 @@ class MetaTraderExecute(Execute):
         size: float,
         price: float,
         at: float,
-        order_id: str = None,
-        order: "Order" = None,
-        trade_id: str = None,
-        trade: "Trade" = None,
-        tag: str = "",
-        raw: object = None,
+        order_id: Optional[str] = None,
+        order: Optional["Order"] = None,
+        trade_id: Optional[str] = None,
+        trade: Optional["Trade"] = None,
+        tag: Optional[str] = "",
+        raw: Optional[object] = None,
     ):
         super().__init__(
             id=id,
@@ -100,9 +100,9 @@ class MetaTraderOrder(Order):
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
         trade: Optional["Trade"] = None,
-        tag: str = "",
-        open_at: int = None,
-        open_price: int = None,
+        tag: Optional[str] = "",
+        open_at: Optional[int] = None,
+        open_price: Optional[int] = None,
     ):
         super().__init__(
             id=id,
@@ -194,10 +194,10 @@ class MetaTraderTrade(Trade):
         parent: Order,
         tag: str = "",
         state: TradeState = TradeState.Open,
-        entry_price: float | None = None,
-        entry_at: int | None = None,
-        sl_order: Order | None = None,
-        tp_order: Order | None = None,
+        entry_price: Optional[float] = None,
+        entry_at: Optional[int] = None,
+        sl_order: Optional[Order] = None,
+        tp_order: Optional[Order] = None,
     ):
         super().__init__(
             id=id,

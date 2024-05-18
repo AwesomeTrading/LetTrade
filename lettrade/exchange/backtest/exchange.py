@@ -54,12 +54,15 @@ class BackTestExchange(Exchange):
             open_price=self.data.open[0],
             open_at=self.data.bar(),
         )
-        order.place()
+        ok = order.place()
 
         if __debug__:
             logger.info("New order %s at %s", order, self.data.now)
 
+        # Simulate market order will send event before return order result
         self._simulate_orders()
+
+        return ok
 
     def _simulate_orders(self):
         for order in list(self.orders.values()):

@@ -30,13 +30,13 @@ class MetaTraderExchange(Exchange):
     def new_order(
         self,
         size: float,
-        type: OrderType = OrderType.Market,
+        type: Optional[OrderType] = OrderType.Market,
         limit: Optional[float] = None,
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: object = None,
-        data: DataFeed = None,
+        tag: Optional[str] = None,
+        data: Optional[DataFeed] = None,
         *args,
         **kwargs
     ):
@@ -107,14 +107,14 @@ class MetaTraderExchange(Exchange):
     # Events
     def on_new_deals(self, raws):
         if __debug__:
-            print("\n---> raw deals:", raws)
+            print("\n---> raw new deals:", raws)
         for raw in raws:
             execute = MetaTraderExecute.from_raw(raw, exchange=self)
             self.on_execute(execute)
 
     def on_new_orders(self, raws):
         if __debug__:
-            print("\n---> raw orders:", raws)
+            print("\n---> raw new orders:", raws)
         for raw in raws:
             order = MetaTraderOrder.from_raw(raw, exchange=self)
             self.on_order(order)
@@ -128,7 +128,7 @@ class MetaTraderExchange(Exchange):
 
     def on_new_trades(self, raws):
         if __debug__:
-            print("\n---> raw trades:", raws)
+            print("\n---> raw new trades:", raws)
         for raw in raws:
             trade = MetaTraderTrade.from_raw(raw, exchange=self)
             self.on_trade(trade)

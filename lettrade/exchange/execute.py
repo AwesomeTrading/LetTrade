@@ -50,6 +50,9 @@ class Execute(BaseTransaction):
         self.exchange.on_execute(self)
 
     def merge(self, other: "Execute"):
+        """
+        Merge to keep object handler but not overwrite for Strategy using when Strategy want to store object and object will be automatic update directly
+        """
         if other is self:
             return
 

@@ -73,10 +73,16 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
         self._account.stop()
 
     def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
+        """
+        Receive Execute event from exchange then store and emit for Brain
+        """
         if not isinstance(execute, Execute):
             raise RuntimeError(f"{execute} is not instance of type Execute")
 
         if execute.id in self.executes:
+            # Merge to keep Execute handler for strategy using
+            # when strategy want to store Execute object
+            # and object will be automatic update directly
             self.executes[execute.id].merge(execute)
             execute = self.executes[execute.id]
         else:
@@ -89,6 +95,9 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             self._brain.on_execute(execute)
 
     def on_order(self, order: Order, broadcast=True, *args, **kwargs):
+        """
+        Receive Order event from exchange then store and emit for Brain
+        """
         if not isinstance(order, Order):
             raise RuntimeError(f"{order} is not instance of type Order")
 
@@ -101,6 +110,9 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
                 raise RuntimeError(f"Order {order.id} closed")
 
             if order.id in self.orders:
+                # Merge to keep Order handler for strategy using
+                # when strategy want to store Order object
+                # and object will be automatic update directly
                 self.orders[order.id].merge(order)
                 order = self.orders[order.id]
             else:
@@ -113,6 +125,9 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             self._brain.on_order(order)
 
     def on_trade(self, trade: Trade, broadcast=True, *args, **kwargs):
+        """
+        Receive Trade event from exchange then store and emit for Brain
+        """
         if not isinstance(trade, Trade):
             raise RuntimeError(f"{trade} is not instance of type Trade")
 
@@ -126,6 +141,9 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             if trade.id in self.history_trades:
                 raise RuntimeError(f"Order {trade.id} closed")
             if trade.id in self.trades:
+                # Merge to keep Trade handler for strategy using
+                # when strategy want to store Trade object
+                # and object will be automatic update directly
                 self.trades[trade.id].merge(trade)
                 trade = self.trades[trade.id]
             else:
@@ -138,10 +156,16 @@ class Exchange(BaseDataFeeds, metaclass=ABCMeta):
             self._brain.on_trade(trade)
 
     def on_position(self, position: Position, broadcast=True, *args, **kwargs):
+        """
+        Receive Position event from exchange then store and emit for Brain
+        """
         if not isinstance(position, Position):
             raise RuntimeError(f"{position} is not instance of type Position")
 
         if position.id in self.positions:
+            # Merge to keep Position handler for strategy using
+            # when strategy want to store Position object
+            # and object will be automatic update directly
             self.positions[position.id].merge(position)
         else:
             self.positions[position.id] = position

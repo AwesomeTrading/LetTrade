@@ -101,7 +101,7 @@ class MetaTraderExchange(Exchange):
 
         for raw in raws:
             if __debug__:
-                logger.info("Sync trade: %s", raw)
+                logger.info("Sync trade: %s", str(raw))
             if raw.ticket not in self.trades:
                 trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
                 self.on_trade(trade)

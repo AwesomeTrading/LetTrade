@@ -125,8 +125,9 @@ class MetaTraderDataFeed(DataFeed):
         if self.empty:
             self._next(size=to)
 
-        from lettrade.data.exporter.csv import csv_export
-
         if path is None:
             path = f"data/{self.name}_{since}_{to}.csv"
+
+        from lettrade.data.exporter.csv import csv_export
+
         csv_export(dataframe=self, path=path)

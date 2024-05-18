@@ -11,7 +11,7 @@ from .feeder import MetaTraderDataFeeder
 
 def let_metatrader(
     strategy: Type["Strategy"],
-    datas: list[list[str]],
+    datas: set[set[str]],
     mt_login: int,
     mt_password: str,
     mt_server: str,

@@ -104,10 +104,9 @@ class LetTrade(BaseDataFeeds):
         datas: DataFeed | list[DataFeed] | str | list[str],
         feeder: DataFeeder,
         exchange: Exchange,
-        commander: Commander,
         account: Account,
-        plot: Type["Plotter"] = None,
-        # params: dict = {},
+        commander: Optional[Commander] = None,
+        plot: Optional[Type["Plotter"]] = None,
         *args,
         **kwargs,
     ) -> None:

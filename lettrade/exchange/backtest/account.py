@@ -17,5 +17,5 @@ class ForexBackTestAccount(Account):
                 entry_price=entry_price,
                 exit_price=exit_price,
             )
-            * 100_000
+            * 1_000_000
         )

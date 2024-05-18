@@ -50,7 +50,7 @@ class Account(metaclass=ABCMeta):
     def _snapshot_equity(self):
         if self._do_snapshot_equity or len(self._exchange.trades) > 0:
             bar = self._exchange.data.bar()
-            self._equities[bar[0]] = {"at": bar[1], "equity": self.equity}
+            self._equities[bar] = self.equity
 
             self._do_snapshot_equity = False
 

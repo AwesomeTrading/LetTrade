@@ -26,7 +26,7 @@ class Plotter(BaseDataFeeds):
         self.strategy: Strategy = strategy
 
     def stop(self):
-        pass
+        """stop plotter"""
 
     def load(self):
         df = self.data
@@ -111,8 +111,8 @@ class Plotter(BaseDataFeeds):
 
     def _plot_equity(self):
         first_index = self.data.index[0]
-        x = list(first_index + i for i in self.account._equities.keys())
-        y = list(e["equity"] for e in self.account._equities.values())
+        x = list(first_index + i[0] for i in self.account._equities.keys())
+        y = list(self.account._equities.values())
 
         # Get figure rows size
         rows, cols = self.figure._get_subplot_rows_columns()

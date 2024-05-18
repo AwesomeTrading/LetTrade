@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="lettrade",
-    version="0.0.1",
+    version="0.0.2",
     author="Santatic",
     # author_email = "author@example.com",
     description="Lightweight trading framwork",
@@ -15,16 +15,20 @@ setuptools.setup(
     classifiers=[
         "Intended Audience :: Financial and Insurance Industry",
         "Intended Audience :: Science/Research",
-        "Framework :: Jupyter",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Office/Business :: Financial :: Investment",
         "Topic :: Scientific/Engineering :: Visualization",
     ],
     package_dir={"": "lettrade"},
     packages=setuptools.find_packages(where="lettrade"),
-    python_requires=">=3.8.0,<3.11",
+    python_requires=">=3.8.0,<3.13",
     install_requires=["pandas", "numpy"],
     extras_require={
         "extra": ["pandas_ta", "plotly"],

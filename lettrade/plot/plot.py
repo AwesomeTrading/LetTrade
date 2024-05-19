@@ -145,9 +145,9 @@ class Plotter(BaseDataFeeds):
                 mode="markers",
                 name=f"Order-{order.id}",
                 marker=dict(
-                    symbol="circle-dot",
+                    symbol="line-ew-open",
                     size=10,
-                    color="green",
+                    color="green" if order.is_long else "red",
                 ),
                 showlegend=False,
             )

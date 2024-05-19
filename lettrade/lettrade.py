@@ -25,7 +25,16 @@ def let_backtest(
     cash: Optional[float] = 10_000.0,
     account: Optional[Account] = None,
     **kwargs,
-):
+) -> "LetTrade":
+    """
+    Complete `lettrade` backtest depenencies
+
+    Arguments:
+        strategy: The Strategy implement class.
+
+    Returns:
+        The LetTrade backtest object.
+    """
     from lettrade.exchange.backtest import (
         BackTestAccount,
         BackTestCommander,
@@ -87,6 +96,8 @@ def let_backtest(
 
 
 class LetTrade(BaseDataFeeds):
+    """Help to load and connect module"""
+
     brain: Brain
     feeder: DataFeeder
     exchange: Exchange
@@ -187,6 +198,7 @@ class LetTrade(BaseDataFeeds):
         return feeds
 
     def run(self, *args, **kwargs):
+        """Run strategy"""
         if self.commander:
             self.commander.start()
 
@@ -201,12 +213,14 @@ class LetTrade(BaseDataFeeds):
             self.stats.show()
 
     def stop(self):
+        """Stop strategy"""
         self.brain.stop()
         if self.plotter is not None:
             self.plotter.stop()
 
     @property
     def stats(self) -> Statistic:
+        """Get Statistic object"""
         if self._stats is None:
             self._stats = Statistic(
                 feeder=self.feeder,
@@ -216,6 +230,7 @@ class LetTrade(BaseDataFeeds):
         return self._stats
 
     def plot(self, *args, **kwargs):
+        """Plot strategy result"""
         if self.plotter is None:
             if self._plot_cls is None:
                 raise RuntimeError("Plotter class is None")

@@ -1,0 +1,9 @@
+black
+markdown
+markdown-exec[ansi]
+mkdocs
+mkdocstrings
+mkdocstrings[python]
+mkdocs-material
+mkdocs-autorefs
+pymdown-extensions

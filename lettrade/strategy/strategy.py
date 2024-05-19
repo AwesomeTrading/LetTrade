@@ -49,7 +49,6 @@ class Strategy(ABC):
 
     def buy(
         self,
-        *,
         size: Optional[float] = None,
         limit: Optional[float] = None,
         stop: Optional[float] = None,
@@ -75,7 +74,6 @@ class Strategy(ABC):
 
     def sell(
         self,
-        *,
         size: Optional[float] = None,
         limit: Optional[float] = None,
         stop: Optional[float] = None,

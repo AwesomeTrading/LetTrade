@@ -39,12 +39,12 @@ class Statistic:
         self.result.loc["Start Balance [$]"] = round(equities[0], 2)
         self.result.loc["Equity [$]"] = round(equities[-1], 2)
 
-        pnl = equities[-1] - equities[0]
-        self.result.loc["PnL [$]"] = round(pnl, 2)
-        self.result.loc["PnL [%]"] = round(pnl / equities[0] * 100, 2)
+        pl = equities[-1] - equities[0]
+        self.result.loc["PL [$]"] = round(pl, 2)
+        self.result.loc["PL [%]"] = round(pl / equities[0] * 100, 2)
 
         # TODO
-        self.result.loc["Buy & Hold PnL [%]"] = 2.0
+        self.result.loc["Buy & Hold PL [%]"] = 2.0
         self.result.loc["Max. Drawdown [%]"] = -33.08
         self.result.loc["Avg. Drawdown [%]"] = -5.58
         self.result.loc["Max. Drawdown Duration"] = "688 days 00:00:00"

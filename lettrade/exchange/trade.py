@@ -113,11 +113,16 @@ class Trade(BaseTransaction):
         return not self.is_long
 
     @property
+    def is_exited(self):
+        """True if the trade is exited"""
+        return self.state == TradeState.Exit
+
+    @property
     def pl(self):
         if self.state == TradeState.Exit:
             return self.exit_pl
 
-        return self._account.size_to_pl(size=self.size, entry_price=self.entry_price)
+        return self._account.pl(size=self.size, entry_price=self.entry_price)
 
     @property
     def fee(self):

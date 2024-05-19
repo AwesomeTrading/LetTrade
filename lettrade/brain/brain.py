@@ -5,7 +5,7 @@ from lettrade.strategy import Strategy
 
 
 class Brain:
-    """Brain of lettrade"""
+    """Brain of `lettrade`"""
 
     def __init__(
         self,

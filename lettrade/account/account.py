@@ -40,6 +40,12 @@ class Account(metaclass=ABCMeta):
             return self._risk
         return size
 
+    def pl(self, size, entry_price: float, exit_price=None):
+        if exit_price is None:
+            exit_price = self._exchange.data.open[0]
+
+        return size * (exit_price - entry_price)
+
     @property
     def equity(self) -> float:
         equity = self._cash
@@ -58,9 +64,3 @@ class Account(metaclass=ABCMeta):
         self._cash += trade.pl - trade.fee
 
         self._do_snapshot_equity = True
-
-    def size_to_pl(self, size, entry_price: float, exit_price=None):
-        if exit_price is None:
-            exit_price = self._exchange.data.open[0]
-
-        return size * (exit_price - entry_price)

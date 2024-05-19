@@ -1,6 +1,6 @@
 # LetTrade
 
-
+[![Documentation](https://img.shields.io/badge/docs-lettrade-708FCC.svg?style=for-the-badge)](https://github.com/AwesomeTrading/lettrade/wiki)
 [![Code Coverage](https://img.shields.io/codecov/c/gh/AwesomeTrading/lettrade.svg?style=for-the-badge)](https://codecov.io/gh/AwesomeTrading/lettrade)
 [![PyPI](https://img.shields.io/pypi/v/lettrade.svg?color=blue&style=for-the-badge)](https://pypi.org/project/lettrade)
 [![PyPI Python Version](https://img.shields.io/pypi/pyversions/lettrade.svg?color=skyblue&style=for-the-badge)](https://pypi.org/project/lettrade)
@@ -27,7 +27,7 @@ pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ## Example
 All sample are in `example/` directory
 
-```python
+```python exec="true" source="above"
 import talib.abstract as ta
 
 from lettrade import DataFeed, LetTrade, Strategy, let_backtest
@@ -47,22 +47,19 @@ class SmaCross(Strategy):
 
     def next(self, df: DataFeed):
         if df.crossover[-1]:
-            self.buy(1)
+            self.buy(0.1)
         elif df.crossunder[-1]:
-            self.sell(1)
-
-    def end(self, df: DataFeed):
-        print(df.tail(10))
-
+            self.sell(0.1)
 
 lt = let_backtest(
     strategy=SmaCross,
-    datas="data/EURUSD=X_1h.csv",
+    datas="data/EURUSD_5m_0_1000.csv",
 )
 
 lt.run()
-lt.plot()
+#lt.plot()
 
+print(lt.stats.result.to_string())
 ```
 
 ## Live Trading

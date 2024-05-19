@@ -53,7 +53,7 @@ class SmaCross(Strategy):
 
 lt = let_backtest(
     strategy=SmaCross,
-    datas="data/EURUSD_5m_0_1000.csv",
+    datas="docs/data/EURUSD_5m_0_1000.csv",
 )
 
 lt.run()

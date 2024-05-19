@@ -8,6 +8,17 @@ from lettrade.exchange import Exchange, Execute, Order, OrderResult, Position, T
 
 
 class Strategy(ABC):
+    """
+    Base class to implement a strategy
+
+    Arguments:
+        feeder: The DataFeeder class.
+        exchange: The Exchange class.
+        account: The Account class.
+        commander: The Commander class.
+        is_optimize: Flag is running inside an optimize process
+    """
+
     def __init__(
         self,
         feeder: DataFeeder,
@@ -33,7 +44,7 @@ class Strategy(ABC):
 
     def indicators(self):
         """
-        All indicator and signal should implement here to cacheable
+        All indicator and signal should implement here to cacheable.
         Because of lettrade will cache/pre-load DataFeeds
         """
 

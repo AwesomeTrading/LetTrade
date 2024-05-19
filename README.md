@@ -30,7 +30,7 @@ pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 All sample are in `example/` directory
 
 ```python exec="true" source="above" result="ansi"
-import talib.abstract as ta
+import pandas_ta as ta
 
 from lettrade import DataFeed, LetTrade, Strategy, let_backtest
 from lettrade.indicator import crossover, crossunder
@@ -41,8 +41,8 @@ class SmaCross(Strategy):
     ema2_period = 21
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema1"] = ta.ema(df.close, length=self.ema1_period)
+        df["ema2"] = ta.ema(df.close, length=self.ema2_period)
 
         df["crossover"] = crossover(df.ema1, df.ema2)
         df["crossunder"] = crossunder(df.ema1, df.ema2)
@@ -69,7 +69,7 @@ print(lt.stats.result.to_string())
 - `MetaTrader`: Support MetaTrader 5 Terminal trading
 - `CCXT`: Support most of cryptocurrency exchange from CCXT library
 
-### Development
+## Development
 
 Set up conda environment
 ```sh

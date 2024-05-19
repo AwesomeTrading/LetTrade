@@ -8,6 +8,10 @@ from lettrade.strategy import Strategy
 
 
 class Plotter:
+    """
+    Class help to plot `lettrade`
+    """
+
     figure: go.Figure = None
 
     _stored_datas: dict = {}
@@ -31,6 +35,7 @@ class Plotter:
         """stop plotter"""
 
     def load(self):
+        """Load plot config from `Strategy.plot()` and setup candlestick/equity"""
         df = self.data
 
         # Strategy plot
@@ -99,6 +104,7 @@ class Plotter:
         self.load()
 
     def plot(self, **kwargs):
+        """Plot `equity`, `orders`, and `trades` then show"""
         if self.figure is None:
             self.load()
 

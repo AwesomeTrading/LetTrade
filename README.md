@@ -12,6 +12,8 @@ Inspired by `freqtrade`, `backtrader`, `backtesting.py`...
 
 Let make algo trading simple :)
 
+[Documentation](https://awesometrading.github.io/lettrade/)
+
 ## Installation
 
 Stable version
@@ -67,7 +69,7 @@ print(lt.stats.result.to_string())
 - `MetaTrader`: Support MetaTrader 5 Terminal trading
 - `CCXT`: Support most of cryptocurrency exchange from CCXT library
 
-## Development
+### Development
 
 Set up conda environment
 ```sh

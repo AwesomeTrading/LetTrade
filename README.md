@@ -27,7 +27,7 @@ pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ## Example
 All sample are in `example/` directory
 
-```python exec="true" source="above"
+```python exec="true" source="above" result="ansi"
 import talib.abstract as ta
 
 from lettrade import DataFeed, LetTrade, Strategy, let_backtest

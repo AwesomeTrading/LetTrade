@@ -6,4 +6,5 @@ mkdocstrings
 mkdocstrings[python]
 mkdocs-material
 mkdocs-autorefs
+mkdocs-callouts
 pymdown-extensions

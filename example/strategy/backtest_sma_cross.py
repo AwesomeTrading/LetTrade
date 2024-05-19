@@ -1,7 +1,7 @@
-import talib.abstract as ta
+import pandas_ta as ta
 
 import example.logger
-from lettrade import DataFeed, LetTrade, Strategy, let_backtest
+from lettrade import DataFeed, Strategy, let_backtest
 from lettrade.indicator import crossover
 
 
@@ -10,8 +10,8 @@ class SmaCross(Strategy):
     ema2_period = 21
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema1"] = ta.ema(df.close, length=self.ema1_period)
+        df["ema2"] = ta.ema(df.close, length=self.ema2_period)
 
         df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
         df["signal_ema_crossunder"] = crossover(df.ema2, df.ema1)
@@ -23,8 +23,8 @@ class SmaCross(Strategy):
         elif df.signal_ema_crossunder[0]:
             self.sell(size=0.1)
 
-    def end(self):
-        print(self.data.tail(10))
+    def end(self, df: DataFeed):
+        print(df.tail(10))
 
     def plot(self, df: DataFeed):
         return dict(

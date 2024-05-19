@@ -24,21 +24,30 @@ class ExchangeState(int, Enum):
 
 
 class Exchange(metaclass=ABCMeta):
+    datas: list[DataFeed]
+    data: DataFeed
+
+    executes: dict[str, Execute]
+    orders: dict[str, Order]
+    history_orders: dict[str, Order]
+    trades: dict[str, Trade]
+    history_trades: dict[str, Trade]
+    positions: dict[str, Position]
+
     _brain: "Brain"
     _feeder: DataFeeder
     _account: Account
     _commander: Commander
 
-    def __init__(self):
-        self.executes: dict[str, Execute] = dict()
-        self.orders: dict[str, Order] = dict()
-        self.history_orders: dict[str, Order] = dict()
-        self.trades: dict[str, Trade] = dict()
-        self.history_trades: dict[str, Trade] = dict()
-        self.positions: dict[str, Position] = dict()
+    _state: ExchangeState
 
-        self.datas: list[DataFeed] = self.feeder.datas
-        self.data: DataFeed = self.feeder.data
+    def __init__(self):
+        self.executes = dict()
+        self.orders = dict()
+        self.history_orders = dict()
+        self.trades = dict()
+        self.history_trades = dict()
+        self.positions = dict()
 
         self._state = ExchangeState.Init
 
@@ -54,13 +63,16 @@ class Exchange(metaclass=ABCMeta):
         self._account = account
         self._commander = commander
 
+        self.data = self._feeder.data
+        self.datas = self._feeder.datas
+
         self._account.init(exchange=self)
 
         self._state = ExchangeState.Start
 
-    @property
-    def feeder(self) -> DataFeeder:
-        return self._feeder
+    # @property
+    # def feeder(self) -> DataFeeder:
+    #     return self._feeder
 
     def start(self):
         self._account.start()

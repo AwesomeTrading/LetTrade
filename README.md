@@ -12,7 +12,7 @@ Inspired by `freqtrade`, `backtrader`, `backtesting.py`...
 
 Let make algo trading simple :)
 
-[Documentation](https://awesometrading.github.io/lettrade/)
+Find more at [**Documentation**](https://awesometrading.github.io/lettrade/)
 
 ## Installation
 

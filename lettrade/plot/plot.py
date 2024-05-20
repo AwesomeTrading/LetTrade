@@ -151,9 +151,23 @@ class Plotter:
         for order in orders:
             x = [first_index + order.open_at[0]]
             y = [order.open_price or order.limit or order.stop]
+
+            hovertemplate = (
+                f"Order id: {order.id}<br>"
+                "Index: %{x}<br>"
+                f"At: {order.open_at[1]}<br>"
+                "Price: %{y}<br>"
+                f"Size: {order.size}<br>"
+            )
+            if order.sl:
+                hovertemplate += f"SL: %{order.sl}<br>"
+            if order.tp:
+                hovertemplate += f"TP: %{order.tp}<br>"
+
             self.figure.add_scatter(
                 x=x,
                 y=y,
+                hovertemplate=hovertemplate,
                 mode="markers",
                 name=f"Order-{order.id}",
                 marker=dict(
@@ -170,20 +184,27 @@ class Plotter:
         )
         first_index = self.data.index[0]
         for trade in trades:
-            # x
             x = [first_index + trade.entry_at[0]]
+            y = [trade.entry_price]
+            customdata = [[trade.entry_at[1], trade.size, ""]]
             if trade.exit_at:
                 x.append(first_index + trade.exit_at[0])
-
-            # y
-            y = [trade.entry_price]
-            if trade.exit_price:
                 y.append(trade.exit_price)
+                customdata.append([trade.exit_at[1], trade.size, trade.pl])
 
             color = "green" if trade.is_long else "red"
             self.figure.add_scatter(
                 x=x,
                 y=y,
+                customdata=customdata,
+                hovertemplate=(
+                    f"Trade id: {trade.id}<br>"
+                    "Index: %{x}<br>"
+                    "At: %{customdata[0]}<br>"
+                    "Price: %{y}<br>"
+                    "Size: %{customdata[1]}<br>"
+                    "PL: %{customdata[2]:$.2f}"
+                ),
                 mode="lines+markers",
                 name=f"Trade-{trade.id}",
                 marker=dict(

@@ -31,6 +31,15 @@ conda install -c conda-forge ta-lib
 pip install TA-Lib
 ```
 
+## Pandas-TA
+
+[Home](https://twopirllc.github.io/pandas-ta/) |
+[Indicators](https://twopirllc.github.io/pandas-ta/#indicators-by-category)
+
+```bash
+pip install pandas_ta
+```
+
 ## Tulip Indicators
 
 [Home](https://tulipindicators.org/) |
@@ -67,12 +76,3 @@ make
         2. Donec vitae suscipit est
         3. Nulla tempor lobortis orci
         ```
-
-## Pandas-TA
-
-[Home](https://twopirllc.github.io/pandas-ta/) |
-[Indicators](https://twopirllc.github.io/pandas-ta/#indicators-by-category)
-
-```bash
-pip install pandas_ta
-```

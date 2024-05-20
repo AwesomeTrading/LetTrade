@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 from typing import Optional
 
 from lettrade.account import Account
@@ -10,13 +11,6 @@ from lettrade.exchange import Exchange, Execute, Order, OrderResult, Position, T
 class Strategy(ABC):
     """
     Base class to implement a strategy
-
-    Arguments:
-        feeder: The DataFeeder class.
-        exchange: The Exchange class.
-        account: The Account class.
-        commander: The Commander class.
-        is_optimize: Flag is running inside an optimize process
     """
 
     def __init__(
@@ -25,8 +19,20 @@ class Strategy(ABC):
         exchange: Exchange,
         account: Account,
         commander: Commander,
-        is_optimize: bool = False,
+        is_optimize: Optional[bool] = False,
     ):
+        """_summary_
+
+        Args:
+            feeder (DataFeeder): DataFeeder for strategy
+            exchange (Exchange): Trading exchange
+            account (Account): Account manager
+            commander (Commander): Event/Command manager
+            is_optimize (Optional[bool], optional): flag validate optimize condiction. Defaults to False.
+
+        Raises:
+            RuntimeError: Validate valid is_optimize flag
+        """
         self.__feeder: DataFeeder = feeder
         self.__exchange: Exchange = exchange
         self.__account: Account = account
@@ -40,25 +46,46 @@ class Strategy(ABC):
         self.__is_optimize: bool = is_optimize
 
     def init(self):
-        pass
+        """Init strategy variables"""
 
-    def indicators(self):
-        """
-        All indicator and signal should implement here to cacheable.
-        Because of lettrade will cache/pre-load DataFeeds
+    def indicators(self, df: DataFeed):
+        """All indicator and signal should implement here to cacheable.
+        Because of `lettrade` will cache/pre-load all `DataFeed`
+
+        Args:
+            df (DataFeed): main data of strategy
         """
 
     def start(self, df: DataFeed):
-        "start function will called before first next() is called"
+        """call after `init()` and before first `next()` is called
+
+        Args:
+            df (DataFeed): _description_
+
+        Returns:
+            _type_: `None`
+        """
 
     @abstractmethod
     def next(self, df: DataFeed):
         pass
 
     def end(self, df: DataFeed):
-        pass
+        """Call when strategy run completed
 
-    def plot(self, df: DataFeed):
+        Args:
+            df (DataFeed): main data of strategy
+        """
+
+    def plot(self, df: DataFeed) -> dict:
+        """Custom config of plot
+
+        Args:
+            df (DataFeed): plot DataFeed
+
+        Returns:
+            dict: config
+        """
         return dict()
 
     def buy(
@@ -68,13 +95,25 @@ class Strategy(ABC):
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: object = None,
+        tag: Optional[object] = None,
         **kwargs,
     ) -> OrderResult:
-        """
-        Place a new long order. For explanation of parameters, see `Order` and its properties.
+        """Place a new long order.
+
+        Args:
+            size (Optional[float], optional): _description_. Defaults to None.
+            limit (Optional[float], optional): _description_. Defaults to None.
+            stop (Optional[float], optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            tag (Optional[object], optional): _description_. Defaults to None.
+            **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`
+
+        Returns:
+            OrderResult: order result information
         """
         params = dict(
+            size=abs(size),
             limit=limit,
             stop=stop,
             sl=sl,
@@ -82,7 +121,7 @@ class Strategy(ABC):
             tag=tag,
             **kwargs,
         )
-        params["size"] = self.__account.risk(size=abs(size), **params)
+        params["size"] = abs(self.__account.risk(**params))
 
         return self.__exchange.new_order(**params)
 
@@ -93,13 +132,25 @@ class Strategy(ABC):
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: object = None,
+        tag: Optional[object] = None,
         **kwargs,
     ) -> OrderResult:
-        """
-        Place a new short order. For explanation of parameters, see `Order` and its properties.
+        """Place a new short order.
+
+        Args:
+            size (Optional[float], optional): _description_. Defaults to None.
+            limit (Optional[float], optional): _description_. Defaults to None.
+            stop (Optional[float], optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            tag (Optional[object], optional): _description_. Defaults to None.
+            **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`
+
+        Returns:
+            OrderResult: order result information
         """
         params = dict(
+            size=-abs(size),
             limit=limit,
             stop=stop,
             sl=sl,
@@ -107,89 +158,189 @@ class Strategy(ABC):
             tag=tag,
             **kwargs,
         )
-        params["size"] = self.__account.risk(size=-abs(size), **params)
+        params["size"] = -abs(self.__account.risk(**params))
 
         return self.__exchange.new_order(**params)
 
     @property
     def feeder(self) -> DataFeeder:
+        """Getter of `DataFeeder`
+
+        Returns:
+            DataFeeder: _description_
+        """
         return self.__feeder
 
     @property
     def exchange(self) -> Exchange:
+        """Getter of `Exchange`
+
+        Returns:
+            Exchange: _description_
+        """
         return self.__exchange
 
     @property
-    def now(self):
+    def now(self) -> datetime:
+        """Getter of current datetime
+
+        Returns:
+            datetime: current datetime of bar
+        """
         return self.data.now
 
     @property
     def account(self) -> Account:
+        """Getter of `Account`
+
+        Returns:
+            Account: _description_
+        """
         return self.__account
 
     @property
     def commander(self) -> Commander:
+        """Getter of `Commander`
+
+        Returns:
+            Commander: _description_
+        """
         return self.__commander
 
     @property
     def data(self) -> DataFeed:
+        """Getter of main DataFeed
+
+        Returns:
+            DataFeed: _description_
+        """
         return self.__data
 
     @property
     def datas(self) -> list[DataFeed]:
+        """Getter of all DataFeed
+
+        Returns:
+            list[DataFeed]: _description_
+        """
         return self.__datas
 
     @property
     def orders(self) -> dict[str, Order]:
+        """Getter of `Order` dict
+
+        Returns:
+            dict[str, Order]: _description_
+        """
         return self.__exchange.orders
 
     @property
     def history_orders(self) -> dict[str, Order]:
+        """Getter of history `Order` dict
+
+        Returns:
+            dict[str, Order]: _description_
+        """
         return self.__exchange.history_orders
 
     @property
     def trades(self) -> dict[str, Trade]:
+        """Getter of `Trade` dict
+
+        Returns:
+            dict[str, Trade]: _description_
+        """
         return self.__exchange.trades
 
     @property
     def history_trades(self) -> dict[str, Trade]:
+        """Getter of history `Trade` dict
+
+        Returns:
+            dict[str, Trade]: _description_
+        """
         return self.__exchange.history_trades
 
     @property
     def positions(self) -> dict[str, Position]:
+        """Getter of `Position` dict"""
         return self.__exchange.positions
 
     @property
     def is_live(self) -> bool:
+        """Flag to check strategy is running in live DataFeeder
+
+        Returns:
+            bool: _description_
+        """
         return self.__feeder.is_continous
 
     @property
     def is_backtest(self) -> bool:
+        """Flag to check strategy is running in backtest DataFeeder
+
+        Returns:
+            bool: _description_
+        """
         return not self.is_live
 
     @property
     def is_optimize(self) -> bool:
+        """Flag to check strategy is running in optimize session
+
+        Returns:
+            bool: _description_
+        """
         return self.__is_optimize
 
     # Events
-    def on_transaction(self, t):
-        pass
+    def on_transaction(self, trans: Execute | Order | Trade):
+        """Listen for transaction events
+
+        Args:
+            trans (Execute | Order | Trade): _description_
+        """
 
     def on_execute(self, execute: Execute):
-        pass
+        """Listen for `Execute` event
+
+        Args:
+            execute (Execute): _description_
+        """
 
     def on_order(self, order: Order):
-        pass
+        """Listen for `Order` event
+
+        Args:
+            order (Order): _description_
+        """
 
     def on_trade(self, trade: Trade):
-        pass
+        """Listen for `Trade` event
+
+        Args:
+            trade (Trade): _description_
+        """
 
     def on_position(self, position: Position):
-        pass
+        """Listen for `Position` event
+
+        Args:
+            position (Position): _description_
+        """
 
     def on_notify(self, *args, **kwargs):
-        pass
+        """Listen for `notify` event
+
+        Returns:
+            _type_: _description_
+        """
 
     # Commander
-    def send_notify(self, msg, **kwargs):
+    def notify(self, msg: str, **kwargs):
+        """Notify message to commander
+
+        Args:
+            msg (str): message string
+        """
         return self.commander.send_message(msg=msg, **kwargs)

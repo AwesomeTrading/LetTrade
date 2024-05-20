@@ -1,8 +1,12 @@
+# Contributing
+
+Contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
+
 # Development
 
 Guide for developer to install `lettrade`
 
-## Environment
+## Environment setup
 
 Set up conda environment
 

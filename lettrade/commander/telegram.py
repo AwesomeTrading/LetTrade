@@ -1,3 +1,13 @@
+"""Module help LetTrade send notify and receive command from Telegram Bot
+
+# Example
+
+Example:
+    ```python
+    --8<-- "example/commander/telegram_mt5.py"
+    ```
+"""
+
 import asyncio
 import logging
 from functools import partial, wraps
@@ -30,10 +40,10 @@ logger = logging.getLogger(__name__)
 
 
 def authorized_only(command_handler: Callable[..., Coroutine[Any, Any, None]]):
-    """
-    Decorator to check if the message comes from the correct chat_id
-    :param command_handler: Telegram CommandHandler
-    :return: decorated function
+    """Decorator to check if the message comes from the correct chat_id
+
+    Args:
+        command_handler (Callable[..., Coroutine[Any, Any, None]]): Telegram CommandHandler
     """
 
     @wraps(command_handler)
@@ -67,7 +77,15 @@ def authorized_only(command_handler: Callable[..., Coroutine[Any, Any, None]]):
 
 
 class TelegramCommander(Commander):
-    def __init__(self, token, chat_id, *args, **kwargs) -> None:
+    """Send notify and receive command from Telegram Bot"""
+
+    def __init__(self, token: str, chat_id: int, *args, **kwargs) -> None:
+        """_summary_
+
+        Args:
+            token (str): Telegram Bot token
+            chat_id (int): Telegram chat_id
+        """
         super().__init__(*args, **kwargs)
 
         self._token: str = token
@@ -77,13 +95,23 @@ class TelegramCommander(Commander):
         self._loop: asyncio.AbstractEventLoop
 
     def start(self):
+        """Start"""
         self._init_keyboard()
         self._start_thread()
 
     def stop(self):
+        """Stop"""
         self.cleanup()
 
-    def send_message(self, msg: str, **kwargs):
+    def send_message(self, msg: str, **kwargs) -> None:
+        """Send message to Telegram Bot
+
+        Args:
+            msg (str): Message
+
+        Returns:
+            _type_: `None`
+        """
         return self._send_msg(msg, **kwargs)
 
     async def _cleanup_telegram(self) -> None:
@@ -93,10 +121,7 @@ class TelegramCommander(Commander):
         await self._app.shutdown()
 
     def cleanup(self) -> None:
-        """
-        Stops all running telegram threads.
-        :return: None
-        """
+        """Stops all running telegram threads."""
         # This can take up to `timeout` from the call to `start_polling`.
         asyncio.run_coroutine_threadsafe(self._cleanup_telegram(), self._loop)
         self._thread.join()
@@ -290,14 +315,13 @@ class TelegramCommander(Commander):
 
     @authorized_only
     async def _cmd_help(self, update: Update, context: CallbackContext) -> None:
-        """
-        Handler for /help.
+        """Handler for /help.
         Show commands of the bot
-        :param bot: telegram bot
-        :param update: message update
-        :return: None
-        """
 
+        Args:
+            update (Update): message update
+            context (CallbackContext): Telegram context
+        """
         msg = (
             "_Bot Control_\n"
             "------------\n"
@@ -320,12 +344,12 @@ class TelegramCommander(Commander):
 
     @authorized_only
     async def _cmd_status(self, update: Update, context: CallbackContext) -> None:
-        """
-        Handler for /status.
-        Returns the current TradeThread status
-        :param bot: telegram bot
-        :param update: message update
-        :return: None
+        """Handler for /status.
+        Returns the current Trade status
+
+        Args:
+            update (Update): message update
+            context (CallbackContext): Telegram context
         """
         lines = ["Hello", "LetTrade"]
         r = dict()
@@ -343,6 +367,13 @@ class TelegramCommander(Commander):
 
     @authorized_only
     async def _cmd_stats(self, update: Update, context: CallbackContext) -> None:
+        """Handler for /stats
+        Returns the current Strategy Statistic
+
+        Args:
+            update (Update): message update
+            context (CallbackContext): Telegram context
+        """
         stats: Statistic = self.lettrade.stats
         stats.compute()
         await self._send_msg(stats.result.to_string())

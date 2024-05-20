@@ -1727,6 +1727,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#lettrade.exchange.trade.Trade.fee" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;fee
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lettrade.exchange.trade.Trade.is_exited" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_exited
@@ -1748,6 +1757,15 @@
   <a href="#lettrade.exchange.trade.Trade.is_short" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_short
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.trade.Trade.pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;pl
     </span>
   </a>
   
@@ -2294,6 +2312,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#lettrade.exchange.trade.Trade.fee" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;fee
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lettrade.exchange.trade.Trade.is_exited" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_exited
@@ -2315,6 +2342,15 @@
   <a href="#lettrade.exchange.trade.Trade.is_short" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_short
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.trade.Trade.pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;pl
     </span>
   </a>
   
@@ -2413,6 +2449,41 @@ Find active trades in <code>Strategy.trades</code> and closed, settled trades in
 
 
 
+<h3 id="lettrade.exchange.trade.Trade.fee" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">fee</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lettrade.exchange.trade.Trade.fee" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">fee</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Fee/Estimate Fee for trade</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>float</code></b> (              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
+)          –
+          <div class="doc-md-description">
+            <p>Fee</p>
+          </div>
+        </li>
+    </ul>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
 <h3 id="lettrade.exchange.trade.Trade.is_exited" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_exited</span>
 
@@ -2422,12 +2493,24 @@ Find active trades in <code>Strategy.trades</code> and closed, settled trades in
   </span>
 
 <a href="#lettrade.exchange.trade.Trade.is_exited" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_exited</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_exited</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
-      <p>True if the trade is exited</p>
+      <p>Flag to check Trade state.</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>bool</code></b> (              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+)          –
+          <div class="doc-md-description">
+            <p>True if the trade exited</p>
+          </div>
+        </li>
+    </ul>
     </div>
 
 </div>
@@ -2445,12 +2528,24 @@ Find active trades in <code>Strategy.trades</code> and closed, settled trades in
   </span>
 
 <a href="#lettrade.exchange.trade.Trade.is_long" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_long</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_long</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
-      <p>True if the trade is long (trade size is positive).</p>
+      <p>Flag to check Trade is long side.</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>bool</code></b> (              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+)          –
+          <div class="doc-md-description">
+            <p>True if the trade is long (trade size is positive).</p>
+          </div>
+        </li>
+    </ul>
     </div>
 
 </div>
@@ -2468,12 +2563,59 @@ Find active trades in <code>Strategy.trades</code> and closed, settled trades in
   </span>
 
 <a href="#lettrade.exchange.trade.Trade.is_short" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_short</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_short</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
-      <p>True if the trade is short (trade size is negative).</p>
+      <p>Flag to check Trade is short side.</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>bool</code></b> (              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+)          –
+          <div class="doc-md-description">
+            <p>True if the trade is short (trade size is negative).</p>
+          </div>
+        </li>
+    </ul>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="lettrade.exchange.trade.Trade.pl" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">pl</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lettrade.exchange.trade.Trade.pl" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">pl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Estimate Profit or Loss of Trade</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>float</code></b> (              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
+)          –
+          <div class="doc-md-description">
+            <p>PnL</p>
+          </div>
+        </li>
+    </ul>
     </div>
 
 </div>

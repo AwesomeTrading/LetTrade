@@ -276,6 +276,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/utils/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/utils/docs/</loc>
          <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>

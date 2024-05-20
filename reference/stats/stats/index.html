@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#stats.stats" class="md-skip">
+        <a href="#lettrade.stats.stats" class="md-skip">
           Skip to content
         </a>
       
@@ -1977,6 +1977,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> stats
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1986,6 +1997,58 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.stats.stats.Statistic" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Statistic
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" Statistic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.stats.stats.Statistic.compute" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;compute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.stats.stats.Statistic.show" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;show
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2127,6 +2190,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../utils/docs/" class="md-nav__link">
         
   
@@ -2184,6 +2268,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.stats.stats.Statistic" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Statistic
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" Statistic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.stats.stats.Statistic.compute" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;compute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.stats.stats.Statistic.show" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;show
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2204,11 +2329,11 @@
 
 
 
-<h1 id="stats.stats" class="doc doc-heading">
+<h1 id="lettrade.stats.stats" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">stats</span>
 
 
-<a href="#stats.stats" class="headerlink" title="Permanent link">¤</a></h1>
+<a href="#lettrade.stats.stats" class="headerlink" title="Permanent link">¤</a></h1>
 
     <div class="doc doc-contents first">
 
@@ -2222,6 +2347,86 @@
 
 
 
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="lettrade.stats.stats.Statistic" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Statistic</span>
+
+
+<a href="#lettrade.stats.stats.Statistic" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">Statistic</span><span class="p">(</span>
+    <span class="n">feeder</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeeder" href="../../data/feeder/#lettrade.data.feeder.DataFeeder">DataFeeder</a></span><span class="p">,</span>
+    <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">,</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+      <p>Compute strategy result</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.stats.stats.Statistic.compute" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">compute</span>
+
+
+<a href="#lettrade.stats.stats.Statistic.compute" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">compute</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculate strategy report</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.stats.stats.Statistic.show" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">show</span>
+
+
+<a href="#lettrade.stats.stats.Statistic.show" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">show</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Show statistic report</p>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 

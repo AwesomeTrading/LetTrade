@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#exchange.metatrader.feeder" class="md-skip">
+        <a href="#lettrade.exchange.metatrader.feeder" class="md-skip">
           Skip to content
         </a>
       
@@ -1606,11 +1606,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#exchange.metatrader.feeder.MetaTraderDataFeeder" class="md-nav__link">
+  <a href="#lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MetaTraderDataFeeder
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label=" MetaTraderDataFeeder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder.is_continous" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_continous
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2168,6 +2183,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../utils/docs/" class="md-nav__link">
         
   
@@ -2232,11 +2268,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#exchange.metatrader.feeder.MetaTraderDataFeeder" class="md-nav__link">
+  <a href="#lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MetaTraderDataFeeder
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label=" MetaTraderDataFeeder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder.is_continous" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_continous
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2262,11 +2313,11 @@
 
 
 
-<h1 id="exchange.metatrader.feeder" class="doc doc-heading">
+<h1 id="lettrade.exchange.metatrader.feeder" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">feeder</span>
 
 
-<a href="#exchange.metatrader.feeder" class="headerlink" title="Permanent link">¤</a></h1>
+<a href="#lettrade.exchange.metatrader.feeder" class="headerlink" title="Permanent link">¤</a></h1>
 
     <div class="doc doc-contents first">
 
@@ -2285,17 +2336,17 @@
 
 
 
-<h2 id="exchange.metatrader.feeder.MetaTraderDataFeeder" class="doc doc-heading">
+<h2 id="lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">MetaTraderDataFeeder</span>
 
 
-<a href="#exchange.metatrader.feeder.MetaTraderDataFeeder" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">MetaTraderDataFeeder</span><span class="p">(</span><span class="n">api</span><span class="p">:</span> <span class="n"><span title="exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</span></span><span class="p">,</span> <span class="n">tick</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<a href="#lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">MetaTraderDataFeeder</span><span class="p">(</span><span class="n">api</span><span class="p">:</span> <span class="n"><span title="lettrade.exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</span></span><span class="p">,</span> <span class="n">tick</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="lettrade.data.DataFeeder">DataFeeder</span></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="lettrade.data.DataFeeder" href="../../../data/feeder/#lettrade.data.feeder.DataFeeder">DataFeeder</a></code></p>
 
 
       <pre><code>tick == 0: wait until new bar change value
@@ -2312,6 +2363,29 @@ tick &gt; 0: sleep tick time (in seconds) then update
 
 
 
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder.is_continous" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_continous</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lettrade.exchange.metatrader.feeder.MetaTraderDataFeeder.is_continous" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_continous</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Flag check is realtime continous datafeeder</p>
+    </div>
+
+</div>
 
 
 

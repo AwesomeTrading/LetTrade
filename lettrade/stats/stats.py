@@ -87,6 +87,7 @@ class Statistic:
         if __debug__:
             show = self._docs_show()
             if show:
+                print(show)
                 return show
 
         logger.info(

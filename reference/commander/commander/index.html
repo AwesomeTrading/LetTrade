@@ -729,6 +729,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> commander
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -738,6 +749,49 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.commander.commander.Commander" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Commander
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" Commander">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.commander.commander.Commander.init" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;init
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2205,6 +2259,38 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.commander.commander.Commander" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Commander
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" Commander">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.commander.commander.Commander.init" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;init
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2243,6 +2329,107 @@
 
 
 
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="lettrade.commander.commander.Commander" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Commander</span>
+
+
+<a href="#lettrade.commander.commander.Commander" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">Commander</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-external" title="abc.ABC" href="https://docs.python.org/3/library/abc.html#abc.ABC">ABC</a></code></p>
+
+
+      <p>Abstract class for strategy commander. Help to manage and report strategy real-time</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.commander.commander.Commander.init" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">init</span>
+
+
+<a href="#lettrade.commander.commander.Commander.init" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">init</span><span class="p">(</span>
+    <span class="n">lettrade</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade" href="../../lettrade/#lettrade.lettrade.LetTrade">LetTrade</a></span><span class="p">,</span>
+    <span class="n">brain</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.brain.Brain" href="../../brain/brain/#lettrade.brain.brain.Brain">Brain</a></span><span class="p">,</span>
+    <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">,</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Init commander dependencies</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>lettrade</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade" href="../../lettrade/#lettrade.lettrade.LetTrade">LetTrade</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>LetTrade object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>brain</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.brain.Brain" href="../../brain/brain/#lettrade.brain.brain.Brain">Brain</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Brain of bot</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>exchange</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Manage bot trading</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>strategy</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Strategy of bot</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 

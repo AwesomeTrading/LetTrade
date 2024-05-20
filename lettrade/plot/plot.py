@@ -68,6 +68,11 @@ class Plotter:
             row=1,
             col=1,
         )
+        self.figure.update_yaxes(
+            title_text="Price $",
+            row=1,
+            col=1,
+        )
 
         if "scatters" in config:
             for s in config["scatters"]:
@@ -128,7 +133,7 @@ class Plotter:
         y = list(self.account._equities.values())
 
         # Get figure rows size
-        rows, cols = self.figure._get_subplot_rows_columns()
+        row_length = len(self.figure._get_subplot_rows_columns()[0])
 
         self.figure.add_trace(
             go.Scatter(
@@ -139,7 +144,12 @@ class Plotter:
                 name="Equity",
                 # fill="toself",
             ),
-            row=len(rows),
+            row=row_length,
+            col=1,
+        )
+        self.figure.update_yaxes(
+            title_text="Equity",
+            row=row_length,
             col=1,
         )
 

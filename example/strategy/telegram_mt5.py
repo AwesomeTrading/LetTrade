@@ -5,10 +5,15 @@ import talib.abstract as ta
 from dotenv import load_dotenv
 
 import example.logger
-from lettrade import DataFeed, LetTrade, Strategy
-from lettrade.commander import TelegramCommander
-from lettrade.exchange.metatrader import MetaTrader
-from lettrade.indicator import crossover, crossunder
+from lettrade.all import (
+    DataFeed,
+    LetTrade,
+    MetaTrader,
+    Strategy,
+    TelegramCommander,
+    crossover,
+    crossunder,
+)
 
 load_dotenv()
 

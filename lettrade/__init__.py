@@ -3,6 +3,7 @@ from .brain import *
 from .commander import *
 from .data import *
 from .exchange import *
-from .lettrade import LetTrade, let_backtest
+from .indicator import *
+from .lettrade import LetTrade
 from .stats import *
 from .strategy import *

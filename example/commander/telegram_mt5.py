@@ -6,10 +6,14 @@ import talib.abstract as ta
 from dotenv import load_dotenv
 
 # import example.logger
-from lettrade import DataFeed, Strategy
-from lettrade.commander.telegram import TelegramCommander
-from lettrade.exchange.metatrader import let_metatrader
-from lettrade.indicator import crossover, crossunder
+from lettrade.all import (
+    DataFeed,
+    Strategy,
+    TelegramCommander,
+    crossover,
+    crossunder,
+    let_metatrader,
+)
 
 logger = logging.getLogger(__name__)
 load_dotenv()

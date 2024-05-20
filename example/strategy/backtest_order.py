@@ -1,10 +1,14 @@
-import pandas as pd
 import talib.abstract as ta
 
 import example.logger
-from lettrade import DataFeed, LetTrade, Strategy, let_backtest
-from lettrade.exchange.backtest import ForexBackTestAccount
-from lettrade.indicator import crossover, crossunder
+from lettrade.all import (
+    DataFeed,
+    ForexBackTestAccount,
+    Strategy,
+    crossover,
+    crossunder,
+    let_backtest,
+)
 
 
 class SmaCross(Strategy):
@@ -33,8 +37,8 @@ class SmaCross(Strategy):
     # def on_transaction(self, transaction):
     #     print("Transaction", transaction)
 
-    def end(self, df):
-        print(self.data)
+    def end(self, df: DataFeed):
+        print(df)
         print(self.orders)
 
     def plot(self, df: DataFeed):
@@ -58,7 +62,7 @@ class SmaCross(Strategy):
 
 lt = let_backtest(
     strategy=SmaCross,
-    datas="data/EURUSD=X_1h.csv",
+    datas="example/data/data/EURUSD_5m_0_1000.csv",
     account=ForexBackTestAccount(),
 )
 

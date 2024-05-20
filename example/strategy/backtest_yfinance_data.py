@@ -2,9 +2,7 @@ import pandas_ta as pta
 import talib.abstract as ta
 
 import example.logger
-from lettrade import DataFeed, LetTrade, Strategy, let_backtest
-from lettrade.exchange.backtest import YFBackTestDataFeed
-from lettrade.indicator import crossover
+from lettrade.all import DataFeed, Strategy, YFBackTestDataFeed, crossover, let_backtest
 
 
 class SmaCross(Strategy):

@@ -12,6 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 class Statistic:
+    """
+    Compute strategy result
+    """
+
     result: pd.Series
 
     def __init__(
@@ -28,6 +32,9 @@ class Statistic:
         self.result = pd.Series(dtype=object)
 
     def compute(self):
+        """
+        Calculate strategy report
+        """
         data: pd.DataFrame = self.feeder.data
 
         self.result.loc["# Strategy"] = self.strategy.__class__
@@ -69,6 +76,9 @@ class Statistic:
         return self.result
 
     def show(self):
+        """
+        Show statistic report
+        """
         if "Start" not in self.result:
             logger.warning("call compute() before show()")
             self.compute()

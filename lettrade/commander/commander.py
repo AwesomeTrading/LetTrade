@@ -10,6 +10,10 @@ from lettrade.data import DataFeed, DataFeeder
 
 
 class Commander(ABC):
+    """
+    Abstract class for strategy commander. Help to manage and report strategy real-time
+    """
+
     lettrade: "LetTrade"
     brain: "Brain"
     feeder: DataFeeder
@@ -28,6 +32,9 @@ class Commander(ABC):
         exchange: "Exchange",
         strategy: "Strategy",
     ):
+        """
+        Init dependencies
+        """
         self.lettrade = lettrade
         self.brain = brain
         self.exchange = exchange

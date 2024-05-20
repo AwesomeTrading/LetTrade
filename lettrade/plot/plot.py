@@ -170,9 +170,9 @@ class Plotter:
                 f"Size: {order.size}<br>"
             )
             if order.sl:
-                hovertemplate += f"SL: %{order.sl}<br>"
+                hovertemplate += f"SL: {order.sl}<br>"
             if order.tp:
-                hovertemplate += f"TP: %{order.tp}<br>"
+                hovertemplate += f"TP: {order.tp}<br>"
 
             self.figure.add_scatter(
                 x=x,
@@ -196,7 +196,7 @@ class Plotter:
         for trade in trades:
             x = [first_index + trade.entry_at[0]]
             y = [trade.entry_price]
-            customdata = [[trade.entry_at[1], trade.size, ""]]
+            customdata = [[trade.entry_at[1], trade.size, trade.pl]]
             if trade.exit_at:
                 x.append(first_index + trade.exit_at[0])
                 y.append(trade.exit_price)

@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 
 from lettrade.data import DataFeed
-from lettrade.exchange import Exchange, OrderType
+from lettrade.exchange import Exchange, OrderResult, OrderType
 
 from .trade import BackTestExecute, BackTestOrder, BackTestTrade
 
@@ -17,22 +17,39 @@ class BackTestExchange(Exchange):
         return str(self.__id)
 
     def next(self):
+        """Execute when new data feeded"""
         self._simulate_orders()
         super().next()
 
     def new_order(
         self,
         size: float,
-        type: OrderType = OrderType.Market,
+        type: Optional[OrderType] = OrderType.Market,
         limit: Optional[float] = None,
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: object = None,
-        data: DataFeed = None,
-        *args,
+        tag: Optional[object] = None,
+        data: Optional[DataFeed] = None,
         **kwargs
-    ):
+    ) -> OrderResult:
+        """Place new order.
+        Then send order events to `Brain`
+
+        Args:
+            size (float): _description_
+            type (Optional[OrderType], optional): _description_. Defaults to OrderType.Market.
+            limit (Optional[float], optional): _description_. Defaults to None.
+            stop (Optional[float], optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            tag (Optional[object], optional): _description_. Defaults to None.
+            data (Optional[DataFeed], optional): _description_. Defaults to None.
+            **kwargs (Optional[dict], optional): Extra-parameters
+
+        Returns:
+            OrderResult: Result when place new `Order`
+        """
         if not data:
             data = self.data
 

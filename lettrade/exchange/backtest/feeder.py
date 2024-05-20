@@ -6,6 +6,8 @@ from .data import BackTestDataFeed
 
 
 class BackTestDataFeeder(DataFeeder):
+    """BackTest DataFeeder"""
+
     datas: list[BackTestDataFeed]
     data: BackTestDataFeed
 

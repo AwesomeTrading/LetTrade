@@ -9,7 +9,7 @@ from lettrade.data import DataFeed, DataFeeder
 
 from .base import OrderState, TradeState
 from .execute import Execute
-from .order import Order
+from .order import Order, OrderResult
 from .position import Position
 from .trade import Trade
 
@@ -24,6 +24,8 @@ class ExchangeState(int, Enum):
 
 
 class Exchange(metaclass=ABCMeta):
+    """Base Exchange class to handle trading"""
+
     datas: list[DataFeed]
     data: DataFeed
 
@@ -57,7 +59,16 @@ class Exchange(metaclass=ABCMeta):
         feeder: DataFeeder,
         account: Account,
         commander: Commander,
-    ):
+    ) -> None:
+        """Init Exchange dependencies
+        Set state to `ExchangeState.Start`
+
+        Args:
+            brain (Brain): _description_
+            feeder (DataFeeder): _description_
+            account (Account): _description_
+            commander (Commander): _description_
+        """
         self._brain = brain
         self._feeder = feeder
         self._account = account
@@ -75,6 +86,7 @@ class Exchange(metaclass=ABCMeta):
     #     return self._feeder
 
     def start(self):
+        """Start of Exchange"""
         self._account.start()
         self._state = ExchangeState.Run
 
@@ -83,10 +95,16 @@ class Exchange(metaclass=ABCMeta):
         self._account._snapshot_equity()
 
     def stop(self):
+        """Stop Exchange"""
         self._state = ExchangeState.Stop
         self._account.stop()
 
-    def on_execute(self, execute: Execute, broadcast=True, **kwargs):
+    def on_execute(
+        self,
+        execute: Execute,
+        broadcast: Optional[bool] = True,
+        **kwargs,
+    ):
         """
         Receive Execute event from exchange then store and emit for Brain
         """
@@ -108,7 +126,12 @@ class Exchange(metaclass=ABCMeta):
         if broadcast:
             self._brain.on_execute(execute)
 
-    def on_order(self, order: Order, broadcast=True, **kwargs):
+    def on_order(
+        self,
+        order: Order,
+        broadcast: Optional[bool] = True,
+        **kwargs,
+    ):
         """
         Receive Order event from exchange then store and emit for Brain
         """
@@ -138,7 +161,13 @@ class Exchange(metaclass=ABCMeta):
         if broadcast:
             self._brain.on_order(order)
 
-    def on_trade(self, trade: Trade, broadcast=True, *args, **kwargs):
+    def on_trade(
+        self,
+        trade: Trade,
+        broadcast: Optional[bool] = True,
+        *args,
+        **kwargs,
+    ):
         """
         Receive Trade event from exchange then store and emit for Brain
         """
@@ -169,7 +198,13 @@ class Exchange(metaclass=ABCMeta):
         if broadcast:
             self._brain.on_trade(trade)
 
-    def on_position(self, position: Position, broadcast=True, *args, **kwargs):
+    def on_position(
+        self,
+        position: Position,
+        broadcast: Optional[bool] = True,
+        *args,
+        **kwargs,
+    ):
         """
         Receive Position event from exchange then store and emit for Brain
         """
@@ -191,7 +226,7 @@ class Exchange(metaclass=ABCMeta):
             self._brain.on_position(position)
 
     def on_notify(self, *args, **kwargs):
-        self._brain.on_notify(*args, **kwargs)
+        return self._brain.on_notify(*args, **kwargs)
 
     @abstractmethod
     def new_order(
@@ -204,7 +239,7 @@ class Exchange(metaclass=ABCMeta):
         tag: object = None,
         *args,
         **kwargs,
-    ):
+    ) -> OrderResult:
         raise NotImplementedError("Exchange.new_order not implement yet")
 
     # Alias

@@ -25,7 +25,7 @@ for path in sorted(src.rglob("*.py")):
     elif parts[-1].startswith("_"):
         continue
 
-    # print(nav_parts)
+    # print(parts)
     if not parts:
         continue
 
@@ -34,7 +34,7 @@ for path in sorted(src.rglob("*.py")):
 
     with mkdocs_gen_files.open(full_doc_path, "w") as fd:
         ident = ".".join(parts)
-        fd.write(f"::: {ident}")
+        fd.write(f"::: lettrade.{ident}")
 
     mkdocs_gen_files.set_edit_path(full_doc_path, ".." / path.relative_to(root))
 

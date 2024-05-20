@@ -31,6 +31,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/all/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/lettrade/</loc>
          <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
@@ -156,6 +161,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/backtest/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/commander/</loc>
          <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
@@ -187,6 +197,16 @@
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/data/yfinance/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/ccxt/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/ccxt/ccxt/</loc>
          <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>

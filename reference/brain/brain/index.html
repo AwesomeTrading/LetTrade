@@ -2324,6 +2324,41 @@
 
       <p>Brain of <code>lettrade</code></p>
 
+                  <details class="quote">
+                    <summary>Source code in <code>lettrade/brain/brain.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="n">Strategy</span><span class="p">,</span>
+    <span class="n">exchange</span><span class="p">:</span> <span class="n">Exchange</span><span class="p">,</span>
+    <span class="n">feeder</span><span class="p">:</span> <span class="n">DataFeeder</span><span class="p">,</span>
+    <span class="n">commander</span><span class="p">:</span> <span class="s2">&quot;Commander&quot;</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="p">:</span> <span class="n">Strategy</span> <span class="o">=</span> <span class="n">strategy</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="p">:</span> <span class="n">Exchange</span> <span class="o">=</span> <span class="n">exchange</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="p">:</span> <span class="n">DataFeeder</span> <span class="o">=</span> <span class="n">feeder</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DataFeed</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">datas</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="n">DataFeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">commander</span><span class="p">:</span> <span class="s2">&quot;Commander&quot;</span> <span class="o">=</span> <span class="n">commander</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
 
 
 

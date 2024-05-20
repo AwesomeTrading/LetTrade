@@ -2435,6 +2435,13 @@
     <div class="doc doc-contents ">
 
 
+                  <details class="quote">
+                    <summary>Source code in <code>lettrade/exchange/position.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;Exchange&quot;</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__exchange</span> <span class="o">=</span> <span class="n">exchange</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
 
 
 
@@ -2578,6 +2585,21 @@
 
       <p>Close portion of position by closing <code>portion</code> of each active trade. See <code>Trade.close</code>.</p>
 
+            <details class="quote">
+              <summary>Source code in <code>lettrade/exchange/position.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">portion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Close portion of position by closing `portion` of each active trade. See `Trade.close`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">trade</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exchange</span><span class="o">.</span><span class="n">trades</span><span class="p">:</span>
+        <span class="n">trade</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">portion</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>

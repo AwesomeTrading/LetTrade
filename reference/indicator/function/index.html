@@ -1765,6 +1765,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> function
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1774,6 +1785,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.above" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;above
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.below" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;below
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.crossover" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;crossover
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.crossunder" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;crossunder
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.diff" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;diff
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2205,6 +2280,59 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.above" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;above
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.below" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;below
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.crossover" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;crossover
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.crossunder" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;crossunder
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.indicator.function.diff" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;diff
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2244,6 +2372,403 @@
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.function.above" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">above</span>
+
+
+<a href="#lettrade.indicator.function.above" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">above</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Check a Series is above another Series</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>series1</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>first Series</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>series2</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>second Series</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series: True series1 is above series2 else False</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/function.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">above</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check a Series is above another Series</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        series1 (pd.Series): first Series</span>
+<span class="sd">        series2 (pd.Series): second Series</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series: True series1 is above series2 else False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">diffed</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">series1</span><span class="p">,</span> <span class="n">series2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diffed</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.function.below" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">below</span>
+
+
+<a href="#lettrade.indicator.function.below" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">below</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Check a Series is below another Series</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>series1</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>first Series</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>series2</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>second Series</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series: True series1 is below series2 else False</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/function.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">below</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check a Series is below another Series</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        series1 (pd.Series): first Series</span>
+<span class="sd">        series2 (pd.Series): second Series</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series: True series1 is below series2 else False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">diffed</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">series1</span><span class="p">,</span> <span class="n">series2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diffed</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.function.crossover" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">crossover</span>
+
+
+<a href="#lettrade.indicator.function.crossover" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">crossover</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Check if a Series cross over another Series</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>series1</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>first Series</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>series2</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>second Series</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series: True if series1 cross over series2 else False</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/function.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">crossover</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a Series cross over another Series</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        series1 (pd.Series): first Series</span>
+<span class="sd">        series2 (pd.Series): second Series</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series: True if series1 cross over series2 else False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">below1</span> <span class="o">=</span> <span class="n">below</span><span class="p">(</span><span class="n">series1</span><span class="p">,</span> <span class="n">series2</span><span class="p">)</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">above0</span> <span class="o">=</span> <span class="n">above</span><span class="p">(</span><span class="n">series1</span><span class="p">,</span> <span class="n">series2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">below1</span> <span class="o">&amp;</span> <span class="n">above0</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.function.crossunder" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">crossunder</span>
+
+
+<a href="#lettrade.indicator.function.crossunder" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">crossunder</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Check if a Series cross under another Series</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>series1</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>first Series</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>series2</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>second Series</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series: True if series1 cross under series2 else False</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/function.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">crossunder</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a Series cross under another Series</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        series1 (pd.Series): first Series</span>
+<span class="sd">        series2 (pd.Series): second Series</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series: True if series1 cross under series2 else False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">above1</span> <span class="o">=</span> <span class="n">above</span><span class="p">(</span><span class="n">series1</span><span class="p">,</span> <span class="n">series2</span><span class="p">)</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">below0</span> <span class="o">=</span> <span class="n">below</span><span class="p">(</span><span class="n">series1</span><span class="p">,</span> <span class="n">series2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">below0</span> <span class="o">&amp;</span> <span class="n">above1</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.function.diff" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">diff</span>
+
+
+<a href="#lettrade.indicator.function.diff" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">diff</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Difference between 2 series</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>series1</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>series2</code></b>
+              (<code><span title="pandas.Series">Series</span></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series: Diff of 2 series</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/function.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="n">series1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">series2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Difference between 2 series</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        series1 (pd.Series): _description_</span>
+<span class="sd">        series2 (pd.Series): _description_</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series: Diff of 2 series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">series1</span> <span class="o">-</span> <span class="n">series2</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 
 

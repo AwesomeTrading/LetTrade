@@ -1,17 +1,19 @@
-from typing import Type
+from typing import Optional
 
 from .. import Execute, Order, OrderState, OrderType, Trade, TradeState
 
 
 class BackTestExecute(Execute):
     """
-    Execute for BackTest
+    Execute for backtesting
     """
 
 
 class BackTestOrder(Order):
+    """Order for backtesting"""
+
     def cancel(self):
-        """Cancel the order."""
+        """Cancel the Order and notify Exchange"""
         if self.state is not OrderState.Placed:
             return
 
@@ -24,7 +26,19 @@ class BackTestOrder(Order):
 
         self.exchange.on_order(self)
 
-    def execute(self, price, at):
+    def execute(self, price: float, at: object) -> BackTestExecute:
+        """Execute order and notify for Exchange
+
+        Args:
+            price (float): Executed price
+            at (object): Executed bar
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            BackTestExecute: Execute object
+        """
         if self.state != OrderState.Placed:
             raise RuntimeError(f"Execute a {self.state} order")
 
@@ -51,17 +65,25 @@ class BackTestOrder(Order):
 
     def build_execute(
         self,
-        price,
-        at,
-        size=None,
-        exchange=None,
-        data=None,
-    ) -> "BackTestExecute":
+        price: float,
+        at: object,
+        size: Optional[float] = None,
+    ) -> BackTestExecute:
+        """Method help to build Execute object from Order object
+
+        Args:
+            price (float): Executed price
+            at (object): Executed bar
+            size (Optional[float], optional): Executed size. Defaults to None.
+
+        Returns:
+            BackTestExecute: Execute object
+        """
         return BackTestExecute(
             id=self.id,
             size=size or self.size,
-            exchange=exchange or self.exchange,
-            data=data or self.data,
+            exchange=self.exchange,
+            data=self.data,
             price=price,
             at=at,
             order=self,
@@ -69,16 +91,23 @@ class BackTestOrder(Order):
 
     def build_trade(
         self,
-        exchange=None,
-        data=None,
-        size=None,
-        state=TradeState.Open,
+        size: float = None,
+        state: TradeState = TradeState.Open,
     ) -> "BackTestTrade":
+        """Build Trade object from Order object
+
+        Args:
+            size (float, optional): Size of Trade object. Defaults to None.
+            state (TradeState, optional): State of Trade object. Defaults to TradeState.Open.
+
+        Returns:
+            BackTestTrade: Trade object
+        """
         trade = BackTestTrade(
             id=self.id,
             size=size or self.size,
-            exchange=exchange or self.exchange,
-            data=data or self.data,
+            exchange=self.exchange,
+            data=self.data,
             state=state,
             parent=self,
         )
@@ -87,7 +116,16 @@ class BackTestOrder(Order):
 
 
 class BackTestTrade(Trade):
-    def exit(self, price, at, caller=None):
+    """Trade for backtesting"""
+
+    def exit(self, price: float, at: object, caller=None):
+        """Exit trade
+
+        Args:
+            price (float): Exit price
+            at (object): Exit bar
+            caller (_type_, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
+        """
         if self.state != TradeState.Open:
             return
 

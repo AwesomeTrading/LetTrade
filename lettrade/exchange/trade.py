@@ -103,29 +103,51 @@ class Trade(BaseTransaction):
 
     # Extra properties
     @property
-    def is_long(self):
-        """True if the trade is long (trade size is positive)."""
+    def is_long(self) -> bool:
+        """Flag to check Trade is long side.
+
+        Returns:
+            bool: True if the trade is long (trade size is positive).
+        """
         return self.size > 0
 
     @property
-    def is_short(self):
-        """True if the trade is short (trade size is negative)."""
+    def is_short(self) -> bool:
+        """Flag to check Trade is short side.
+
+        Returns:
+            bool: True if the trade is short (trade size is negative).
+        """
         return not self.is_long
 
     @property
-    def is_exited(self):
-        """True if the trade is exited"""
+    def is_exited(self) -> bool:
+        """Flag to check Trade state.
+
+        Returns:
+            bool: True if the trade exited
+        """
         return self.state == TradeState.Exit
 
     @property
-    def pl(self):
+    def pl(self) -> float:
+        """Estimate Profit or Loss of Trade
+
+        Returns:
+            float: PnL
+        """
         if self.state == TradeState.Exit:
             return self.exit_pl
 
         return self._account.pl(size=self.size, entry_price=self.entry_price)
 
     @property
-    def fee(self):
+    def fee(self) -> float:
+        """Fee/Estimate Fee for trade
+
+        Returns:
+            float: Fee
+        """
         if self.state == TradeState.Exit:
             return self.exit_fee
 

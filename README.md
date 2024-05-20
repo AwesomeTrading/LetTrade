@@ -89,7 +89,7 @@ SQN                                            1.78
 
 ### Start a strategy
 
-All sample are in `example/` directory
+All example in [`example/`](https://github.com/AwesomeTrading/lettrade/tree/main/example) directory
 
 #### Download data
 

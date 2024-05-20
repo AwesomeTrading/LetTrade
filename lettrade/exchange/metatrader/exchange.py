@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 
 from lettrade.data import DataFeed
-from lettrade.exchange import Exchange, OrderType
+from lettrade.exchange import Exchange, OrderResult, OrderType
 
 logger = logging.getLogger(__name__)
 
@@ -11,21 +11,31 @@ from .trade import MetaTraderExecute, MetaTraderOrder, MetaTraderTrade
 
 
 class MetaTraderExchange(Exchange):
+    """MetaTrade 5 exchange module for `lettrade`"""
+
     _api: MetaTraderAPI
 
     def __init__(self, api: MetaTraderAPI, *args, **kwargs):
+        """_summary_
+
+        Args:
+            api (MetaTraderAPI): API connect to rpyc MeTrader 5 Terminal server through module `mt5linux`
+            *args (list): `Exchange` list parameters
+            **kwargs (dict): `Exchange` dict parameters
+        """
         super().__init__(*args, **kwargs)
         self._api = api
         self._api._callbacker = self
 
-    def start(self):
+    def start(self) -> None:
+        """Start MetaTrader exchange by: Sync orders from server, Sync trades from server"""
         self._sync_orders()
         self._sync_trades()
         return super().start()
 
-    def next(self):
+    def next(self) -> None:
         self._api._check_transactions()
-        super().next()
+        return super().next()
 
     def new_order(
         self,
@@ -39,7 +49,22 @@ class MetaTraderExchange(Exchange):
         data: Optional[DataFeed] = None,
         *args,
         **kwargs
-    ):
+    ) -> OrderResult:
+        """Place new order to server
+
+        Args:
+            size (float): _description_
+            type (Optional[OrderType], optional): _description_. Defaults to OrderType.Market.
+            limit (Optional[float], optional): _description_. Defaults to None.
+            stop (Optional[float], optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            tag (Optional[str], optional): _description_. Defaults to None.
+            data (Optional[DataFeed], optional): _description_. Defaults to None.
+
+        Returns:
+            OrderResult: _description_
+        """
         if not data:
             data = self.data
 

@@ -15,6 +15,7 @@ nav:
   - Development: dev.md
   - API reference:
       - LetTrade: reference/
+      - SUMMARY: reference/SUMMARY.md
   # - FAQ: faq.md
 
 theme:

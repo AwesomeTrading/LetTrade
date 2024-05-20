@@ -27,14 +27,22 @@ class Exchange(metaclass=ABCMeta):
     """Base Exchange class to handle trading"""
 
     datas: list[DataFeed]
+    """List of all available DataFeed"""
     data: DataFeed
+    """main DataFeed"""
 
     executes: dict[str, Execute]
+    """Execute dict by `Execute.id` key"""
     orders: dict[str, Order]
+    """Available Order dict by `Order.id` key"""
     history_orders: dict[str, Order]
+    """History Order dict by `Order.id` key"""
     trades: dict[str, Trade]
+    """Available Trade dict by `Trade.id` key"""
     history_trades: dict[str, Trade]
+    """History Order dict by `Order.id` key"""
     positions: dict[str, Position]
+    """Available Position dict by `Position.id` key"""
 
     _brain: "Brain"
     _feeder: DataFeeder
@@ -60,8 +68,9 @@ class Exchange(metaclass=ABCMeta):
         account: Account,
         commander: Commander,
     ) -> None:
-        """Init Exchange dependencies
-        Set state to `ExchangeState.Start`
+        """Init Exchange dependencies.
+        Set data/datas from feeder.
+        Set state to `ExchangeState.Start`.
 
         Args:
             brain (Brain): _description_
@@ -81,12 +90,11 @@ class Exchange(metaclass=ABCMeta):
 
         self._state = ExchangeState.Start
 
-    # @property
-    # def feeder(self) -> DataFeeder:
-    #     return self._feeder
-
-    def start(self):
-        """Start of Exchange"""
+    def start(self) -> None:
+        """Start of Exchange by:
+        - Start account.
+        - Set state to `ExchangeState.Run` ready for next().
+        """
         self._account.start()
         self._state = ExchangeState.Run
 
@@ -94,7 +102,7 @@ class Exchange(metaclass=ABCMeta):
         "Call when new data feeded"
         self._account._snapshot_equity()
 
-    def stop(self):
+    def stop(self) -> None:
         """Stop Exchange"""
         self._state = ExchangeState.Stop
         self._account.stop()
@@ -104,9 +112,9 @@ class Exchange(metaclass=ABCMeta):
         execute: Execute,
         broadcast: Optional[bool] = True,
         **kwargs,
-    ):
+    ) -> None:
         """
-        Receive Execute event from exchange then store and emit for Brain
+        Receive Execute event from exchange then store and notify Brain
         """
         if not isinstance(execute, Execute):
             raise RuntimeError(f"{execute} is not instance of type Execute")
@@ -131,9 +139,9 @@ class Exchange(metaclass=ABCMeta):
         order: Order,
         broadcast: Optional[bool] = True,
         **kwargs,
-    ):
+    ) -> None:
         """
-        Receive Order event from exchange then store and emit for Brain
+        Receive Order event from exchange then store and notify Brain
         """
         if not isinstance(order, Order):
             raise RuntimeError(f"{order} is not instance of type Order")
@@ -167,9 +175,15 @@ class Exchange(metaclass=ABCMeta):
         broadcast: Optional[bool] = True,
         *args,
         **kwargs,
-    ):
-        """
-        Receive Trade event from exchange then store and emit for Brain
+    ) -> None:
+        """Receive Trade event from exchange then store and notify Brain
+
+        Args:
+            trade (Trade): new comming `Trade`
+            broadcast (Optional[bool], optional): Flag notify for Brain. Defaults to True.
+
+        Raises:
+            RuntimeError: validat `Trade` instance
         """
         if not isinstance(trade, Trade):
             raise RuntimeError(f"{trade} is not instance of type Trade")
@@ -204,9 +218,16 @@ class Exchange(metaclass=ABCMeta):
         broadcast: Optional[bool] = True,
         *args,
         **kwargs,
-    ):
-        """
-        Receive Position event from exchange then store and emit for Brain
+    ) -> None:
+        """Receive Position event from exchange then store and notify Brain
+
+
+        Args:
+            position (Position): _description_
+            broadcast (Optional[bool], optional): _description_. Defaults to True.
+
+        Raises:
+            RuntimeError: check `Position` instance
         """
         if not isinstance(position, Position):
             raise RuntimeError(f"{position} is not instance of type Position")
@@ -236,10 +257,23 @@ class Exchange(metaclass=ABCMeta):
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: object = None,
+        tag: Optional[object] = None,
         *args,
         **kwargs,
     ) -> OrderResult:
+        """Place new `Order`
+
+        Args:
+            size (float): _description_
+            limit (Optional[float], optional): _description_. Defaults to None.
+            stop (Optional[float], optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            tag (Optional[object], optional): _description_. Defaults to None.
+
+        Returns:
+            OrderResult: _description_
+        """
         raise NotImplementedError("Exchange.new_order not implement yet")
 
     # Alias

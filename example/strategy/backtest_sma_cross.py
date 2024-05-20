@@ -1,8 +1,10 @@
 import pandas_ta as ta
 
-import example.logger
+from example.logger import logging_filter_necessary_only
 from lettrade import DataFeed, Strategy, let_backtest
 from lettrade.indicator import crossover
+
+logging_filter_necessary_only()
 
 
 class SmaCross(Strategy):
@@ -23,8 +25,8 @@ class SmaCross(Strategy):
         elif df.signal_ema_crossunder[0]:
             self.sell(size=0.1)
 
-    def end(self, df: DataFeed):
-        print(df.tail(10))
+    # def end(self, df: DataFeed):
+    #     print(df.tail(10))
 
     def plot(self, df: DataFeed):
         return dict(

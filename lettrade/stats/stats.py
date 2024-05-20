@@ -30,6 +30,7 @@ class Statistic:
     def compute(self):
         data: pd.DataFrame = self.feeder.data
 
+        self.result.loc["# Strategy"] = self.strategy.__class__
         self.result.loc["Start"] = data.datetime.iloc[0]
         self.result.loc["End"] = data.datetime.iloc[-1]
         self.result.loc["Duration"] = self.result.End - self.result.Start
@@ -72,7 +73,22 @@ class Statistic:
             logger.warning("call compute() before show()")
             self.compute()
 
+        # Show result inside docs session
+        if __debug__:
+            show = self._docs_show()
+            if show:
+                return show
+
         logger.info(
             "\n============= Statistic result =============\n%s\n",
             self.result.to_string(),
         )
+
+    def _docs_show(self):
+        if __debug__:
+            from ..utils.docs import is_docs_session
+
+            if not is_docs_session():
+                return False
+            print(self.result.to_string())
+            return self.result.to_string()

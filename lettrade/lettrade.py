@@ -210,7 +210,7 @@ class LetTrade:
         # Only show stats when backtest data
         if not self.feeder.is_continous:
             self.stats.compute()
-            self.stats.show()
+            return self.stats.show()
 
     def stop(self):
         """Stop strategy"""
@@ -231,6 +231,12 @@ class LetTrade:
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
+        if __debug__:
+            from .utils.docs import is_docs_session
+
+            if is_docs_session():
+                return
+
         if self.plotter is None:
             if self._plot_cls is None:
                 raise RuntimeError("Plotter class is None")

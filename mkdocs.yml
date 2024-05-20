@@ -1,17 +1,21 @@
 site_name: LetTrade
-site_url: !ENV [READTHEDOCS_CANONICAL_URL, "https://AwesomeTrading.github.io/lettrade/"]
+site_url:
+  !ENV [READTHEDOCS_CANONICAL_URL, "https://AwesomeTrading.github.io/lettrade/"]
 repo_url: https://github.com/AwesomeTrading/lettrade
 edit_uri: edit/develop/docs/
-watch: [mkdocs.yml, README.md, lettrade]
+watch: [mkdocs.yml, README.md, lettrade, example]
 use_directory_urls: True
+
 nav:
   - Home: index.md
   - Install:
-    - LetTrade: install/index.md 
-    - MetaTrader 5: install/metatrader.md 
-  - API: api.md
-  # - FAQ: faq.md
+      - LetTrade: install/index.md
+      - MetaTrader 5: install/metatrader.md
+  - TA Libraries: talib.md
   - Development: dev.md
+  - API reference:
+      - LetTrade: reference/
+  # - FAQ: faq.md
 
 theme:
   name: material
@@ -45,32 +49,39 @@ theme:
 
 plugins:
   - search
-  - autorefs
-  - markdown-exec
+  - markdown-exec:
+      ansi: required
+  - gen-files:
+      scripts:
+        - docs/script/gen_ref_nav.py
+  - literate-nav:
+      nav_file: SUMMARY.md
   - mkdocstrings:
       handlers:
         python:
           import:
             - https://docs.python.org/3/objects.inv
-            - https://www.mkdocs.org/objects.inv
             - https://python-markdown.github.io/objects.inv
+            - https://www.mkdocs.org/objects.inv
           paths: [lettrade]
           options:
             docstring_options:
               ignore_init_summary: true
             docstring_section_style: list
             filters: ["!^_"]
-            # heading_level: 1
+            heading_level: 1
             inherited_members: true
             merge_init_into_class: true
             separate_signature: true
             show_root_heading: true
-            show_root_full_path: true
+            show_root_full_path: false
             show_signature_annotations: true
+            show_source: false
             show_symbol_type_heading: true
             show_symbol_type_toc: true
             signature_crossrefs: true
             summary: true
+
 extra_css:
   - css/mkdocstrings.css
 

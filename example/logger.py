@@ -13,3 +13,8 @@ if coloredlogs:
     )
 
 logging.basicConfig(level=logging.INFO)
+
+
+def logging_filter_necessary_only():
+    logging.getLogger("lettrade.exchange.backtest.commander").setLevel(logging.WARNING)
+    logging.getLogger("lettrade.exchange.backtest.exchange").setLevel(logging.WARNING)

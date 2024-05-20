@@ -8,7 +8,7 @@
 
 A lightweight trading framework compatible with Stock, Forex, Crypto... markets
 
-Inspired by `freqtrade`, `backtrader`, `backtesting.py`... 
+Inspired by `freqtrade`, `backtrader`, `backtesting.py`...
 
 Let make algo trading simple :)
 
@@ -17,17 +17,18 @@ Find more at [**Documentation**](https://awesometrading.github.io/lettrade/)
 ## Installation
 
 Stable version
+
 ```sh
 pip install lettrade
 ```
 
 Developing version
+
 ```sh
 pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ```
 
 ## Example
-All sample are in `example/` directory
 
 ```python exec="true" source="above" result="ansi"
 import pandas_ta as ta
@@ -55,23 +56,40 @@ class SmaCross(Strategy):
 
 lt = let_backtest(
     strategy=SmaCross,
-    datas="docs/data/EURUSD_5m_0_1000.csv",
+    datas="example/data/data/EURUSD_5m_0_1000.csv",
 )
 
 lt.run()
-#lt.plot()
+lt.plot()
+```
 
-print(lt.stats.result.to_string())
+### Start a strategy
+
+All sample are in `example/` directory
+
+#### Download data
+
+```bash
+python -m example.data.yfinance
+```
+
+#### Backtest strategy
+
+```bash exec="true" source="above" result="ansi"
+python -m example.strategy.backtest_sma_cross
 ```
 
 ## Live Trading
+
 ### Official
+
 - `MetaTrader`: Support MetaTrader 5 Terminal trading
 - `CCXT`: Support most of cryptocurrency exchange from CCXT library
 
 ## Development
 
 Set up conda environment
+
 ```sh
 conda create -y -n LetTrade python=3.10
 conda activate LetTrade

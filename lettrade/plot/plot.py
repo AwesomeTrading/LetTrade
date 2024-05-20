@@ -116,6 +116,10 @@ class Plotter:
         params.update(**kwargs)
         self.figure.update(**params)
 
+        if __debug__:
+            if self._docs_plot(**kwargs):
+                return
+
         self.figure.show()
 
     def _plot_equity(self):
@@ -194,3 +198,13 @@ class Plotter:
                 ),
                 showlegend=False,
             )
+
+    def _docs_plot(self, **kwargs):
+        if __debug__:
+            from ..utils.docs import is_docs_session
+
+            if not is_docs_session():
+                return
+
+            # self.figure.to_html(full_html=False, include_plotlyjs="cdn")
+            return True

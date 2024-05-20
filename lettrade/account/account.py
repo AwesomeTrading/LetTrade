@@ -1,7 +1,8 @@
-from abc import ABCMeta
+class Account:
+    """
+    Manage account balance, leverage, commission. Risk calculate and control
+    """
 
-
-class Account(metaclass=ABCMeta):
     _exchange: "Exchange"
     _do_snapshot_equity: bool
 
@@ -36,11 +37,15 @@ class Account(metaclass=ABCMeta):
         pass
 
     def risk(self, size, **kwargs):
+        """
+        Risk calculation
+        """
         if size is None:
             return self._risk
         return size
 
     def pl(self, size, entry_price: float, exit_price=None):
+        """Estimate temporary profit and loss"""
         if exit_price is None:
             exit_price = self._exchange.data.open[0]
 

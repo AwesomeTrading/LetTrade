@@ -86,7 +86,7 @@ class Exchange(metaclass=ABCMeta):
         self._state = ExchangeState.Stop
         self._account.stop()
 
-    def on_execute(self, execute: Execute, broadcast=True, *args, **kwargs):
+    def on_execute(self, execute: Execute, broadcast=True, **kwargs):
         """
         Receive Execute event from exchange then store and emit for Brain
         """
@@ -108,7 +108,7 @@ class Exchange(metaclass=ABCMeta):
         if broadcast:
             self._brain.on_execute(execute)
 
-    def on_order(self, order: Order, broadcast=True, *args, **kwargs):
+    def on_order(self, order: Order, broadcast=True, **kwargs):
         """
         Receive Order event from exchange then store and emit for Brain
         """

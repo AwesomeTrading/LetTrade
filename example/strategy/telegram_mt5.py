@@ -53,7 +53,7 @@ class SmaCross(Strategy):
     # def on_transaction(self, transaction):
     #     print("Transaction", transaction)
 
-    def end(self):
+    def end(self, df: DataFeed):
         print(self.data)
         print(self.orders)
 

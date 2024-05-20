@@ -59,16 +59,18 @@ def let_backtest(
     if not isinstance(datas, list):
         datas = [datas]
     for data in datas:
+        if isinstance(data, BackTestDataFeed):
+            feeds.append(data)
+            continue
+
         if isinstance(data, str):
             feeds.append(CSVBackTestDataFeed(data))
             continue
 
-        if isinstance(data, pd.DataFrame) and not isinstance(data, DataFeed):
-            feeds.append(BackTestDataFeed(data))
-            continue
-
         if not isinstance(data, DataFeed):
             raise RuntimeError(f"Data {data} type is invalid")
+
+        feeds.append(BackTestDataFeed(data))
 
     # DataFeeder
     if not feeder:

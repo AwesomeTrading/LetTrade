@@ -23,9 +23,6 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
-        print("-" * 64)
-        print(df)
-
         if len(self.orders) > 0 or len(self.trades) > 0:
             return
 
@@ -39,8 +36,8 @@ class SmaCross(Strategy):
     # def on_transaction(self, transaction):
     #     print("Transaction", transaction)
 
-    def end(self):
-        print(self.data)
+    def end(self, df: DataFeed):
+        print(df)
         print(self.orders)
 
     def plot(self, df: DataFeed):

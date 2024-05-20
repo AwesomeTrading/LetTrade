@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -45,10 +45,10 @@ class Strategy(ABC):
             raise RuntimeError("Optimize a live datafeeder")
         self.__is_optimize: bool = is_optimize
 
-    def init(self):
+    def init(self) -> None:
         """Init strategy variables"""
 
-    def indicators(self, df: DataFeed):
+    def indicators(self, df: DataFeed) -> None:
         """All indicator and signal should implement here to cacheable.
         Because of `lettrade` will cache/pre-load all `DataFeed`
 
@@ -56,7 +56,7 @@ class Strategy(ABC):
             df (DataFeed): main data of strategy
         """
 
-    def start(self, df: DataFeed):
+    def start(self, df: DataFeed) -> None:
         """call after `init()` and before first `next()` is called
 
         Args:
@@ -67,10 +67,10 @@ class Strategy(ABC):
         """
 
     @abstractmethod
-    def next(self, df: DataFeed):
+    def next(self, df: DataFeed) -> None:
         pass
 
-    def end(self, df: DataFeed):
+    def end(self, df: DataFeed) -> None:
         """Call when strategy run completed
 
         Args:
@@ -329,18 +329,21 @@ class Strategy(ABC):
             position (Position): _description_
         """
 
-    def on_notify(self, *args, **kwargs):
+    def on_notify(self, *args, **kwargs) -> None:
         """Listen for `notify` event
 
         Returns:
-            _type_: _description_
+            _type_: `None`
         """
 
     # Commander
-    def notify(self, msg: str, **kwargs):
+    def notify(self, msg: str, **kwargs) -> Any:
         """Notify message to commander
 
         Args:
             msg (str): message string
+
+        Returns:
+            Any: _description_
         """
         return self.commander.send_message(msg=msg, **kwargs)

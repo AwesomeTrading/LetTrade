@@ -64,7 +64,17 @@ class Order(BaseTransaction):
             )
         )
 
-    def place(self):
+    def place(self) -> "OrderResult":
+        """Place `Order`
+        Set `status` to `OrderState.Placed`.
+        Send event to `Exchange`
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            OrderResult: result of `Order`
+        """
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
@@ -72,7 +82,21 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def execute(self, price, at):
+    def execute(self, price: float, at: object) -> "OrderResult":
+        """Execute `Order`.
+        Set `status` to `OrderState.Executed`.
+        Send event to `Exchange`
+
+        Args:
+            price (float): Executed price
+            at (object): Executed bar
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            OrderResult: result of `Order`
+        """
         if self.state != OrderState.Placed:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Placed")
 
@@ -80,8 +104,19 @@ class Order(BaseTransaction):
         self.entry_price = price
         self.state = OrderState.Executed
         self.exchange.on_order(self)
+        return OrderResultOk(order=self)
 
-    def cancel(self):
+    def cancel(self) -> "OrderResult":
+        """Cancel `Order`
+        Set `status` to `OrderState.Canceled`.
+        Send event to `Exchange`
+
+        Raises:
+            RuntimeError: Validate state is `OrderState.Placed`
+
+        Returns:
+            OrderResult: result of `Order`
+        """
         if self.state != OrderState.Placed:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Placed")
 
@@ -90,6 +125,14 @@ class Order(BaseTransaction):
         return OrderResultOk(order=self)
 
     def merge(self, other: "Order"):
+        """Update current `Order` variables by other `Order`
+
+        Args:
+            other (Order): Merge source `Order`
+
+        Raises:
+            RuntimeError: Validate same id
+        """
         if other is self:
             return
 
@@ -114,46 +157,105 @@ class Order(BaseTransaction):
     # Fields getters
     @property
     def limit(self) -> Optional[float]:
+        """Getter of limit_price
+
+        Returns:
+            Optional[float]: `float` or `None`
+        """
         return self.limit_price
 
     @property
     def stop(self) -> Optional[float]:
+        """Getter of stop_price
+
+        Returns:
+            Optional[float]: `float` or `None`
+        """
         return self.stop_price
 
     @property
     def sl(self) -> Optional[float]:
+        """Getter of sl_price
+
+        Returns:
+            Optional[float]: `float` or `None`
+        """
         return self.sl_price
 
     @property
     def tp(self) -> Optional[float]:
+        """Getter of tp_price
+
+        Returns:
+            Optional[float]: `float` or `None`
+        """
         return self.tp_price
 
     # Extra properties
     @property
-    def is_long(self):
-        """True if the order is long (order size is positive)."""
+    def is_long(self) -> bool:
+        """True if the order is long (order size is positive).
+
+        Returns:
+            bool: True/False
+        """
         return self.size > 0
 
     @property
-    def is_short(self):
-        """True if the order is short (order size is negative)."""
+    def is_short(self) -> bool:
+        """True if the order is short (order size is negative).
+
+        Returns:
+            bool: _description_
+        """
         return self.size < 0
 
     @property
-    def is_sl_order(self):
+    def is_sl_order(self) -> bool:
+        """`Order` is stop-loss order of a `Trade`
+
+        Returns:
+            bool: _description_
+        """
         return self.trade and self is self.trade.sl_order
 
     @property
-    def is_tp_order(self):
+    def is_tp_order(self) -> bool:
+        """`Order` is take-profit order of a `Trade`
+
+        Returns:
+            bool: _description_
+        """
         return self.trade and self is self.trade.tp_order
 
     @property
     def is_alive(self) -> bool:
+        """Flag to check `Order` still alive
+
+        Returns:
+            bool: True if `state` in [OrderState.Pending, OrderState.Placed]
+        """
         return self.state in [OrderState.Pending, OrderState.Placed]
 
 
 class OrderResult:
-    def __init__(self, ok=True, order: "Order" = None, code=0, raw=None) -> None:
+    """Result of `Order`"""
+
+    def __init__(
+        self,
+        ok: Optional[bool] = True,
+        order: Optional["Order"] = None,
+        code: Optional[int] = 0,
+        raw: Optional[object] = None,
+    ) -> None:
+        """_summary_
+
+        Args:
+            ok (Optional[bool], optional): Flag to check `Order` is success or not. Defaults to True.
+            order (Optional[Order], optional): Order own the result. Defaults to None.
+            code (Optional[int], optional): Error code of result. Defaults to 0.
+            raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
+        """
         self.ok: bool = ok
         self.order: "Order" = order
         self.code: int = code
@@ -161,11 +263,39 @@ class OrderResult:
 
 
 class OrderResultOk(OrderResult):
-    def __init__(self, order: Order = None, raw=None) -> None:
+    """Result of a success `Order`"""
+
+    def __init__(
+        self,
+        order: Optional["Order"] = None,
+        raw: Optional[object] = None,
+    ) -> None:
+        """_summary_
+
+        Args:
+            order (Optional[Order], optional): Order own the result. Defaults to None.
+            raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
+        """
         super().__init__(ok=True, order=order, raw=raw)
 
 
 class OrderResultError(OrderResult):
-    def __init__(self, error, code, order: Order = None, raw=None) -> None:
+    """Result of a error `Order`"""
+
+    def __init__(
+        self,
+        error: str,
+        code: int,
+        order: Optional["Order"] = None,
+        raw: Optional[object] = None,
+    ) -> None:
+        """_summary_
+
+        Args:
+            error (str): Error message
+            code (int): Error code of result
+            order (Optional[Order], optional): Order own the result. Defaults to None.
+            raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
+        """
         super().__init__(ok=False, order=order, code=code, raw=raw)
         self.error: str = error

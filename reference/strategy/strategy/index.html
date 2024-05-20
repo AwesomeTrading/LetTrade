@@ -3653,7 +3653,7 @@
     <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="lettrade.exchange.OrderResult">OrderResult</span></span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3739,7 +3739,7 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<b><code>OrderResult</code></b> (              <code><span title="lettrade.exchange.OrderResult">OrderResult</span></code>
+<b><code>OrderResult</code></b> (              <code><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></code>
 )          –
           <div class="doc-md-description">
             <p>order result information</p>
@@ -3834,7 +3834,7 @@
 
 
 <a href="#lettrade.strategy.strategy.Strategy.end" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">end</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">end</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3861,7 +3861,7 @@
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
-<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Call when strategy run completed</span>
 
 <span class="sd">    Args:</span>
@@ -3881,7 +3881,7 @@
 
 
 <a href="#lettrade.strategy.strategy.Strategy.indicators" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">indicators</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">indicators</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3910,7 +3910,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 <span class="normal">54</span>
 <span class="normal">55</span>
 <span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;All indicator and signal should implement here to cacheable.</span>
 <span class="sd">    Because of `lettrade` will cache/pre-load all `DataFeed`</span>
 
@@ -3931,7 +3931,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 
 
 <a href="#lettrade.strategy.strategy.Strategy.init" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">init</span><span class="p">()</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">init</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3941,7 +3941,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Init strategy variables&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3957,7 +3957,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 
 
 <a href="#lettrade.strategy.strategy.Strategy.notify" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">notify</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">notify</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3977,6 +3977,18 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
         </li>
     </ul>
 
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>Any</code></b> (              <code><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></code>
+)          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+    </ul>
+
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">340</span>
@@ -3985,11 +3997,17 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 <span class="normal">343</span>
 <span class="normal">344</span>
 <span class="normal">345</span>
-<span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Notify message to commander</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        msg (str): message string</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">commander</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4053,7 +4071,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 
 
 <a href="#lettrade.strategy.strategy.Strategy.on_notify" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_notify</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_notify</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4064,9 +4082,10 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<b><code>_type_</code></b>          –
+<b><code>_type_</code></b> (              <code>None</code>
+)          –
           <div class="doc-md-description">
-            <p><em>description</em></p>
+            <p><code>None</code></p>
           </div>
         </li>
     </ul>
@@ -4078,11 +4097,11 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 <span class="normal">334</span>
 <span class="normal">335</span>
 <span class="normal">336</span>
-<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Listen for `notify` event</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        _type_: _description_</span>
+<span class="sd">        _type_: `None`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4361,7 +4380,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
     <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="lettrade.exchange.OrderResult">OrderResult</span></span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4447,7 +4466,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<b><code>OrderResult</code></b> (              <code><span title="lettrade.exchange.OrderResult">OrderResult</span></code>
+<b><code>OrderResult</code></b> (              <code><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></code>
 )          –
           <div class="doc-md-description">
             <p>order result information</p>
@@ -4542,7 +4561,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 
 
 <a href="#lettrade.strategy.strategy.Strategy.start" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4566,7 +4585,8 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<b><code>_type_</code></b>          –
+<b><code>_type_</code></b> (              <code>None</code>
+)          –
           <div class="doc-md-description">
             <p><code>None</code></p>
           </div>
@@ -4583,7 +4603,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code></
 <span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
-<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;call after `init()` and before first `next()` is called</span>
 
 <span class="sd">    Args:</span>

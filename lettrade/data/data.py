@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 
@@ -7,15 +8,26 @@ logger = logging.getLogger(__name__)
 
 
 class DataFeed(pd.DataFrame):
+    """Data for Strategy. A implement of pandas.DataFrame"""
+
     def __init__(
         self,
-        name,
+        name: str,
         # data: pd.DataFrame,
-        meta={},
+        meta: Optional[dict] = None,
         # dtype={},
         *args,
         **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            name (str): Name of DataFeed
+            meta (Optional[dict], optional): metadata of DataFeed. Defaults to None.
+            *args (list): `pandas.DataFrame` list parameters
+            **kwargs (dict): `pandas.DataFrame` dict parameters
+        """
+
         # dtype.update(
         #     {
         #         "datetime": "datetime64[ns, UTC]",
@@ -39,6 +51,8 @@ class DataFeed(pd.DataFrame):
         # self.index = pd.RangeIndex(start=-len(self.index) + 1, stop=1, step=1)
 
         # Metadata
+        if not meta:
+            meta = dict()
         meta["name"] = name
         self.attrs = {"lt_meta": meta}
 

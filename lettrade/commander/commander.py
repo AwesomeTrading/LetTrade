@@ -32,8 +32,13 @@ class Commander(ABC):
         exchange: "Exchange",
         strategy: "Strategy",
     ):
-        """
-        Init dependencies
+        """Init commander dependencies
+
+        Args:
+            lettrade (LetTrade): LetTrade object
+            brain (Brain): Brain of bot
+            exchange (Exchange): Manage bot trading
+            strategy (Strategy): Strategy of bot
         """
         self.lettrade = lettrade
         self.brain = brain

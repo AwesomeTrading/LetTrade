@@ -25,14 +25,23 @@ def let_backtest(
     account: Optional[Account] = None,
     **kwargs,
 ) -> "LetTrade":
-    """
-    Complete `lettrade` backtest depenencies
+    """Complete `lettrade` backtest depenencies
 
-    Arguments:
-        strategy: The Strategy implement class.
+    Args:
+        strategy (Type[Strategy]): The Strategy implement class
+        datas (Optional[DataFeed  |  list[DataFeed]  |  str  |  list[str]]): _description_
+        feeder (Optional[DataFeeder], optional): _description_. Defaults to None.
+        exchange (Optional[Exchange], optional): _description_. Defaults to None.
+        commander (Optional[Commander], optional): _description_. Defaults to None.
+        plot (Optional[Type[Plotter]], optional): _description_. Defaults to None.
+        cash (Optional[float], optional): _description_. Defaults to 10_000.0.
+        account (Optional[Account], optional): _description_. Defaults to None.
+
+    Raises:
+        RuntimeError: The validate parameter error
 
     Returns:
-        The LetTrade backtest object.
+        LetTrade: The LetTrade backtest object
     """
     from lettrade.exchange.backtest import (
         BackTestAccount,

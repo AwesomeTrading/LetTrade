@@ -2449,7 +2449,7 @@
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>git+https://git@github.com/AwesomeTrading/lettrade.git@main
 </code></pre></div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas_ta</span> <span class="k">as</span> <span class="nn">ta</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">talib.abstract</span> <span class="k">as</span> <span class="nn">ta</span>
 
 <span class="kn">from</span> <span class="nn">lettrade</span> <span class="kn">import</span> <span class="n">DataFeed</span><span class="p">,</span> <span class="n">LetTrade</span><span class="p">,</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">let_backtest</span>
 <span class="kn">from</span> <span class="nn">lettrade.indicator</span> <span class="kn">import</span> <span class="n">crossover</span><span class="p">,</span> <span class="n">crossunder</span>
@@ -2460,8 +2460,8 @@
     <span class="n">ema2_period</span> <span class="o">=</span> <span class="mi">21</span>
 
     <span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_period</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_period</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
 
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
@@ -2480,35 +2480,36 @@
 <span class="n">lt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>
+<div class="highlight"><pre><span></span><code># Strategy                       &lt;class &#39;SmaCross&#39;&gt;
+Start                     2024-05-13 21:15:00+00:00
+End                       2024-05-17 08:30:00+00:00
+Duration                            3 days 11:15:00
+Start Balance [$]                             10000
+Equity [$]                                  10000.0
+PL [$]                                          0.0
+PL [%]                                          0.0
+Buy &amp; Hold PL [%]                               2.0
+Max. Drawdown [%]                            -33.08
+Avg. Drawdown [%]                             -5.58
+Max. Drawdown Duration            688 days 00:00:00
+Avg. Drawdown Duration             41 days 00:00:00
+
+# Trades                                         34
+Best Trade [%]                               0.0007
+Worst Trade [%]                           -0.000732
+Profit Factor                                  2.13
+SQN                                            1.78
 </code></pre></div>
+<p><img alt="Plot" src="https://raw.githubusercontent.com/AwesomeTrading/lettrade/main/docs/image/plot.png" /></p>
 <h3 id="start-a-strategy">Start a strategy<a class="headerlink" href="#start-a-strategy" title="Permanent link">¤</a></h3>
-<p>All sample are in <code>example/</code> directory</p>
+<p>All example in <a href="https://github.com/AwesomeTrading/lettrade/tree/main/example"><code>example/</code></a> directory</p>
 <h4 id="download-data">Download data<a class="headerlink" href="#download-data" title="Permanent link">¤</a></h4>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>example.data.yfinance
 </code></pre></div>
 <h4 id="backtest-strategy">Backtest strategy<a class="headerlink" href="#backtest-strategy" title="Permanent link">¤</a></h4>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>example.strategy.backtest_sma_cross
 </code></pre></div>
-<div class="highlight"><pre><span></span><code># Strategy                &lt;class &#39;__main__.SmaCross&#39;&gt;
-Start                       2023-01-02 00:00:00+00:00
-End                         2023-12-29 21:00:00+00:00
-Duration                            361 days 21:00:00
-Start Balance [$]                               10000
-Equity [$]                                   10000.03
-PL [$]                                           0.03
-PL [%]                                            0.0
-Buy &amp; Hold PL [%]                                 2.0
-Max. Drawdown [%]                              -33.08
-Avg. Drawdown [%]                               -5.58
-Max. Drawdown Duration              688 days 00:00:00
-Avg. Drawdown Duration               41 days 00:00:00
-
-# Trades                                          248
-Best Trade [%]                               0.005559
-Worst Trade [%]                             -0.005438
-Profit Factor                                    2.13
-SQN                                              1.78
+<div class="highlight"><pre><span></span><code>
 </code></pre></div>
 <h2 id="live-trading">Live Trading<a class="headerlink" href="#live-trading" title="Permanent link">¤</a></h2>
 <h3 id="official">Official<a class="headerlink" href="#official" title="Permanent link">¤</a></h3>

@@ -49,6 +49,7 @@ theme:
 
 plugins:
   - search
+  - autorefs
   - markdown-exec:
       ansi: required
   - gen-files:

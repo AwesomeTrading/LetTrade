@@ -33,8 +33,7 @@ pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ```python
 import talib.abstract as ta
 
-from lettrade import DataFeed, Strategy, let_backtest
-from lettrade.indicator import crossover, crossunder
+from lettrade.all import DataFeed, Strategy, let_backtest, crossover, crossunder
 
 
 class SmaCross(Strategy):

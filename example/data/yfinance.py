@@ -10,7 +10,8 @@ def dump_csv():
         "EURUSD=X",
         start="2023-01-01",
         end="2023-12-31",
-        interval="1h",
+        interval="1d",
+        path="example/data/data/EURUSD_1d.csv",
         force=True,
     )
     print(df)

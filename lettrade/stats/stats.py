@@ -100,5 +100,5 @@ class Statistic:
 
             if not is_docs_session():
                 return False
-            print(self.result.to_string())
+
             return self.result.to_string()

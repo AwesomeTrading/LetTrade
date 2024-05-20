@@ -30,8 +30,8 @@ pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 
 ## Example
 
-```python exec="true" source="above" result="ansi"
-import pandas_ta as ta
+```python
+import talib.abstract as ta
 
 from lettrade import DataFeed, LetTrade, Strategy, let_backtest
 from lettrade.indicator import crossover, crossunder
@@ -42,8 +42,8 @@ class SmaCross(Strategy):
     ema2_period = 21
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.ema(df.close, length=self.ema1_period)
-        df["ema2"] = ta.ema(df.close, length=self.ema2_period)
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
+        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
 
         df["crossover"] = crossover(df.ema1, df.ema2)
         df["crossunder"] = crossunder(df.ema1, df.ema2)
@@ -62,6 +62,30 @@ lt = let_backtest(
 lt.run()
 lt.plot()
 ```
+
+```text
+# Strategy                       <class 'SmaCross'>
+Start                     2024-05-13 21:15:00+00:00
+End                       2024-05-17 08:30:00+00:00
+Duration                            3 days 11:15:00
+Start Balance [$]                             10000
+Equity [$]                                  10000.0
+PL [$]                                          0.0
+PL [%]                                          0.0
+Buy & Hold PL [%]                               2.0
+Max. Drawdown [%]                            -33.08
+Avg. Drawdown [%]                             -5.58
+Max. Drawdown Duration            688 days 00:00:00
+Avg. Drawdown Duration             41 days 00:00:00
+                                                   
+# Trades                                         34
+Best Trade [%]                               0.0007
+Worst Trade [%]                           -0.000732
+Profit Factor                                  2.13
+SQN                                            1.78
+```
+
+![Plot](https://raw.githubusercontent.com/AwesomeTrading/lettrade/main/docs/image/plot.png)
 
 ### Start a strategy
 

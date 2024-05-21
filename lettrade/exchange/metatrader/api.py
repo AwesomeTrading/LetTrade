@@ -1,7 +1,10 @@
 import logging
+import multiprocessing
 from datetime import datetime, timedelta
+from multiprocessing.managers import BaseManager
 from time import sleep
 
+from box import Box
 from mt5linux import MetaTrader5 as Mt5
 
 logger = logging.getLogger(__name__)
@@ -90,13 +93,13 @@ class MetaTraderAPI:
         return True
 
     def account(self):
-        return self._mt5.account_info()
+        return self._mt5.account_info()._asdict()
 
     def markets(self, symbol):
-        return self._mt5.symbol_info(symbol)
+        return self._mt5.symbol_info(symbol)._asdict()
 
     def tick(self, symbol):
-        return self._mt5.symbol_info_tick(symbol)
+        return self._mt5.symbol_info_tick(symbol)._asdict()
 
     def rates_from_pos(self, symbol, timeframe, since=0, to=1000):
         rates = self._mt5.copy_rates_from_pos(
@@ -108,22 +111,27 @@ class MetaTraderAPI:
         return rates
 
     def order_send(self, request: "TradeRequest"):
-        return self._mt5.order_send(request)
+        result = self._mt5.order_send(request)
+        return result._asdict()
 
     def orders_total(self):
         return self._mt5.orders_total()
 
     def orders_get(self, **kwargs):
-        return self._mt5.orders_get(**kwargs)
+        result = self._mt5.orders_get(**kwargs)
+        result = [r._asdict() for r in result]
+        return result
 
     def positions_total(self):
         return self._mt5.positions_total()
 
     def positions_get(self, **kwargs):
-        return self._mt5.positions_get(**kwargs)
+        result = self._mt5.positions_get(**kwargs)
+        result = [r._asdict() for r in result]
+        return result
 
     # Transaction
-    def _check_transactions(self):
+    def check_transactions(self):
         if not self._callbacker:
             return
 

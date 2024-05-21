@@ -6,6 +6,7 @@ from typing import Optional, Type
 
 import numpy as np
 import pandas as pd
+
 from lettrade import (
     Account,
     Commander,
@@ -127,8 +128,7 @@ class LetTradeBackTest(LetTrade):
             with ProcessPoolExecutor() as executor:
                 futures = [
                     executor.submit(
-                        LetTradeBackTest._optimizes_run,
-                        self=self,
+                        self._optimizes_run,
                         optimizes=optimizes,
                         index=i,
                     )
@@ -150,20 +150,19 @@ class LetTradeBackTest(LetTrade):
                 )
             # for i, optimize in enumerate(optimizes):
             for i, optimize in tqdm(enumerate(optimizes)):
-                result = LetTradeBackTest._optimize_run(**optimize, index=i)
+                result = self._optimize_run(**optimize, index=i)
                 results.extend(result)
         print(results)
 
-    @staticmethod
     def _optimizes_run(
+        self,
         optimizes: list[dict],
         index,
         **kwargs,
     ):
         results = []
-        # print("LetTradeBackTest._optimizes_run", index, optimizes)
         for i, optimize in enumerate(optimizes):
-            result = LetTradeBackTest._optimize_run(
+            result = self._optimize_run(
                 optimize=optimize,
                 index=i,
                 batch_index=index,
@@ -172,9 +171,8 @@ class LetTradeBackTest(LetTrade):
             results.append(result)
         return results
 
-    @staticmethod
     def _optimize_run(
-        self: "LetTradeBackTest",
+        self,
         optimize: dict[str, object],
         **kwargs,
     ):

@@ -1,4 +1,5 @@
 import logging
+from concurrent.futures import ProcessPoolExecutor
 from typing import Optional, Type
 
 from lettrade.account import Account
@@ -107,6 +108,9 @@ class LetTrade:
             commander=self.commander,
         )
 
+    def _multiprocess(self, process, **kwargs):
+        pass
+
     def datafeed(self, data, *args, **kwargs):
         match data:
             case DataFeed():
@@ -120,11 +124,44 @@ class LetTrade:
             datas = [datas]
 
         # Check data
-        feeds = [self.datafeed(data=data, index=i) for i, data in enumerate(datas)]
+        if isinstance(datas[0], list):
+            feeds = []
+            for i, data in enumerate(datas):
+                data_feeds = []
+                for j, d in enumerate(data):
+                    d = self.datafeed(data=d, index=i * j)
+                    data_feeds.append(d)
+                feeds.append(data_feeds)
+        else:
+            feeds = [self.datafeed(data=data, index=i) for i, data in enumerate(datas)]
         return feeds
 
     def run(self, *args, **kwargs):
         """Run strategy"""
+        if isinstance(self.data, list):
+            self._multiprocess("main")
+            with ProcessPoolExecutor() as executor:
+                futures = [
+                    executor.submit(
+                        self._run,
+                        datas=datas,
+                        index=i,
+                        multiprocess="sub",
+                    )
+                    for i, datas in enumerate(self.datas)
+                ]
+                for future in futures:
+                    result = future.result()
+                    print(result)
+        else:
+            return self._run(*args, **kwargs)
+
+    def _run(self, datas=None, index=None, multiprocess=None, *args, **kwargs):
+        # Run inside a subprocess
+        if multiprocess == "sub":
+            self.datas = datas
+            self._multiprocess(multiprocess)
+
         self._init()
 
         if self.commander:
@@ -138,7 +175,7 @@ class LetTrade:
         # Only show stats when backtest data
         if not self.feeder.is_continous:
             self.stats.compute()
-            return self.stats.show()
+            self.stats.show()
 
     def stop(self):
         """Stop strategy"""
@@ -159,6 +196,10 @@ class LetTrade:
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
+        if not hasattr(self, "feeder"):
+            logger.warning("Plot in multiprocessing is not implement yet")
+            return
+
         if __debug__:
             from .utils.docs import is_docs_session
 

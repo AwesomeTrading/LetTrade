@@ -1,13 +1,15 @@
 import logging
 from typing import Optional
 
+from box import Box
+
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType
 
-logger = logging.getLogger(__name__)
-
 from .api import MetaTraderAPI
 from .trade import MetaTraderExecute, MetaTraderOrder, MetaTraderTrade
+
+logger = logging.getLogger(__name__)
 
 
 class MetaTraderExchange(Exchange):
@@ -34,7 +36,7 @@ class MetaTraderExchange(Exchange):
         return super().start()
 
     def next(self) -> None:
-        self._api._check_transactions()
+        self._api.check_transactions()
         return super().next()
 
     def new_order(
@@ -127,8 +129,8 @@ class MetaTraderExchange(Exchange):
         for raw in raws:
             if __debug__:
                 logger.info("Sync trade: %s", str(raw))
-            if raw.ticket not in self.trades:
-                trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
+            trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
+            if trade.id not in self.trades:
                 self.on_trade(trade)
 
     # Events

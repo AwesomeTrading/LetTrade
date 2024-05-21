@@ -43,6 +43,15 @@ class MetaTraderDataFeed(DataFeed):
 
         setattr(self, "__api", api)
 
+    # def __getstate__(self):
+    #     state = self.__dict__.copy()
+
+    #     print(state)
+
+    #     # 👇️ don't pickle the lock_object key
+    #     del state["__api"]
+    #     return state
+
     @property
     def symbol(self) -> str:
         return self.meta["symbol"]
@@ -54,6 +63,10 @@ class MetaTraderDataFeed(DataFeed):
     @property
     def _api(self) -> "MetaTraderAPI":
         return getattr(self, "__api")
+
+    @_api.setter
+    def _api(self, value) -> "MetaTraderAPI":
+        return setattr(self, "__api", value)
 
     def next(self, size=1, tick=0) -> bool:
         return self._next(size=size, tick=tick)

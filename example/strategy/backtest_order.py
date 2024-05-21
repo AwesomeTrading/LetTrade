@@ -62,7 +62,7 @@ class SmaCross(Strategy):
 
 lt = let_backtest(
     strategy=SmaCross,
-    datas="example/data/data/EURUSD_5m_0_1000.csv",
+    datas=[["example/data/data/EURUSD_5m_0_1000.csv"]],
     account=ForexBackTestAccount,
 )
 

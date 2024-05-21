@@ -1,3 +1,4 @@
+from multiprocessing.managers import BaseManager
 from typing import Optional, Type
 
 from lettrade import Commander, LetTrade
@@ -50,17 +51,7 @@ class LetTradeMetaTrader(LetTrade):
         api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
         **kwargs,
     ) -> None:
-        self._api: MetaTraderAPI = api()
-        self._api.start(**kwargs.pop("api_kwargs", {}))
-
-        feeder_kwargs = dict(api=self._api)
-        feeder_kwargs.update(**kwargs.pop("feeder_kwargs", {}))
-
-        exchange_kwargs = dict(api=self._api)
-        exchange_kwargs.update(**kwargs.pop("exchange_kwargs", {}))
-
-        account_kwargs = dict(api=self._api)
-        account_kwargs.update(**kwargs.pop("account_kwargs", {}))
+        self._api_cls: Type[MetaTraderAPI] = api
 
         super().__init__(
             strategy=strategy,
@@ -68,9 +59,6 @@ class LetTradeMetaTrader(LetTrade):
             feeder=feeder,
             exchange=exchange,
             account=account,
-            feeder_kwargs=feeder_kwargs,
-            exchange_kwargs=exchange_kwargs,
-            account_kwargs=account_kwargs,
             **kwargs,
         )
 
@@ -94,14 +82,14 @@ class LetTradeMetaTrader(LetTrade):
                 name=name,
                 symbol=symbol,
                 timeframe=timeframe,
-                api=self._api,
+                api=None,
             )
         elif isinstance(data, dict):
             data = MetaTraderDataFeed(
                 symbol=data.get("symbol"),
                 timeframe=data.get("timeframe"),
                 name=data.get("name", None),
-                api=self._api,
+                api=None,
             )
         elif isinstance(data, MetaTraderDataFeed):
             pass
@@ -109,3 +97,19 @@ class LetTradeMetaTrader(LetTrade):
             return RuntimeError(f"Data {data} is not support yet")
 
         return super().datafeed(data=data, **kwargs)
+
+    def _multiprocess(self, process, **kwargs):
+        if process == "main":
+            BaseManager.register("MetaTraderAPI", self._api_cls)
+            manager = BaseManager()
+            manager.start()
+
+            self._api: MetaTraderAPI = manager.MetaTraderAPI()
+            self._api.start(**self._kwargs.pop("api_kwargs", {}))
+
+            self._kwargs.setdefault("feeder_kwargs", dict()).update(api=self._api)
+            self._kwargs.setdefault("exchange_kwargs", dict()).update(api=self._api)
+            self._kwargs.setdefault("account_kwargs", dict()).update(api=self._api)
+        else:
+            for data in self.datas:
+                data._api = self._api

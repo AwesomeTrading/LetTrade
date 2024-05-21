@@ -22,7 +22,7 @@ def let_metatrader(
     **kwargs,
 ):
     api_kwargs = dict(
-        account=int(login),
+        login=int(login),
         password=password,
         server=server,
     )
@@ -71,7 +71,6 @@ class LetTradeMetaTrader(LetTrade):
         **kwargs,
     ) -> MetaTraderDataFeed:
         if isinstance(data, (list, set, tuple)):
-            print(data, type(data))
             if len(data) < 2:
                 raise RuntimeError("DataFeed missing data (symbol, timeframe)")
             symbol, timeframe = data[0], data[1]
@@ -104,5 +103,6 @@ class LetTradeMetaTrader(LetTrade):
     def _multiprocess(self, process, **kwargs):
         self._api._multiprocess(process, **kwargs)
 
-        if process == "sub":
+        # process=None mean single process
+        if process in [None, "sub"]:
             self._api.start(**self._kwargs.pop("api_kwargs", {}))

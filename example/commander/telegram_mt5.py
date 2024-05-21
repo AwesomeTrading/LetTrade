@@ -54,7 +54,7 @@ class SmaCross(Strategy):
             self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
 
     def end(self, df: DataFeed):
-        print(df)
+        print(df.tail())
         print(self.orders)
 
     def plot(self, df: DataFeed):

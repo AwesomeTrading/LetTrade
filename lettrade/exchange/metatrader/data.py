@@ -94,7 +94,7 @@ class MetaTraderDataFeed(DataFeed):
 
             rates = rates[rates["time"] >= now]
             if __debug__:
-                logger.info("Rates: %s", rates)
+                logger.info("[%s] Rates: %s", self.name, rates)
 
             # No new data
             if len(rates) == 0:

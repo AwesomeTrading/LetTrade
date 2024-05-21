@@ -33,6 +33,9 @@ TIMEFRAME_L2M = {
 
 
 class MetaTraderAPI:
+    _mt5: Mt5
+    _callbacker: "MetaTraderExchange"
+
     __deal_time_checked = datetime(2020, 1, 1)
     __orders_stored: dict[int, object] = {}
     __trades_stored: dict[int, object] = {}
@@ -43,32 +46,22 @@ class MetaTraderAPI:
             cls._singleton.__init__(*args, **kwargs)
         return cls._singleton
 
-    def _multiprocess(self, process, **kwargs):
-        pass
-
-    def __copy__(self):
-        cls = self.__class__
-        return cls._singleton
-
-    def __deepcopy__(self, memo):
-        return self.__copy__()
-
     def start(
         self,
-        account: int,
+        login: int,
         password: str,
         server: str,
-        timeout=60,
-        retry=20,
-        host="localhost",
-        port=18812,
-        callbacker=None,
+        timeout: int = 60,
+        retry: int = 20,
+        host: str = "localhost",
+        port: int = 18812,
+        callbacker: object = None,
     ):
         self._mt5 = Mt5(host=host, port=port)
         self._callbacker = callbacker
 
-        version = self._mt5.version()
-        if version[0] == 0:
+        account = self.account()
+        if not account or account.login != login:
             while retry > 0:
                 login = self._mt5.initialize(
                     login=int(account),
@@ -247,3 +240,13 @@ class MetaTraderAPI:
 
         self.__trades_stored = {raw.ticket: raw for raw in raws}
         return added_trades, removed_trades
+
+    # Extra
+    def _multiprocess(self, process, **kwargs):
+        pass
+
+    def __copy__(self):
+        return self.__class__._singleton
+
+    def __deepcopy__(self, memo):
+        return self.__class__._singleton

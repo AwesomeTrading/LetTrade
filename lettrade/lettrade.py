@@ -136,11 +136,23 @@ class LetTrade:
             feeds = [self.datafeed(data=data, index=i) for i, data in enumerate(datas)]
         return feeds
 
-    def run(self, *args, **kwargs):
+    def run(self, worker=None, *args, **kwargs):
         """Run strategy"""
-        if isinstance(self.data, list):
+        if worker or isinstance(self.data, list):
+            if not isinstance(self.data, list):
+                self.data = self.datas
+                self.datas = [self.data]
+
+            if worker and worker > len(self.datas):
+                logger.warning(
+                    "Worker size %s is more then datas size %s",
+                    worker,
+                    len(self.datas),
+                )
+                worker = len(self.datas)
+
             self._multiprocess("main")
-            with ProcessPoolExecutor() as executor:
+            with ProcessPoolExecutor(max_workers=worker or None) as executor:
                 futures = [
                     executor.submit(
                         self._run,
@@ -156,13 +168,27 @@ class LetTrade:
         else:
             return self._run(*args, **kwargs)
 
-    def _run(self, datas=None, index=None, multiprocess=None, *args, **kwargs):
+    def _run(
+        self,
+        datas: Optional[list[DataFeed]] = None,
+        index: Optional[int] = None,
+        multiprocess: Optional[str] = None,
+        *args,
+        **kwargs,
+    ):
         # Run inside a subprocess
         if multiprocess == "sub":
+            if __debug__:
+                logger.info(
+                    "Running %s in subprocess: %s",
+                    [d.name for d in datas],
+                    index,
+                )
             self.datas = datas
-            self._multiprocess(multiprocess)
+        self._multiprocess(multiprocess)
 
-        self._init()
+        # Init objects
+        self._init(**kwargs.pop("init_kwargs", {}))
 
         if self.commander:
             self.commander.start()

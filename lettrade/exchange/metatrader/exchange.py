@@ -1,8 +1,6 @@
 import logging
 from typing import Optional
 
-from box import Box
-
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType
 

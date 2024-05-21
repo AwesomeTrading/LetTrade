@@ -14,7 +14,6 @@ from lettrade import (
     DataFeeder,
     Exchange,
     LetTrade,
-    Statistic,
     Strategy,
 )
 from lettrade.plot import Plotter
@@ -164,39 +163,25 @@ class LetTradeBackTest(LetTrade):
         for i, optimize in enumerate(optimizes):
             result = self._optimize_run(
                 optimize=optimize,
-                index=i,
-                batch_index=index,
+                index=index * len(optimize) + i,
                 **kwargs,
             )
             results.append(result)
         return results
 
-    def _optimize_run(
-        self,
-        optimize: dict[str, object],
-        **kwargs,
-    ):
-        self._init(is_optimize=True)
+    def _optimize_run(self, optimize: dict[str, object], **kwargs):
+        self._run(init_kwargs=dict(optimize=optimize, is_optimize=True, **kwargs))
+        return self.stats.result
 
-        feeder = self.feeder
-        exchange = self.exchange
-        strategy = self.strategy
-        brain = self.brain
+    def _init(self, is_optimize=False, optimize=None, **kwargs):
+        super()._init(is_optimize)
+
+        if not is_optimize:
+            return
 
         for param in optimize:
             attr, val = param
-            setattr(strategy, attr, val)
-
-        brain.run()
-        stats = Statistic(
-            feeder=feeder,
-            exchange=exchange,
-            strategy=strategy,
-        )
-        stats.compute()
-        stats.show()
-
-        return stats.result
+            setattr(self.strategy, attr, val)
 
 
 def _batch(seq):

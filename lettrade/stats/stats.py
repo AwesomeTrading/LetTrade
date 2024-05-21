@@ -29,13 +29,12 @@ class Statistic:
         self.strategy: Strategy = strategy
         self.account: Account = strategy.account
 
-        self.result = pd.Series(dtype=object)
-
     def compute(self):
         """
         Calculate strategy report
         """
         data: pd.DataFrame = self.feeder.data
+        self.result = pd.Series(dtype=object)
 
         self.result.loc["# Strategy"] = self.strategy.__class__
         self.result.loc["Start"] = data.datetime.iloc[0]

@@ -38,7 +38,7 @@ class SmaCross(Strategy):
     #     print("Transaction", transaction)
 
     def end(self, df: DataFeed):
-        print(df)
+        print(df.tail())
         print(self.orders)
 
     def plot(self, df: DataFeed):

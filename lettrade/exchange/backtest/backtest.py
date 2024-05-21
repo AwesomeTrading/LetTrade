@@ -14,6 +14,7 @@ from lettrade import (
     DataFeeder,
     Exchange,
     LetTrade,
+    Statistic,
     Strategy,
 )
 from lettrade.plot import Plotter
@@ -41,6 +42,7 @@ def let_backtest(
     account: Type[Account] = BackTestAccount,
     commander: Optional[Type[Commander]] = BackTestCommander,
     plot: Optional[Type[Plotter]] = Plotter,
+    stats: Optional[Type[Statistic]] = Statistic,
     **kwargs,
 ) -> "LetTradeBackTest":
     """Complete `lettrade` backtest depenencies
@@ -66,8 +68,9 @@ def let_backtest(
         feeder=feeder,
         exchange=exchange,
         commander=commander,
-        plot=plot,
         account=account,
+        plot=plot,
+        stats=stats,
         **kwargs,
     )
 
@@ -170,7 +173,13 @@ class LetTradeBackTest(LetTrade):
         return results
 
     def _optimize_run(self, optimize: dict[str, object], **kwargs):
-        self._run(init_kwargs=dict(optimize=optimize, is_optimize=True, **kwargs))
+        self._run(
+            init_kwargs=dict(
+                optimize=optimize,
+                is_optimize=True,
+                **kwargs,
+            )
+        )
         return self.stats.result
 
     def _init(self, is_optimize=False, optimize=None, **kwargs):

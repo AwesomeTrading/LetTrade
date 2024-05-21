@@ -31,6 +31,7 @@ class LetTrade:
     _account_cls: Type[Account]
     _commander_cls: Type[Commander]
     _plot_cls: Type["Plotter"]
+    _stats_cls: Type["Statistic"]
     _kwargs: dict
 
     def __init__(
@@ -42,6 +43,7 @@ class LetTrade:
         account: Type[Account],
         commander: Optional[Type[Commander]] = None,
         plot: Optional[Type["Plotter"]] = None,
+        stats: Optional[Type["Statistic"]] = None,
         **kwargs,
     ) -> None:
         self._strategy_cls = strategy
@@ -50,6 +52,7 @@ class LetTrade:
         self._account_cls = account
         self._commander_cls = commander
         self._plot_cls = plot
+        self._stats_cls = stats
         self._kwargs = kwargs
 
         # DataFeeds
@@ -199,7 +202,7 @@ class LetTrade:
             self.commander.stop()
 
         # Only show stats when backtest data
-        if not self.feeder.is_continous:
+        if self._stats_cls:
             self.stats.compute()
             self.stats.show()
 
@@ -212,8 +215,11 @@ class LetTrade:
     @property
     def stats(self) -> Statistic:
         """Get Statistic object"""
+        if self._stats_cls is None:
+            raise RuntimeError("Statistic class is not defined")
+
         if self._stats is None:
-            self._stats = Statistic(
+            self._stats = self._stats_cls(
                 feeder=self.feeder,
                 exchange=self.exchange,
                 strategy=self.strategy,

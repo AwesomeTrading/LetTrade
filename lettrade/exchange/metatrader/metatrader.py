@@ -18,6 +18,7 @@ def let_metatrader(
     server: str,
     commander: Optional[Commander] = None,
     plot: Optional[Type["Plotter"]] = None,
+    stats: Optional[Type["Statistic"]] = None,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     **kwargs,
 ):
@@ -32,6 +33,7 @@ def let_metatrader(
         datas=datas,
         commander=commander,
         plot=plot,
+        stats=stats,
         api=api,
         api_kwargs=api_kwargs,
         **kwargs,

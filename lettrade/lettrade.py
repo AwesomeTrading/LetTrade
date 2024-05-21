@@ -146,7 +146,9 @@ class LetTrade:
                 self.data = self.datas
                 self.datas = [self.data]
 
-            if worker and worker > len(self.datas):
+            if not worker:
+                worker = len(self.datas)
+            elif worker > len(self.datas):
                 logger.warning(
                     "Worker size %s is more then datas size %s",
                     worker,
@@ -155,7 +157,7 @@ class LetTrade:
                 worker = len(self.datas)
 
             self._multiprocess("main")
-            with ProcessPoolExecutor(max_workers=worker or None) as executor:
+            with ProcessPoolExecutor(max_workers=worker) as executor:
                 futures = [
                     executor.submit(
                         self._run,

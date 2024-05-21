@@ -1,9 +1,9 @@
 """Exchange implements
 
 # Stable Exchanges
-* [BackTest](./backtest/): Backtesting exchange
-* [MetaTrader](./metatrader/): MetaTrader 5 live data and trading
-* [CCXT](./ccxt/): CCXT CryptoCurrency live data and trading
+* [BackTest](./backtest/index.md): Backtesting exchange
+* [MetaTrader](./metatrader/index.md): MetaTrader 5 live data and trading
+* [CCXT](./ccxt/index.md): CCXT CryptoCurrency live data and trading
 """
 
 from .base import OrderState, OrderType, TradeState

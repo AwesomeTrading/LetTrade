@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class Account:
     """
     Manage account balance, leverage, commission. Risk calculate and control
@@ -8,13 +11,22 @@ class Account:
 
     def __init__(
         self,
-        *,
-        risk=0.02,
-        cash=10_000,
-        commission=0.0,
-        margin=None,
-        leverage=1.0,
+        risk: Optional[float] = 0.02,
+        cash: Optional[float] = 10_000,
+        commission: Optional[float] = 0.0,
+        margin: Optional[float] = None,
+        leverage: Optional[float] = 1.0,
+        **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            risk (Optional[float], optional): _description_. Defaults to 0.02.
+            cash (Optional[float], optional): _description_. Defaults to 10_000.
+            commission (Optional[float], optional): _description_. Defaults to 0.0.
+            margin (Optional[float], optional): _description_. Defaults to None.
+            leverage (Optional[float], optional): _description_. Defaults to 1.0.
+        """
         self._risk: risk
         self._cash: float = cash
         self._commission: float = commission

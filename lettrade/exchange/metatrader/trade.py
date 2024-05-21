@@ -1,7 +1,6 @@
 import logging
 from typing import Any, Optional, Type
 
-from box import Box
 from mt5linux import MetaTrader5 as mt5
 
 from .. import (
@@ -70,8 +69,6 @@ class MetaTraderExecute(Execute):
 
             Raw deal: TradeDeal(ticket=33889131, order=41290404, time=1715837856, time_msc=1715837856798, type=0, entry=0, magic=0, position_id=41290404, reason=0, volume=0.01, price=0.85795, commission=0.0, swap=0.0, profit=0.0, fee=0.0, symbol='EURGBP', comment='', external_id='')
         """
-        if not isinstance(raw, Box):
-            raw = Box(raw)
 
         return MetaTraderExecute(
             exchange=exchange,
@@ -176,9 +173,6 @@ class MetaTraderOrder(Order):
 
     @classmethod
     def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderOrder":
-        if not isinstance(raw, Box):
-            raw = Box(raw)
-
         return MetaTraderOrder(
             exchange=exchange,
             id=raw.ticket,
@@ -230,10 +224,6 @@ class MetaTraderTrade(Trade):
 
     @classmethod
     def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderTrade":
-        if not isinstance(raw, Box):
-            print("boxing")
-            raw = Box(raw)
-        print("raw", raw, type(raw))
         return MetaTraderTrade(
             exchange=exchange,
             id=raw.ticket,

@@ -1,8 +1,6 @@
-from multiprocessing.managers import BaseManager
 from typing import Optional, Type
 
 from lettrade import Commander, LetTrade
-from lettrade.data.data import DataFeed
 from lettrade.strategy.strategy import Strategy
 
 from .account import MetaTraderAccount
@@ -51,7 +49,12 @@ class LetTradeMetaTrader(LetTrade):
         api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
         **kwargs,
     ) -> None:
-        self._api_cls: Type[MetaTraderAPI] = api
+        # self._api_cls: Type[MetaTraderAPI] = api
+        self._api: MetaTraderAPI = api()
+
+        kwargs.setdefault("feeder_kwargs", dict()).update(api=self._api)
+        kwargs.setdefault("exchange_kwargs", dict()).update(api=self._api)
+        kwargs.setdefault("account_kwargs", dict()).update(api=self._api)
 
         super().__init__(
             strategy=strategy,
@@ -82,14 +85,14 @@ class LetTradeMetaTrader(LetTrade):
                 name=name,
                 symbol=symbol,
                 timeframe=timeframe,
-                api=None,
+                api=self._api,
             )
         elif isinstance(data, dict):
             data = MetaTraderDataFeed(
                 symbol=data.get("symbol"),
                 timeframe=data.get("timeframe"),
                 name=data.get("name", None),
-                api=None,
+                api=self._api,
             )
         elif isinstance(data, MetaTraderDataFeed):
             pass
@@ -99,17 +102,7 @@ class LetTradeMetaTrader(LetTrade):
         return super().datafeed(data=data, **kwargs)
 
     def _multiprocess(self, process, **kwargs):
-        if process == "main":
-            BaseManager.register("MetaTraderAPI", self._api_cls)
-            manager = BaseManager()
-            manager.start()
+        self._api._multiprocess(process, **kwargs)
 
-            self._api: MetaTraderAPI = manager.MetaTraderAPI()
+        if process == "sub":
             self._api.start(**self._kwargs.pop("api_kwargs", {}))
-
-            self._kwargs.setdefault("feeder_kwargs", dict()).update(api=self._api)
-            self._kwargs.setdefault("exchange_kwargs", dict()).update(api=self._api)
-            self._kwargs.setdefault("account_kwargs", dict()).update(api=self._api)
-        else:
-            for data in self.datas:
-                data._api = self._api

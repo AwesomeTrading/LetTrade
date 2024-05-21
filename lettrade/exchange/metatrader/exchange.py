@@ -36,7 +36,7 @@ class MetaTraderExchange(Exchange):
         return super().start()
 
     def next(self) -> None:
-        self._api.check_transactions()
+        self._api.next()
         return super().next()
 
     def new_order(

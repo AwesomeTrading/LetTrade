@@ -1,10 +1,7 @@
 import logging
-import multiprocessing
 from datetime import datetime, timedelta
-from multiprocessing.managers import BaseManager
 from time import sleep
 
-from box import Box
 from mt5linux import MetaTrader5 as Mt5
 
 logger = logging.getLogger(__name__)
@@ -36,15 +33,25 @@ TIMEFRAME_L2M = {
 
 
 class MetaTraderAPI:
+    __deal_time_checked = datetime(2020, 1, 1)
+    __orders_stored: dict[int, object] = {}
+    __trades_stored: dict[int, object] = {}
+
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
             cls._singleton = object.__new__(cls)
             cls._singleton.__init__(*args, **kwargs)
         return cls._singleton
 
-    def __init__(self, host="localhost", port=18812) -> None:
-        self._mt5: Mt5 = Mt5(host=host, port=port)
-        self._callbacker: "MetaTraderExchange" = None
+    def _multiprocess(self, process, **kwargs):
+        pass
+
+    def __copy__(self):
+        cls = self.__class__
+        return cls._singleton
+
+    def __deepcopy__(self, memo):
+        return self.__copy__()
 
     def start(
         self,
@@ -53,26 +60,33 @@ class MetaTraderAPI:
         server: str,
         timeout=60,
         retry=20,
+        host="localhost",
+        port=18812,
         callbacker=None,
     ):
-        while retry > 0:
-            login = self._mt5.initialize(
-                login=int(account),
-                password=password,
-                server=server,
-                # timeout=timeout,
-            )
-            if login:
-                break
+        self._mt5 = Mt5(host=host, port=port)
+        self._callbacker = callbacker
 
-            if __debug__:
-                logger.info("Login retry: %d", retry)
+        version = self._mt5.version()
+        if version[0] == 0:
+            while retry > 0:
+                login = self._mt5.initialize(
+                    login=int(account),
+                    password=password,
+                    server=server,
+                    # timeout=timeout,
+                )
+                if login:
+                    break
 
-            sleep(1)
-            retry -= 1
+                if __debug__:
+                    logger.info("Login retry: %d", retry)
 
-        if retry == 0:
-            raise RuntimeError(f"Cannot login {account}")
+                sleep(1)
+                retry -= 1
+
+            if retry == 0:
+                raise RuntimeError(f"Cannot login {account}")
 
         logger.info(
             "Login success account=%s, server=%s, version=%s",
@@ -93,13 +107,13 @@ class MetaTraderAPI:
         return True
 
     def account(self):
-        return self._mt5.account_info()._asdict()
+        return self._mt5.account_info()
 
     def markets(self, symbol):
-        return self._mt5.symbol_info(symbol)._asdict()
+        return self._mt5.symbol_info(symbol)
 
     def tick(self, symbol):
-        return self._mt5.symbol_info_tick(symbol)._asdict()
+        return self._mt5.symbol_info_tick(symbol)
 
     def rates_from_pos(self, symbol, timeframe, since=0, to=1000):
         rates = self._mt5.copy_rates_from_pos(
@@ -111,27 +125,25 @@ class MetaTraderAPI:
         return rates
 
     def order_send(self, request: "TradeRequest"):
-        result = self._mt5.order_send(request)
-        return result._asdict()
+        return self._mt5.order_send(request)
 
     def orders_total(self):
         return self._mt5.orders_total()
 
     def orders_get(self, **kwargs):
-        result = self._mt5.orders_get(**kwargs)
-        result = [r._asdict() for r in result]
-        return result
+        return self._mt5.orders_get(**kwargs)
 
     def positions_total(self):
         return self._mt5.positions_total()
 
     def positions_get(self, **kwargs):
-        result = self._mt5.positions_get(**kwargs)
-        result = [r._asdict() for r in result]
-        return result
+        return self._mt5.positions_get(**kwargs)
+
+    def next(self):
+        self._check_transactions()
 
     # Transaction
-    def check_transactions(self):
+    def _check_transactions(self):
         if not self._callbacker:
             return
 
@@ -155,10 +167,9 @@ class MetaTraderAPI:
             self._callbacker.on_old_trades(removed_trades)
 
     # Deal
-    __deal_time_checked = datetime(2020, 1, 1)
-
     def _check_deals(self):
         to = datetime.now() + timedelta(days=1)
+
         deal_total = self._mt5.history_deals_total(self.__deal_time_checked, to)
 
         # No thing new in deal
@@ -173,8 +184,6 @@ class MetaTraderAPI:
         return raws
 
     # Order
-    __orders_stored: dict[int, object] = {}
-
     def _check_orders(self):
         order_total = self._mt5.orders_total()
 
@@ -203,13 +212,10 @@ class MetaTraderAPI:
                     continue
 
             added_orders.append(raw)
-
         self.__orders_stored = {raw.ticket: raw for raw in raws}
         return added_orders, removed_orders
 
     # Trade
-    __trades_stored: dict[int, object] = {}
-
     def _check_trades(self):
         trade_total = self._mt5.positions_total()
 

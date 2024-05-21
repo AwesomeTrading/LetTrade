@@ -64,7 +64,7 @@ class MetaTraderAPI:
         if not account or account.login != login:
             while retry > 0:
                 login = self._mt5.initialize(
-                    login=int(account),
+                    login=int(login),
                     password=password,
                     server=server,
                     # timeout=timeout,

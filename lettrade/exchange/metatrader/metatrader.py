@@ -76,11 +76,7 @@ class LetTradeMetaTrader(LetTrade):
             if len(data) < 2:
                 raise RuntimeError("DataFeed missing data (symbol, timeframe)")
             symbol, timeframe = data[0], data[1]
-
-            if len(data) > 2:
-                name = data[2]
-            else:
-                name = None
+            name = data[2] if len(data) > 2 else None
 
             data = MetaTraderDataFeed(
                 name=name,
@@ -108,3 +104,5 @@ class LetTradeMetaTrader(LetTrade):
         # process=None mean single process
         if process in [None, "sub"]:
             self._api.start(**self._kwargs.pop("api_kwargs", {}))
+
+        super()._multiprocess(process, **kwargs)

@@ -11,6 +11,7 @@ Example:
 import asyncio
 import logging
 from functools import partial, wraps
+from multiprocessing.managers import BaseManager
 from threading import Thread
 from typing import Any, Callable, Coroutine, Dict, List, Literal, Optional, Union
 
@@ -76,18 +77,8 @@ def authorized_only(command_handler: Callable[..., Coroutine[Any, Any, None]]):
     return wrapper
 
 
-class TelegramCommander(Commander):
-    """Send notify and receive command from Telegram Bot"""
-
+class TelegramAPI:
     def __init__(self, token: str, chat_id: int, *args, **kwargs) -> None:
-        """_summary_
-
-        Args:
-            token (str): Telegram Bot token
-            chat_id (int): Telegram chat_id
-        """
-        super().__init__(*args, **kwargs)
-
         self._token: str = token
         self._chat_id: int = int(chat_id)
 
@@ -96,12 +87,12 @@ class TelegramCommander(Commander):
 
     def start(self):
         """Start"""
+        # TODO: Lock for safe multipleprocessing
+        if hasattr(self, "_keyboard"):
+            return
+
         self._init_keyboard()
         self._start_thread()
-
-    def stop(self):
-        """Stop"""
-        self.cleanup()
 
     def send_message(self, msg: str, **kwargs) -> None:
         """Send message to Telegram Bot
@@ -112,7 +103,8 @@ class TelegramCommander(Commander):
         Returns:
             _type_: `None`
         """
-        return self._send_msg(msg, **kwargs)
+
+        asyncio.run_coroutine_threadsafe(self._send_msg(msg, **kwargs), self._loop)
 
     async def _cleanup_telegram(self) -> None:
         if self._app.updater:
@@ -130,7 +122,7 @@ class TelegramCommander(Commander):
         """
         Creates and starts the polling thread
         """
-        self._thread = Thread(target=self._init, name="TelegramCommander")
+        self._thread = Thread(target=self._init, name="TelegramAPI")
         self._thread.start()
 
     def _init_keyboard(self) -> None:
@@ -145,7 +137,7 @@ class TelegramCommander(Commander):
         ]
 
     def _init_telegram_app(self):
-        return Application.builder().token(self._token).build()
+        return Application.builder().token(self._token).connection_pool_size(50).build()
 
     def _init(self) -> None:
         """
@@ -377,3 +369,46 @@ class TelegramCommander(Commander):
         stats: Statistic = self.lettrade.stats
         stats.compute()
         await self._send_msg(stats.result.to_string())
+
+
+class TelegramCommander(Commander):
+    """Send notify and receive command from Telegram Bot"""
+
+    _api: TelegramAPI
+
+    def __init__(
+        self,
+        token: str,
+        chat_id: int,
+        api: Optional[TelegramAPI] = None,
+        *args,
+        **kwargs,
+    ) -> None:
+        """_summary_
+
+        Args:
+            token (str): Telegram Bot token
+            chat_id (int): Telegram chat_id
+        """
+        super().__init__(*args, **kwargs)
+        self._api = api or TelegramAPI(token=token, chat_id=chat_id)
+
+    @classmethod
+    def multiprocess(cls, process, kwargs, **other_kwargs):
+        if process in ["main", None]:
+            BaseManager.register("TelegramAPI", TelegramAPI)
+            manager = BaseManager()
+            manager.start()
+            kwargs["api"] = manager.TelegramAPI(**kwargs)
+
+    def start(self):
+        """Start"""
+        self._api.start()
+
+    def stop(self):
+        """Stop"""
+        self._api.cleanup()
+
+    def send_message(self, msg: str, **kwargs) -> None:
+        print("send_message", msg, kwargs)
+        self._api.send_message(msg=msg, **kwargs)

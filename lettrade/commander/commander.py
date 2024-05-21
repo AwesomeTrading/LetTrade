@@ -56,3 +56,7 @@ class Commander(ABC):
     @abstractmethod
     def send_message(self, msg: str, **kwargs):
         pass
+
+    @classmethod
+    def multiprocess(cls, process, kwargs, **other_kwargs):
+        pass

@@ -112,7 +112,10 @@ class LetTrade:
         )
 
     def _multiprocess(self, process, **kwargs):
-        pass
+        if self._commander_cls:
+            # Impletement commander dependencies and save to commander_kwargs
+            commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
+            self._commander_cls.multiprocess(process, kwargs=commander_kwargs, **kwargs)
 
     def datafeed(self, data, *args, **kwargs):
         match data:

@@ -111,12 +111,6 @@ class LetTrade:
             commander=self.commander,
         )
 
-    def _multiprocess(self, process, **kwargs):
-        if self._commander_cls:
-            # Impletement commander dependencies and save to commander_kwargs
-            commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
-            self._commander_cls.multiprocess(process, kwargs=commander_kwargs, **kwargs)
-
     def datafeed(self, data, *args, **kwargs):
         match data:
             case DataFeed():
@@ -210,6 +204,17 @@ class LetTrade:
         if self._stats_cls:
             self.stats.compute()
             self.stats.show()
+
+    def _multiprocess(self, process, **kwargs):
+        if self._commander_cls:
+            # Impletement commander dependencies and save to commander_kwargs
+            commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
+            self._commander_cls.multiprocess(
+                process,
+                kwargs=commander_kwargs,
+                self_kwargs=self._kwargs,
+                **kwargs,
+            )
 
     def stop(self):
         """Stop strategy"""

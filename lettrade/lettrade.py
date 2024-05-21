@@ -111,7 +111,18 @@ class LetTrade:
             commander=self.commander,
         )
 
-    def datafeed(self, data, *args, **kwargs):
+    def datafeed(self, data: DataFeed, *args, **kwargs) -> DataFeed:
+        """Init and validate DataFeed
+
+        Args:
+            data (DataFeed): DataFeed or config of it
+
+        Raises:
+            RuntimeError: Validate error
+
+        Returns:
+            DataFeed: The DataFeed
+        """
         match data:
             case DataFeed():
                 return data
@@ -136,8 +147,12 @@ class LetTrade:
             feeds = [self.datafeed(data=data, index=i) for i, data in enumerate(datas)]
         return feeds
 
-    def run(self, worker=None, *args, **kwargs):
-        """Run strategy"""
+    def run(self, worker: Optional[int] = None, *args, **kwargs):
+        """Run strategy in single or multiple processing
+
+        Args:
+            worker (Optional[int], optional): Number of processing. Defaults to None.
+        """
         if worker or isinstance(self.data, list):
             if not isinstance(self.data, list):
                 self.data = self.datas

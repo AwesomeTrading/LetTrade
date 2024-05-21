@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Dict, List, Optional, Set, Tuple, Type
 
 from lettrade import Commander, LetTrade
 from lettrade.strategy.strategy import Strategy
@@ -69,12 +69,12 @@ class LetTradeMetaTrader(LetTrade):
 
     def datafeed(
         self,
-        data: list | MetaTraderDataFeed,
+        data: MetaTraderDataFeed | List | Set | Tuple,
         **kwargs,
     ) -> MetaTraderDataFeed:
-        if isinstance(data, (list, set, tuple)):
+        if isinstance(data, (List | Set | Tuple)):
             if len(data) < 2:
-                raise RuntimeError("DataFeed missing data (symbol, timeframe)")
+                raise RuntimeError("MetaTraderDataFeed missing (symbol, timeframe)")
             symbol, timeframe = data[0], data[1]
             name = data[2] if len(data) > 2 else None
 
@@ -84,7 +84,7 @@ class LetTradeMetaTrader(LetTrade):
                 timeframe=timeframe,
                 api=self._api,
             )
-        elif isinstance(data, dict):
+        elif isinstance(data, Dict):
             data = MetaTraderDataFeed(
                 symbol=data.get("symbol"),
                 timeframe=data.get("timeframe"),

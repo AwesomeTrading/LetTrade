@@ -62,6 +62,12 @@ class DataFeed(pd.DataFrame):
             return self.loc[i]
         return super().__getitem__(i)
 
+    def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
+        df = super().copy(deep=deep, *args, **kwargs)
+        df = self.__class__(name=self.name, data=self)
+        # df.reset_index(inplace=True)
+        return df
+
     # Properties
     @property
     def meta(self) -> dict:

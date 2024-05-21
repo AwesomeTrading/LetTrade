@@ -131,6 +131,7 @@ class LetTradeBackTest(LetTrade):
                 futures = [
                     executor.submit(
                         self._optimizes_run,
+                        datas=self.datas,
                         optimizes=optimizes,
                         index=i,
                     )
@@ -152,19 +153,25 @@ class LetTradeBackTest(LetTrade):
                 )
             # for i, optimize in enumerate(optimizes):
             for i, optimize in tqdm(enumerate(optimizes)):
-                result = self._optimize_run(**optimize, index=i)
+                result = self._optimize_run(
+                    datas=[d.copy(deep=True) for d in self.datas],
+                    optimize=optimize,
+                    index=i,
+                )
                 results.extend(result)
         print(results)
 
     def _optimizes_run(
         self,
+        datas: list[DataFeed],
         optimizes: list[dict],
-        index,
+        index: int,
         **kwargs,
     ):
         results = []
         for i, optimize in enumerate(optimizes):
             result = self._optimize_run(
+                datas=[d.copy(deep=True) for d in datas],
                 optimize=optimize,
                 index=index * len(optimize) + i,
                 **kwargs,
@@ -172,13 +179,20 @@ class LetTradeBackTest(LetTrade):
             results.append(result)
         return results
 
-    def _optimize_run(self, optimize: dict[str, object], **kwargs):
+    def _optimize_run(
+        self,
+        datas: list[DataFeed],
+        optimize: dict[str, object],
+        **kwargs,
+    ):
         self._run(
+            datas=datas,
+            multiprocess="sub",
             init_kwargs=dict(
                 optimize=optimize,
                 is_optimize=True,
                 **kwargs,
-            )
+            ),
         )
         return self.stats.result
 

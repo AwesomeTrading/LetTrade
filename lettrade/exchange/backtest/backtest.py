@@ -1,7 +1,12 @@
 import logging
+import os
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from itertools import product, repeat
 from typing import Optional, Type
 
+import numpy as np
 import pandas as pd
+from tqdm.auto import tqdm
 
 from lettrade import (
     Account,
@@ -10,6 +15,7 @@ from lettrade import (
     DataFeeder,
     Exchange,
     LetTrade,
+    Statistic,
     Strategy,
 )
 from lettrade.plot import Plotter
@@ -21,6 +27,12 @@ from .exchange import BackTestExchange
 from .feeder import BackTestDataFeeder
 
 logger = logging.getLogger(__name__)
+
+
+def logging_filter_optimize():
+    logging.getLogger("lettrade.exchange.backtest.commander").setLevel(logging.WARNING)
+    logging.getLogger("lettrade.exchange.backtest.exchange").setLevel(logging.WARNING)
+    logging.getLogger("lettrade.stats.stats").setLevel(logging.WARNING)
 
 
 def let_backtest(
@@ -63,6 +75,7 @@ def let_backtest(
 
 
 class LetTradeBackTest(LetTrade):
+
     def datafeed(
         self,
         data: str | DataFeed | BackTestDataFeed | pd.DataFrame,
@@ -83,5 +96,112 @@ class LetTradeBackTest(LetTrade):
 
         return super().datafeed(data, index=index, **kwargs)
 
-    def optimize(self, maximize="SQN", constraint=None, **kwargs):
-        pass
+    def optimize(
+        self,
+        multiprocessing: Optional[str] = "auto",
+        **kwargs,
+    ):
+        """Backtest optimization
+
+        Args:
+            multiprocessing (Optional[str], optional): _description_. Defaults to "auto".
+        """
+        optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
+
+        # Disable logging
+        logging_filter_optimize()
+
+        # Run
+        self._optimizes_task(optimizes, multiprocessing=multiprocessing)
+
+    def _optimizes_task(self, optimizes: list[dict], multiprocessing="auto"):
+        optimizes_batches = list(_batch(optimizes))
+
+        results = []
+        # If multiprocessing start method is 'fork' (i.e. on POSIX), use
+        # a pool of processes to compute results in parallel.
+        # Otherwise (i.e. on Windows), sequential computation will be "faster".
+        if multiprocessing == "fork" or (
+            multiprocessing == "auto" and os.name == "posix"
+        ):
+            with ProcessPoolExecutor() as executor:
+                futures = [
+                    executor.submit(
+                        LetTradeBackTest._optimizes_run,
+                        self=self,
+                        optimizes=optimizes,
+                        index=i,
+                    )
+                    for i, optimizes in enumerate(optimizes_batches)
+                ]
+                # for future in futures:
+                for future in tqdm(
+                    as_completed(futures),
+                    total=len(futures),
+                    desc="Optimizing",
+                ):
+                    result = future.result()
+                    results.extend(result)
+        else:
+            if os.name == "posix":
+                logger.warning(
+                    "For multiprocessing support in `optimize()` "
+                    "set multiprocessing='fork'."
+                )
+            # for i, optimize in enumerate(optimizes):
+            for i, optimize in tqdm(enumerate(optimizes)):
+                result = LetTradeBackTest._optimize_run(**optimize, index=i)
+                results.extend(result)
+        print(results)
+
+    @staticmethod
+    def _optimizes_run(
+        optimizes: list[dict],
+        index,
+        **kwargs,
+    ):
+        results = []
+        # print("LetTradeBackTest._optimizes_run", index, optimizes)
+        for i, optimize in enumerate(optimizes):
+            result = LetTradeBackTest._optimize_run(
+                optimize=optimize,
+                index=i,
+                batch_index=index,
+                **kwargs,
+            )
+            results.append(result)
+        return results
+
+    @staticmethod
+    def _optimize_run(
+        self: "LetTradeBackTest",
+        optimize: dict[str, object],
+        **kwargs,
+    ):
+        self._init(is_optimize=True)
+
+        feeder = self.feeder
+        exchange = self.exchange
+        strategy = self.strategy
+        brain = self.brain
+
+        for param in optimize:
+            attr, val = param
+            setattr(strategy, attr, val)
+
+        brain.run()
+        stats = Statistic(
+            feeder=feeder,
+            exchange=exchange,
+            strategy=strategy,
+        )
+        stats.compute()
+        stats.show()
+
+        return stats.result
+
+
+def _batch(seq):
+    n = np.clip(int(len(seq) // (os.cpu_count() or 1)), 1, 300)
+    for i in range(0, len(seq), n):
+        yield seq[i : i + n]

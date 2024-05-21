@@ -55,7 +55,7 @@ class LetTrade:
         self.datas: list[DataFeed] = self._init_datafeeds(datas)
         self.data: DataFeed = self.datas[0]
 
-    def _init(self):
+    def _init(self, is_optimize=False):
         # Feeder
         self.feeder = self._feeder_cls(**self._kwargs.get("feeder_kwargs", {}))
         # TODO: copy datas
@@ -79,6 +79,7 @@ class LetTrade:
             exchange=self.exchange,
             account=self.account,
             commander=self.commander,
+            is_optimize=is_optimize,
             **self._kwargs.get("strategy_kwargs", {}),
         )
 

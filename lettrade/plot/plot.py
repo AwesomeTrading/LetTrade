@@ -213,7 +213,7 @@ class Plotter:
                     "At: %{customdata[0]}<br>"
                     "Price: %{y}<br>"
                     "Size: %{customdata[1]}<br>"
-                    "PL: %{customdata[2]:$.2f}"
+                    "PL: %{customdata[2]:.2f}$"
                 ),
                 mode="lines+markers",
                 name=f"Trade-{trade.id}",

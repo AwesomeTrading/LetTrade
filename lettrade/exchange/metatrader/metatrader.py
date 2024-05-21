@@ -1,6 +1,8 @@
 from typing import Optional, Type
 
 from lettrade import Commander, LetTrade
+from lettrade.data.data import DataFeed
+from lettrade.strategy.strategy import Strategy
 
 from .account import MetaTraderAccount
 from .api import MetaTraderAPI
@@ -20,71 +22,90 @@ def let_metatrader(
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     **kwargs,
 ):
-    mt5 = MetaTrader(
+    api_kwargs = dict(
         account=int(login),
         password=password,
         server=server,
-        api=api,
     )
 
-    feeds = []
-    for d in datas:
-        feeds.append(mt5.data(d[0], d[1]))
-
-    return LetTrade(
+    return LetTradeMetaTrader(
         strategy=strategy,
-        datas=feeds,
-        feeder=mt5.feeder(),
-        exchange=mt5.exchange(),
-        account=mt5.account(),
+        datas=datas,
         commander=commander,
         plot=plot,
+        api=api,
+        api_kwargs=api_kwargs,
         **kwargs,
     )
 
 
-class MetaTrader:
+class LetTradeMetaTrader(LetTrade):
     def __init__(
         self,
-        tick: int = 5,
+        strategy: type[Strategy],
+        datas: set[set[str]],
+        feeder: Type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
+        exchange: Type[MetaTraderExchange] = MetaTraderExchange,
+        account: Type[MetaTraderAccount] = MetaTraderAccount,
         api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
-        *args,
         **kwargs,
     ) -> None:
-        self._tick: int = tick
-
         self._api: MetaTraderAPI = api()
-        self._api.start(*args, **kwargs)
+        self._api.start(**kwargs.pop("api_kwargs", {}))
 
-        self._feeder: MetaTraderDataFeeder = None
-        self._exchange: MetaTraderExchange = None
-        self._account: MetaTraderAccount = None
+        feeder_kwargs = dict(api=self._api)
+        feeder_kwargs.update(**kwargs.pop("feeder_kwargs", {}))
 
-    def data(
-        self,
-        symbol: str,
-        timeframe: str,
-        name: str = None,
-    ) -> MetaTraderDataFeed:
-        return MetaTraderDataFeed(
-            name=name,
-            symbol=symbol,
-            timeframe=timeframe,
-            feeder=self.feeder(),
-            api=self._api,
+        exchange_kwargs = dict(api=self._api)
+        exchange_kwargs.update(**kwargs.pop("exchange_kwargs", {}))
+
+        account_kwargs = dict(api=self._api)
+        account_kwargs.update(**kwargs.pop("account_kwargs", {}))
+
+        super().__init__(
+            strategy=strategy,
+            datas=datas,
+            feeder=feeder,
+            exchange=exchange,
+            account=account,
+            feeder_kwargs=feeder_kwargs,
+            exchange_kwargs=exchange_kwargs,
+            account_kwargs=account_kwargs,
+            **kwargs,
         )
 
-    def feeder(self) -> MetaTraderDataFeeder:
-        if not self._feeder:
-            self._feeder = MetaTraderDataFeeder(api=self._api, tick=self._tick)
-        return self._feeder
+    def datafeed(
+        self,
+        data: list | MetaTraderDataFeed,
+        **kwargs,
+    ) -> MetaTraderDataFeed:
+        if isinstance(data, (list, set, tuple)):
+            print(data, type(data))
+            if len(data) < 2:
+                raise RuntimeError("DataFeed missing data (symbol, timeframe)")
+            symbol, timeframe = data[0], data[1]
 
-    def exchange(self) -> MetaTraderExchange:
-        if not self._exchange:
-            self._exchange = MetaTraderExchange(api=self._api)
-        return self._exchange
+            if len(data) > 2:
+                name = data[2]
+            else:
+                name = None
 
-    def account(self) -> MetaTraderAccount:
-        if not self._account:
-            self._account = MetaTraderAccount(api=self._api)
-        return self._account
+            data = MetaTraderDataFeed(
+                name=name,
+                symbol=symbol,
+                timeframe=timeframe,
+                api=self._api,
+            )
+        elif isinstance(data, dict):
+            data = MetaTraderDataFeed(
+                symbol=data.get("symbol"),
+                timeframe=data.get("timeframe"),
+                name=data.get("name", None),
+                api=self._api,
+            )
+        elif isinstance(data, MetaTraderDataFeed):
+            pass
+        else:
+            return RuntimeError(f"Data {data} is not support yet")
+
+        return super().datafeed(data=data, **kwargs)

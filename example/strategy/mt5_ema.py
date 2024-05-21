@@ -1,11 +1,10 @@
 import os
 
-import pandas as pd
 import talib.abstract as ta
 from dotenv import load_dotenv
 
 import example.logger
-from lettrade.all import DataFeed, LetTrade, MetaTrader, Strategy, crossover, crossunder
+from lettrade.all import DataFeed, Strategy, crossover, crossunder, let_metatrader
 
 load_dotenv()
 
@@ -60,18 +59,12 @@ class SmaCross(Strategy):
 
 
 if __name__ == "__main__":
-    mt5 = MetaTrader(
-        account=int(os.environ["MT5_LOGIN"]),
+    lt = let_metatrader(
+        strategy=SmaCross,
+        datas=[("EURUSD", "1m")],
+        login=int(os.environ["MT5_LOGIN"]),
         password=os.environ["MT5_PASSWORD"],
         server=os.environ["MT5_SERVER"],
-    )
-
-    lt = LetTrade(
-        strategy=SmaCross,
-        datas=[mt5.data("EURUSD", "1m")],
-        feeder=mt5.feeder(),
-        exchange=mt5.exchange(),
-        account=mt5.account(),
     )
 
     lt.run()

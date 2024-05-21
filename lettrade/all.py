@@ -1,4 +1,4 @@
-"""Import everything at one. Import some unnecessary but convenient for developer"""
+"""Import everything in one. Import some unnecessary but convenient for everyone"""
 
 from . import *
 from .commander.telegram import *

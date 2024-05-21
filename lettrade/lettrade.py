@@ -24,47 +24,62 @@ class LetTrade:
     plotter: "Plotter" = None
     _stats: Statistic = None
 
-    _plot_cls: Type["Plotter"] = None
+    _strategy_cls: Type[Strategy]
+    _feeder_cls: Type[DataFeeder]
+    _exchange_cls: Type[Exchange]
+    _account_cls: Type[Account]
+    _commander_cls: Type[Commander]
+    _plot_cls: Type["Plotter"]
+    _kwargs: dict
 
     def __init__(
         self,
         strategy: Type[Strategy],
         datas: DataFeed | list[DataFeed] | str | list[str],
-        feeder: DataFeeder,
-        exchange: Exchange,
-        account: Account,
-        commander: Optional[Commander] = None,
+        feeder: Type[DataFeeder],
+        exchange: Type[Exchange],
+        account: Type[Account],
+        commander: Optional[Type[Commander]] = None,
         plot: Optional[Type["Plotter"]] = None,
-        *args,
         **kwargs,
     ) -> None:
-        # DataFeeder
-        if not feeder:
-            raise RuntimeError("Feeder is invalid")
-        self.feeder = feeder
+        self._strategy_cls = strategy
+        self._feeder_cls = feeder
+        self._exchange_cls = exchange
+        self._account_cls = account
+        self._commander_cls = commander
+        self._plot_cls = plot
+        self._kwargs = kwargs
 
         # DataFeeds
         self.datas: list[DataFeed] = self._init_datafeeds(datas)
         self.data: DataFeed = self.datas[0]
+
+    def _init(self):
+        # Feeder
+        self.feeder = self._feeder_cls(**self._kwargs.get("feeder_kwargs", {}))
+        # TODO: copy datas
         self.feeder.init(self.datas)
 
         # Account
-        if account is None:
-            raise RuntimeError("Account is invalid")
-        self.account = account
+        self.account = self._account_cls(**self._kwargs.get("account_kwargs", {}))
 
         # Exchange
-        if exchange is None:
-            raise RuntimeError("Exchange is invalid")
-        self.exchange = exchange
+        self.exchange = self._exchange_cls(**self._kwargs.get("exchange_kwargs", {}))
+
+        # Commander
+        if self._commander_cls:
+            self.commander = self._commander_cls(
+                **self._kwargs.get("commander_kwargs", {})
+            )
 
         # Strategy
-        self.strategy = strategy(
+        self.strategy = self._strategy_cls(
             feeder=self.feeder,
             exchange=self.exchange,
             account=self.account,
-            commander=commander,
-            # params=params,
+            commander=self.commander,
+            **self._kwargs.get("strategy_kwargs", {}),
         )
 
         # Brain
@@ -72,31 +87,31 @@ class LetTrade:
             strategy=self.strategy,
             exchange=self.exchange,
             feeder=self.feeder,
-            commander=commander,
-            *args,
-            **kwargs,
+            commander=self.commander,
+            **self._kwargs.get("brain_kwargs", {}),
         )
 
-        self.exchange.init(
-            brain=self.brain,
-            feeder=self.feeder,
-            account=self.account,
-            commander=commander,
-        )
-
-        # Commander
-        if commander:
-            self.commander = commander
+        # Init
+        if self.commander:
             self.commander.init(
                 lettrade=self,
                 brain=self.brain,
                 exchange=self.exchange,
                 strategy=self.strategy,
             )
+        self.exchange.init(
+            brain=self.brain,
+            feeder=self.feeder,
+            account=self.account,
+            commander=self.commander,
+        )
 
-        # Plot class
-        if plot:
-            self._plot_cls = plot
+    def datafeed(self, data, *args, **kwargs):
+        match data:
+            case DataFeed():
+                return data
+            case _:
+                raise RuntimeError(f"data {data} is invalid")
 
     def _init_datafeeds(self, datas) -> None:
         # Support single and multiple data
@@ -104,19 +119,13 @@ class LetTrade:
             datas = [datas]
 
         # Check data
-        feeds = []
-        for data in datas:
-            match data:
-                case DataFeed():
-                    feeds.append(data)
-                case _:
-                    raise RuntimeError(f"data {data} is invalid")
-
-        # Feeder
+        feeds = [self.datafeed(data=data, index=i) for i, data in enumerate(datas)]
         return feeds
 
     def run(self, *args, **kwargs):
         """Run strategy"""
+        self._init()
+
         if self.commander:
             self.commander.start()
 

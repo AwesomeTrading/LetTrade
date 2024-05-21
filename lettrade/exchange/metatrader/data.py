@@ -13,7 +13,6 @@ class MetaTraderDataFeed(DataFeed):
         self,
         symbol: str,
         timeframe: str,
-        feeder: "MetaTraderDataFeeder",
         api: "MetaTraderAPI",
         name: str = None,
         *args,
@@ -42,7 +41,6 @@ class MetaTraderDataFeed(DataFeed):
             )
         )
 
-        setattr(self, "__feeder", feeder)
         setattr(self, "__api", api)
 
     @property
@@ -52,10 +50,6 @@ class MetaTraderDataFeed(DataFeed):
     @property
     def timeframe(self) -> str:
         return self.meta["timeframe"]
-
-    @property
-    def _feeder(self) -> "MetaTraderDataFeeder":
-        return getattr(self, "__feeder")
 
     @property
     def _api(self) -> "MetaTraderAPI":

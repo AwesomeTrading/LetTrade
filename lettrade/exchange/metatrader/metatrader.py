@@ -11,7 +11,7 @@ from .feeder import MetaTraderDataFeeder
 
 
 def let_metatrader(
-    strategy: Type["Strategy"],
+    strategy: Type[Strategy],
     datas: set[set[str]],
     login: int,
     password: str,
@@ -22,6 +22,22 @@ def let_metatrader(
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     **kwargs,
 ):
+    """Help to build `LetTradeMetaTrader`
+
+    Args:
+        strategy (Type[Strategy]): _description_
+        datas (set[set[str]]): _description_
+        login (int): _description_
+        password (str): _description_
+        server (str): _description_
+        commander (Optional[Commander], optional): _description_. Defaults to None.
+        plot (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
+        stats (Optional[Type["Statistic"]], optional): _description_. Defaults to None.
+        api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
+
+    Returns:
+        _type_: _description_
+    """
     api_kwargs = dict(
         login=int(login),
         password=password,
@@ -67,7 +83,7 @@ class LetTradeMetaTrader(LetTrade):
             **kwargs,
         )
 
-    def datafeed(
+    def _datafeed(
         self,
         data: MetaTraderDataFeed | List | Set | Tuple,
         **kwargs,
@@ -96,7 +112,7 @@ class LetTradeMetaTrader(LetTrade):
         else:
             return RuntimeError(f"Data {data} is not support yet")
 
-        return super().datafeed(data=data, **kwargs)
+        return super()._datafeed(data=data, **kwargs)
 
     def _multiprocess(self, process, **kwargs):
         api_kwargs = self._kwargs.setdefault("api_kwargs", {})

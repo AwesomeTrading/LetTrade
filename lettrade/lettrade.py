@@ -16,13 +16,25 @@ logger = logging.getLogger(__name__)
 class LetTrade:
     """Help to load and connect module"""
 
+    datas: list[DataFeed]
+    """DataFeed list for bot"""
+    data: DataFeed
+    """Main DataFeed for bot"""
+
     brain: Brain
+    """Brain of bot"""
     feeder: DataFeeder
+    """DataFeeder help to handle `datas`"""
     exchange: Exchange
+    """Trading exchange and events"""
     account: Account
+    """Trading account handler"""
     strategy: Strategy
+    """Strategy"""
     commander: Commander = None
+    """Control the bot"""
     plotter: "Plotter" = None
+    """Plot graphic results"""
     _stats: Statistic = None
 
     _strategy_cls: Type[Strategy]
@@ -56,8 +68,8 @@ class LetTrade:
         self._kwargs = kwargs
 
         # DataFeeds
-        self.datas: list[DataFeed] = self._init_datafeeds(datas)
-        self.data: DataFeed = self.datas[0]
+        self.datas = self._init_datafeeds(datas)
+        self.data = self.datas[0]
 
     def _init(self, is_optimize=False):
         # Feeder
@@ -111,7 +123,7 @@ class LetTrade:
             commander=self.commander,
         )
 
-    def datafeed(self, data: DataFeed, *args, **kwargs) -> DataFeed:
+    def _datafeed(self, data: DataFeed, *args, **kwargs) -> DataFeed:
         """Init and validate DataFeed
 
         Args:
@@ -140,11 +152,11 @@ class LetTrade:
             for i, data in enumerate(datas):
                 data_feeds = []
                 for j, d in enumerate(data):
-                    d = self.datafeed(data=d, index=i * j)
+                    d = self._datafeed(data=d, index=i * j)
                     data_feeds.append(d)
                 feeds.append(data_feeds)
         else:
-            feeds = [self.datafeed(data=data, index=i) for i, data in enumerate(datas)]
+            feeds = [self._datafeed(data=data, index=i) for i, data in enumerate(datas)]
         return feeds
 
     def run(self, worker: Optional[int] = None, *args, **kwargs):

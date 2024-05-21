@@ -77,7 +77,7 @@ def let_backtest(
 
 class LetTradeBackTest(LetTrade):
 
-    def datafeed(
+    def _datafeed(
         self,
         data: str | DataFeed | BackTestDataFeed | pd.DataFrame,
         index: int,
@@ -95,7 +95,7 @@ class LetTradeBackTest(LetTrade):
             case _:
                 raise RuntimeError(f"Data {data} type is invalid")
 
-        return super().datafeed(data, index=index, **kwargs)
+        return super()._datafeed(data, index=index, **kwargs)
 
     def optimize(
         self,

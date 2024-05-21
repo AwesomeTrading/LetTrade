@@ -6,8 +6,6 @@ from typing import Optional, Type
 
 import numpy as np
 import pandas as pd
-from tqdm.auto import tqdm
-
 from lettrade import (
     Account,
     Commander,
@@ -115,6 +113,8 @@ class LetTradeBackTest(LetTrade):
         self._optimizes_task(optimizes, multiprocessing=multiprocessing)
 
     def _optimizes_task(self, optimizes: list[dict], multiprocessing="auto"):
+        from tqdm.auto import tqdm
+
         optimizes_batches = list(_batch(optimizes))
 
         results = []

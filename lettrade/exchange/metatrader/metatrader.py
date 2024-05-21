@@ -99,10 +99,7 @@ class LetTradeMetaTrader(LetTrade):
         return super().datafeed(data=data, **kwargs)
 
     def _multiprocess(self, process, **kwargs):
-        self._api._multiprocess(process, **kwargs)
-
-        # process=None mean single process
-        if process in [None, "sub"]:
-            self._api.start(**self._kwargs.pop("api_kwargs", {}))
+        api_kwargs = self._kwargs.setdefault("api_kwargs", {})
+        self._api.multiprocess(process, kwargs=api_kwargs, **kwargs)
 
         super()._multiprocess(process, **kwargs)

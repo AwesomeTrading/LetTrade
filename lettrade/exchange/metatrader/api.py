@@ -46,7 +46,7 @@ class MetaTraderAPI:
             cls._singleton.__init__(*args, **kwargs)
         return cls._singleton
 
-    def start(
+    def init(
         self,
         login: int,
         password: str,
@@ -55,10 +55,8 @@ class MetaTraderAPI:
         retry: int = 20,
         host: str = "localhost",
         port: int = 18812,
-        callbacker: object = None,
     ):
         self._mt5 = Mt5(host=host, port=port)
-        self._callbacker = callbacker
 
         account = self.account()
         if not account or account.login != login:
@@ -93,8 +91,15 @@ class MetaTraderAPI:
         if not terminal.trade_allowed:
             logger.warning("Terminal trading mode is not allowed")
 
+    def start(self, callbacker=None):
+        self._callbacker = callbacker
+        self._check_transactions()
+
     def stop(self):
         self._mt5.shutdown()
+
+    def next(self):
+        self._check_transactions()
 
     def heartbeat(self):
         return True
@@ -131,9 +136,6 @@ class MetaTraderAPI:
 
     def positions_get(self, **kwargs):
         return self._mt5.positions_get(**kwargs)
-
-    def next(self):
-        self._check_transactions()
 
     # Transaction
     def _check_transactions(self):
@@ -242,8 +244,10 @@ class MetaTraderAPI:
         return added_trades, removed_trades
 
     # Extra
-    def _multiprocess(self, process, **kwargs):
-        pass
+    def multiprocess(self, process, kwargs, **other_kwargs):
+        # process=None mean single process
+        if process in [None, "sub"]:
+            self.init(**kwargs)
 
     def __copy__(self):
         return self.__class__._singleton

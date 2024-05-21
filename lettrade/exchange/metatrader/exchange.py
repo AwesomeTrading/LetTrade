@@ -25,12 +25,12 @@ class MetaTraderExchange(Exchange):
         """
         super().__init__(*args, **kwargs)
         self._api = api
-        self._api._callbacker = self
 
     def start(self) -> None:
         """Start MetaTrader exchange by: Sync orders from server, Sync trades from server"""
-        self._sync_orders()
-        self._sync_trades()
+        # self._sync_orders()
+        # self._sync_trades()
+        self._api.start(callbacker=self)
         return super().start()
 
     def next(self) -> None:
@@ -93,20 +93,20 @@ class MetaTraderExchange(Exchange):
 
         return ok
 
-    def _sync_orders(self):
-        total = self._api.orders_total()
-        if total <= 0:
-            return
+    # def _sync_orders(self):
+    #     total = self._api.orders_total()
+    #     if total <= 0:
+    #         return
 
-        raws = self._api.orders_get()
-        if not raws:
-            logger.warning("Cannot get orders")
-            return
+    #     raws = self._api.orders_get()
+    #     if not raws:
+    #         logger.warning("Cannot get orders")
+    #         return
 
-        for order in self._parse_orders(raws):
-            if __debug__:
-                logger.info("Sync order: %s", order)
-            self.on_order(order)
+    #     for order in self._parse_orders(raws):
+    #         if __debug__:
+    #             logger.info("Sync order: %s", order)
+    #         self.on_order(order)
 
     def _parse_orders(self, raws) -> list[MetaTraderOrder]:
         return [self._parse_order(raw) for raw in raws]
@@ -114,22 +114,22 @@ class MetaTraderExchange(Exchange):
     def _parse_order(self, raw) -> MetaTraderOrder:
         return MetaTraderOrder.from_raw(raw=raw, exchange=self)
 
-    def _sync_trades(self):
-        total = self._api.positions_total()
-        if total <= 0:
-            return
+    # def _sync_trades(self):
+    #     total = self._api.positions_total()
+    #     if total <= 0:
+    #         return
 
-        raws = self._api.positions_get()
-        if not raws:
-            logger.warning("Cannot get trades")
-            return
+    #     raws = self._api.positions_get()
+    #     if not raws:
+    #         logger.warning("Cannot get trades")
+    #         return
 
-        for raw in raws:
-            if __debug__:
-                logger.info("Sync trade: %s", str(raw))
-            trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
-            if trade.id not in self.trades:
-                self.on_trade(trade)
+    #     for raw in raws:
+    #         if __debug__:
+    #             logger.info("Sync trade: %s", str(raw))
+    #         trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
+    #         if trade.id not in self.trades:
+    #             self.on_trade(trade)
 
     # Events
     def on_new_deals(self, raws):

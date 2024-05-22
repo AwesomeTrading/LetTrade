@@ -59,6 +59,7 @@ class LetTrade:
         commander: Optional[Type[Commander]] = None,
         plotter: Optional[Type["Plotter"]] = None,
         stats: Optional[Type["Statistic"]] = None,
+        name: Optional[str] = None,
         **kwargs,
     ) -> None:
         self._strategy_cls = strategy
@@ -68,6 +69,7 @@ class LetTrade:
         self._commander_cls = commander
         self._plotter_cls = plotter
         self._stats_cls = stats
+        self._name = name
         self._kwargs = kwargs
 
         # DataFeeds
@@ -191,7 +193,7 @@ class LetTrade:
                         self._run,
                         datas=datas,
                         index=i,
-                        multiprocess="sub",
+                        multiprocess="worker",
                     )
                     for i, datas in enumerate(self.datas)
                 ]
@@ -220,7 +222,7 @@ class LetTrade:
         self._name = name
 
         # Run inside a subprocess
-        if multiprocess == "sub":
+        if multiprocess == "worker":
             if __debug__:
                 logger.info(
                     "[%s] Running %s in subprocess: %s %s",
@@ -286,7 +288,7 @@ class LetTrade:
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
-        if self._is_multiprocess == "sub":
+        if self._is_multiprocess != "worker":
             logger.warning("Plot in multiprocessing is not implement yet")
             return
 

@@ -220,7 +220,7 @@ class LetTradeBackTest(LetTrade):
         datas: list[DataFeed],
         optimize: dict[str, object],
         index: int,
-        multiprocess: Optional[str] = "sub",
+        multiprocess: Optional[str] = "worker",
         q: Queue = None,
         **kwargs,
     ):

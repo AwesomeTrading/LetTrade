@@ -249,7 +249,7 @@ class MetaTraderAPI:
     # Extra
     def multiprocess(self, process, kwargs, **other_kwargs):
         # process=None mean single process
-        if process in [None, "sub"]:
+        if process in [None, "worker"]:
             self.init(**kwargs)
 
     def __copy__(self):

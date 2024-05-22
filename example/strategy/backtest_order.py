@@ -21,7 +21,6 @@ class SmaCross(Strategy):
 
         df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
         df["signal_ema_crossunder"] = crossunder(df.ema1, df.ema2)
-        return df
 
     def next(self, df: DataFeed):
         if len(self.orders) > 0 or len(self.trades) > 0:

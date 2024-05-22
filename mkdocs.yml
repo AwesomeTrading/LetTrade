@@ -11,6 +11,7 @@ nav:
   - Install:
       - LetTrade: install/index.md
       - MetaTrader 5: install/metatrader.md
+  - Tutorials: tutorial/
   - TA Libraries: talib.md
   - Development: dev.md
   - API reference:

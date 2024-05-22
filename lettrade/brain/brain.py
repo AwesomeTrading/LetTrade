@@ -42,6 +42,8 @@ class Brain:
 
     def run(self):
         """Run the trading bot"""
+        self.data._set_main()
+
         self.strategy.init()
 
         self.feeder.start()

@@ -78,6 +78,10 @@ class DataFeed(pd.DataFrame):
         return self.meta["name"]
 
     @property
+    def is_main(self) -> bool:
+        return self.meta.get("is_main", False)
+
+    @property
     def now(self) -> datetime:
         return self.datetime[0]
 
@@ -87,3 +91,7 @@ class DataFeed(pd.DataFrame):
 
     def next(self, size=1) -> bool:
         raise NotImplementedError("Method is not implement yet")
+
+    def _set_main(self):
+        """Set this dataframe is main datafeed"""
+        self.meta["is_main"] = True

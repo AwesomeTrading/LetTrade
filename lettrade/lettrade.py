@@ -76,7 +76,6 @@ class LetTrade:
     def _init(self, is_optimize=False):
         # Feeder
         self.feeder = self._feeder_cls(**self._kwargs.get("feeder_kwargs", {}))
-        # TODO: copy datas
         self.feeder.init(self.datas)
 
         # Account

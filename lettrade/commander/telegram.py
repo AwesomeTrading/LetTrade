@@ -183,6 +183,7 @@ class TelegramAPI:
 
         # Register command handler and start telegram message polling
         handles = [
+            CommandHandler("bots", self._cmd_bots),
             CommandHandler("status", self._cmd_status),
             # CommandHandler("profit", self._profit),
             # CommandHandler("balance", self._balance),
@@ -342,13 +343,15 @@ class TelegramAPI:
             context (CallbackContext): Telegram context
         """
         msg = (
-            "_Bot Control_\n"
+            "_Bots Control_\n"
+            "*/bots:* `Show list of bot`\n"
+            "\n_Bot Control_\n"
             "------------\n"
             "*/balance:* `Show bot managed balance per currency`\n"
             "*/logs [limit]:* `Show latest logs - defaults to 10` \n"
             "*/count:* `Show number of active trades compared to allowed number of trades`\n"
             "*/health* `Show latest process timestamp - defaults to 1970-01-01 00:00:00` \n"
-            "_Statistics_\n"
+            "\n_Statistics_\n"
             "------------\n"
             "*/status <trade_id>|[table]:* `Lists all open trades`\n"
             "*/trades [limit]:* `Lists last closed trades (limited to 10 by default)`\n"
@@ -383,6 +386,19 @@ class TelegramAPI:
                 # msg = "*Trade ID:* `{trade_id}` - continued\n" + line + "\n"
 
         await self._send_msg(msg.format(**r))
+
+    @authorized_only
+    async def _cmd_bots(self, update: Update, context: CallbackContext) -> None:
+        """Handler for /bots
+        Returns the current Strategy Statistic
+
+        Args:
+            update (Update): message update
+            context (CallbackContext): Telegram context
+        """
+        msg = "\n".join(list(self._action_queues.keys()))
+        print("bots", msg)
+        await self._send_msg(msg, parse_mode=ParseMode.HTML)
 
     @authorized_only
     async def _cmd_stats(self, update: Update, context: CallbackContext) -> None:

@@ -21,7 +21,7 @@ def let_metatrader(
     stats: Optional[Type["Statistic"]] = None,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     **kwargs,
-):
+) -> "LetTradeMetaTrader":
     """Help to build `LetTradeMetaTrader`
 
     Args:
@@ -36,7 +36,7 @@ def let_metatrader(
         api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
 
     Returns:
-        _type_: _description_
+        LetTradeMetaTrader: _description_
     """
     api_kwargs = dict(
         login=int(login),
@@ -57,6 +57,8 @@ def let_metatrader(
 
 
 class LetTradeMetaTrader(LetTrade):
+    """Help to maintain metatrader bots"""
+
     def __init__(
         self,
         strategy: type[Strategy],
@@ -67,6 +69,16 @@ class LetTradeMetaTrader(LetTrade):
         api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
         **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            strategy (type[Strategy]): _description_
+            datas (set[set[str]]): _description_
+            feeder (Type[MetaTraderDataFeeder], optional): _description_. Defaults to MetaTraderDataFeeder.
+            exchange (Type[MetaTraderExchange], optional): _description_. Defaults to MetaTraderExchange.
+            account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
+            api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
+        """
         # self._api_cls: Type[MetaTraderAPI] = api
         self._api: MetaTraderAPI = api()
 

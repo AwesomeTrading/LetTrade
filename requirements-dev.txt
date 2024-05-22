@@ -6,7 +6,7 @@ pytz
 mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master
 python-dotenv
 python-telegram-bot
-
+tqdm
 # conda install -c conda-forge ta-lib
 TA-Lib
 tulipy

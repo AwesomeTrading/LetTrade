@@ -65,8 +65,8 @@ class Statistic:
             self.exchange.trades.values()
         )
         self.result.loc["# Trades"] = len(trades)
-        self.result.loc["Best Trade [%]"] = max(t.pl for t in trades)
-        self.result.loc["Worst Trade [%]"] = min(t.pl for t in trades)
+        self.result.loc["Best Trade [%]"] = max(t.pl for t in trades) if trades else 0
+        self.result.loc["Worst Trade [%]"] = min(t.pl for t in trades) if trades else 0
 
         # TODO
         self.result.loc["Profit Factor"] = 2.13

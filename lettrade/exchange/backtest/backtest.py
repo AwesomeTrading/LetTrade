@@ -1,7 +1,11 @@
 import logging
 import os
-from concurrent.futures import ProcessPoolExecutor, as_completed
+import queue
+import threading
+from concurrent.futures import Future, ProcessPoolExecutor
 from itertools import product, repeat
+from multiprocessing import Manager, Queue
+from multiprocessing.managers import SyncManager
 from typing import Optional, Type
 
 import numpy as np
@@ -112,13 +116,9 @@ class LetTradeBackTest(LetTrade):
         # Disable logging
         logging_filter_optimize()
 
-        # Run
-        self._optimizes_task(optimizes, multiprocessing=multiprocessing)
-
-    def _optimizes_task(self, optimizes: list[dict], multiprocessing="auto"):
-        from tqdm.auto import tqdm
-
         optimizes_batches = list(_batch(optimizes))
+
+        process_queue = self._t_process_bar(size=len(optimizes))
 
         results = []
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
@@ -128,21 +128,20 @@ class LetTradeBackTest(LetTrade):
             multiprocessing == "auto" and os.name == "posix"
         ):
             with ProcessPoolExecutor() as executor:
-                futures = [
-                    executor.submit(
+                futures: list[Future] = []
+                index = 0
+                for optimizes in optimizes_batches:
+                    future = executor.submit(
                         self._optimizes_run,
                         datas=self.datas,
                         optimizes=optimizes,
-                        index=i,
+                        index=index,
+                        q=process_queue,
                     )
-                    for i, optimizes in enumerate(optimizes_batches)
-                ]
-                # for future in futures:
-                for future in tqdm(
-                    as_completed(futures),
-                    total=len(futures),
-                    desc="Optimizing",
-                ):
+                    futures.append(future)
+                    index += len(optimizes)
+
+                for future in futures:
                     result = future.result()
                     results.extend(result)
         else:
@@ -151,15 +150,27 @@ class LetTradeBackTest(LetTrade):
                     "For multiprocessing support in `optimize()` "
                     "set multiprocessing='fork'."
                 )
-            # for i, optimize in enumerate(optimizes):
-            for i, optimize in tqdm(enumerate(optimizes)):
+
+            # self.datas will be override by _run()
+            datas = self.datas
+
+            for i, optimize in enumerate(optimizes):
                 result = self._optimize_run(
-                    datas=[d.copy(deep=True) for d in self.datas],
+                    datas=[d.copy(deep=True) for d in datas],
                     optimize=optimize,
                     index=i,
+                    multiprocess=None,
+                    q=process_queue,
                 )
-                results.extend(result)
-        print(results)
+                results.append(result)
+
+        # Process bar queue None mean Done
+        try:
+            process_queue.put(None)
+        except Exception:
+            pass
+
+        print("results", results)
 
     def _optimizes_run(
         self,
@@ -173,7 +184,7 @@ class LetTradeBackTest(LetTrade):
             result = self._optimize_run(
                 datas=[d.copy(deep=True) for d in datas],
                 optimize=optimize,
-                index=index * len(optimize) + i,
+                index=index + i,
                 **kwargs,
             )
             results.append(result)
@@ -183,17 +194,28 @@ class LetTradeBackTest(LetTrade):
         self,
         datas: list[DataFeed],
         optimize: dict[str, object],
+        index: int,
+        multiprocess: Optional[str] = "sub",
+        q: Queue = None,
         **kwargs,
     ):
-        self._run(
-            datas=datas,
-            multiprocess="sub",
-            init_kwargs=dict(
-                optimize=optimize,
-                is_optimize=True,
-                **kwargs,
-            ),
-        )
+        try:
+            self._run(
+                datas=datas,
+                init_kwargs=dict(
+                    optimize=optimize,
+                    multiprocess=multiprocess,
+                    is_optimize=True,
+                    **kwargs,
+                ),
+            )
+        except Exception as e:
+            logger.error("Optimize %d", index, exc_info=e)
+            raise e
+
+        if q is not None:
+            q.put(index)
+
         return self.stats.result
 
     def _init(self, is_optimize=False, optimize=None, **kwargs):
@@ -205,6 +227,46 @@ class LetTradeBackTest(LetTrade):
         for param in optimize:
             attr, val = param
             setattr(self.strategy, attr, val)
+
+    # Process bar handler
+    def _t_process_bar(self, size):
+        # queue = Queue(maxsize=1_000)
+        manager = Manager()
+        q = manager.Queue(maxsize=1_000)
+        t = threading.Thread(
+            target=self._process_bar,
+            kwargs=dict(
+                size=size,
+                q=q,
+                manager=manager,
+            ),
+        )
+        t.start()
+        return q
+
+    def _process_bar(self, size: int, q: Queue, manager: SyncManager):
+        from tqdm import tqdm
+
+        pbar = tqdm(total=size)
+        while True:
+            try:
+                index = q.get(timeout=3)
+            except queue.Empty:
+                # TODO: check closed main class then exit
+                continue
+
+            # Done
+            if index is None:
+                break
+
+            pbar.update(1)
+
+            # Done
+            if pbar.n == pbar.total:
+                break
+
+        pbar.close()
+        # manager.shutdown()
 
 
 def _batch(seq):

@@ -213,7 +213,9 @@ class LetTrade:
                     [d.name for d in datas],
                     index,
                 )
+        if datas is not None:
             self.datas = datas
+
         self._multiprocess(multiprocess)
 
         # Init objects

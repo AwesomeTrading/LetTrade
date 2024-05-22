@@ -32,11 +32,12 @@ if __name__ == "__main__":
         install_requires=["pandas", "numpy"],
         extras_require={
             "extra": ["pandas_ta", "plotly"],
+            "bacltest": ["tqdm", "plotly"],
+            "backtest-extra": ["yfinance"],
+            "commander": ["python-telegram-bot"],
+            "dev": ["yfinance", "pytz"],
             "exchange-metatrader": [
                 "mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master"
             ],
-            "commander": ["python-telegram-bot"],
-            "backtest-extra": ["yfinance"],
-            "dev": ["yfinance", "pytz"],
         },
     )

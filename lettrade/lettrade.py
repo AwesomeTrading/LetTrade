@@ -47,6 +47,7 @@ class LetTrade:
     _stats_cls: Type["Statistic"]
     _kwargs: dict
     _name: str
+    _is_multiprocess: Optional[str]
 
     def __init__(
         self,
@@ -72,6 +73,8 @@ class LetTrade:
         # DataFeeds
         self.datas = self._init_datafeeds(datas)
         self.data = self.datas[0]
+
+        self._is_multiprocess = None
 
     def _init(self, is_optimize=False):
         # Feeder
@@ -246,12 +249,15 @@ class LetTrade:
             self.stats.show()
 
     def _multiprocess(self, process, **kwargs):
-        if process == "main":
+        if process is not None:
+            self._is_multiprocess = process
+
+        if self._is_multiprocess == "main":
             if self._commander_cls:
                 # Impletement commander dependencies and save to commander_kwargs
                 commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
                 self._commander_cls.multiprocess(
-                    process,
+                    self._is_multiprocess,
                     kwargs=commander_kwargs,
                     self_kwargs=self._kwargs,
                     **kwargs,
@@ -267,19 +273,20 @@ class LetTrade:
     def stats(self) -> Statistic:
         """Get Statistic object"""
         if self._stats_cls is None:
-            raise RuntimeError("Statistic class is not defined")
+            raise RuntimeError("Statistic class is not define")
 
         if self._stats is None:
             self._stats = self._stats_cls(
                 feeder=self.feeder,
                 exchange=self.exchange,
                 strategy=self.strategy,
+                **self._kwargs.get("stats_kwargs", {}),
             )
         return self._stats
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
-        if not hasattr(self, "feeder"):
+        if self._is_multiprocess == "sub":
             logger.warning("Plot in multiprocessing is not implement yet")
             return
 
@@ -298,6 +305,7 @@ class LetTrade:
                 exchange=self.exchange,
                 account=self.account,
                 strategy=self.strategy,
+                **self._kwargs.get("plotter_kwargs", {}),
             )
 
         self.plotter.plot(*args, **kwargs)

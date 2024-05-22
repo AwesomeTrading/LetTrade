@@ -127,7 +127,7 @@ class LetTradeMetaTrader(LetTrade):
         return super()._datafeed(data=data, **kwargs)
 
     def _multiprocess(self, process, **kwargs):
-        api_kwargs = self._kwargs.setdefault("api_kwargs", {})
-        self._api.multiprocess(process, kwargs=api_kwargs, **kwargs)
-
         super()._multiprocess(process, **kwargs)
+
+        api_kwargs = self._kwargs.setdefault("api_kwargs", {})
+        self._api.multiprocess(self._is_multiprocess, kwargs=api_kwargs, **kwargs)

@@ -1,14 +1,8 @@
 import talib.abstract as ta
 
 import example.logger
-from lettrade.all import (
-    DataFeed,
-    ForexBackTestAccount,
-    Strategy,
-    crossover,
-    crossunder,
-    let_backtest,
-)
+from lettrade import DataFeed, Strategy, crossover, crossunder
+from lettrade.exchange.backtest import ForexBackTestAccount, let_backtest
 
 
 class SmaCross(Strategy):

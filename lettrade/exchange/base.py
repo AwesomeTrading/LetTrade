@@ -36,7 +36,7 @@ class BaseTransaction:
         self.data: "DataFeed" = data
         self.size: float = size
 
-    def _replace(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, f"_{self.__class__.__qualname__}__{k}", v)
-        return self
+    # def _replace(self, **kwargs):
+    #     for k, v in kwargs.items():
+    #         setattr(self, f"_{self.__class__.__qualname__}__{k}", v)
+    #     return self

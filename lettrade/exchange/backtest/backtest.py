@@ -104,7 +104,7 @@ class LetTradeBackTest(LetTrade):
     def optimize(
         self,
         multiprocessing: Optional[str] = "auto",
-        worker: int = None,
+        workers: int = None,
         **kwargs,
     ):
         """Backtest optimization
@@ -120,6 +120,7 @@ class LetTradeBackTest(LetTrade):
         # Disable commander
         if self._commander_cls:
             self._commander_cls = None
+
         # Disable Plotter
         if self._plotter_cls:
             self._plotter_cls = None
@@ -132,7 +133,7 @@ class LetTradeBackTest(LetTrade):
             optimizes=optimizes,
             multiprocessing=multiprocessing,
             processbar_queue=processbar_queue,
-            worker=worker,
+            workers=workers,
         )
 
         # Process bar queue None mean Done
@@ -148,9 +149,14 @@ class LetTradeBackTest(LetTrade):
         optimizes: list[set],
         multiprocessing: str,
         processbar_queue: Queue,
-        worker: int,
+        workers: int,
     ):
-        optimizes_batches = list(_batch(optimizes, worker=worker))
+        optimizes_batches = list(_batch(optimizes, workers=workers))
+
+        # Set max workers
+        if workers is None or workers > len(optimizes_batches):
+            workers = len(optimizes_batches)
+            logger.info("Set optimize workers to %d", workers)
 
         results = []
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
@@ -159,7 +165,7 @@ class LetTradeBackTest(LetTrade):
         if multiprocessing == "fork" or (
             multiprocessing == "auto" and os.name == "posix"
         ):
-            with ProcessPoolExecutor(max_workers=worker) as executor:
+            with ProcessPoolExecutor(max_workers=workers) as executor:
                 futures: list[Future] = []
                 index = 0
                 for optimizes in optimizes_batches:
@@ -296,7 +302,7 @@ def _process_bar(size: int, q: Queue, manager: SyncManager):
     # manager.shutdown()
 
 
-def _batch(seq, worker=None):
-    n = np.clip(int(len(seq) // (worker or os.cpu_count() or 1)), 1, 300)
+def _batch(seq, workers=None):
+    n = np.clip(int(len(seq) // (workers or os.cpu_count() or 1)), 1, 300)
     for i in range(0, len(seq), n):
         yield seq[i : i + n]

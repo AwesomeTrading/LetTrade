@@ -288,7 +288,9 @@ class LetTrade:
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
-        if self._is_multiprocess != "worker":
+
+        # if main process of multiprocessing
+        if self._is_multiprocess == "main":
             logger.warning("Plot in multiprocessing is not implement yet")
             return
 

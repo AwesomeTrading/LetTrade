@@ -47,6 +47,9 @@ def let_backtest(
     commander: Optional[Type[Commander]] = BackTestCommander,
     plotter: Optional[Type[Plotter]] = Plotter,
     stats: Optional[Type[Statistic]] = Statistic,
+    cash: Optional[float] = 1_000,
+    commission: Optional[float] = 0.002,
+    leverage: Optional[float] = 20,
     **kwargs,
 ) -> "LetTradeBackTest":
     """Complete `lettrade` backtest depenencies
@@ -66,6 +69,9 @@ def let_backtest(
     Returns:
         LetTradeBackTest: The LetTrade backtesting object
     """
+    account_kwargs: dict = kwargs.get("account_kwargs", {})
+    account_kwargs.update(cash=cash, commission=commission, leverage=leverage)
+
     return LetTradeBackTest(
         strategy=strategy,
         datas=datas,
@@ -75,6 +81,7 @@ def let_backtest(
         account=account,
         plotter=plotter,
         stats=stats,
+        account_kwargs=account_kwargs,
         **kwargs,
     )
 

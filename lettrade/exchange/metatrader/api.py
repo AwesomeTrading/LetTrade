@@ -36,7 +36,7 @@ class MetaTraderAPI:
     _mt5: Mt5
     _callbacker: "MetaTraderExchange"
 
-    __deal_time_checked = datetime(2020, 1, 1)
+    __deal_time_checked = datetime.now() - timedelta(days=1)
     __orders_stored: dict[int, object] = {}
     __trades_stored: dict[int, object] = {}
 
@@ -56,7 +56,10 @@ class MetaTraderAPI:
         host: str = "localhost",
         port: int = 18812,
     ):
-        self._mt5 = Mt5(host=host, port=port)
+        try:
+            self._mt5 = Mt5(host=host, port=port)
+        except TimeoutError as e:
+            raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e
 
         account = self.account()
         if not account or account.login != login:
@@ -163,7 +166,7 @@ class MetaTraderAPI:
 
     # Deal
     def _check_deals(self):
-        to = datetime.now() + timedelta(days=1)
+        to = datetime.now()  # + timedelta(days=1)
 
         deal_total = self._mt5.history_deals_total(self.__deal_time_checked, to)
 

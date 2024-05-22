@@ -22,6 +22,8 @@ class Commander(ABC):
     strategy: "Strategy"
     plotter: "Plotter" = None
 
+    _name: str
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -44,6 +46,8 @@ class Commander(ABC):
         self.brain = brain
         self.exchange = exchange
         self.strategy = strategy
+
+        self._name = self.lettrade._name
 
     @abstractmethod
     def start(self):

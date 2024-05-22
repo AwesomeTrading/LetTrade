@@ -11,7 +11,8 @@ Example:
 import asyncio
 import logging
 from functools import partial, wraps
-from multiprocessing.managers import BaseManager
+from multiprocessing import Manager, Queue
+from multiprocessing.managers import BaseManager, SyncManager
 from threading import Thread
 from typing import Any, Callable, Coroutine, Dict, List, Literal, Optional, Union
 
@@ -80,6 +81,10 @@ def authorized_only(command_handler: Callable[..., Coroutine[Any, Any, None]]):
 class TelegramAPI:
     """Singleton object communicate across multipprocessing"""
 
+    _app: Application
+    _loop: asyncio.AbstractEventLoop
+    _action_queues: dict[Queue]
+
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
             cls._singleton = object.__new__(cls)
@@ -89,12 +94,16 @@ class TelegramAPI:
     def __init__(self, token: str, chat_id: int, *args, **kwargs) -> None:
         self._token: str = token
         self._chat_id: int = int(chat_id)
+        self._action_queues = dict()
 
-        self._app: Application
-        self._loop: asyncio.AbstractEventLoop
-
-    def start(self):
+    def start(self, pname: str, action_queue: Queue):
         """Start"""
+        if pname in self._action_queues:
+            logger.warning("Process name %s override existed action queue", pname)
+        self._action_queues[pname] = action_queue
+
+        logger.info("New join process: %s", pname)
+
         # TODO: Lock for safe multipleprocessing
         if hasattr(self, "_keyboard"):
             return
@@ -102,7 +111,17 @@ class TelegramAPI:
         self._init_keyboard()
         self._start_thread()
 
-    def send_message(self, msg: str, **kwargs) -> None:
+    def _action(self, action: str, pname: str = None):
+        if pname is None:
+            pname = list(self._action_queues.keys())
+        elif isinstance(pname, str):
+            pname = [pname]
+
+        for name in pname:
+            q: Queue = self._action_queues[name]
+            q.put(action)
+
+    def send_message(self, msg: str, pname: str, **kwargs) -> None:
         """Send message to Telegram Bot
 
         Args:
@@ -111,7 +130,7 @@ class TelegramAPI:
         Returns:
             _type_: `None`
         """
-
+        msg = f"*[Process: {pname}]*\n{msg}"
         asyncio.run_coroutine_threadsafe(self._send_msg(msg, **kwargs), self._loop)
 
     async def _cleanup_telegram(self) -> None:
@@ -374,15 +393,21 @@ class TelegramAPI:
             update (Update): message update
             context (CallbackContext): Telegram context
         """
-        stats: Statistic = self.lettrade.stats
-        stats.compute()
-        await self._send_msg(stats.result.to_string())
+        # stats: Statistic = self.lettrade.stats
+        # stats.compute()
+        # await self._send_msg(stats.result.to_string())
+
+        self._action("stats")
+
+    def on_stats(self, stats: str, pname: str):
+        self.send_message(stats, pname=pname)
 
 
 class TelegramCommander(Commander):
     """Send notify and receive command from Telegram Bot"""
 
     _api: TelegramAPI
+    _is_running: bool
 
     def __init__(
         self,
@@ -400,6 +425,40 @@ class TelegramCommander(Commander):
         """
         super().__init__(*args, **kwargs)
         self._api = api or TelegramAPI(token=token, chat_id=chat_id)
+        self._is_running = True
+
+    def start(self):
+        """Start"""
+        q = self._t_action()
+        self._api.start(pname=self._name, action_queue=q)
+
+    def stop(self):
+        """Stop"""
+        self._api.cleanup()
+        self._is_running = False
+
+    def send_message(self, msg: str, **kwargs) -> None:
+        self._api.send_message(msg=msg, pname=self._name, **kwargs)
+
+    def _t_action(self) -> Queue:
+        manager = Manager()
+        q = manager.Queue(maxsize=1_000)
+        t = Thread(target=self._on_action, kwargs=dict(q=q))
+        t.start()
+        return q
+
+    def _on_action(self, q: Queue):
+        while self._is_running:
+            action = q.get()
+
+            match action:
+                case "stats":
+                    self._on_action_stats()
+
+    def _on_action_stats(self):
+        stats: Statistic = self.lettrade.stats
+        stats.compute()
+        self._api.on_stats(stats=stats.result.to_string(), pname=self._name)
 
     @classmethod
     def multiprocess(cls, process, kwargs, **other_kwargs):
@@ -408,15 +467,3 @@ class TelegramCommander(Commander):
             manager = BaseManager()
             manager.start()
             kwargs["api"] = manager.TelegramAPI(**kwargs)
-
-    def start(self):
-        """Start"""
-        self._api.start()
-
-    def stop(self):
-        """Stop"""
-        self._api.cleanup()
-
-    def send_message(self, msg: str, **kwargs) -> None:
-        print("send_message", msg, kwargs)
-        self._api.send_message(msg=msg, **kwargs)

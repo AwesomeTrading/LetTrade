@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional, Set, Tuple, Type
 
-from lettrade import Commander, LetTrade
+from lettrade import Commander, LetTrade, Statistic
 from lettrade.strategy.strategy import Strategy
 
 from .account import MetaTraderAccount
@@ -18,7 +18,7 @@ def let_metatrader(
     server: str,
     commander: Optional[Commander] = None,
     plot: Optional[Type["Plotter"]] = None,
-    stats: Optional[Type["Statistic"]] = None,
+    stats: Optional[Type["Statistic"]] = Statistic,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     **kwargs,
 ) -> "LetTradeMetaTrader":

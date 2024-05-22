@@ -78,6 +78,14 @@ def authorized_only(command_handler: Callable[..., Coroutine[Any, Any, None]]):
 
 
 class TelegramAPI:
+    """Singleton object communicate across multipprocessing"""
+
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, "_singleton"):
+            cls._singleton = object.__new__(cls)
+            cls._singleton.__init__(*args, **kwargs)
+        return cls._singleton
+
     def __init__(self, token: str, chat_id: int, *args, **kwargs) -> None:
         self._token: str = token
         self._chat_id: int = int(chat_id)

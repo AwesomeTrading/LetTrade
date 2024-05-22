@@ -117,9 +117,40 @@ class LetTradeBackTest(LetTrade):
         # Disable logging
         logging_filter_optimize()
 
-        optimizes_batches = list(_batch(optimizes, worker=worker))
+        # Disable commander
+        if self._commander_cls:
+            self._commander_cls = None
+        # Disable Plotter
+        if self._plot_cls:
+            self._plot_cls = None
 
-        process_queue = _t_process_bar(size=len(optimizes))
+        # Queue to update process bar
+        processbar_queue = _t_process_bar(size=len(optimizes))
+
+        # Run optimize in multiprocessing
+        results = self._optimizes_multiproccess(
+            optimizes=optimizes,
+            multiprocessing=multiprocessing,
+            processbar_queue=processbar_queue,
+            worker=worker,
+        )
+
+        # Process bar queue None mean Done
+        try:
+            processbar_queue.put(None)
+        except Exception:
+            pass
+
+        print("results", results)
+
+    def _optimizes_multiproccess(
+        self,
+        optimizes: list[set],
+        multiprocessing: str,
+        processbar_queue: Queue,
+        worker: int,
+    ):
+        optimizes_batches = list(_batch(optimizes, worker=worker))
 
         results = []
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
@@ -137,7 +168,7 @@ class LetTradeBackTest(LetTrade):
                         datas=self.datas,
                         optimizes=optimizes,
                         index=index,
-                        q=process_queue,
+                        q=processbar_queue,
                     )
                     futures.append(future)
                     index += len(optimizes)
@@ -161,17 +192,10 @@ class LetTradeBackTest(LetTrade):
                     optimize=optimize,
                     index=i,
                     multiprocess=None,
-                    q=process_queue,
+                    q=processbar_queue,
                 )
                 results.append(result)
-
-        # Process bar queue None mean Done
-        try:
-            process_queue.put(None)
-        except Exception:
-            pass
-
-        print("results", results)
+        return results
 
     def _optimizes_run(
         self,

@@ -104,6 +104,7 @@ class LetTradeBackTest(LetTrade):
     def optimize(
         self,
         multiprocessing: Optional[str] = "auto",
+        worker: int = None,
         **kwargs,
     ):
         """Backtest optimization
@@ -116,9 +117,9 @@ class LetTradeBackTest(LetTrade):
         # Disable logging
         logging_filter_optimize()
 
-        optimizes_batches = list(_batch(optimizes))
+        optimizes_batches = list(_batch(optimizes, worker=worker))
 
-        process_queue = self._t_process_bar(size=len(optimizes))
+        process_queue = _t_process_bar(size=len(optimizes))
 
         results = []
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
@@ -127,7 +128,7 @@ class LetTradeBackTest(LetTrade):
         if multiprocessing == "fork" or (
             multiprocessing == "auto" and os.name == "posix"
         ):
-            with ProcessPoolExecutor() as executor:
+            with ProcessPoolExecutor(max_workers=worker) as executor:
                 futures: list[Future] = []
                 index = 0
                 for optimizes in optimizes_batches:
@@ -228,48 +229,50 @@ class LetTradeBackTest(LetTrade):
             attr, val = param
             setattr(self.strategy, attr, val)
 
-    # Process bar handler
-    def _t_process_bar(self, size):
-        # queue = Queue(maxsize=1_000)
-        manager = Manager()
-        q = manager.Queue(maxsize=1_000)
-        t = threading.Thread(
-            target=self._process_bar,
-            kwargs=dict(
-                size=size,
-                q=q,
-                manager=manager,
-            ),
-        )
-        t.start()
-        return q
 
-    def _process_bar(self, size: int, q: Queue, manager: SyncManager):
-        from tqdm import tqdm
-
-        pbar = tqdm(total=size)
-        while True:
-            try:
-                index = q.get(timeout=3)
-            except queue.Empty:
-                # TODO: check closed main class then exit
-                continue
-
-            # Done
-            if index is None:
-                break
-
-            pbar.update(1)
-
-            # Done
-            if pbar.n == pbar.total:
-                break
-
-        pbar.close()
-        # manager.shutdown()
+# Process bar handler
+def _t_process_bar(size):
+    # queue = Queue(maxsize=1_000)
+    manager = Manager()
+    q = manager.Queue(maxsize=1_000)
+    t = threading.Thread(
+        target=_process_bar,
+        kwargs=dict(
+            size=size,
+            q=q,
+            manager=manager,
+        ),
+    )
+    t.start()
+    return q
 
 
-def _batch(seq):
-    n = np.clip(int(len(seq) // (os.cpu_count() or 1)), 1, 300)
+def _process_bar(size: int, q: Queue, manager: SyncManager):
+    from tqdm import tqdm
+
+    pbar = tqdm(total=size)
+    while True:
+        try:
+            index = q.get(timeout=3)
+        except queue.Empty:
+            # TODO: check closed main class then exit
+            continue
+
+        # Done
+        if index is None:
+            break
+
+        pbar.update(1)
+
+        # Done
+        if pbar.n == pbar.total:
+            break
+
+    pbar.close()
+    # manager.shutdown()
+
+
+def _batch(seq, worker=None):
+    n = np.clip(int(len(seq) // (worker or os.cpu_count() or 1)), 1, 300)
     for i in range(0, len(seq), n):
         yield seq[i : i + n]

@@ -57,14 +57,14 @@ class Trade(BaseTransaction):
         #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
         # )
 
-    def entry(self, price, at) -> bool:
+    def entry(self, price: float, at: object) -> bool:
         self.entry_price = price
         self.entry_at: int = at
         self.state = TradeState.Open
         self.exchange.on_trade(self)
         return True
 
-    def exit(self, price, at, pl, fee) -> bool:
+    def exit(self, price: float, at: object, pl: float, fee: float) -> bool:
         if self.state != TradeState.Open:
             return False
 

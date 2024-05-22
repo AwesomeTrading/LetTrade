@@ -1,3 +1,5 @@
+from typing import Optional
+
 from lettrade.account import Account
 
 
@@ -10,12 +12,10 @@ class ForexBackTestAccount(Account):
     def __repr__(self):
         return "<ForexBackTestAccount " + str(self) + ">"
 
-    def pl(self, size, entry_price: float, exit_price=None) -> float:
-        return (
-            super().pl(
-                size=size,
-                entry_price=entry_price,
-                exit_price=exit_price,
-            )
-            * 1_000_000
-        )
+    def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
+        if exit_price is None:
+            exit_price = self._exchange.data.open[0]
+
+        pl = size * (exit_price - entry_price) * 100_000
+
+        return pl

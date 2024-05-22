@@ -12,6 +12,8 @@ class BackTestExecute(Execute):
 class BackTestOrder(Order):
     """Order for backtesting"""
 
+    trade: "BackTestTrade"
+
     def cancel(self):
         """Cancel the Order and notify Exchange"""
         if self.state is not OrderState.Placed:
@@ -129,8 +131,15 @@ class BackTestTrade(Trade):
         if self.state != TradeState.Open:
             return
 
+        # PnL
+        pl = self._account.pl(
+            size=self.size,
+            entry_price=self.entry_price,
+            exit_price=price,
+        )
+
         # State
-        super().exit(price=price, at=at, pl=self.pl, fee=0)
+        super().exit(price=price, at=at, pl=pl, fee=0)
 
         # Caller is trade close by tp/sl order
         if caller is None or (self.sl_order and self.sl_order is not caller):

@@ -1,4 +1,5 @@
 import logging
+import os
 from concurrent.futures import ProcessPoolExecutor
 from typing import Optional, Type
 
@@ -45,6 +46,7 @@ class LetTrade:
     _plot_cls: Type["Plotter"]
     _stats_cls: Type["Statistic"]
     _kwargs: dict
+    _name: str
 
     def __init__(
         self,
@@ -202,19 +204,29 @@ class LetTrade:
         datas: Optional[list[DataFeed]] = None,
         index: Optional[int] = None,
         multiprocess: Optional[str] = None,
+        name=None,
         *args,
         **kwargs,
     ):
+        if datas is not None:
+            self.datas = datas
+            self.data = datas[0]
+
+        # Set name for current processing
+        if name is None:
+            name = f"{index}-{os.getpid()}-{self.data.name}"
+        self._name = name
+
         # Run inside a subprocess
         if multiprocess == "sub":
             if __debug__:
                 logger.info(
-                    "Running %s in subprocess: %s",
+                    "[%s] Running %s in subprocess: %s %s",
+                    self._name,
                     [d.name for d in datas],
                     index,
+                    os.getpid(),
                 )
-        if datas is not None:
-            self.datas = datas
 
         self._multiprocess(multiprocess)
 
@@ -235,15 +247,16 @@ class LetTrade:
             self.stats.show()
 
     def _multiprocess(self, process, **kwargs):
-        if self._commander_cls:
-            # Impletement commander dependencies and save to commander_kwargs
-            commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
-            self._commander_cls.multiprocess(
-                process,
-                kwargs=commander_kwargs,
-                self_kwargs=self._kwargs,
-                **kwargs,
-            )
+        if process == "main":
+            if self._commander_cls:
+                # Impletement commander dependencies and save to commander_kwargs
+                commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
+                self._commander_cls.multiprocess(
+                    process,
+                    kwargs=commander_kwargs,
+                    self_kwargs=self._kwargs,
+                    **kwargs,
+                )
 
     def stop(self):
         """Stop strategy"""

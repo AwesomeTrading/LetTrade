@@ -43,7 +43,7 @@ class LetTrade:
     _exchange_cls: Type[Exchange]
     _account_cls: Type[Account]
     _commander_cls: Type[Commander]
-    _plot_cls: Type["Plotter"]
+    _plotter_cls: Type["Plotter"]
     _stats_cls: Type["Statistic"]
     _kwargs: dict
     _name: str
@@ -56,7 +56,7 @@ class LetTrade:
         exchange: Type[Exchange],
         account: Type[Account],
         commander: Optional[Type[Commander]] = None,
-        plot: Optional[Type["Plotter"]] = None,
+        plotter: Optional[Type["Plotter"]] = None,
         stats: Optional[Type["Statistic"]] = None,
         **kwargs,
     ) -> None:
@@ -65,7 +65,7 @@ class LetTrade:
         self._exchange_cls = exchange
         self._account_cls = account
         self._commander_cls = commander
-        self._plot_cls = plot
+        self._plotter_cls = plotter
         self._stats_cls = stats
         self._kwargs = kwargs
 
@@ -290,10 +290,10 @@ class LetTrade:
                 return
 
         if self.plotter is None:
-            if self._plot_cls is None:
+            if self._plotter_cls is None:
                 raise RuntimeError("Plotter class is None")
 
-            self.plotter = self._plot_cls(
+            self.plotter = self._plotter_cls(
                 feeder=self.feeder,
                 exchange=self.exchange,
                 account=self.account,

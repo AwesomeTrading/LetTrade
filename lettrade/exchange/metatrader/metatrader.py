@@ -17,7 +17,7 @@ def let_metatrader(
     password: str,
     server: str,
     commander: Optional[Commander] = None,
-    plot: Optional[Type["Plotter"]] = None,
+    plotter: Optional[Type["Plotter"]] = None,
     stats: Optional[Type["Statistic"]] = Statistic,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     **kwargs,
@@ -31,7 +31,7 @@ def let_metatrader(
         password (str): _description_
         server (str): _description_
         commander (Optional[Commander], optional): _description_. Defaults to None.
-        plot (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
+        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
         stats (Optional[Type["Statistic"]], optional): _description_. Defaults to None.
         api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
 
@@ -48,7 +48,7 @@ def let_metatrader(
         strategy=strategy,
         datas=datas,
         commander=commander,
-        plot=plot,
+        plotter=plotter,
         stats=stats,
         api=api,
         api_kwargs=api_kwargs,

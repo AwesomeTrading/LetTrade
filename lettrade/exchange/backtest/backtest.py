@@ -45,7 +45,7 @@ def let_backtest(
     exchange: Type[Exchange] = BackTestExchange,
     account: Type[Account] = BackTestAccount,
     commander: Optional[Type[Commander]] = BackTestCommander,
-    plot: Optional[Type[Plotter]] = Plotter,
+    plotter: Optional[Type[Plotter]] = Plotter,
     stats: Optional[Type[Statistic]] = Statistic,
     **kwargs,
 ) -> "LetTradeBackTest":
@@ -58,7 +58,7 @@ def let_backtest(
         exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
         account (Type[Account], optional): _description_. Defaults to BackTestAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
-        plot (Optional[Type[Plotter]], optional): _description_. Defaults to Plotter.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to Plotter.
 
     Raises:
         RuntimeError: The validate parameter error
@@ -73,7 +73,7 @@ def let_backtest(
         exchange=exchange,
         commander=commander,
         account=account,
-        plot=plot,
+        plotter=plotter,
         stats=stats,
         **kwargs,
     )
@@ -121,8 +121,8 @@ class LetTradeBackTest(LetTrade):
         if self._commander_cls:
             self._commander_cls = None
         # Disable Plotter
-        if self._plot_cls:
-            self._plot_cls = None
+        if self._plotter_cls:
+            self._plotter_cls = None
 
         # Queue to update process bar
         processbar_queue = _t_process_bar(size=len(optimizes))

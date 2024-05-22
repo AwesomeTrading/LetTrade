@@ -5,26 +5,43 @@ from lettrade.strategy import Strategy
 
 
 class Brain:
-    """Brain of `lettrade`"""
+    """Brain of bot"""
+
+    strategy: Strategy
+    exchange: Exchange
+    feeder: DataFeeder
+    commander: Commander
+
+    datas: list[DataFeed]
+    data: DataFeed
 
     def __init__(
         self,
         strategy: Strategy,
         exchange: Exchange,
         feeder: DataFeeder,
-        commander: "Commander",
+        commander: Commander,
         *args,
         **kwargs,
     ) -> None:
-        self.strategy: Strategy = strategy
-        self.exchange: Exchange = exchange
-        self.feeder: DataFeeder = feeder
-        self.datas: list[DataFeed] = self.feeder.datas
-        self.data: DataFeed = self.feeder.data
+        """_summary_
 
-        self.commander: "Commander" = commander
+        Args:
+            strategy (Strategy): _description_
+            exchange (Exchange): _description_
+            feeder (DataFeeder): _description_
+            commander (Commander): _description_
+        """
+        self.strategy = strategy
+        self.exchange = exchange
+        self.feeder = feeder
+        self.commander = commander
+
+        self.datas = self.feeder.datas
+        self.data = self.feeder.data
 
     def run(self):
+        """Run the trading bot"""
         self.strategy.init()
 
         self.feeder.start()
@@ -46,30 +63,37 @@ class Brain:
         self.strategy.end(self.data)
 
     def stop(self):
+        """Stop the trading bot"""
         self.feeder.stop()
         self.exchange.stop()
 
     # Events
     def on_execute(self, execute: Execute):
+        """Receive new `Execution` event and send to `Strategy`"""
         self.on_transaction(execute)
         self.strategy.on_execute(execute)
 
     def on_order(self, order: Order):
+        """Receive new `Order` event and send to `Strategy`"""
         self.on_transaction(order)
         self.strategy.on_order(order)
 
     def on_trade(self, trade: Trade):
+        """Receive new `Trade` event and send to `Strategy`"""
         self.on_transaction(trade)
         self.strategy.on_trade(trade)
 
     def on_position(self, position: Position):
+        """Receive new `Position` event and send to `Strategy`"""
         self.on_transaction(position)
         self.strategy.on_position(position)
 
     def on_notify(self, *args, **kwargs):
+        """Receive new notify and send to Strategy"""
         self.strategy.on_notify(*args, **kwargs)
 
     def on_transaction(self, transaction):
+        """Receive new transaction event and send to `Strategy`"""
         if self.commander is not None:
             # TODO: send message to commander when new transaction
             self.commander.send_message(f"New transaction: {str(transaction)}")

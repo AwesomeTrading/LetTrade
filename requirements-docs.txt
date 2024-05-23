@@ -12,6 +12,7 @@ mkdocs-minify-plugin
 mkdocs-techdocs-redirects
 mkdocs-gen-files
 mkdocs-literate-nav
+mkdocs-jupyter
 mkdocstrings[python]
 mkdocstrings-crystal
 mkdocstrings-python

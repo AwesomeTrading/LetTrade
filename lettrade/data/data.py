@@ -47,8 +47,7 @@ class DataFeed(pd.DataFrame):
         super().__init__(*args, **kwargs)
         if not isinstance(self.index, pd.RangeIndex):
             self.reset_index(inplace=True)
-
-        # self.index = pd.RangeIndex(start=-len(self.index) + 1, stop=1, step=1)
+            # self.index = pd.RangeIndex(start=0, stop=len(self.index), step=1)
 
         # Metadata
         if not meta:

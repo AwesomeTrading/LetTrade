@@ -7,6 +7,7 @@ mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master
 python-dotenv
 python-telegram-bot
 tqdm
+blackbox @ git+https://github.com/paulknysh/blackbox.git@master
 # conda install -c conda-forge ta-lib
 TA-Lib
 tulipy

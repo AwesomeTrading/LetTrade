@@ -21,7 +21,7 @@ from lettrade import (
     Statistic,
     Strategy,
 )
-from lettrade.plot import Plotter
+from lettrade.plot.plotly import PlotlyPlotter, Plotter
 
 from .account import BackTestAccount
 from .commander import BackTestCommander
@@ -45,7 +45,7 @@ def let_backtest(
     exchange: Type[Exchange] = BackTestExchange,
     account: Type[Account] = BackTestAccount,
     commander: Optional[Type[Commander]] = BackTestCommander,
-    plotter: Optional[Type[Plotter]] = Plotter,
+    plotter: Optional[Type["Plotter"]] = PlotlyPlotter,
     stats: Optional[Type[Statistic]] = Statistic,
     cash: Optional[float] = 1_000,
     commission: Optional[float] = 0.002,
@@ -61,7 +61,7 @@ def let_backtest(
         exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
         account (Type[Account], optional): _description_. Defaults to BackTestAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
-        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to Plotter.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyPlotter.
 
     Raises:
         RuntimeError: The validate parameter error
@@ -107,6 +107,17 @@ class LetTradeBackTest(LetTrade):
                 raise RuntimeError(f"Data {data} type is invalid")
 
         return super()._datafeed(data, index=index, **kwargs)
+
+    def _init(self, is_optimize=False, optimize=None, **kwargs):
+        super()._init(is_optimize)
+
+        if not is_optimize:
+            return
+
+        # Set optimize params
+        for param in optimize:
+            attr, val = param
+            setattr(self.strategy, attr, val)
 
     def optimize(
         self,
@@ -156,15 +167,8 @@ class LetTradeBackTest(LetTrade):
         optimizes: list[set],
         multiprocessing: str,
         processbar_queue: Queue,
-        workers: int,
+        workers: int = None,
     ):
-        optimizes_batches = list(_batch(optimizes, workers=workers))
-
-        # Set max workers
-        if workers is None or workers > len(optimizes_batches):
-            workers = len(optimizes_batches)
-            logger.info("Set optimize workers to %d", workers)
-
         results = []
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
         # a pool of processes to compute results in parallel.
@@ -172,13 +176,19 @@ class LetTradeBackTest(LetTrade):
         if multiprocessing == "fork" or (
             multiprocessing == "auto" and os.name == "posix"
         ):
+            optimizes_batches = list(_batch(optimizes, workers=workers))
+
+            # Set max workers
+            if workers is None or workers > len(optimizes_batches):
+                workers = len(optimizes_batches)
+                logger.info("Set optimize workers to %d", workers)
+
             with ProcessPoolExecutor(max_workers=workers) as executor:
                 futures: list[Future] = []
                 index = 0
                 for optimizes in optimizes_batches:
                     future = executor.submit(
                         self._optimizes_run,
-                        datas=self.datas,
                         optimizes=optimizes,
                         index=index,
                         q=processbar_queue,
@@ -196,27 +206,23 @@ class LetTradeBackTest(LetTrade):
                     "set multiprocessing='fork'."
                 )
 
-            # self.datas will be override by _run()
-            datas = self.datas
-
-            for i, optimize in enumerate(optimizes):
-                result = self._optimize_run(
-                    datas=[d.copy(deep=True) for d in datas],
-                    optimize=optimize,
-                    index=i,
-                    multiprocess=None,
-                    q=processbar_queue,
-                )
-                results.append(result)
+            result = self._optimizes_run(
+                optimizes=optimizes,
+                multiprocess=None,
+                q=processbar_queue,
+            )
+            results.extend(result)
         return results
 
     def _optimizes_run(
         self,
-        datas: list[DataFeed],
         optimizes: list[dict],
-        index: int,
+        index: int = 0,
         **kwargs,
     ):
+        # self.datas will be override by _run()
+        datas = self.datas
+
         results = []
         for i, optimize in enumerate(optimizes):
             result = self._optimize_run(
@@ -230,9 +236,9 @@ class LetTradeBackTest(LetTrade):
 
     def _optimize_run(
         self,
-        datas: list[DataFeed],
         optimize: dict[str, object],
         index: int,
+        datas: list[DataFeed] = None,
         multiprocess: Optional[str] = "worker",
         q: Queue = None,
         **kwargs,
@@ -256,15 +262,44 @@ class LetTradeBackTest(LetTrade):
 
         return self.stats.result
 
-    def _init(self, is_optimize=False, optimize=None, **kwargs):
-        super()._init(is_optimize)
+    # Create optimize instance environment
+    def optimize_instance(self, args_parser, result_parser, *args, **kwargs):
+        self._opt_args_parser = args_parser
+        self._opt_result_parser = result_parser
+        self._opt_index = 0
 
-        if not is_optimize:
-            return
+        # Disable logging
+        logging_filter_optimize()
 
-        for param in optimize:
-            attr, val = param
-            setattr(self.strategy, attr, val)
+        # Disable commander
+        if self._commander_cls:
+            self._commander_cls = None
+
+        # Disable Plotter
+        if self._plotter_cls:
+            self._plotter_cls = None
+
+        return self._optimize_instance
+
+    def _optimize_instance(self, *args, **kwargs):
+        if self.data.index.start != 0:
+            raise RuntimeError("Optimize instance data changed")
+
+        if self._opt_args_parser:
+            optimize = self._opt_args_parser(*args, **kwargs)
+        else:
+            optimize = kwargs
+
+        # Run
+        self._opt_index += 1
+        result = self._optimize_run(
+            optimize=optimize,
+            index=self._opt_index,
+            multiprocess=None,
+        )
+        if self._opt_result_parser:
+            result = self._opt_result_parser(result)
+        return result
 
 
 # Process bar handler

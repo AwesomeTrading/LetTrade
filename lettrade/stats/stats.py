@@ -36,7 +36,7 @@ class Statistic:
         data: pd.DataFrame = self.feeder.data
         self.result = pd.Series(dtype=object)
 
-        self.result.loc["# Strategy"] = self.strategy.__class__
+        self.result.loc["# Strategy"] = str(self.strategy.__class__)
         self.result.loc["Start"] = data.datetime.iloc[0]
         self.result.loc["End"] = data.datetime.iloc[-1]
         self.result.loc["Duration"] = self.result.End - self.result.Start

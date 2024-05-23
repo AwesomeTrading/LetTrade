@@ -263,10 +263,9 @@ class LetTradeBackTest(LetTrade):
         return self.stats.result
 
     # Create optimize instance environment
-    def optimize_instance(self, args_parser, result_parser, *args, **kwargs):
-        self._opt_args_parser = args_parser
+    def optimize_instance(self, params_parser, result_parser):
+        self._opt_params_parser = params_parser
         self._opt_result_parser = result_parser
-        self._opt_index = 0
 
         # Disable logging
         logging_filter_optimize()
@@ -285,16 +284,15 @@ class LetTradeBackTest(LetTrade):
         if self.data.index.start != 0:
             raise RuntimeError("Optimize instance data changed")
 
-        if self._opt_args_parser:
-            optimize = self._opt_args_parser(*args, **kwargs)
+        if self._opt_params_parser:
+            optimize = self._opt_params_parser(*args, **kwargs)
         else:
             optimize = kwargs
 
         # Run
-        self._opt_index += 1
         result = self._optimize_run(
             optimize=optimize,
-            index=self._opt_index,
+            index=0,
             multiprocess=None,
         )
         if self._opt_result_parser:

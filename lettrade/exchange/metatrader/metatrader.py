@@ -20,6 +20,7 @@ def let_metatrader(
     plotter: Optional[Type["Plotter"]] = None,
     stats: Optional[Type["Statistic"]] = Statistic,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
+    wine: Optional[str] = None,
     **kwargs,
 ) -> "LetTradeMetaTrader":
     """Help to build `LetTradeMetaTrader`
@@ -38,10 +39,12 @@ def let_metatrader(
     Returns:
         LetTradeMetaTrader: _description_
     """
-    api_kwargs = dict(
+    api_kwargs: dict = kwargs.pop("api_kwargs", {})
+    api_kwargs.update(
         login=int(login),
         password=password,
         server=server,
+        wine=wine,
     )
 
     return LetTradeMetaTrader(

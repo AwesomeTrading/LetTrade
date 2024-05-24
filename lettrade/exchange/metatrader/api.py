@@ -55,8 +55,15 @@ class MetaTraderAPI:
         retry: int = 20,
         host: str = "localhost",
         port: int = 18812,
+        wine: str = None,
     ):
+
         try:
+            self._mt5 = Mt5(host=host, port=port)
+        except ConnectionRefusedError as e:
+            if wine is None:
+                raise e
+            self._t_wine_server(wine)
             self._mt5 = Mt5(host=host, port=port)
         except TimeoutError as e:
             raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e
@@ -93,6 +100,14 @@ class MetaTraderAPI:
         logger.info("Terminal information: %s", str(terminal))
         if not terminal.trade_allowed:
             logger.warning("Terminal trading mode is not allowed")
+
+    def _t_wine_server(self, wine):
+        import time
+        from subprocess import Popen
+
+        p = Popen(wine, shell=True)
+        time.sleep(5)
+        logger.info("Wine MetaTrader rpyc server started")
 
     def start(self, callbacker=None):
         self._callbacker = callbacker

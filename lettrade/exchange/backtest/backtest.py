@@ -6,7 +6,7 @@ from concurrent.futures import Future, ProcessPoolExecutor
 from itertools import product, repeat
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import SyncManager
-from typing import Callable, Optional, Type
+from typing import Any, Callable, Optional, Type
 
 import numpy as np
 import pandas as pd
@@ -265,10 +265,20 @@ class LetTradeBackTest(LetTrade):
     # Create optimize instance environment
     def optimize_instance(
         self,
-        params_parser: Callable,
+        params_parser: Callable[[Any], list[set[str, Any]]],
         result_parser: Callable[[Statistic], float],
-        fork_data=True,
-    ):
+        fork_data: bool = False,
+    ) -> float | Any:
+        """Optimize function help to integrated with external optimizer
+
+        Args:
+            params_parser (Callable[[Any], list[set[str, Any]]]): Function help to parse external parameters to LetTrade optimize parameters. Example return: `[('ema_period', 21)]`
+            result_parser (Callable[[Statistic], float]): Function help to get/calculate `score` from LetTrade `Statistic` result
+            fork_data (bool, optional): Flag to reset data everytime rerun optimize function. Defaults to False.
+
+        Returns:
+            float | Any: Return score and more for external optimizer
+        """
         self._opt_params_parser = params_parser
         self._opt_result_parser = result_parser
 

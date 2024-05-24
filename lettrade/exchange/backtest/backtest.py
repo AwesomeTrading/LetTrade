@@ -6,7 +6,7 @@ from concurrent.futures import Future, ProcessPoolExecutor
 from itertools import product, repeat
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import SyncManager
-from typing import Optional, Type
+from typing import Callable, Optional, Type
 
 import numpy as np
 import pandas as pd
@@ -263,9 +263,20 @@ class LetTradeBackTest(LetTrade):
         return self.stats.result
 
     # Create optimize instance environment
-    def optimize_instance(self, params_parser, result_parser):
+    def optimize_instance(
+        self,
+        params_parser: Callable,
+        result_parser: Callable[[Statistic], float],
+        fork_data=True,
+    ):
         self._opt_params_parser = params_parser
         self._opt_result_parser = result_parser
+
+        # Store a backup data
+        if fork_data:
+            self._opt_stored_datas = [d.copy(deep=True) for d in self.datas]
+        else:
+            self._opt_stored_datas = None
 
         # Disable logging
         logging_filter_optimize()
@@ -281,9 +292,17 @@ class LetTradeBackTest(LetTrade):
         return self._optimize_instance
 
     def _optimize_instance(self, *args, **kwargs):
+        # Check data didn't reload by multiprocessing
         if self.data.index.start != 0:
-            raise RuntimeError("Optimize instance data changed")
+            if self._opt_stored_datas is None:
+                raise RuntimeError(
+                    "Optimize instance data changed, set fork_data=True to reload"
+                )
+            datas = [d.copy(deep=True) for d in self._opt_stored_datas]
+        else:
+            datas = None
 
+        # Load optimize parameters
         if self._opt_params_parser:
             optimize = self._opt_params_parser(*args, **kwargs)
         else:
@@ -291,6 +310,7 @@ class LetTradeBackTest(LetTrade):
 
         # Run
         result = self._optimize_run(
+            datas=datas,
             optimize=optimize,
             index=0,
             multiprocess=None,

@@ -93,6 +93,7 @@ extra_css:
   - css/mkdocstrings.css
 
 draft_docs: |
+  draft/
   script/
 
 markdown_extensions:

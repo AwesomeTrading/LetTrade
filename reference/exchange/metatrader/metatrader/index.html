@@ -483,6 +483,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tutorial/optimize/hyperactive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Optimize with Hyperactive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1189,27 +1210,6 @@
   
   <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> feeder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../data/pickle/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> pickle
   </span>
   
 
@@ -3104,10 +3104,7 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/metatrader/metatrader.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
@@ -3138,7 +3135,10 @@
 <span class="normal">93</span>
 <span class="normal">94</span>
 <span class="normal">95</span>
-<span class="normal">96</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span>
+<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Strategy</span><span class="p">],</span>
     <span class="n">datas</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
@@ -3666,6 +3666,7 @@
     <span class="n">plotter</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n">Plotter</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Statistic" href="../../../stats/stats/#lettrade.stats.stats.Statistic">Statistic</a></span><span class="p">]]</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">,</span>
     <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><span title="lettrade.exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</span></span><span class="p">]]</span> <span class="o">=</span> <span class="n">MetaTraderAPI</span><span class="p">,</span>
+    <span class="n">wine</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.metatrader.LetTradeMetaTrader" href="#lettrade.exchange.metatrader.metatrader.LetTradeMetaTrader">LetTradeMetaTrader</a></span>
 </code></pre></div>
@@ -3816,7 +3817,10 @@
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
-<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_metatrader</span><span class="p">(</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_metatrader</span><span class="p">(</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Strategy</span><span class="p">],</span>
     <span class="n">datas</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
     <span class="n">login</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -3826,6 +3830,7 @@
     <span class="n">plotter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Plotter&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Statistic&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">,</span>
     <span class="n">api</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">MetaTraderAPI</span><span class="p">]]</span> <span class="o">=</span> <span class="n">MetaTraderAPI</span><span class="p">,</span>
+    <span class="n">wine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LetTradeMetaTrader&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Help to build `LetTradeMetaTrader`</span>
@@ -3844,10 +3849,12 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        LetTradeMetaTrader: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">api_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">api_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;api_kwargs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">api_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="n">login</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">login</span><span class="p">),</span>
         <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
         <span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span>
+        <span class="n">wine</span><span class="o">=</span><span class="n">wine</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">LetTradeMetaTrader</span><span class="p">(</span>

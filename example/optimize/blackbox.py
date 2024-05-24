@@ -50,7 +50,7 @@ def result_parser(result):
 
 
 best_params = bb.search_min(
-    f=lt.optimize_instance(
+    f=lt.optimize_model(
         params_parser=params_parser,
         result_parser=result_parser,
     ),  # given function

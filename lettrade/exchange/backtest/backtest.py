@@ -18,6 +18,7 @@ from lettrade import (
     DataFeeder,
     Exchange,
     LetTrade,
+    LetTradeBot,
     Statistic,
     Strategy,
 )
@@ -38,52 +39,21 @@ def logging_filter_optimize():
     logging.getLogger("lettrade.stats.stats").setLevel(logging.WARNING)
 
 
-def let_backtest(
-    strategy: Type[Strategy],
-    datas: DataFeed | list[DataFeed] | str | list[str],
-    feeder: Type[DataFeeder] = BackTestDataFeeder,
-    exchange: Type[Exchange] = BackTestExchange,
-    account: Type[Account] = BackTestAccount,
-    commander: Optional[Type[Commander]] = BackTestCommander,
-    plotter: Optional[Type["Plotter"]] = PlotlyPlotter,
-    stats: Optional[Type[Statistic]] = Statistic,
-    cash: Optional[float] = 1_000,
-    commission: Optional[float] = 0.002,
-    leverage: Optional[float] = 20,
-    **kwargs,
-) -> "LetTradeBackTest":
-    """Complete `lettrade` backtest depenencies
+class LetTradeBackTestBot(LetTradeBot):
 
-    Args:
-        strategy (Type[Strategy]): The Strategy implement class
-        datas (DataFeed | list[DataFeed] | str | list[str]): _description_
-        feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
-        exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
-        account (Type[Account], optional): _description_. Defaults to BackTestAccount.
-        commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
-        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyPlotter.
+    def _init(self, optimize=None, **kwargs):
+        strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
+        strategy_kwargs.update(is_optimize=optimize is not None)
 
-    Raises:
-        RuntimeError: The validate parameter error
+        super()._init()
 
-    Returns:
-        LetTradeBackTest: The LetTrade backtesting object
-    """
-    account_kwargs: dict = kwargs.get("account_kwargs", {})
-    account_kwargs.update(cash=cash, commission=commission, leverage=leverage)
+        if not optimize:
+            return
 
-    return LetTradeBackTest(
-        strategy=strategy,
-        datas=datas,
-        feeder=feeder,
-        exchange=exchange,
-        commander=commander,
-        account=account,
-        plotter=plotter,
-        stats=stats,
-        account_kwargs=account_kwargs,
-        **kwargs,
-    )
+        # Set optimize params
+        for param in optimize:
+            attr, val = param
+            setattr(self.strategy, attr, val)
 
 
 class LetTradeBackTest(LetTrade):
@@ -108,17 +78,6 @@ class LetTradeBackTest(LetTrade):
 
         return super()._datafeed(data, index=index, **kwargs)
 
-    def _init(self, is_optimize=False, optimize=None, **kwargs):
-        super()._init(is_optimize)
-
-        if not is_optimize:
-            return
-
-        # Set optimize params
-        for param in optimize:
-            attr, val = param
-            setattr(self.strategy, attr, val)
-
     def optimize(
         self,
         multiprocessing: Optional[str] = "auto",
@@ -130,6 +89,12 @@ class LetTradeBackTest(LetTrade):
         Args:
             multiprocessing (Optional[str], optional): _description_. Defaults to "auto".
         """
+        if self.data.index.start != 0:
+            # TODO: Can drop unnecessary columns by snapshort data.columns from init time
+            raise RuntimeError(
+                "Optimize datas is not clean, don't run() backtest before optimize()"
+            )
+
         optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
 
         # Disable logging
@@ -220,50 +185,47 @@ class LetTradeBackTest(LetTrade):
         index: int = 0,
         **kwargs,
     ):
-        # self.datas will be override by _run()
-        datas = self.datas
-
         results = []
         for i, optimize in enumerate(optimizes):
             result = self._optimize_run(
-                datas=[d.copy(deep=True) for d in datas],
+                datas=[d.copy(deep=True) for d in self.datas],
                 optimize=optimize,
                 index=index + i,
                 **kwargs,
             )
-            results.append(result)
+            if result is not None:
+                results.append(result)
         return results
 
     def _optimize_run(
         self,
+        datas: list[DataFeed],
         optimize: dict[str, object],
         index: int,
-        datas: list[DataFeed] = None,
         multiprocess: Optional[str] = "worker",
         q: Queue = None,
         **kwargs,
     ):
         try:
-            self._run(
+            bot = self._run_bot(
                 datas=datas,
-                init_kwargs=dict(
-                    optimize=optimize,
-                    multiprocess=multiprocess,
+                multiprocess=multiprocess,
+                bot_kwargs=dict(
                     is_optimize=True,
+                    optimize=optimize,
                     **kwargs,
                 ),
             )
+
+            if q is not None:
+                q.put(index)
+            return bot.stats.result
         except Exception as e:
             logger.error("Optimize %d", index, exc_info=e)
             raise e
 
-        if q is not None:
-            q.put(index)
-
-        return self.stats.result
-
-    # Create optimize instance environment
-    def optimize_instance(
+    # Create optimize model environment
+    def optimize_model(
         self,
         params_parser: Callable[[Any], list[set[str, Any]]],
         result_parser: Callable[[Statistic], float],
@@ -279,14 +241,14 @@ class LetTradeBackTest(LetTrade):
         Returns:
             float | Any: Return score and more for external optimizer
         """
+        if self.data.index.start != 0:
+            raise RuntimeError(
+                "Optimize datas is not clean, don't run() backtest before optimize()"
+            )
+
         self._opt_params_parser = params_parser
         self._opt_result_parser = result_parser
-
-        # Store a backup data
-        if fork_data:
-            self._opt_stored_datas = [d.copy(deep=True) for d in self.datas]
-        else:
-            self._opt_stored_datas = None
+        self._opt_fork_data = fork_data
 
         # Disable logging
         logging_filter_optimize()
@@ -299,16 +261,17 @@ class LetTradeBackTest(LetTrade):
         if self._plotter_cls:
             self._plotter_cls = None
 
-        return self._optimize_instance
+        return self._optimize_model
 
-    def _optimize_instance(self, *args, **kwargs):
+    def _optimize_model(self, *args, **kwargs):
         # Check data didn't reload by multiprocessing
         if self.data.index.start != 0:
-            if self._opt_stored_datas is None:
-                raise RuntimeError(
-                    "Optimize instance data changed, set fork_data=True to reload"
-                )
-            datas = [d.copy(deep=True) for d in self._opt_stored_datas]
+            raise RuntimeError(
+                "Optimize model data changed, set fork_data=True to reload"
+            )
+
+        if self._opt_fork_data:
+            datas = [d.copy(deep=True) for d in self.datas]
         else:
             datas = None
 
@@ -327,7 +290,61 @@ class LetTradeBackTest(LetTrade):
         )
         if self._opt_result_parser:
             result = self._opt_result_parser(result)
+
         return result
+
+
+def let_backtest(
+    strategy: Type[Strategy],
+    datas: DataFeed | list[DataFeed] | str | list[str],
+    feeder: Type[DataFeeder] = BackTestDataFeeder,
+    exchange: Type[Exchange] = BackTestExchange,
+    account: Type[Account] = BackTestAccount,
+    commander: Optional[Type[Commander]] = BackTestCommander,
+    plotter: Optional[Type["Plotter"]] = PlotlyPlotter,
+    stats: Optional[Type[Statistic]] = Statistic,
+    cash: Optional[float] = 1_000,
+    commission: Optional[float] = 0.002,
+    leverage: Optional[float] = 20,
+    bot: Optional[Type[LetTradeBackTestBot]] = LetTradeBackTestBot,
+    **kwargs,
+) -> "LetTradeBackTest":
+    """Complete `lettrade` backtest depenencies
+
+    Args:
+        strategy (Type[Strategy]): The Strategy implement class
+        datas (DataFeed | list[DataFeed] | str | list[str]): _description_
+        feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
+        exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
+        account (Type[Account], optional): _description_. Defaults to BackTestAccount.
+        commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyPlotter.
+
+    Raises:
+        RuntimeError: The validate parameter error
+
+    Returns:
+        LetTradeBackTest: The LetTrade backtesting object
+    """
+    account_kwargs: dict = kwargs.setdefault("account_kwargs", {})
+    account_kwargs.update(
+        cash=cash,
+        commission=commission,
+        leverage=leverage,
+    )
+
+    return LetTradeBackTest(
+        strategy=strategy,
+        datas=datas,
+        feeder=feeder,
+        exchange=exchange,
+        commander=commander,
+        account=account,
+        plotter=plotter,
+        stats=stats,
+        bot=bot,
+        **kwargs,
+    )
 
 
 # Process bar handler

@@ -63,7 +63,7 @@ class DataFeed(pd.DataFrame):
 
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
-        df = self.__class__(name=self.name, data=self)
+        df = self.__class__(name=self.name, data=df)
         # df.reset_index(inplace=True)
         return df
 

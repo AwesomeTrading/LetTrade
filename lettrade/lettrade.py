@@ -4,6 +4,7 @@ from concurrent.futures import ProcessPoolExecutor
 from typing import Optional, Type
 
 from lettrade.account import Account
+from lettrade.bot import LetTradeBot
 from lettrade.brain import Brain
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
@@ -37,6 +38,7 @@ class LetTrade:
     plotter: "Plotter" = None
     """Plot graphic results"""
     _stats: Statistic = None
+    _bot: LetTradeBot = None
 
     _strategy_cls: Type[Strategy]
     _feeder_cls: Type[DataFeeder]
@@ -45,6 +47,7 @@ class LetTrade:
     _commander_cls: Type[Commander]
     _plotter_cls: Type["Plotter"]
     _stats_cls: Type["Statistic"]
+    _bot_cls: LetTradeBot
     _kwargs: dict
     _name: str
     _is_multiprocess: Optional[str]
@@ -60,6 +63,7 @@ class LetTrade:
         plotter: Optional[Type["Plotter"]] = None,
         stats: Optional[Type["Statistic"]] = None,
         name: Optional[str] = None,
+        bot: Optional[Type[LetTradeBot]] = LetTradeBot,
         **kwargs,
     ) -> None:
         self._strategy_cls = strategy
@@ -69,6 +73,7 @@ class LetTrade:
         self._commander_cls = commander
         self._plotter_cls = plotter
         self._stats_cls = stats
+        self._bot_cls = bot
         self._name = name
         self._kwargs = kwargs
 
@@ -78,58 +83,28 @@ class LetTrade:
 
         self._is_multiprocess = None
 
-    def _init(self, is_optimize=False):
-        # Feeder
-        self.feeder = self._feeder_cls(**self._kwargs.get("feeder_kwargs", {}))
-        self.feeder.init(self.datas)
-
-        # Account
-        self.account = self._account_cls(**self._kwargs.get("account_kwargs", {}))
-
-        # Exchange
-        self.exchange = self._exchange_cls(**self._kwargs.get("exchange_kwargs", {}))
-
-        # Commander
-        if self._commander_cls:
-            self.commander = self._commander_cls(
-                **self._kwargs.get("commander_kwargs", {})
-            )
-
-        # Strategy
-        self.strategy = self._strategy_cls(
-            feeder=self.feeder,
-            exchange=self.exchange,
-            account=self.account,
-            commander=self.commander,
-            is_optimize=is_optimize,
-            **self._kwargs.get("strategy_kwargs", {}),
+    def _new_bot(
+        self,
+        datas: Optional[list] = None,
+        name: Optional[str] = None,
+    ) -> LetTradeBot:
+        if datas is None:
+            datas = self.datas
+        bot = self._bot_cls(
+            strategy=self._strategy_cls,
+            datas=datas,
+            feeder=self._feeder_cls,
+            exchange=self._exchange_cls,
+            account=self._account_cls,
+            commander=self._commander_cls,
+            plotter=self._plotter_cls,
+            stats=self._stats_cls,
+            name=name,
+            **self._kwargs,
         )
+        return bot
 
-        # Brain
-        self.brain = Brain(
-            strategy=self.strategy,
-            exchange=self.exchange,
-            feeder=self.feeder,
-            commander=self.commander,
-            **self._kwargs.get("brain_kwargs", {}),
-        )
-
-        # Init
-        if self.commander:
-            self.commander.init(
-                lettrade=self,
-                brain=self.brain,
-                exchange=self.exchange,
-                strategy=self.strategy,
-            )
-        self.exchange.init(
-            brain=self.brain,
-            feeder=self.feeder,
-            account=self.account,
-            commander=self.commander,
-        )
-
-    def _datafeed(self, data: DataFeed, *args, **kwargs) -> DataFeed:
+    def _datafeed(self, data: DataFeed, **kwargs) -> DataFeed:
         """Init and validate DataFeed
 
         Args:
@@ -190,7 +165,7 @@ class LetTrade:
             with ProcessPoolExecutor(max_workers=worker) as executor:
                 futures = [
                     executor.submit(
-                        self._run,
+                        self._run_process,
                         datas=datas,
                         index=i,
                         multiprocess="worker",
@@ -201,54 +176,42 @@ class LetTrade:
                     result = future.result()
                     print(result)
         else:
-            return self._run(*args, **kwargs)
+            return self._run_process(*args, **kwargs)
 
-    def _run(
+    def _run_process(self, **kwargs):
+        bot = self._run_bot(**kwargs)
+        return bot.stats.result
+
+    def _run_bot(
         self,
         datas: Optional[list[DataFeed]] = None,
         index: Optional[int] = None,
         multiprocess: Optional[str] = None,
-        name=None,
-        *args,
+        name: str = None,
         **kwargs,
     ):
-        if datas is not None:
-            self.datas = datas
-            self.data = datas[0]
-
         # Set name for current processing
         if name is None:
-            name = f"{index}-{os.getpid()}-{self.data.name}"
-        self._name = name
+            d = datas[0] if datas else self.data
+            name = f"{index}-{os.getpid()}-{d.name}"
 
-        # Run inside a subprocess
-        if multiprocess == "worker":
-            if __debug__:
-                logger.info(
-                    "[%s] Running %s in subprocess: %s %s",
-                    self._name,
-                    [d.name for d in datas],
-                    index,
-                    os.getpid(),
-                )
+        # # Run inside a subprocess
+        # if multiprocess == "worker":
+        #     if __debug__:
+        #         logger.info(
+        #             "[%s] Running %s in subprocess: %s %s",
+        #             name,
+        #             [d.name for d in datas],
+        #             index,
+        #             os.getpid(),
+        #         )
 
-        self._multiprocess(multiprocess)
+        # build bot
+        bot = self._new_bot(datas=datas, name=name)
+        bot.run(multiprocess=multiprocess, **kwargs.pop("bot_kwargs", {}))
 
-        # Init objects
-        self._init(**kwargs.pop("init_kwargs", {}))
-
-        if self.commander:
-            self.commander.start()
-
-        self.brain.run(*args, **kwargs)
-
-        if self.commander:
-            self.commander.stop()
-
-        # Only show stats when backtest data
-        if self._stats_cls:
-            self.stats.compute()
-            self.stats.show()
+        self._bot = bot
+        return bot
 
     def _multiprocess(self, process, **kwargs):
         if process is not None:
@@ -267,49 +230,15 @@ class LetTrade:
 
     def stop(self):
         """Stop strategy"""
-        self.brain.stop()
-        if self.plotter is not None:
-            self.plotter.stop()
+        if self._bot is not None:
+            return self._bot.stop()
 
     @property
     def stats(self) -> Statistic:
-        """Get Statistic object"""
-        if self._stats_cls is None:
-            raise RuntimeError("Statistic class is not define")
-
-        if self._stats is None:
-            self._stats = self._stats_cls(
-                feeder=self.feeder,
-                exchange=self.exchange,
-                strategy=self.strategy,
-                **self._kwargs.get("stats_kwargs", {}),
-            )
-        return self._stats
+        if self._bot is not None:
+            return self._bot.stats
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
-
-        # if main process of multiprocessing
-        if self._is_multiprocess == "main":
-            logger.warning("Plot in multiprocessing is not implement yet")
-            return
-
-        if __debug__:
-            from .utils.docs import is_docs_session
-
-            if is_docs_session():
-                return
-
-        if self.plotter is None:
-            if self._plotter_cls is None:
-                raise RuntimeError("Plotter class is None")
-
-            self.plotter = self._plotter_cls(
-                feeder=self.feeder,
-                exchange=self.exchange,
-                account=self.account,
-                strategy=self.strategy,
-                **self._kwargs.get("plotter_kwargs", {}),
-            )
-
-        self.plotter.plot(*args, **kwargs)
+        if self._bot is not None:
+            return self._bot.plot(*args, **kwargs)

@@ -1547,6 +1547,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lettrade.exchange.backtest.backtest.LetTradeBackTest.optimize_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;optimize_instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lettrade.exchange.backtest.backtest.LetTradeBackTest.plot" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;plot
@@ -2948,6 +2957,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lettrade.exchange.backtest.backtest.LetTradeBackTest.optimize_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;optimize_instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lettrade.exchange.backtest.backtest.LetTradeBackTest.plot" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;plot
@@ -3480,6 +3498,149 @@
         <span class="k">pass</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.exchange.backtest.backtest.LetTradeBackTest.optimize_instance" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">optimize_instance</span>
+
+
+<a href="#lettrade.exchange.backtest.backtest.LetTradeBackTest.optimize_instance" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">optimize_instance</span><span class="p">(</span>
+    <span class="n">params_parser</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]]],</span>
+    <span class="n">result_parser</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Statistic" href="../../../stats/stats/#lettrade.stats.stats.Statistic">Statistic</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">],</span>
+    <span class="n">fork_data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Optimize function help to integrated with external optimizer</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>params_parser</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a>[[<a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>], <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>]]]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Function help to parse external parameters to LetTrade optimize parameters. Example return: <code>[('ema_period', 21)]</code></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>result_parser</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a>[[<a class="autorefs autorefs-internal" title="lettrade.Statistic" href="../../../stats/stats/#lettrade.stats.stats.Statistic">Statistic</a>], <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Function help to get/calculate <code>score</code> from LetTrade <code>Statistic</code> result</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>fork_data</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Flag to reset data everytime rerun optimize function. Defaults to False.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | <a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></code>
+          –
+          <div class="doc-md-description">
+            <p>float | Any: Return score and more for external optimizer</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/exchange/backtest/backtest.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize_instance</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">params_parser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
+    <span class="n">result_parser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Statistic</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">fork_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimize function help to integrated with external optimizer</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        params_parser (Callable[[Any], list[set[str, Any]]]): Function help to parse external parameters to LetTrade optimize parameters. Example return: `[(&#39;ema_period&#39;, 21)]`</span>
+<span class="sd">        result_parser (Callable[[Statistic], float]): Function help to get/calculate `score` from LetTrade `Statistic` result</span>
+<span class="sd">        fork_data (bool, optional): Flag to reset data everytime rerun optimize function. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float | Any: Return score and more for external optimizer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_opt_params_parser</span> <span class="o">=</span> <span class="n">params_parser</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_opt_result_parser</span> <span class="o">=</span> <span class="n">result_parser</span>
+
+    <span class="c1"># Store a backup data</span>
+    <span class="k">if</span> <span class="n">fork_data</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opt_stored_datas</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opt_stored_datas</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Disable logging</span>
+    <span class="n">logging_filter_optimize</span><span class="p">()</span>
+
+    <span class="c1"># Disable commander</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commander_cls</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commander_cls</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Disable Plotter</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotter_cls</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plotter_cls</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optimize_instance</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

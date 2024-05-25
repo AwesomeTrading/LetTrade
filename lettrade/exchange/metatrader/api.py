@@ -65,7 +65,7 @@ class MetaTraderAPI:
             self._mt5 = Mt5(host=host, port=port)
         except ConnectionRefusedError as e:
             raise ConnectionRefusedError(
-                "Cannot connect to MetaTrader 5 Terminal rpyc"
+                "Cannot connect to MetaTrader 5 Terminal rpyc server"
             ) from e
         except TimeoutError as e:
             raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e

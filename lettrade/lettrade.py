@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class LetTrade:
-    """Help to load and connect module"""
+    """Building new bot object and handle multiprocessing"""
 
     datas: list[DataFeed]
     """DataFeed list for bot"""

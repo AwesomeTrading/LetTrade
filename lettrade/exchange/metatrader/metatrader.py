@@ -1,10 +1,6 @@
 from typing import Dict, List, Optional, Set, Tuple, Type
 
 from lettrade import Commander, LetTrade, LetTradeBot, Statistic
-from lettrade.account.account import Account
-from lettrade.data.data import DataFeed
-from lettrade.data.feeder import DataFeeder
-from lettrade.exchange.exchange import Exchange
 from lettrade.strategy.strategy import Strategy
 
 from .account import MetaTraderAccount
@@ -28,7 +24,7 @@ class LetTradeMetaTraderBot(LetTradeBot):
     def _init(self, **kwargs):
         super()._init()
 
-        api_kwargs = self._kwargs.setdefault("api_kwargs", {})
+        api_kwargs = self._kwargs.get("api_kwargs", {})
         self._api.init(**api_kwargs)
 
 

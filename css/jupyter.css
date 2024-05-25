@@ -1,6 +1,16 @@
 .jupyter-wrapper {
     --jp-code-font-size: 16px !important;
     --jp-cell-editor-background: var(--md-code-bg-color) !important;
+    --jp-border-width: 0px !important;
+    --jp-code-padding: 15px !important;
+}
+
+.jp-InputArea-editor {
+    border-radius: 0.1rem !important;
+}
+
+.highlight-ipynb pre {
+    padding: 0.7720588235em 1.1764705882em !important;
 }
 
 .highlight-ipynb:hover {

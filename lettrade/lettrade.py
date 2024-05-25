@@ -161,7 +161,8 @@ class LetTrade:
                     result = future.result()
                     print(result)
         else:
-            return self._run_process(*args, **kwargs)
+            result = self._run_process(*args, **kwargs)
+            print(result)
 
     def _run_process(self, **kwargs):
         # Skip pickle bot object between processing

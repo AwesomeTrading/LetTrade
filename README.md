@@ -107,7 +107,7 @@ python -m example.strategy.backtest_sma_cross
 ### Official
 
 - `MetaTrader`: Support MetaTrader 5 Terminal trading
-- `CCXT`: Support most of cryptocurrency exchange from CCXT library
+- `CCXT`: [WIP] Support most of cryptocurrency exchange from CCXT library
 
 ## Development
 

@@ -34,45 +34,77 @@ class Statistic:
         Calculate strategy report
         """
         data: pd.DataFrame = self.feeder.data
+        equities = list(self.account._equities.values())
+        trades = list(self.exchange.history_trades.values()) + list(
+            self.exchange.trades.values()
+        )
+
         self.result = pd.Series(dtype=object)
 
-        self.result.loc["# Strategy"] = str(self.strategy.__class__)
-        self.result.loc["Start"] = data.datetime.iloc[0]
-        self.result.loc["End"] = data.datetime.iloc[-1]
-        self.result.loc["Duration"] = self.result.End - self.result.Start
+        self.result.loc["strategy"] = str(self.strategy.__class__)
+        self.result.loc["start"] = data.datetime.iloc[0]
+        self.result.loc["end"] = data.datetime.iloc[-1]
+        self.result.loc["duration"] = self.result.end - self.result.start
 
         # Equity
-        equities = list(self.account._equities.values())
-        self.result.loc["Start Balance [$]"] = round(equities[0], 2)
-        self.result.loc["Equity [$]"] = round(equities[-1], 2)
+        self.result.loc["start_balance"] = round(equities[0], 2)
+        self.result.loc["equity"] = round(equities[-1], 2)
 
         pl = equities[-1] - equities[0]
-        self.result.loc["PL [$]"] = round(pl, 2)
-        self.result.loc["PL [%]"] = round(pl / equities[0] * 100, 2)
+        self.result.loc["pl"] = round(pl, 2)
+        self.result.loc["pl_percent"] = round(pl / equities[0] * 100, 2)
 
         # TODO
-        self.result.loc["Buy & Hold PL [%]"] = 2.0
-        self.result.loc["Max. Drawdown [%]"] = -33.08
-        self.result.loc["Avg. Drawdown [%]"] = -5.58
-        self.result.loc["Max. Drawdown Duration"] = "688 days 00:00:00"
-        self.result.loc["Avg. Drawdown Duration"] = "41 days 00:00:00"
+        self.result.loc["buy_hold_pl_percent"] = 2.0
+        self.result.loc["max_drawdown_percent"] = -33.08
+        self.result.loc["avg_drawdown_percent"] = -5.58
+        self.result.loc["max_drawdown_duration"] = "688 days 00:00:00"
+        self.result.loc["avg_drawdown_duration"] = "41 days 00:00:00"
 
         # Separator
         self.result.loc[""] = ""
 
         # Trades
-        trades = list(self.exchange.history_trades.values()) + list(
-            self.exchange.trades.values()
+        self.result.loc["trades"] = len(trades)
+        self.result.loc["fee"] = sum(t.fee for t in trades) if trades else 0
+        self.result.loc["best_trade_percent"] = (
+            max(t.pl for t in trades) if trades else 0
         )
-        self.result.loc["# Trades"] = len(trades)
-        self.result.loc["Best Trade [%]"] = max(t.pl for t in trades) if trades else 0
-        self.result.loc["Worst Trade [%]"] = min(t.pl for t in trades) if trades else 0
+        self.result.loc["worst_trade_percent"] = (
+            min(t.pl for t in trades) if trades else 0
+        )
 
         # TODO
-        self.result.loc["Profit Factor"] = 2.13
-        self.result.loc["SQN"] = 1.78
+        self.result.loc["profit_factor"] = 2.13
+        self.result.loc["sqn"] = 1.78
 
         return self.result
+
+    def __repr__(self) -> str:
+        self.result = self.result.rename(
+            {
+                "strategy": "# Strategy",
+                "start": "Start",
+                "end": "End",
+                "duration": "Duration",
+                "start_balance": "Start Balance",
+                "equity": "Equity [$]",
+                "pl": "PL [$]",
+                "pl_percent": "PL [%]",
+                "buy_hold_pl_percent": "Buy & Hold PL [%]",
+                "max_drawdown_percent": "Max. Drawdown [%]",
+                "avg_drawdown_percent": "Avg. Drawdown [%]",
+                "max_drawdown_duration": "Max. Drawdown Duration",
+                "avg_drawdown_duration": "Avg. Drawdown Duration",
+                "trades": "# Trades",
+                "fee": "Fee [$]",
+                "best_trade_percent": "Best Trade [%]",
+                "worst_trade_percent": "Worst Trade [%]",
+                "profit_factor": "Profit Factor",
+                "sqn": "SQN",
+            }
+        )
+        return str(self.result.to_string())
 
     def show(self):
         """
@@ -91,7 +123,7 @@ class Statistic:
 
         logger.info(
             "\n============= Statistic result =============\n%s\n",
-            self.result.to_string(),
+            str(self),
         )
 
     def _docs_show(self):
@@ -101,4 +133,4 @@ class Statistic:
             if not is_docs_session():
                 return False
 
-            return self.result.to_string()
+            return str(self)

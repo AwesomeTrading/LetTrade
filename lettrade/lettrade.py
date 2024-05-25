@@ -166,7 +166,7 @@ class LetTrade:
     def _run_process(self, **kwargs):
         # Skip pickle bot object between processing
         bot = self._run_bot(**kwargs)
-        return bot.stats.result
+        return str(bot.stats)
 
     def _run_bot(
         self,

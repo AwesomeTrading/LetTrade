@@ -29,11 +29,11 @@ class LetTradeBot:
     """Trading account handler"""
     strategy: Strategy
     """Strategy"""
-    commander: Commander = None
+    commander: Optional[Commander] = None
     """Control the bot"""
-    plotter: "Plotter" = None
+    plotter: Optional["Plotter"] = None
     """Plot graphic results"""
-    stats: Statistic = None
+    stats: Optional[Statistic] = None
 
     _strategy_cls: Type[Strategy]
     _feeder_cls: Type[DataFeeder]
@@ -134,7 +134,6 @@ class LetTradeBot:
         )
 
     def run(self, **kwargs):
-
         # Init objects
         self._init(**kwargs)
 

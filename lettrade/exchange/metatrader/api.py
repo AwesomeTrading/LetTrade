@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from time import sleep
+from typing import Optional
 
 from mt5linux import MetaTrader5 as Mt5
 
@@ -46,6 +47,10 @@ class MetaTraderAPI:
             cls._singleton.__init__(*args, **kwargs)
         return cls._singleton
 
+    def __init__(self, wine: Optional[str] = None):
+        if wine is not None:
+            self._t_wine_server(wine)
+
     def init(
         self,
         login: int,
@@ -55,16 +60,13 @@ class MetaTraderAPI:
         retry: int = 20,
         host: str = "localhost",
         port: int = 18812,
-        wine: str = None,
     ):
-
         try:
             self._mt5 = Mt5(host=host, port=port)
         except ConnectionRefusedError as e:
-            if wine is None:
-                raise e
-            self._t_wine_server(wine)
-            self._mt5 = Mt5(host=host, port=port)
+            raise ConnectionRefusedError(
+                "Cannot connect to MetaTrader 5 Terminal rpyc"
+            ) from e
         except TimeoutError as e:
             raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e
 
@@ -260,12 +262,6 @@ class MetaTraderAPI:
 
         self.__trades_stored = {raw.ticket: raw for raw in raws}
         return added_trades, removed_trades
-
-    # Extra
-    def multiprocess(self, process, kwargs, **other_kwargs):
-        # process=None mean single process
-        if process in [None, "worker"]:
-            self.init(**kwargs)
 
     def __copy__(self):
         return self.__class__._singleton

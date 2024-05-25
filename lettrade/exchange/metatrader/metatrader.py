@@ -1,6 +1,10 @@
 from typing import Dict, List, Optional, Set, Tuple, Type
 
-from lettrade import Commander, LetTrade, Statistic
+from lettrade import Commander, LetTrade, LetTradeBot, Statistic
+from lettrade.account.account import Account
+from lettrade.data.data import DataFeed
+from lettrade.data.feeder import DataFeeder
+from lettrade.exchange.exchange import Exchange
 from lettrade.strategy.strategy import Strategy
 
 from .account import MetaTraderAccount
@@ -10,53 +14,22 @@ from .exchange import MetaTraderExchange
 from .feeder import MetaTraderDataFeeder
 
 
-def let_metatrader(
-    strategy: Type[Strategy],
-    datas: set[set[str]],
-    login: int,
-    password: str,
-    server: str,
-    commander: Optional[Commander] = None,
-    plotter: Optional[Type["Plotter"]] = None,
-    stats: Optional[Type["Statistic"]] = Statistic,
-    api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
-    wine: Optional[str] = None,
-    **kwargs,
-) -> "LetTradeMetaTrader":
-    """Help to build `LetTradeMetaTrader`
+class LetTradeMetaTraderBot(LetTradeBot):
+    _api: MetaTraderAPI
 
-    Args:
-        strategy (Type[Strategy]): _description_
-        datas (set[set[str]]): _description_
-        login (int): _description_
-        password (str): _description_
-        server (str): _description_
-        commander (Optional[Commander], optional): _description_. Defaults to None.
-        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
-        stats (Optional[Type["Statistic"]], optional): _description_. Defaults to None.
-        api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
-
-    Returns:
-        LetTradeMetaTrader: _description_
-    """
-    api_kwargs: dict = kwargs.pop("api_kwargs", {})
-    api_kwargs.update(
-        login=int(login),
-        password=password,
-        server=server,
-        wine=wine,
-    )
-
-    return LetTradeMetaTrader(
-        strategy=strategy,
-        datas=datas,
-        commander=commander,
-        plotter=plotter,
-        stats=stats,
-        api=api,
-        api_kwargs=api_kwargs,
+    def __init__(
+        self,
+        api: Optional[MetaTraderAPI] = MetaTraderAPI,
         **kwargs,
-    )
+    ) -> None:
+        super().__init__(**kwargs)
+        self._api = api
+
+    def _init(self, **kwargs):
+        super()._init()
+
+        api_kwargs = self._kwargs.setdefault("api_kwargs", {})
+        self._api.init(**api_kwargs)
 
 
 class LetTradeMetaTrader(LetTrade):
@@ -70,6 +43,7 @@ class LetTradeMetaTrader(LetTrade):
         exchange: Type[MetaTraderExchange] = MetaTraderExchange,
         account: Type[MetaTraderAccount] = MetaTraderAccount,
         api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
+        wine: Optional[str] = None,
         **kwargs,
     ) -> None:
         """_summary_
@@ -83,7 +57,8 @@ class LetTradeMetaTrader(LetTrade):
             api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
         """
         # self._api_cls: Type[MetaTraderAPI] = api
-        self._api: MetaTraderAPI = api()
+        self._api: MetaTraderAPI = api(wine=wine)
+        kwargs["api"] = self._api
 
         kwargs.setdefault("feeder_kwargs", dict()).update(api=self._api)
         kwargs.setdefault("exchange_kwargs", dict()).update(api=self._api)
@@ -129,8 +104,52 @@ class LetTradeMetaTrader(LetTrade):
 
         return super()._datafeed(data=data, **kwargs)
 
-    def _multiprocess(self, process, **kwargs):
-        super()._multiprocess(process, **kwargs)
 
-        api_kwargs = self._kwargs.setdefault("api_kwargs", {})
-        self._api.multiprocess(self._is_multiprocess, kwargs=api_kwargs, **kwargs)
+def let_metatrader(
+    strategy: Type[Strategy],
+    datas: set[set[str]],
+    login: int,
+    password: str,
+    server: str,
+    commander: Optional[Commander] = None,
+    plotter: Optional[Type["Plotter"]] = None,
+    stats: Optional[Type["Statistic"]] = Statistic,
+    api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
+    wine: Optional[str] = None,
+    bot: Optional[Type[LetTradeMetaTraderBot]] = LetTradeMetaTraderBot,
+    **kwargs,
+) -> "LetTradeMetaTrader":
+    """Help to build `LetTradeMetaTrader`
+
+    Args:
+        strategy (Type[Strategy]): _description_
+        datas (set[set[str]]): _description_
+        login (int): _description_
+        password (str): _description_
+        server (str): _description_
+        commander (Optional[Commander], optional): _description_. Defaults to None.
+        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
+        stats (Optional[Type["Statistic"]], optional): _description_. Defaults to None.
+        api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
+
+    Returns:
+        LetTradeMetaTrader: _description_
+    """
+    api_kwargs: dict = kwargs.setdefault("api_kwargs", {})
+    api_kwargs.update(
+        login=int(login),
+        password=password,
+        server=server,
+    )
+
+    return LetTradeMetaTrader(
+        strategy=strategy,
+        datas=datas,
+        commander=commander,
+        plotter=plotter,
+        stats=stats,
+        bot=bot,
+        api=api,
+        wine=wine,
+        **kwargs,
+    )

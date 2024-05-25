@@ -62,5 +62,5 @@ class Commander(ABC):
         pass
 
     @classmethod
-    def multiprocess(cls, process, kwargs, **other_kwargs):
+    def multiprocess(cls, kwargs, **other_kwargs):
         pass

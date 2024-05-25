@@ -44,7 +44,6 @@ class LetTradeBot:
     _stats_cls: Type["Statistic"]
     _kwargs: dict
     _name: str
-    _is_multiprocess: Optional[str]
 
     def __init__(
         self,
@@ -59,6 +58,8 @@ class LetTradeBot:
         name: Optional[str] = None,
         **kwargs,
     ) -> None:
+        logger.info("New bot: %s", name)
+
         self._strategy_cls = strategy
         self._feeder_cls = feeder
         self._exchange_cls = exchange
@@ -134,12 +135,7 @@ class LetTradeBot:
             **self._kwargs.get("stats_kwargs", {}),
         )
 
-    def run(
-        self,
-        multiprocess: Optional[str] = None,
-        **kwargs,
-    ):
-        self._multiprocess(multiprocess)
+    def run(self, **kwargs):
 
         # Init objects
         self._init(**kwargs)
@@ -154,10 +150,6 @@ class LetTradeBot:
 
         if self._stats_cls:
             self.stats.compute()
-
-    def _multiprocess(self, process, **kwargs):
-        if process is not None:
-            self._is_multiprocess = process
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""

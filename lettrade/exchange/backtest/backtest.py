@@ -210,6 +210,7 @@ class LetTradeBackTest(LetTrade):
             bot = self._run_bot(
                 datas=datas,
                 multiprocess=multiprocess,
+                index=index,
                 bot_kwargs=dict(
                     is_optimize=True,
                     optimize=optimize,

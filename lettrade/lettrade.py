@@ -23,19 +23,7 @@ class LetTrade:
     data: DataFeed
     """Main DataFeed for bot"""
 
-    brain: Brain
-    """Brain of bot"""
-    feeder: DataFeeder
-    """DataFeeder help to handle `datas`"""
-    exchange: Exchange
-    """Trading exchange and events"""
-    account: Account
-    """Trading account handler"""
-    strategy: Strategy
-    """Strategy"""
-    commander: Commander = None
-    """Control the bot"""
-    plotter: "Plotter" = None
+    _plotter: "Plotter" = None
     """Plot graphic results"""
     _stats: Statistic = None
     _bot: LetTradeBot = None
@@ -50,7 +38,6 @@ class LetTrade:
     _bot_cls: LetTradeBot
     _kwargs: dict
     _name: str
-    _is_multiprocess: Optional[str]
 
     def __init__(
         self,
@@ -80,8 +67,6 @@ class LetTrade:
         # DataFeeds
         self.datas = self._init_datafeeds(datas)
         self.data = self.datas[0]
-
-        self._is_multiprocess = None
 
     def _new_bot(
         self,
@@ -161,7 +146,7 @@ class LetTrade:
                 )
                 worker = len(self.datas)
 
-            self._multiprocess("main")
+            self._multiprocess()
             with ProcessPoolExecutor(max_workers=worker) as executor:
                 futures = [
                     executor.submit(
@@ -179,6 +164,7 @@ class LetTrade:
             return self._run_process(*args, **kwargs)
 
     def _run_process(self, **kwargs):
+        # Skip pickle bot object between processing
         bot = self._run_bot(**kwargs)
         return bot.stats.result
 
@@ -195,38 +181,29 @@ class LetTrade:
             d = datas[0] if datas else self.data
             name = f"{index}-{os.getpid()}-{d.name}"
 
-        # # Run inside a subprocess
-        # if multiprocess == "worker":
-        #     if __debug__:
-        #         logger.info(
-        #             "[%s] Running %s in subprocess: %s %s",
-        #             name,
-        #             [d.name for d in datas],
-        #             index,
-        #             os.getpid(),
-        #         )
-
         # build bot
-        bot = self._new_bot(datas=datas, name=name)
-        bot.run(multiprocess=multiprocess, **kwargs.pop("bot_kwargs", {}))
+        bot = self._new_bot(
+            datas=datas,
+            name=name,
+            **self._kwargs.get("bot_kwargs", {}),
+        )
+        bot.run(
+            multiprocess=multiprocess,
+            **kwargs.pop("bot_kwargs", {}),
+        )
 
         self._bot = bot
         return bot
 
-    def _multiprocess(self, process, **kwargs):
-        if process is not None:
-            self._is_multiprocess = process
-
-        if self._is_multiprocess == "main":
-            if self._commander_cls:
-                # Impletement commander dependencies and save to commander_kwargs
-                commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
-                self._commander_cls.multiprocess(
-                    self._is_multiprocess,
-                    kwargs=commander_kwargs,
-                    self_kwargs=self._kwargs,
-                    **kwargs,
-                )
+    def _multiprocess(self, **kwargs):
+        if self._commander_cls:
+            # Impletement commander dependencies and save to commander_kwargs
+            commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
+            self._commander_cls.multiprocess(
+                kwargs=commander_kwargs,
+                # self_kwargs=self._kwargs,
+                **kwargs,
+            )
 
     def stop(self):
         """Stop strategy"""
@@ -235,10 +212,14 @@ class LetTrade:
 
     @property
     def stats(self) -> Statistic:
+        if self._stats:
+            return self._stats
         if self._bot is not None:
             return self._bot.stats
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
+        if self._plotter is not None:
+            return self._plotter.plot(*args, **kwargs)
         if self._bot is not None:
             return self._bot.plot(*args, **kwargs)

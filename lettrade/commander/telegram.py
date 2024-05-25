@@ -477,9 +477,8 @@ class TelegramCommander(Commander):
         self._api.on_stats(stats=stats.result.to_string(), pname=self._name)
 
     @classmethod
-    def multiprocess(cls, process, kwargs, **other_kwargs):
-        if process in ["main", None]:
-            BaseManager.register("TelegramAPI", TelegramAPI)
-            manager = BaseManager()
-            manager.start()
-            kwargs["api"] = manager.TelegramAPI(**kwargs)
+    def multiprocess(cls, kwargs, **other_kwargs):
+        BaseManager.register("TelegramAPI", TelegramAPI)
+        manager = BaseManager()
+        manager.start()
+        kwargs["api"] = manager.TelegramAPI(**kwargs)

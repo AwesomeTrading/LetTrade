@@ -5,7 +5,6 @@ from typing import Optional, Type
 
 from lettrade.account import Account
 from lettrade.bot import LetTradeBot
-from lettrade.brain import Brain
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange

@@ -167,11 +167,11 @@ class PlotlyPlotter(Plotter):
         for trade in trades:
             x = [first_index + trade.entry_at[0]]
             y = [trade.entry_price]
-            customdata = [[trade.entry_at[1], trade.size, trade.pl]]
+            customdata = [[trade.entry_at[1], trade.size, trade.pl, trade.fee]]
             if trade.exit_at:
                 x.append(first_index + trade.exit_at[0])
                 y.append(trade.exit_price)
-                customdata.append([trade.exit_at[1], trade.size, trade.pl])
+                customdata.append([trade.exit_at[1], trade.size, trade.pl, trade.fee])
 
             color = "green" if trade.is_long else "red"
             self.figure.add_scatter(
@@ -184,7 +184,8 @@ class PlotlyPlotter(Plotter):
                     "At: %{customdata[0]}<br>"
                     "Price: %{y}<br>"
                     "Size: %{customdata[1]}<br>"
-                    "PL: %{customdata[2]:.2f}$"
+                    "PL: %{customdata[2]:.2f}$<br>"
+                    "Fee: %{customdata[3]:.2f}$"
                 ),
                 mode="lines+markers",
                 name=f"Trade-{trade.id}",

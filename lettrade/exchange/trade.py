@@ -24,6 +24,7 @@ class Trade(BaseTransaction):
         tag: object = "",
         state: TradeState = TradeState.Open,
         entry_price: Optional[float] = None,
+        entry_fee: Optional[float] = 0.0,
         entry_at: Optional[int] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
@@ -34,18 +35,21 @@ class Trade(BaseTransaction):
             data=data,
             size=size,
         )
-        self._account = self.exchange._account
+        self._account: "Account" = self.exchange._account
 
-        self.state = state
+        self.state: TradeState = state
         self.tag: object = tag
         self.parent: "Order" = parent
 
         self.entry_price: Optional[float] = entry_price
+        self.entry_fee: Optional[float] = entry_fee
         self.entry_at: Optional[int] = entry_at
+
         self.exit_price: Optional[float] = None
         self.exit_at: Optional[int] = None
         self.exit_pl: Optional[float] = None
-        self.exit_fee: Optional[float] = None
+        self.exit_fee: Optional[float] = 0.0
+
         self.sl_order: Optional[Order] = sl_order
         self.tp_order: Optional[Order] = tp_order
 
@@ -57,9 +61,10 @@ class Trade(BaseTransaction):
         #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
         # )
 
-    def entry(self, price: float, at: object) -> bool:
+    def entry(self, price: float, at: object, fee: float) -> bool:
         self.entry_price = price
         self.entry_at: int = at
+        self.entry_fee = fee
         self.state = TradeState.Open
         self.exchange.on_trade(self)
         return True
@@ -137,9 +142,10 @@ class Trade(BaseTransaction):
             float: PnL
         """
         if self.state == TradeState.Exit:
-            return self.exit_pl
-
-        return self._account.pl(size=self.size, entry_price=self.entry_price)
+            pl = self.exit_pl
+        else:
+            pl = self._account.pl(size=self.size, entry_price=self.entry_price)
+        return pl + self.fee
 
     @property
     def fee(self) -> float:
@@ -148,7 +154,4 @@ class Trade(BaseTransaction):
         Returns:
             float: Fee
         """
-        if self.state == TradeState.Exit:
-            return self.exit_fee
-
-        return 0
+        return self.entry_fee + self.exit_fee

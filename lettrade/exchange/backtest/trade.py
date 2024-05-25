@@ -120,13 +120,19 @@ class BackTestOrder(Order):
 class BackTestTrade(Trade):
     """Trade for backtesting"""
 
-    def exit(self, price: float, at: object, caller=None):
+    def entry(self, price: float, at: object) -> bool:
+        # Fee
+        fee = self._account.fee(size=self.size)
+        print("fee", fee)
+        return super().entry(price, at, fee)
+
+    def exit(self, price: float, at: object, caller: Order | Trade = None):
         """Exit trade
 
         Args:
             price (float): Exit price
             at (object): Exit bar
-            caller (_type_, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
+            caller (Order | Trade, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
         """
         if self.state != TradeState.Open:
             return
@@ -138,8 +144,11 @@ class BackTestTrade(Trade):
             exit_price=price,
         )
 
+        # Fee
+        fee = self._account.fee(size=self.size)
+
         # State
-        super().exit(price=price, at=at, pl=pl, fee=0)
+        super().exit(price=price, at=at, pl=pl, fee=fee)
 
         # Caller is trade close by tp/sl order
         if caller is None or (self.sl_order and self.sl_order is not caller):

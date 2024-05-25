@@ -1,7 +1,8 @@
+from abc import ABC, abstractmethod
 from typing import Optional
 
 
-class Account:
+class Account(ABC):
     """
     Manage account balance, leverage, commission. Risk calculate and control
     """
@@ -13,7 +14,7 @@ class Account:
         self,
         risk: Optional[float] = 0.02,
         cash: Optional[float] = 10_000,
-        commission: Optional[float] = 0.0,
+        commission: Optional[float] = 0.2,
         margin: Optional[float] = None,
         leverage: Optional[float] = 1.0,
         **kwargs,
@@ -23,7 +24,7 @@ class Account:
         Args:
             risk (Optional[float], optional): _description_. Defaults to 0.02.
             cash (Optional[float], optional): _description_. Defaults to 10_000.
-            commission (Optional[float], optional): _description_. Defaults to 0.0.
+            commission (Optional[float], optional): _description_. Defaults to 0.2.
             margin (Optional[float], optional): _description_. Defaults to None.
             leverage (Optional[float], optional): _description_. Defaults to 1.0.
         """
@@ -48,13 +49,13 @@ class Account:
     def stop(self):
         pass
 
-    def risk(self, size, **kwargs):
+    def risk(self, side: "OrderSide", size: float, **kwargs):
         """
         Risk calculation
         """
         if size is None:
-            return self._risk
-        return size
+            return side * abs(self._risk)
+        return side * abs(size)
 
     def pl(self, size, entry_price: float, exit_price=None):
         """Estimate temporary profit and loss"""
@@ -62,6 +63,10 @@ class Account:
             exit_price = self._exchange.data.open[0]
 
         return size * (exit_price - entry_price)
+
+    @abstractmethod
+    def fee(self, **kwargs: dict):
+        raise NotImplementedError("Method fee is not implement yet")
 
     @property
     def equity(self) -> float:

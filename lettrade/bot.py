@@ -75,8 +75,6 @@ class LetTradeBot:
         self.datas = datas
         self.data = self.datas[0]
 
-        self._is_multiprocess = None
-
     def _init(self):
         # Feeder
         self.feeder = self._feeder_cls(**self._kwargs.get("feeder_kwargs", {}))
@@ -153,12 +151,6 @@ class LetTradeBot:
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""
-
-        # if main process of multiprocessing
-        if self._is_multiprocess == "main":
-            logger.warning("Plot in multiprocessing is not implement yet")
-            return
-
         if __debug__:
             from .utils.docs import is_docs_session
 

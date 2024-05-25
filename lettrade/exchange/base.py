@@ -5,6 +5,11 @@ from typing import Generic, TypeVar
 T = TypeVar("T")
 
 
+class OrderSide(int, Enum):
+    Buy = 1
+    Sell = -1
+
+
 class OrderState(str, Enum):
     Pending = "pending"
     Placed = "place"

@@ -5,7 +5,15 @@ from typing import Any, Optional
 from lettrade.account import Account
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange, Execute, Order, OrderResult, Position, Trade
+from lettrade.exchange import (
+    Exchange,
+    Execute,
+    Order,
+    OrderResult,
+    OrderSide,
+    Position,
+    Trade,
+)
 
 
 class Strategy(ABC):
@@ -113,7 +121,7 @@ class Strategy(ABC):
             OrderResult: order result information
         """
         params = dict(
-            size=abs(size),
+            size=size,
             limit=limit,
             stop=stop,
             sl=sl,
@@ -121,7 +129,7 @@ class Strategy(ABC):
             tag=tag,
             **kwargs,
         )
-        params["size"] = abs(self.__account.risk(**params))
+        params["size"] = abs(self.__account.risk(side=OrderSide.Buy, **params))
 
         return self.__exchange.new_order(**params)
 
@@ -150,7 +158,7 @@ class Strategy(ABC):
             OrderResult: order result information
         """
         params = dict(
-            size=-abs(size),
+            size=size,
             limit=limit,
             stop=stop,
             sl=sl,
@@ -158,7 +166,7 @@ class Strategy(ABC):
             tag=tag,
             **kwargs,
         )
-        params["size"] = -abs(self.__account.risk(**params))
+        params["size"] = -abs(self.__account.risk(side=OrderSide.Sell, **params))
 
         return self.__exchange.new_order(**params)
 

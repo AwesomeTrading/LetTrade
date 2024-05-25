@@ -305,7 +305,7 @@ def let_backtest(
     plotter: Optional[Type["Plotter"]] = PlotlyPlotter,
     stats: Optional[Type[Statistic]] = Statistic,
     cash: Optional[float] = 1_000,
-    commission: Optional[float] = 0.002,
+    commission: Optional[float] = 0.2,
     leverage: Optional[float] = 20,
     bot: Optional[Type[LetTradeBackTestBot]] = LetTradeBackTestBot,
     **kwargs,

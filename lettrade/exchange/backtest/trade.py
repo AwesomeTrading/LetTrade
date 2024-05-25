@@ -123,7 +123,6 @@ class BackTestTrade(Trade):
     def entry(self, price: float, at: object) -> bool:
         # Fee
         fee = self._account.fee(size=self.size)
-        print("fee", fee)
         return super().entry(price, at, fee)
 
     def exit(self, price: float, at: object, caller: Order | Trade = None):

@@ -11,6 +11,9 @@ from .feeder import MetaTraderDataFeeder
 
 
 class LetTradeMetaTraderBot(LetTradeBot):
+    datas: list[MetaTraderDataFeed]
+
+    _api_cls: Type[MetaTraderAPI]
     _api: MetaTraderAPI
 
     def __init__(
@@ -19,13 +22,20 @@ class LetTradeMetaTraderBot(LetTradeBot):
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
-        self._api = api
+        self._api_cls = api
 
-    def _init(self, **kwargs):
-        super()._init()
-
+    def _init(self):
         api_kwargs = self._kwargs.get("api_kwargs", {})
-        self._api.init(**api_kwargs)
+        self._api = self._api_cls(**api_kwargs)
+
+        self._kwargs.setdefault("feeder_kwargs", dict()).update(api=self._api)
+        self._kwargs.setdefault("exchange_kwargs", dict()).update(api=self._api)
+        self._kwargs.setdefault("account_kwargs", dict()).update(api=self._api)
+
+        for data in self.datas:
+            data._api = self._api
+
+        super()._init()
 
 
 class LetTradeMetaTrader(LetTrade):
@@ -39,7 +49,6 @@ class LetTradeMetaTrader(LetTrade):
         exchange: Type[MetaTraderExchange] = MetaTraderExchange,
         account: Type[MetaTraderAccount] = MetaTraderAccount,
         api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
-        wine: Optional[str] = None,
         **kwargs,
     ) -> None:
         """_summary_
@@ -52,13 +61,8 @@ class LetTradeMetaTrader(LetTrade):
             account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
             api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
         """
-        # self._api_cls: Type[MetaTraderAPI] = api
-        self._api: MetaTraderAPI = api(wine=wine)
-        kwargs["api"] = self._api
-
-        kwargs.setdefault("feeder_kwargs", dict()).update(api=self._api)
-        kwargs.setdefault("exchange_kwargs", dict()).update(api=self._api)
-        kwargs.setdefault("account_kwargs", dict()).update(api=self._api)
+        self._api_cls: Type[MetaTraderAPI] = api
+        kwargs.setdefault("api_kwargs", dict()).update(api=self._api_cls)
 
         super().__init__(
             strategy=strategy,
@@ -68,6 +72,13 @@ class LetTradeMetaTrader(LetTrade):
             account=account,
             **kwargs,
         )
+
+    def _multiprocess(self, **kwargs):
+        # Impletement api dependencies and save to api_kwargs
+        api_kwargs = self._kwargs.setdefault("api_kwargs", {})
+        self._api_cls.multiprocess(kwargs=api_kwargs)
+
+        super()._multiprocess(**kwargs)
 
     def _datafeed(
         self,
@@ -84,14 +95,12 @@ class LetTradeMetaTrader(LetTrade):
                 name=name,
                 symbol=symbol,
                 timeframe=timeframe,
-                api=self._api,
             )
         elif isinstance(data, Dict):
             data = MetaTraderDataFeed(
                 symbol=data.get("symbol"),
                 timeframe=data.get("timeframe"),
                 name=data.get("name", None),
-                api=self._api,
             )
         elif isinstance(data, MetaTraderDataFeed):
             pass
@@ -136,6 +145,7 @@ def let_metatrader(
         login=int(login),
         password=password,
         server=server,
+        wine=wine,
     )
 
     return LetTradeMetaTrader(
@@ -146,6 +156,5 @@ def let_metatrader(
         stats=stats,
         bot=bot,
         api=api,
-        wine=wine,
         **kwargs,
     )

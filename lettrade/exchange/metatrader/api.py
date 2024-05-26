@@ -41,17 +41,27 @@ class MetaTraderAPI:
     __orders_stored: dict[int, object] = {}
     __trades_stored: dict[int, object] = {}
 
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, "_singleton"):
-            cls._singleton = object.__new__(cls)
-            cls._singleton.__init__(*args, **kwargs)
-        return cls._singleton
+    # def __new__(cls, *args, **kwargs):
+    #     if not hasattr(cls, "_singleton"):
+    #         cls._singleton = object.__new__(cls)
+    #         cls._singleton.__init__(*args, **kwargs)
+    #     return cls._singleton
 
-    def __init__(self, wine: Optional[str] = None):
-        if wine is not None:
-            self._t_wine_server(wine)
+    @classmethod
+    def multiprocess(cls, kwargs, **other_kwargs):
+        if "wine" not in kwargs or kwargs["wine"] is None:
+            return
 
-    def init(
+        wine = kwargs["wine"]
+
+        import time
+        from subprocess import Popen
+
+        logger.info("Start Wine MetaTrader rpyc from path: %s", wine)
+        Popen(wine, shell=True)
+        time.sleep(5)
+
+    def __init__(
         self,
         login: int,
         password: str,
@@ -60,6 +70,7 @@ class MetaTraderAPI:
         retry: int = 20,
         host: str = "localhost",
         port: int = 18812,
+        **kwargs,
     ):
         try:
             self._mt5 = Mt5(host=host, port=port)
@@ -102,14 +113,6 @@ class MetaTraderAPI:
         logger.info("Terminal information: %s", str(terminal))
         if not terminal.trade_allowed:
             logger.warning("Terminal trading mode is not allowed")
-
-    def _t_wine_server(self, wine):
-        import time
-        from subprocess import Popen
-
-        p = Popen(wine, shell=True)
-        time.sleep(5)
-        logger.info("Wine MetaTrader rpyc server started")
 
     def start(self, callbacker=None):
         self._callbacker = callbacker
@@ -263,8 +266,8 @@ class MetaTraderAPI:
         self.__trades_stored = {raw.ticket: raw for raw in raws}
         return added_trades, removed_trades
 
-    def __copy__(self):
-        return self.__class__._singleton
+    # def __copy__(self):
+    #     return self.__class__._singleton
 
-    def __deepcopy__(self, memo):
-        return self.__class__._singleton
+    # def __deepcopy__(self, memo):
+    #     return self.__class__._singleton

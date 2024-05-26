@@ -64,10 +64,6 @@ class Account(ABC):
 
         return size * (exit_price - entry_price)
 
-    @abstractmethod
-    def fee(self, **kwargs: dict):
-        raise NotImplementedError("Method fee is not implement yet")
-
     @property
     def equity(self) -> float:
         equity = self._cash

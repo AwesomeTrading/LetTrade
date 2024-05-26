@@ -65,6 +65,7 @@ if __name__ == "__main__":
         login=int(os.environ["MT5_LOGIN"]),
         password=os.environ["MT5_PASSWORD"],
         server=os.environ["MT5_SERVER"],
+        wine=os.getenv("MT5_WINE", None),
     )
 
     lt.run()

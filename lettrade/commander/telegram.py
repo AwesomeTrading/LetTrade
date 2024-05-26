@@ -425,6 +425,13 @@ class TelegramCommander(Commander):
     _api: TelegramAPI
     _is_running: bool
 
+    @classmethod
+    def multiprocess(cls, kwargs, **other_kwargs):
+        BaseManager.register("TelegramAPI", TelegramAPI)
+        manager = BaseManager()
+        manager.start()
+        kwargs["api"] = manager.TelegramAPI(**kwargs)
+
     def __init__(
         self,
         token: str,
@@ -475,10 +482,3 @@ class TelegramCommander(Commander):
         stats: Statistic = self.lettrade.stats
         stats.compute()
         self._api.on_stats(stats=stats.result.to_string(), pname=self._name)
-
-    @classmethod
-    def multiprocess(cls, kwargs, **other_kwargs):
-        BaseManager.register("TelegramAPI", TelegramAPI)
-        manager = BaseManager()
-        manager.start()
-        kwargs["api"] = manager.TelegramAPI(**kwargs)

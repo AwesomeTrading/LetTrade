@@ -13,7 +13,7 @@ class MetaTraderDataFeed(DataFeed):
         self,
         symbol: str,
         timeframe: str,
-        api: "MetaTraderAPI",
+        api: "MetaTraderAPI" = None,
         name: str = None,
         *args,
         **kwargs,
@@ -47,6 +47,10 @@ class MetaTraderDataFeed(DataFeed):
     @property
     def _api(self) -> MetaTraderAPI:
         return self.meta["api"]
+
+    @_api.setter
+    def _api(self, value) -> MetaTraderAPI:
+        self.meta["api"] = value
 
     def next(self, size=1, tick=0) -> bool:
         return self._next(size=size, tick=tick)

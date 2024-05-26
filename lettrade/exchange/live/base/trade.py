@@ -1,33 +1,33 @@
 import logging
-from typing import Any, Optional, Type
+from typing import Optional
 
-from mt5linux import MetaTrader5 as mt5
-
-from .. import (
+from lettrade.exchange import (
     Execute,
     Order,
     OrderResult,
     OrderResultError,
     OrderResultOk,
+    OrderSide,
     OrderState,
     OrderType,
     Trade,
     TradeState,
 )
-from .api import MetaTraderAPI
+
+from .api import LiveAPI
 
 logger = logging.getLogger(__name__)
 
 
-class MetaTraderExecute(Execute):
+class LiveExecute(Execute):
     """
-    Execute for MetaTrader
+    Execute for Live
     """
 
     def __init__(
         self,
         id: str,
-        exchange: "MetaTraderExchange",
+        exchange: "LiveExchange",
         data: "DataFeed",
         size: float,
         price: float,
@@ -53,24 +53,17 @@ class MetaTraderExecute(Execute):
         )
         self.tag: str = tag
         self.raw: object = raw
-        self._api: MetaTraderAPI = exchange._api
-
-    # def _update_by_raw(self, raw):
-    #     if self.id != raw.ticket:
-    #         raise RuntimeError(f"Wrong raw execute {raw}")
-
-    #     self.size = raw.volume
-    #     self.price = raw.price
+        self._api: LiveAPI = exchange._api
 
     @classmethod
-    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderExecute":
+    def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveExecute":
         """
-        Building new MetaTraderExecute from metatrader api deal object
+        Building new LiveExecute from live api deal object
 
             Raw deal: TradeDeal(ticket=33889131, order=41290404, time=1715837856, time_msc=1715837856798, type=0, entry=0, magic=0, position_id=41290404, reason=0, volume=0.01, price=0.85795, commission=0.0, swap=0.0, profit=0.0, fee=0.0, symbol='EURGBP', comment='', external_id='')
         """
 
-        return MetaTraderExecute(
+        return LiveExecute(
             exchange=exchange,
             id=raw.ticket,
             # TODO: Fix by get data from symbol
@@ -87,11 +80,11 @@ class MetaTraderExecute(Execute):
         )
 
 
-class MetaTraderOrder(Order):
+class LiveOrder(Order):
     def __init__(
         self,
         id: str,
-        exchange: "MetaTraderExchange",
+        exchange: "LiveExchange",
         data: "DataFeed",
         size: float,
         state: OrderState = OrderState.Pending,
@@ -121,24 +114,24 @@ class MetaTraderOrder(Order):
             open_at=open_at,
             open_price=open_price,
         )
-        self._api: MetaTraderAPI = exchange._api
+        self._api: LiveAPI = exchange._api
 
-        self.raw = None
+        self.raw: dict = None
 
     def place(self):
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
-        request = self._build_request()
+        request = self._build_place_request()
         result = self._api.order_send(request)
 
         self.raw = result
 
-        if result.retcode != mt5.TRADE_RETCODE_DONE:
+        if result.code != 0:
             logger.error("Place order %s", str(result))
             error = OrderResultError(
                 error=result.comment,
-                code=result.retcode,
+                code=result.code,
                 order=self,
                 raw=result,
             )
@@ -150,30 +143,20 @@ class MetaTraderOrder(Order):
         ok.raw = result
         return ok
 
-    def _build_request(self):
-        tick = self._api.tick(self.data.symbol)
-        price = tick.ask if self.is_long else tick.bid
-        type = mt5.ORDER_TYPE_BUY if self.is_long else mt5.ORDER_TYPE_SELL
-        deviation = 20
+    def _build_place_request(self):
         request = {
-            "action": mt5.TRADE_ACTION_DEAL,
             "symbol": self.data.symbol,
             "volume": self.size,
-            "type": type,
-            "price": price,
+            "price": self.limit_price or self.stop_price,
             "sl": self.sl,
             "tp": self.tp,
-            "deviation": deviation,
-            "magic": 234000,
             "comment": self.tag,
-            "type_time": mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
         }
         return request
 
     @classmethod
-    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderOrder":
-        return MetaTraderOrder(
+    def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveOrder":
+        return LiveOrder(
             exchange=exchange,
             id=raw.ticket,
             state=OrderState.Placed,
@@ -192,11 +175,11 @@ class MetaTraderOrder(Order):
         )
 
 
-class MetaTraderTrade(Trade):
+class LiveTrade(Trade):
     def __init__(
         self,
         id: str,
-        exchange: "MetaTraderExchange",
+        exchange: "LiveExchange",
         data: "DataFeed",
         size: float,
         parent: Order,
@@ -220,11 +203,11 @@ class MetaTraderTrade(Trade):
             sl_order=sl_order,
             tp_order=tp_order,
         )
-        self._api: MetaTraderAPI = exchange._api
+        self._api: LiveAPI = exchange._api
 
     @classmethod
-    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderTrade":
-        return MetaTraderTrade(
+    def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveTrade":
+        return LiveTrade(
             exchange=exchange,
             id=raw.ticket,
             state=TradeState.Open,

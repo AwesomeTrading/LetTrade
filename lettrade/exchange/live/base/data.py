@@ -3,17 +3,17 @@ from datetime import datetime, timezone
 
 from lettrade.data import DataFeed
 
-from .api import MetaTraderAPI
+from .api import LiveAPI
 
 logger = logging.getLogger(__name__)
 
 
-class MetaTraderDataFeed(DataFeed):
+class LiveDataFeed(DataFeed):
     def __init__(
         self,
         symbol: str,
         timeframe: str,
-        api: "MetaTraderAPI" = None,
+        api: "LiveAPI" = None,
         name: str = None,
         *args,
         **kwargs,
@@ -45,18 +45,18 @@ class MetaTraderDataFeed(DataFeed):
         return self.meta["timeframe"]
 
     @property
-    def _api(self) -> MetaTraderAPI:
+    def _api(self) -> LiveAPI:
         return self.meta["api"]
 
     @_api.setter
-    def _api(self, value) -> MetaTraderAPI:
+    def _api(self, value) -> LiveAPI:
         self.meta["api"] = value
 
     def next(self, size=1, tick=0) -> bool:
         return self._next(size=size, tick=tick)
 
     def _next(self, size=1, tick=0):
-        rates = self._api.rates_from_pos(
+        rates = self._api.bars(
             symbol=self.symbol,
             timeframe=self.timeframe,
             since=0,

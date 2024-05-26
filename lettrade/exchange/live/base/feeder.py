@@ -2,18 +2,18 @@ import time
 
 from lettrade.data import DataFeeder
 
-from .api import MetaTraderAPI
-from .data import MetaTraderDataFeed
+from .api import LiveAPI
+from .data import LiveDataFeed
 
 
-class MetaTraderDataFeeder(DataFeeder):
-    datas: list[MetaTraderDataFeed]
-    data: MetaTraderDataFeed
+class LiveDataFeeder(DataFeeder):
+    datas: list[LiveDataFeed]
+    data: LiveDataFeed
 
-    _api: MetaTraderAPI
+    _api: LiveAPI
     _tick: bool
 
-    def __init__(self, api: MetaTraderAPI, tick: bool = 5) -> None:
+    def __init__(self, api: LiveAPI, tick: bool = 5) -> None:
         """
         tick:
             tick < 0: no tick, just get completed bar

@@ -152,7 +152,7 @@ class LetTrade:
                         self._run_process,
                         datas=datas,
                         index=i,
-                        multiprocess="worker",
+                        # multiprocess="worker",
                     )
                     for i, datas in enumerate(self.datas)
                 ]
@@ -172,7 +172,7 @@ class LetTrade:
         self,
         datas: Optional[list[DataFeed]] = None,
         index: Optional[int] = None,
-        multiprocess: Optional[str] = None,
+        # multiprocess: Optional[str] = None,
         name: str = None,
         **kwargs,
     ):
@@ -188,7 +188,7 @@ class LetTrade:
             **self._kwargs.get("bot_kwargs", {}),
         )
         bot.run(
-            multiprocess=multiprocess,
+            # multiprocess=multiprocess,
             **kwargs.pop("bot_kwargs", {}),
         )
 

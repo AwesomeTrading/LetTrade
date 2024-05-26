@@ -4,22 +4,22 @@ from typing import Optional
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType
 
-from .api import MetaTraderAPI
-from .trade import MetaTraderExecute, MetaTraderOrder, MetaTraderTrade
+from .api import LiveAPI
+from .trade import LiveExecute, LiveOrder, LiveTrade
 
 logger = logging.getLogger(__name__)
 
 
-class MetaTraderExchange(Exchange):
+class LiveExchange(Exchange):
     """MetaTrade 5 exchange module for `lettrade`"""
 
-    _api: MetaTraderAPI
+    _api: LiveAPI
 
-    def __init__(self, api: MetaTraderAPI, *args, **kwargs):
+    def __init__(self, api: LiveAPI, *args, **kwargs):
         """_summary_
 
         Args:
-            api (MetaTraderAPI): API connect to rpyc MeTrader 5 Terminal server through module `mt5linux`
+            api (LiveAPI): API connect to rpyc MeTrader 5 Terminal server through module `mt5linux`
             *args (list): `Exchange` list parameters
             **kwargs (dict): `Exchange` dict parameters
         """
@@ -27,7 +27,7 @@ class MetaTraderExchange(Exchange):
         self._api = api
 
     def start(self) -> None:
-        """Start MetaTrader exchange by: Sync orders from server, Sync trades from server"""
+        """Start Live exchange by: Sync orders from server, Sync trades from server"""
         # self._sync_orders()
         # self._sync_trades()
         self._api.start(callbacker=self)
@@ -72,7 +72,7 @@ class MetaTraderExchange(Exchange):
             limit = 0
             stop = 0
 
-        order = MetaTraderOrder(
+        order = LiveOrder(
             id=-1,
             exchange=self,
             data=data,
@@ -93,76 +93,38 @@ class MetaTraderExchange(Exchange):
 
         return ok
 
-    # def _sync_orders(self):
-    #     total = self._api.orders_total()
-    #     if total <= 0:
-    #         return
-
-    #     raws = self._api.orders_get()
-    #     if not raws:
-    #         logger.warning("Cannot get orders")
-    #         return
-
-    #     for order in self._parse_orders(raws):
-    #         if __debug__:
-    #             logger.info("Sync order: %s", order)
-    #         self.on_order(order)
-
-    def _parse_orders(self, raws) -> list[MetaTraderOrder]:
-        return [self._parse_order(raw) for raw in raws]
-
-    def _parse_order(self, raw) -> MetaTraderOrder:
-        return MetaTraderOrder.from_raw(raw=raw, exchange=self)
-
-    # def _sync_trades(self):
-    #     total = self._api.positions_total()
-    #     if total <= 0:
-    #         return
-
-    #     raws = self._api.positions_get()
-    #     if not raws:
-    #         logger.warning("Cannot get trades")
-    #         return
-
-    #     for raw in raws:
-    #         if __debug__:
-    #             logger.info("Sync trade: %s", str(raw))
-    #         trade = MetaTraderTrade.from_raw(raw=raw, exchange=self)
-    #         if trade.id not in self.trades:
-    #             self.on_trade(trade)
-
     # Events
     def on_new_deals(self, raws):
         if __debug__:
             logger.info("Raw new deals: %s", raws)
         for raw in raws:
-            execute = MetaTraderExecute.from_raw(raw, exchange=self)
+            execute = LiveExecute.from_raw(raw, exchange=self)
             self.on_execute(execute)
 
     def on_new_orders(self, raws):
         if __debug__:
             logger.info("Raw new orders: %s", raws)
         for raw in raws:
-            order = MetaTraderOrder.from_raw(raw, exchange=self)
+            order = LiveOrder.from_raw(raw, exchange=self)
             self.on_order(order)
 
     def on_old_orders(self, raws):
         if __debug__:
             logger.info("Raw old orders: %s", raws)
         for raw in raws:
-            order = MetaTraderOrder.from_raw(raw, exchange=self)
+            order = LiveOrder.from_raw(raw, exchange=self)
             self.on_order(order)
 
     def on_new_trades(self, raws):
         if __debug__:
             logger.info("Raw new trades: %s", raws)
         for raw in raws:
-            trade = MetaTraderTrade.from_raw(raw, exchange=self)
+            trade = LiveTrade.from_raw(raw, exchange=self)
             self.on_trade(trade)
 
     def on_old_trades(self, raws):
         if __debug__:
             logger.info("Raw old trades: %s", raws)
         for raw in raws:
-            trade = MetaTraderTrade.from_raw(raw, exchange=self)
+            trade = LiveTrade.from_raw(raw, exchange=self)
             self.on_trade(trade)

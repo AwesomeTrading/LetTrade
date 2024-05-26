@@ -5,6 +5,8 @@ from typing import Optional
 
 from mt5linux import MetaTrader5 as Mt5
 
+from lettrade.exchange.live.base import LiveAPI
+
 logger = logging.getLogger(__name__)
 
 
@@ -33,7 +35,7 @@ TIMEFRAME_L2M = {
 }
 
 
-class MetaTraderAPI:
+class MetaTraderAPI(LiveAPI):
     _mt5: Mt5
     _callbacker: "MetaTraderExchange"
 
@@ -133,10 +135,10 @@ class MetaTraderAPI:
     def markets(self, symbol):
         return self._mt5.symbol_info(symbol)
 
-    def tick(self, symbol):
+    def tick_get(self, symbol):
         return self._mt5.symbol_info_tick(symbol)
 
-    def rates_from_pos(self, symbol, timeframe, since=0, to=1000):
+    def bars(self, symbol, timeframe, since=0, to=1000):
         rates = self._mt5.copy_rates_from_pos(
             symbol,
             TIMEFRAME_L2M[timeframe],
@@ -146,7 +148,11 @@ class MetaTraderAPI:
         return rates
 
     def order_send(self, request: "TradeRequest"):
-        return self._mt5.order_send(request)
+        result = self._mt5.order_send(request)
+        result.code = result.retcode
+        if result.code == Mt5.TRADE_RETCODE_DONE:
+            result.code == 0
+        return result
 
     def orders_total(self):
         return self._mt5.orders_total()
@@ -265,9 +271,3 @@ class MetaTraderAPI:
 
         self.__trades_stored = {raw.ticket: raw for raw in raws}
         return added_trades, removed_trades
-
-    # def __copy__(self):
-    #     return self.__class__._singleton
-
-    # def __deepcopy__(self, memo):
-    #     return self.__class__._singleton

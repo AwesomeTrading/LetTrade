@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, Type
 
-from mt5linux import MetaTrader5 as mt5
+from mt5linux import MetaTrader5 as MT5
 
 from lettrade import Commander, Statistic
 from lettrade.exchange.live.base import (
@@ -43,10 +43,10 @@ class MetaTraderOrder(LiveOrder):
     def _build_place_request(self):
         tick = self._api.tick_get(self.data.symbol)
         price = tick.ask if self.is_long else tick.bid
-        type = mt5.ORDER_TYPE_BUY if self.is_long else mt5.ORDER_TYPE_SELL
+        type = MT5.ORDER_TYPE_BUY if self.is_long else MT5.ORDER_TYPE_SELL
         deviation = 20
         request = {
-            "action": mt5.TRADE_ACTION_DEAL,
+            "action": MT5.TRADE_ACTION_DEAL,
             "symbol": self.data.symbol,
             "volume": self.size,
             "type": type,
@@ -56,8 +56,8 @@ class MetaTraderOrder(LiveOrder):
             "deviation": deviation,
             "magic": 234000,
             "comment": self.tag,
-            "type_time": mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
+            "type_time": MT5.ORDER_TIME_GTC,
+            "type_filling": MT5.ORDER_FILLING_IOC,
         }
         return request
 

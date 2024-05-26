@@ -2,7 +2,7 @@ import logging
 from datetime import datetime, timedelta
 from time import sleep
 
-from mt5linux import MetaTrader5 as Mt5
+from mt5linux import MetaTrader5 as MT5
 
 from lettrade.exchange.live.base import LiveAPI
 
@@ -10,32 +10,32 @@ logger = logging.getLogger(__name__)
 
 
 TIMEFRAME_L2M = {
-    "1m": Mt5.TIMEFRAME_M1,
-    "2m": Mt5.TIMEFRAME_M2,
-    "3m": Mt5.TIMEFRAME_M3,
-    "4m": Mt5.TIMEFRAME_M4,
-    "5m": Mt5.TIMEFRAME_M5,
-    "6m": Mt5.TIMEFRAME_M6,
-    "10m": Mt5.TIMEFRAME_M10,
-    "12m": Mt5.TIMEFRAME_M12,
-    "15m": Mt5.TIMEFRAME_M15,
-    "20m": Mt5.TIMEFRAME_M20,
-    "30m": Mt5.TIMEFRAME_M30,
-    "1h": Mt5.TIMEFRAME_H1,
-    "2h": Mt5.TIMEFRAME_H2,
-    "3h": Mt5.TIMEFRAME_H3,
-    "4h": Mt5.TIMEFRAME_H4,
-    "6h": Mt5.TIMEFRAME_H6,
-    "8h": Mt5.TIMEFRAME_H8,
-    "12h": Mt5.TIMEFRAME_H12,
-    "1d": Mt5.TIMEFRAME_D1,
-    "1w": Mt5.TIMEFRAME_W1,
-    "1mn": Mt5.TIMEFRAME_MN1,
+    "1m": MT5.TIMEFRAME_M1,
+    "2m": MT5.TIMEFRAME_M2,
+    "3m": MT5.TIMEFRAME_M3,
+    "4m": MT5.TIMEFRAME_M4,
+    "5m": MT5.TIMEFRAME_M5,
+    "6m": MT5.TIMEFRAME_M6,
+    "10m": MT5.TIMEFRAME_M10,
+    "12m": MT5.TIMEFRAME_M12,
+    "15m": MT5.TIMEFRAME_M15,
+    "20m": MT5.TIMEFRAME_M20,
+    "30m": MT5.TIMEFRAME_M30,
+    "1h": MT5.TIMEFRAME_H1,
+    "2h": MT5.TIMEFRAME_H2,
+    "3h": MT5.TIMEFRAME_H3,
+    "4h": MT5.TIMEFRAME_H4,
+    "6h": MT5.TIMEFRAME_H6,
+    "8h": MT5.TIMEFRAME_H8,
+    "12h": MT5.TIMEFRAME_H12,
+    "1d": MT5.TIMEFRAME_D1,
+    "1w": MT5.TIMEFRAME_W1,
+    "1mn": MT5.TIMEFRAME_MN1,
 }
 
 
 class MetaTraderAPI(LiveAPI):
-    _mt5: Mt5
+    _mt5: MT5
     _callbacker: "MetaTraderExchange"
 
     __deal_time_checked = datetime.now() - timedelta(days=1)
@@ -74,7 +74,7 @@ class MetaTraderAPI(LiveAPI):
         **kwargs,
     ):
         try:
-            self._mt5 = Mt5(host=host, port=port)
+            self._mt5 = MT5(host=host, port=port)
         except ConnectionRefusedError as e:
             raise ConnectionRefusedError(
                 "Cannot connect to MetaTrader 5 Terminal rpyc server"
@@ -149,7 +149,7 @@ class MetaTraderAPI(LiveAPI):
     def order_send(self, request: "TradeRequest"):
         result = self._mt5.order_send(request)
         result.code = result.retcode
-        if result.code == Mt5.TRADE_RETCODE_DONE:
+        if result.code == MT5.TRADE_RETCODE_DONE:
             result.code == 0
         return result
 

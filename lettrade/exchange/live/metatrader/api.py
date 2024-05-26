@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime, timedelta
 from time import sleep
-from typing import Optional
 
 from mt5linux import MetaTrader5 as Mt5
 

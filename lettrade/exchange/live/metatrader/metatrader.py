@@ -1,14 +1,77 @@
-from typing import Dict, List, Optional, Set, Tuple, Type
+import logging
+from typing import Optional, Type
 
-from lettrade import Commander, LetTrade, LetTradeBot, Statistic
-from lettrade.exchange.live.base import LetTradeLive, LetTradeLiveBot, let_live
+from mt5linux import MetaTrader5 as mt5
+
+from lettrade import Commander, Statistic
+from lettrade.exchange.live.base import (
+    LetTradeLive,
+    LetTradeLiveBot,
+    LiveAccount,
+    LiveDataFeed,
+    LiveDataFeeder,
+    LiveExchange,
+    LiveExecute,
+    LiveOrder,
+    LiveTrade,
+    let_live,
+)
 from lettrade.strategy.strategy import Strategy
 
-from .account import MetaTraderAccount
 from .api import MetaTraderAPI
-from .data import MetaTraderDataFeed
-from .exchange import MetaTraderExchange
-from .feeder import MetaTraderDataFeeder
+
+logger = logging.getLogger(__name__)
+
+
+class MetaTraderDataFeed(LiveDataFeed):
+    """"""
+
+
+class MetaTraderDataFeeder(LiveDataFeeder):
+    """"""
+
+
+class MetaTraderExecute(LiveExecute):
+    """
+    Execute for MetaTrader
+    """
+
+
+class MetaTraderOrder(LiveOrder):
+    """"""
+
+    def _build_place_request(self):
+        tick = self._api.tick_get(self.data.symbol)
+        price = tick.ask if self.is_long else tick.bid
+        type = mt5.ORDER_TYPE_BUY if self.is_long else mt5.ORDER_TYPE_SELL
+        deviation = 20
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": self.data.symbol,
+            "volume": self.size,
+            "type": type,
+            "price": price,
+            "sl": self.sl,
+            "tp": self.tp,
+            "deviation": deviation,
+            "magic": 234000,
+            "comment": self.tag,
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_IOC,
+        }
+        return request
+
+
+class MetaTraderTrade(LiveTrade):
+    """"""
+
+
+class MetaTraderAccount(LiveAccount):
+    """"""
+
+
+class MetaTraderExchange(LiveExchange):
+    """MetaTrade 5 exchange module for `lettrade`"""
 
 
 class LetTradeMetaTraderBot(LetTradeLiveBot):

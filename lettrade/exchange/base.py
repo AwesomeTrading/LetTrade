@@ -44,14 +44,20 @@ class BaseTransaction:
         self.data: "DataFeed" = data
         self.size: float = size
 
-    def __setattr__(self, name: str, value: Any) -> None:
-        if __debug__:
-            import inspect
 
-            from lettrade.strategy import Strategy
+if __debug__:
+    from lettrade.base.flag import strategy_validate_trade
+
+    if strategy_validate_trade:
+
+        import inspect
+
+        def base_transaction__setattr__(self, name: str, value: Any) -> None:
 
             stack = inspect.stack()[1]
             caller_cls = stack[0].f_locals["self"].__class__
+
+            from lettrade.strategy import Strategy
 
             if issubclass(caller_cls, Strategy):
                 caller_method = stack[0].f_code.co_name
@@ -63,4 +69,6 @@ class BaseTransaction:
                     value,
                 )
 
-        object.__setattr__(self, name, value)
+            object.__setattr__(self, name, value)
+
+        setattr(BaseTransaction, "__setattr__", base_transaction__setattr__)

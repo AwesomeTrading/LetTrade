@@ -64,6 +64,7 @@ class LetTrade:
         self._kwargs = kwargs
 
         # DataFeeds
+        # TODO: remove datas from self to avoid pickle from multipleprocessing
         self.datas = self._init_datafeeds(datas)
         self.data = self.datas[0]
 

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pandas as pd
 from lettrade.data import CSVDataFeed, DataFeed
 
@@ -9,13 +11,26 @@ class BackTestDataFeed(DataFeed):
     def bar(self, i=0):
         return -self.index.start + i, self.datetime[i]
 
-    def next(self, size=1) -> bool:
-        self.index = pd.RangeIndex(
-            self.index.start - size,
-            self.index.stop - size,
-            1,
-        )
-        return True
+    def next(self, size=1, next: pd.Timestamp = None) -> bool:
+        has_next = True
+        if not self.is_main:
+            if next is None:
+                raise RuntimeError("DataFrame parameter next is None")
+            size = 0
+            try:
+                while True:
+                    if self.datetime[size] >= next:
+                        break
+                    size += 1
+            except KeyError:
+                has_next = False
+
+        if size > 0:
+            self.index = pd.RangeIndex(
+                self.index.start - size,
+                self.index.stop - size,
+            )
+        return has_next
 
 
 class CSVBackTestDataFeed(CSVDataFeed, BackTestDataFeed):

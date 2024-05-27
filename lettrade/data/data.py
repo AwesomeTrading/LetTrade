@@ -1,10 +1,12 @@
 import logging
+import re
 from datetime import datetime
 from typing import Optional
 
 import pandas as pd
 
 logger = logging.getLogger(__name__)
+_data_name_pattern = re.compile(r"^[\w\_]+$")
 
 
 class DataFeed(pd.DataFrame):
@@ -27,6 +29,13 @@ class DataFeed(pd.DataFrame):
             *args (list): `pandas.DataFrame` list parameters
             **kwargs (dict): `pandas.DataFrame` dict parameters
         """
+        # Validate
+        if not _data_name_pattern.match(name):
+            raise RuntimeError(
+                "Bot name %s is not valid format %s",
+                name,
+                _data_name_pattern,
+            )
 
         # dtype.update(
         #     {

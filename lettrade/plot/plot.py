@@ -11,7 +11,7 @@ class Plotter(ABC):
     Base class help to plot strategy
     """
 
-    _stored_datas: dict = {}
+    _datas_stored: dict = {}
 
     def __init__(
         self,
@@ -46,7 +46,7 @@ class Plotter(ABC):
 
         name = data.meta["name"]
 
-        stored_data: DataFeed = self._stored_datas.setdefault(name, data)
+        stored_data: DataFeed = self._datas_stored.setdefault(name, data)
         self.data = DataFeed(name=name, data=stored_data[index : index + range])
 
         self.load()

@@ -60,3 +60,16 @@ def plot_ichimoku(
             ),
         ]
     )
+
+
+def plot_line(df: DataFeed, line: str, color: str = "blue", width: int = 1):
+    return dict(
+        scatters=[
+            dict(
+                x=df.index,
+                y=df[line],
+                line=dict(color=color, width=width),
+                name=line,
+            )
+        ]
+    )

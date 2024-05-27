@@ -11,17 +11,17 @@ class PlotlyPlotter(Plotter):
 
     figure: go.Figure = None
 
-    _stored_datas: dict = {}
+    _datas_stored: dict = {}
+    _data_shape: dict
 
     def stop(self):
         """stop plotter"""
 
     def load(self):
         """Load plot config from `Strategy.plot()` and setup candlestick/equity"""
-        df = self.data
 
         # Strategy plot
-        config: dict = self.strategy.plot(df)
+        config: dict = self.strategy.plot(*self.datas)
 
         # Params
         plot_rows = max(config.get("rows", 2), len(self.datas) + 1)
@@ -38,8 +38,14 @@ class PlotlyPlotter(Plotter):
         self.figure = make_subplots(**params)
 
         # Plot candles
+        self._data_shape = dict()
         for i, data in enumerate(self.datas):
-            row = 1 + i
+            shape = dict(
+                row=1 + i,
+                col=1,
+            )
+            self._data_shape[data.name] = shape
+            text = data.datetime.apply(lambda t: f"At: {t}<br>")
             self.figure.add_trace(
                 go.Candlestick(
                     x=data.index,
@@ -47,32 +53,34 @@ class PlotlyPlotter(Plotter):
                     high=data["high"],
                     low=data["low"],
                     close=data["close"],
-                    name="Price",
-                    hoverinfo="x+y",
+                    name=f"Price {data.name}",
+                    # hoverinfo="x+y",
+                    text=text,
                 ),
-                row=row,
-                col=1,
+                **shape,
             )
             self.figure.update_yaxes(
                 title_text="Price $",
-                row=row,
-                col=1,
+                **shape,
             )
             self.figure.update_xaxes(
                 title_text=data.name,
-                row=row,
-                col=1,
                 rangeslider_visible=False,
+                **shape,
             )
 
         if "scatters" in config:
-            for s in config["scatters"]:
-                # s.setdefault("row", 1)
-                if "row" not in s:
-                    s["row"] = 1
-                if "col" not in s:
-                    s["col"] = 1
-                self.figure.add_scatter(**s)
+            scatters = config["scatters"]
+            if isinstance(scatters, list):
+                for s in scatters:
+                    s.setdefault("row", 1)
+                    s.setdefault("col", 1)
+                    self.figure.add_scatter(**s)
+            elif isinstance(scatters, dict):
+                for name, ss in scatters.items():
+                    shape = self._data_shape[name]
+                    for s in ss:
+                        self.figure.add_scatter(**s, **shape)
 
         # Layout
         layout_params = dict(

@@ -1,7 +1,12 @@
+import logging
+
+from lettrade.base.error import LetTradeNoMoreData
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange, Execute, Order, Position, Trade
 from lettrade.strategy import Strategy
+
+logger = logging.getLogger(__name__)
 
 
 class Brain:
@@ -53,20 +58,26 @@ class Brain:
         indicators_loaders = self._indicators_loaders()
         self._indicators_load(indicators_loaders)
 
-        self.strategy.start(self.data)
+        self.strategy.start(*self.datas)
 
         while self.feeder.alive():
             # Load feeder next data
-            self.feeder.next()
-            self.exchange.next()
+            try:
+                self.feeder.next()
+                self.exchange.next()
 
-            # Realtime continous update data, then rebuild indicator data
-            if self.feeder.is_continous:
-                self._indicators_load(indicators_loaders)
+                # Realtime continous update data, then rebuild indicator data
+                if self.feeder.is_continous:
+                    self._indicators_load(indicators_loaders)
 
-            self.strategy.next(self.data)
+                self.strategy.next(*self.datas)
+            except LetTradeNoMoreData:
+                break
+            except Exception as e:
+                logger.exception("Bot running error", exc_info=e)
+                break
 
-        self.strategy.end(self.data)
+        self.strategy.end(*self.datas)
 
     def _indicators_loaders(self) -> list:
         """Init indicators loaders function and args

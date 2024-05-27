@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime, timezone
+from typing import Type
 
 from lettrade.data import DataFeed
 
@@ -9,6 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 class LiveDataFeed(DataFeed):
+    api_cls: Type[LiveAPI] = LiveAPI
+
     def __init__(
         self,
         symbol: str,
@@ -121,3 +124,30 @@ class LiveDataFeed(DataFeed):
         from lettrade.data.exporter.csv import csv_export
 
         csv_export(dataframe=self, path=path)
+
+    @classmethod
+    def instance(
+        cls,
+        api: LiveAPI = None,
+        api_kwargs: dict = None,
+        **kwargs,
+    ) -> "LiveDataFeed":
+        """_summary_
+
+        Args:
+            api (LiveAPI, optional): _description_. Defaults to None.
+            api_kwargs (dict, optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: Missing api requirement
+
+        Returns:
+            LiveDataFeed: DataFeed object
+        """
+        if api is None:
+            if api_kwargs is None:
+                raise RuntimeError("api or api_kwargs cannot missing")
+            api = cls.api_cls(**api_kwargs)
+        data = cls(**kwargs)
+        data._api = api
+        return data

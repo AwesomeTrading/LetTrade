@@ -26,6 +26,9 @@ logger = logging.getLogger(__name__)
 class MetaTraderDataFeed(LiveDataFeed):
     """"""
 
+    api_cls: Type[MetaTraderAPI] = MetaTraderAPI
+    """API to communicate with MetaTrader Terminal"""
+
 
 class MetaTraderDataFeeder(LiveDataFeeder):
     """"""

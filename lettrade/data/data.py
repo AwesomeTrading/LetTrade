@@ -73,7 +73,7 @@ class DataFeed(pd.DataFrame):
         return self.attrs["lt_meta"]
 
     @property
-    def name(self) -> dict:
+    def name(self) -> str:
         return self.meta["name"]
 
     @property

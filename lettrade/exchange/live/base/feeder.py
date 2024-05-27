@@ -30,8 +30,8 @@ class LiveDataFeeder(DataFeeder):
     def next(self):
         if self._tick > 0:
             time.sleep(self._tick)
-
-        return self.data.next(tick=self._tick)
+        for data in self.datas:
+            data.next(tick=self._tick)
 
     def start(self, size=100):
         for data in self.datas:

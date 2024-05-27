@@ -1,7 +1,7 @@
 from lettrade.data import DataFeed
 
 
-def plotly_ichimoku(
+def plot_ichimoku(
     df: DataFeed,
     tenkan_sen="tenkan_sen",
     kijun_sen="kijun_sen",

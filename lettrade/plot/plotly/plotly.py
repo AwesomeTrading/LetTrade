@@ -24,11 +24,12 @@ class PlotlyPlotter(Plotter):
         config: dict = self.strategy.plot(df)
 
         # Params
+        plot_rows = max(config.get("rows", 2), len(self.datas) + 1)
         params = dict(
-            rows=max(config.get("rows", 2), 2),
+            rows=plot_rows,
             shared_xaxes=True,
             vertical_spacing=0.03,
-            row_width=[0.2, 0.7],
+            # row_width=[0.2, 0.7],
         )
         if "params" in config:
             params.update(**config["params"])
@@ -37,24 +38,32 @@ class PlotlyPlotter(Plotter):
         self.figure = make_subplots(**params)
 
         # Plot candles
-        self.figure.add_trace(
-            go.Candlestick(
-                x=df.index,
-                open=df["open"],
-                high=df["high"],
-                low=df["low"],
-                close=df["close"],
-                name="Price",
-                hoverinfo="x+y",
-            ),
-            row=1,
-            col=1,
-        )
-        self.figure.update_yaxes(
-            title_text="Price $",
-            row=1,
-            col=1,
-        )
+        for i, data in enumerate(self.datas):
+            row = 1 + i
+            self.figure.add_trace(
+                go.Candlestick(
+                    x=data.index,
+                    open=data["open"],
+                    high=data["high"],
+                    low=data["low"],
+                    close=data["close"],
+                    name="Price",
+                    hoverinfo="x+y",
+                ),
+                row=row,
+                col=1,
+            )
+            self.figure.update_yaxes(
+                title_text="Price $",
+                row=row,
+                col=1,
+            )
+            self.figure.update_xaxes(
+                title_text=data.name,
+                row=row,
+                col=1,
+                rangeslider_visible=False,
+            )
 
         if "scatters" in config:
             for s in config["scatters"]:

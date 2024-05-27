@@ -1,4 +1,4 @@
-def plotly_merge(source: dict, update: dict):
+def plot_merge(source: dict, update: dict):
     for k, v in update.items():
         if k not in source:
             source[k] = v

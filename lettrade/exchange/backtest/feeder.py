@@ -20,7 +20,9 @@ class BackTestDataFeeder(DataFeeder):
         return self.data.alive()
 
     def next(self):
-        return self.data.next()
+        for data in self.datas:
+            data.next()
 
     def start(self, size=100):
-        self.data.next(size)
+        for data in self.datas:
+            data.next(size)

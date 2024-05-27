@@ -1,18 +1,16 @@
 import os
 
-import pandas as pd
 import talib.abstract as ta
 from dotenv import load_dotenv
 
 import example.logger
 from lettrade.all import (
     DataFeed,
-    LetTrade,
-    MetaTrader,
     Strategy,
     TelegramCommander,
     crossover,
     crossunder,
+    let_metatrader,
 )
 
 load_dotenv()
@@ -31,9 +29,6 @@ class SmaCross(Strategy):
         return df
 
     def next(self, df: DataFeed):
-        print("-" * 64, len(self.data))
-        print(df[0])
-
         if len(self.orders) > 0 or len(self.trades) > 0:
             return
 
@@ -54,7 +49,7 @@ class SmaCross(Strategy):
     #     print("Transaction", transaction)
 
     def end(self, df: DataFeed):
-        print(df)
+        print(df.tail())
         print(self.orders)
 
     def plot(self, df: DataFeed):
@@ -77,22 +72,18 @@ class SmaCross(Strategy):
 
 
 if __name__ == "__main__":
-    mt5 = MetaTrader(
-        account=int(os.environ["MT5_LOGIN"]),
+    lt = let_metatrader(
+        strategy=SmaCross,
+        datas=[[("EURGBP", "1m")]],
+        login=int(os.environ["MT5_LOGIN"]),
         password=os.environ["MT5_PASSWORD"],
         server=os.environ["MT5_SERVER"],
-    )
-
-    lt = LetTrade(
-        strategy=SmaCross,
-        datas=[mt5.data("EURGBP", "1m")],
-        feeder=mt5.feeder(),
-        exchange=mt5.exchange(),
-        account=mt5.account(),
-        commander=TelegramCommander(
+        commander=TelegramCommander,
+        commander_kwargs=dict(
             token=os.getenv("TELEGRAM_TOKEN"),
             chat_id=os.getenv("TELEGRAM_CHAT_ID"),
         ),
+        wine=os.getenv("MT5_WINE", None),
     )
 
     lt.run()

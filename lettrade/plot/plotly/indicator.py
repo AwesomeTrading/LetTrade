@@ -9,6 +9,11 @@ def plotly_ichimoku(
     senkou_span_b="senkou_span_b",
     chikou_span="chikou_span",
     width=1,
+    tenkan_sen_color="#33BDFF",
+    kijun_sen_color="#D105F5",
+    senkou_span_a_color="#228B22",
+    senkou_span_b_color="#FF3342",
+    chikou_span_color="#F1F316",
 ):
     return dict(
         scatters=[
@@ -18,7 +23,7 @@ def plotly_ichimoku(
                 name=tenkan_sen,
                 type="scatter",
                 mode="lines",
-                line=dict(color="#33BDFF", width=width),
+                line=dict(color=tenkan_sen_color, width=width),
             ),
             dict(
                 x=df[kijun_sen].index,
@@ -26,7 +31,7 @@ def plotly_ichimoku(
                 name=kijun_sen,
                 type="scatter",
                 mode="lines",
-                line=dict(color="#F1F316", width=width),
+                line=dict(color=kijun_sen_color, width=width),
             ),
             dict(
                 x=df[senkou_span_a].index,
@@ -34,7 +39,7 @@ def plotly_ichimoku(
                 name=senkou_span_a,
                 type="scatter",
                 mode="lines",
-                line=dict(color="#228B22", width=width),
+                line=dict(color=senkou_span_a_color, width=width),
             ),
             dict(
                 x=df[senkou_span_b].index,
@@ -43,7 +48,7 @@ def plotly_ichimoku(
                 type="scatter",
                 mode="lines",
                 fill="tonexty",
-                line=dict(color="#FF3342", width=width),
+                line=dict(color=senkou_span_b_color, width=width),
             ),
             dict(
                 x=df[chikou_span].index,
@@ -51,7 +56,7 @@ def plotly_ichimoku(
                 name=chikou_span,
                 type="scatter",
                 mode="lines",
-                line=dict(color="#D105F5", width=width),
+                line=dict(color=chikou_span_color, width=width),
             ),
         ]
     )

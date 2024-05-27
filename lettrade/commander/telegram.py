@@ -10,11 +10,14 @@ Example:
 
 import asyncio
 import logging
+import time
 from functools import partial, wraps
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import BaseManager, SyncManager
 from threading import Thread
 from typing import Any, Callable, Coroutine, Dict, List, Literal, Optional, Union
+
+from lettrade.stats import Statistic
 
 from telegram import (
     CallbackQuery,
@@ -33,8 +36,6 @@ from telegram.ext import (
     CommandHandler,
 )
 from telegram.helpers import escape_markdown
-
-from lettrade.stats import Statistic
 
 from .commander import Commander
 
@@ -452,11 +453,13 @@ class TelegramCommander(Commander):
 
     def start(self):
         """Start"""
+        logger.info("TelegramCommander start %s", self._name)
         q = self._t_action()
         self._api.start(pname=self._name, action_queue=q)
 
     def stop(self):
         """Stop"""
+        logger.info("TelegramCommander stop %s", self._name)
         self._api.cleanup()
         self._is_running = False
 
@@ -472,11 +475,19 @@ class TelegramCommander(Commander):
 
     def _on_action(self, q: Queue):
         while self._is_running:
-            action = q.get()
+            try:
+                action = q.get()
 
-            match action:
-                case "stats":
-                    self._on_action_stats()
+                match action:
+                    case "stats":
+                        self._on_action_stats()
+            except (BrokenPipeError, EOFError) as e:
+                logger.error("Action", exc_info=e)
+                self._is_running = False
+                raise e
+            except Exception as e:
+                logger.error("Action", exc_info=e)
+                time.sleep(5)
 
     def _on_action_stats(self):
         stats: Statistic = self.lettrade.stats

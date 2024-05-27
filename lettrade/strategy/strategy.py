@@ -74,7 +74,6 @@ class Strategy(ABC):
             _type_: `None`
         """
 
-    @abstractmethod
     def next(self, df: DataFeed) -> None:
         pass
 

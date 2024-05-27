@@ -42,11 +42,11 @@ class MetaTraderAPI(LiveAPI):
     __orders_stored: dict[int, object] = {}
     __trades_stored: dict[int, object] = {}
 
-    # def __new__(cls, *args, **kwargs):
-    #     if not hasattr(cls, "_singleton"):
-    #         cls._singleton = object.__new__(cls)
-    #         cls._singleton.__init__(*args, **kwargs)
-    #     return cls._singleton
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, "_singleton"):
+            cls._singleton = object.__new__(cls)
+            cls._singleton.__init__(*args, **kwargs)
+        return cls._singleton
 
     @classmethod
     def multiprocess(cls, kwargs, **other_kwargs):
@@ -270,3 +270,10 @@ class MetaTraderAPI(LiveAPI):
 
         self.__trades_stored = {raw.ticket: raw for raw in raws}
         return added_trades, removed_trades
+
+    # Bypass pickle
+    def __copy__(self):
+        return self.__class__._singleton
+
+    def __deepcopy__(self, memo):
+        return self.__class__._singleton

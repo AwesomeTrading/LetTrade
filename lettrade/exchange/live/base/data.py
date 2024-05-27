@@ -13,7 +13,6 @@ class LiveDataFeed(DataFeed):
         self,
         symbol: str,
         timeframe: str,
-        api: "LiveAPI" = None,
         name: str = None,
         *args,
         **kwargs,
@@ -34,7 +33,7 @@ class LiveDataFeed(DataFeed):
         )
         # self["datetime"] = pd.to_datetime(self["datetime"])
 
-        self.meta.update(dict(symbol=symbol, timeframe=timeframe, api=api))
+        self.meta.update(dict(symbol=symbol, timeframe=timeframe))
 
     @property
     def symbol(self) -> str:
@@ -46,11 +45,11 @@ class LiveDataFeed(DataFeed):
 
     @property
     def _api(self) -> LiveAPI:
-        return self.meta["api"]
+        return getattr(self, "__api")
 
     @_api.setter
     def _api(self, value) -> LiveAPI:
-        self.meta["api"] = value
+        setattr(self, "__api", value)
 
     def next(self, size=1, tick=0) -> bool:
         return self._next(size=size, tick=tick)

@@ -48,7 +48,11 @@ class Brain:
 
         self.feeder.start()
         self.exchange.start()
-        self.strategy.indicators(self.data)
+
+        # Load indicators
+        indicators_loaders = self._indicators_loaders()
+        self._indicators_load(indicators_loaders)
+
         self.strategy.start(self.data)
 
         while self.feeder.alive():
@@ -58,11 +62,32 @@ class Brain:
 
             # Realtime continous update data, then rebuild indicator data
             if self.feeder.is_continous:
-                self.strategy.indicators(self.data)
+                self._indicators_load(indicators_loaders)
 
             self.strategy.next(self.data)
 
         self.strategy.end(self.data)
+
+    def _indicators_loaders(self) -> list:
+        """Init indicators loaders function and args
+
+        Returns:
+            list: List of indicator loader. Ex: [_loader_function_, list[...args]]
+        """
+        loaders = []
+        for data in self.datas:
+            fn_name = f"indicators_{data.name.lower()}"
+            if hasattr(self.strategy, fn_name):
+                fn = getattr(self.strategy, fn_name)
+            else:
+                fn = self.strategy.indicators
+            loaders.append([fn, [data]])
+        return loaders
+
+    def _indicators_load(self, loaders: list):
+        for loader in loaders:
+            fn, args = loader
+            fn(*args)
 
     def stop(self):
         """Stop the trading bot"""

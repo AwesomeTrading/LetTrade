@@ -45,7 +45,6 @@ class PlotlyPlotter(Plotter):
                 col=1,
             )
             self._data_shape[data.name] = shape
-            text = data.datetime.apply(lambda t: f"At: {t}<br>")
             self.figure.add_trace(
                 go.Candlestick(
                     x=data.index,
@@ -55,7 +54,6 @@ class PlotlyPlotter(Plotter):
                     close=data["close"],
                     name=f"Price {data.name}",
                     # hoverinfo="x+y",
-                    text=text,
                 ),
                 **shape,
             )
@@ -101,9 +99,9 @@ class PlotlyPlotter(Plotter):
         if self.figure is None:
             self.load()
 
-        self._plot_equity()
-        self._plot_orders()
-        self._plot_trades()
+        # self._plot_equity()
+        # self._plot_orders()
+        # self._plot_trades()
 
         params = dict(layout_xaxis_rangeslider_visible=False)
         params.update(**kwargs)

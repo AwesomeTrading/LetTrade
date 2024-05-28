@@ -37,7 +37,7 @@ TIMEFRAME_DELTA_2_STR = {v: k for k, v in TIMEFRAME_STR_2_DELTA.items()}
 class TimeFrame(pd.Timedelta):
     _str: str
 
-    def __new__(self, tf: str | pd.Timedelta) -> None:
+    def __new__(cls, tf: str | pd.Timedelta) -> None:
         if isinstance(tf, str):
             string = tf
             delta = TIMEFRAME_STR_2_DELTA[tf]
@@ -47,18 +47,56 @@ class TimeFrame(pd.Timedelta):
         elif isinstance(tf, int):
             delta = pd.Timedelta(minutes=tf)
             string = TIMEFRAME_DELTA_2_STR[tf]
-        elif isinstance(tf, self.__class__):
+        elif isinstance(tf, cls.__class__):
             string = tf._str
             delta = tf._delta
         else:
             raise RuntimeError("Timeframe %s is invalid format", tf)
 
-        delta.__class__ = self
+        delta.__class__ = cls
         setattr(delta, "_str", string)
         return delta
 
     def string(self):
         return self._str
+
+
+class DataFeedIndex(pd.DatetimeIndex):
+    _pointer: int = 0
+
+    def __getitem__(self, value):
+        print("get", value)
+        if isinstance(value, int):
+            logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
+            return super().__getitem__(self._pointer + value)
+        return super().__getitem__(value)
+
+    def get_loc(self, key, *args, **kwargs):
+        logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
+        key += self._pointer
+        return key
+
+    @property
+    def pointer(self):
+        return self._pointer
+
+    def next(self, next=1):
+        self._pointer += next
+
+    @property
+    def start(self) -> int:
+        return -self._pointer
+
+    @property
+    def stop(self) -> int:
+        return len(self._values) - self._pointer
+
+    @property
+    def _should_fallback_to_positional(self):
+        return False
+
+    def at(self, index: int):
+        return self.values[index]
 
 
 class DataFeed(pd.DataFrame):
@@ -107,9 +145,10 @@ class DataFeed(pd.DataFrame):
         # print(data.index.tz_convert(pytz.utc))
 
         super().__init__(*args, **kwargs)
-        if not isinstance(self.index, pd.RangeIndex):
-            self.reset_index(inplace=True)
-            # self.index = pd.RangeIndex(start=0, stop=len(self.index), step=1)
+        self.index.__class__ = DataFeedIndex
+        # if not isinstance(self.index, pd.RangeIndex):
+        #     self.reset_index(inplace=True)
+        # self.index = pd.RangeIndex(start=0, stop=len(self.index), step=1)
 
         # Metadata
         if not meta:
@@ -131,6 +170,10 @@ class DataFeed(pd.DataFrame):
         return df
 
     # Properties
+    @property
+    def datetime(self) -> pd.DatetimeIndex:
+        return self.index
+
     @property
     def meta(self) -> dict:
         return self.attrs["lt_meta"]

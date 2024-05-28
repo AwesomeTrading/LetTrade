@@ -2,6 +2,8 @@ import logging
 from datetime import datetime, timezone
 from typing import Type
 
+import pandas as pd
+
 from lettrade.data import DataFeed
 
 from .api import LiveAPI
@@ -15,13 +17,14 @@ class LiveDataFeed(DataFeed):
     def __init__(
         self,
         symbol: str,
-        timeframe: str,
+        timeframe: str | int | pd.Timedelta,
         name: str = None,
         *args,
         **kwargs,
     ) -> None:
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
+            timeframe=timeframe,
             columns=["datetime", "open", "high", "low", "close", "volume"],
             # dtype=[
             #     ("datetime", "datetime64[ns]"),
@@ -36,15 +39,11 @@ class LiveDataFeed(DataFeed):
         )
         # self["datetime"] = pd.to_datetime(self["datetime"])
 
-        self.meta.update(dict(symbol=symbol, timeframe=timeframe))
+        self.meta.update(dict(symbol=symbol))
 
     @property
     def symbol(self) -> str:
         return self.meta["symbol"]
-
-    @property
-    def timeframe(self) -> str:
-        return self.meta["timeframe"]
 
     @property
     def _api(self) -> LiveAPI:
@@ -60,7 +59,7 @@ class LiveDataFeed(DataFeed):
     def _next(self, size=1, tick=0):
         rates = self._api.bars(
             symbol=self.symbol,
-            timeframe=self.timeframe,
+            timeframe=self.timeframe.string(),
             since=0,
             to=size + 1,  # Get last completed bar
         )

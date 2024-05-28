@@ -99,9 +99,9 @@ class PlotlyPlotter(Plotter):
         if self.figure is None:
             self.load()
 
-        # self._plot_equity()
-        # self._plot_orders()
-        # self._plot_trades()
+        self._plot_equity()
+        self._plot_orders()
+        self._plot_trades()
 
         params = dict(layout_xaxis_rangeslider_visible=False)
         params.update(**kwargs)
@@ -114,8 +114,7 @@ class PlotlyPlotter(Plotter):
         self.figure.show()
 
     def _plot_equity(self):
-        first_index = self.data.index[0]
-        x = list(first_index + i[0] for i in self.account._equities.keys())
+        x = list(self.account._equities.keys())
         y = list(self.account._equities.values())
 
         # Get figure rows size
@@ -143,15 +142,14 @@ class PlotlyPlotter(Plotter):
         orders = list(self.exchange.history_orders.values()) + list(
             self.exchange.orders.values()
         )
-        first_index = self.data.index[0]
         for order in orders:
-            x = [first_index + order.open_at[0]]
+            x = [order.open_at]
             y = [order.open_price or order.limit or order.stop]
 
             hovertemplate = (
                 f"Order id: {order.id}<br>"
                 "Index: %{x}<br>"
-                f"At: {order.open_at[1]}<br>"
+                f"At: {order.open_at}<br>"
                 "Price: %{y}<br>"
                 f"Size: {order.size}<br>"
             )
@@ -178,15 +176,14 @@ class PlotlyPlotter(Plotter):
         trades = list(self.exchange.history_trades.values()) + list(
             self.exchange.trades.values()
         )
-        first_index = self.data.index[0]
         for trade in trades:
-            x = [first_index + trade.entry_at[0]]
+            x = [trade.entry_at]
             y = [trade.entry_price]
-            customdata = [[trade.entry_at[1], trade.size, trade.pl, trade.fee]]
+            customdata = [[trade.entry_at, trade.size, trade.pl, trade.fee]]
             if trade.exit_at:
-                x.append(first_index + trade.exit_at[0])
+                x.append(trade.exit_at)
                 y.append(trade.exit_price)
-                customdata.append([trade.exit_at[1], trade.size, trade.pl, trade.fee])
+                customdata.append([trade.exit_at, trade.size, trade.pl, trade.fee])
 
             color = "green" if trade.is_long else "red"
             self.figure.add_scatter(

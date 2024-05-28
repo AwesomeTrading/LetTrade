@@ -1,6 +1,6 @@
 import logging
 
-from lettrade.base.error import LetTradeNoMoreData
+from lettrade.base.error import LetTradeNoMoreDataFeed
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange, Execute, Order, Position, Trade
@@ -71,7 +71,7 @@ class Brain:
                     self._indicators_load(indicators_loaders)
 
                 self.strategy.next(*self.datas)
-            except LetTradeNoMoreData:
+            except LetTradeNoMoreDataFeed:
                 break
             except Exception as e:
                 logger.exception("Bot running error", exc_info=e)

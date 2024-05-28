@@ -60,21 +60,22 @@ class TimeFrame(pd.Timedelta):
     def string(self):
         return self._str
 
+    # def start_of(self, at: pd.Timestamp):
+    #     dt = at / self.timeframe
+
 
 class DataFeedIndex(pd.DatetimeIndex):
     _pointer: int = 0
 
     def __getitem__(self, value):
-        print("get", value)
         if isinstance(value, int):
-            logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
+            # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
             return super().__getitem__(self._pointer + value)
         return super().__getitem__(value)
 
     def get_loc(self, key, *args, **kwargs):
-        logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
-        key += self._pointer
-        return key
+        # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
+        return key + self._pointer
 
     @property
     def pointer(self):
@@ -97,6 +98,12 @@ class DataFeedIndex(pd.DatetimeIndex):
 
     def at(self, index: int):
         return self.values[index]
+
+    def _cmp_method(self, other, op):
+        if isinstance(other, int):
+            other = self[other]
+        logger.warning("[TEST] DataFeedIndex._cmp_method %s %s", other, op)
+        return super()._cmp_method(other, op)
 
 
 class DataFeed(pd.DataFrame):
@@ -192,11 +199,11 @@ class DataFeed(pd.DataFrame):
 
     @property
     def now(self) -> datetime:
-        return self.datetime[0]
+        return self.index[0]
 
     # Functions
-    def bar(self, i=0):
-        return self.index[0] + i, self.datetime[i]
+    def bar(self, i=0) -> datetime:
+        return self.index[i]
 
     def next(self, size=1) -> bool:
         raise NotImplementedError("Method is not implement yet")

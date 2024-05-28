@@ -2,5 +2,5 @@ class LetTradeException(Exception):
     pass
 
 
-class LetTradeNoMoreData(LetTradeException):
+class LetTradeNoMoreDataFeed(LetTradeException):
     pass

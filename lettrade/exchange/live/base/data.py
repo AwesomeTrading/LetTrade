@@ -91,6 +91,7 @@ class LiveDataFeed(DataFeed):
                 i_next = 1
 
         for i, rate in enumerate(rates, start=i_next):
+            # TODO: using self.insert()
             self.loc[
                 i,
                 [

@@ -1,9 +1,11 @@
-import numpy as np
+import logging
 
-from lettrade.base.error import LetTradeNoMoreData
+from lettrade.base.error import LetTradeNoMoreDataFeed
 from lettrade.data import DataFeeder
 
 from .data import BackTestDataFeed
+
+logger = logging.getLogger(__name__)
 
 
 class BackTestDataFeeder(DataFeeder):
@@ -17,8 +19,35 @@ class BackTestDataFeeder(DataFeeder):
         """Flag check is realtime continous datafeeder"""
         return False
 
-    def alive(self):
-        return self.data.alive()
+    def start(self, size=100):
+        # self._cleanup_data()
+
+        next = self.data.datetime[size]
+        timeframe = self.data.timeframe
+        for data in self.datas:
+            data.next(size=size, next=next, timeframe=timeframe)
+
+    # def _cleanup_data(self):
+    #     # Synchronize start time
+    #     start = self.data.now
+    #     tf = self.data.timeframe
+    #     for data in self.datas:
+    #         if data is self.data:
+    #             continue
+
+    #         if data.timeframe <= tf:
+    #             data_start = start
+    #         else:
+    #             data_start = start - data.timeframe
+
+    #         df = data[data["datetime"] < data_start]
+    #         logger.info(
+    #             "BackTestDataFeed %s dropped %d rows from start",
+    #             data.name,
+    #             len(df.index),
+    #         )
+    #         data.drop(index=df.index, inplace=True)
+    #         data.reset_index(inplace=True)
 
     def next(self):
         # End of main data
@@ -26,16 +55,16 @@ class BackTestDataFeeder(DataFeeder):
             return False
 
         next = self.data.datetime[1]
+        timeframe = self.data.timeframe
 
         has_next = True
         for data in self.datas:
-            if not data.next(next=next):
+            if not data.next(next=next, timeframe=timeframe):
                 has_next = False
 
         if not has_next:
-            raise LetTradeNoMoreData()
+            # Skip lastest available bar, because if next some data feeded some are not
+            raise LetTradeNoMoreDataFeed()
 
-    def start(self, size=100):
-        next = self.data.datetime[size]
-        for data in self.datas:
-            data.next(size=size, next=next)
+    def alive(self):
+        return self.data.alive()

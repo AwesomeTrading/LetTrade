@@ -1,6 +1,6 @@
 import logging
+import math
 import re
-from datetime import datetime
 from typing import Optional
 
 import pandas as pd
@@ -60,8 +60,23 @@ class TimeFrame(pd.Timedelta):
     def string(self):
         return self._str
 
-    # def start_of(self, at: pd.Timestamp):
-    #     dt = at / self.timeframe
+    def start_of(self, at: pd.Timestamp):
+        seconds = self.total_seconds()
+
+        if seconds < 60:  # Seconds
+            raise NotImplementedError("TimeFrame seconds is not implement yet")
+
+        if seconds < 60 * 60:  # Minutes
+            begin = at.replace(minute=0, second=0, microsecond=0)
+        elif seconds < 24 * 60 * 60:  # Hours
+            begin = at.replace(hour=0, minute=0, second=0, microsecond=0)
+        elif seconds < 7 * 24 * 60 * 60:  # Days
+            begin = at.replace(day=0, hour=0, minute=0, second=0, microsecond=0)
+        else:
+            raise NotImplementedError(f"TimeFrame {self} is not implement yet")
+
+        step = math.floor((at - begin) / self)
+        return begin + step * self
 
 
 class DataFeedIndex(pd.DatetimeIndex):

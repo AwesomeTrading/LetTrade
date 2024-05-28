@@ -2,7 +2,7 @@
 
 
 import example.logger
-from lettrade.exchange.backtest.data.yfinance import yf_download
+from lettrade.exchange.backtest.importer.yfinance import yf_download
 
 
 def dump_csv():

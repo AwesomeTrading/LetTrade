@@ -66,8 +66,8 @@ class LetTradeBackTest(LetTrade):
         **kwargs,
     ):
         match data:
-            # case list():
-            #     data = CSVBackTestDataFeed(*data)
+            case str():
+                data = CSVBackTestDataFeed(path=data)
             case BackTestDataFeed():
                 pass
             case DataFeed():

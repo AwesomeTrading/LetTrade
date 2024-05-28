@@ -1,4 +1,5 @@
 import logging
+import re
 from typing import Optional
 
 import pandas as pd
@@ -41,7 +42,7 @@ class BackTestDataFeed(DataFeed):
                 return tf
         raise RuntimeError("DataFeed cannot detect timeframe")
 
-    def drop_since(self, since):
+    def drop_since(self, since: int):
         df = self[self.index < since]
         self.drop(index=df.index, inplace=True)
         # self.reset_index(inplace=True)
@@ -52,9 +53,9 @@ class BackTestDataFeed(DataFeed):
 
     def next(
         self,
-        size=1,
-        next: pd.Timestamp = None,
-        timeframe: TimeFrame = None,
+        size: int = 1,
+        next: Optional[pd.Timestamp] = None,
+        timeframe: Optional[TimeFrame] = None,
     ) -> bool:
         has_next = True
         if not self.is_main:
@@ -98,6 +99,22 @@ class BackTestDataFeed(DataFeed):
         return has_next
 
 
+_data_name_pattern = re.compile(r"^([\w\_]+)")
+
+
+def _path_to_name(path: str):
+    if "/" in path:
+        path = path.rsplit("/", 1)[1]
+    if "." in path:
+        path = path.split(".", 1)[0]
+
+    searchs = _data_name_pattern.search(path)
+    if searchs:
+        path = searchs.group(1)
+
+    return path
+
+
 class CSVBackTestDataFeed(BackTestDataFeed):
     """Implement help to load DataFeed from csv file"""
 
@@ -123,7 +140,7 @@ class CSVBackTestDataFeed(BackTestDataFeed):
             **kwargs (dict): [DataFeed](./data.md#lettrade.data.data.DataFeed) dict parameters
         """
         if name is None:
-            name = path
+            name = _path_to_name(path)
 
         if data is None:
             data = pd.read_csv(

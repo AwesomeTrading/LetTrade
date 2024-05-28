@@ -2,6 +2,7 @@ import talib.abstract as ta
 
 from example.logger import logging_filter_necessary_only
 from lettrade.all import (
+    CSVBackTestDataFeed,
     DataFeed,
     ForexBackTestAccount,
     Strategy,
@@ -53,7 +54,7 @@ class SmaCross(Strategy):
 
 
 lt = let_backtest(
-    datas="example/data/data/EURUSD_1h.csv",
+    datas=CSVBackTestDataFeed("example/data/data/EURUSD_1h.csv", name="EURUSD_1h"),
     strategy=SmaCross,
     account=ForexBackTestAccount,
 )

@@ -3,7 +3,7 @@ from typing import Optional
 
 import pandas as pd
 
-from lettrade.data import CSVDataFeed, DataFeed, TimeFrame
+from lettrade.data import DataFeed, TimeFrame
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,6 @@ class BackTestDataFeed(DataFeed):
     def __init__(
         self,
         data: pd.DataFrame,
-        *args,
         name: str,
         timeframe: Optional[str | int | pd.Timedelta] = None,
         meta: Optional[dict] = None,
@@ -24,7 +23,6 @@ class BackTestDataFeed(DataFeed):
             logger.info("DataFeed %s auto detect timeframe %s", name, timeframe)
         super().__init__(
             data=data,
-            *args,
             name=name,
             timeframe=timeframe,
             meta=meta,
@@ -100,8 +98,50 @@ class BackTestDataFeed(DataFeed):
         return has_next
 
 
-class CSVBackTestDataFeed(CSVDataFeed, BackTestDataFeed):
-    pass
+class CSVBackTestDataFeed(BackTestDataFeed):
+    """Implement help to load DataFeed from csv file"""
+
+    def __init__(
+        self,
+        path: str = None,
+        name: str = None,
+        timeframe: Optional[str | int | pd.Timedelta] = None,
+        delimiter: str = ",",
+        index_col: int = 0,
+        header: int = 0,
+        meta: dict = None,
+        data: DataFeed = None,
+        **kwargs: dict,
+    ) -> None:
+        """_summary_
+
+        Args:
+            name (str): Path to csv file
+            delimiter (str, optional): _description_. Defaults to ",".
+            index_col (int, optional): _description_. Defaults to 0.
+            header (int, optional): _description_. Defaults to 0.
+            **kwargs (dict): [DataFeed](./data.md#lettrade.data.data.DataFeed) dict parameters
+        """
+        if name is None:
+            name = path
+
+        if data is None:
+            data = pd.read_csv(
+                path,
+                index_col=index_col,
+                parse_dates=["datetime"],
+                delimiter=delimiter,
+                header=header,
+            )
+        # df.reset_index(inplace=True)
+
+        super().__init__(
+            data=data,
+            name=name,
+            timeframe=timeframe,
+            meta=meta,
+            **kwargs,
+        )
 
 
 class YFBackTestDataFeed(BackTestDataFeed):
@@ -114,7 +154,6 @@ class YFBackTestDataFeed(BackTestDataFeed):
         end=None,
         period=None,
         interval="1d",
-        *args,
         **kwargs,
     ) -> None:
         params = dict(
@@ -146,6 +185,5 @@ class YFBackTestDataFeed(BackTestDataFeed):
             name=name,
             meta=meta,
             data=df,
-            *args,
             **kwargs,
         )

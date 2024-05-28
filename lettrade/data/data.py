@@ -97,7 +97,7 @@ class DataFeedIndex(pd.DatetimeIndex):
         return False
 
     def at(self, index: int):
-        return self.values[index]
+        return self._values[index]
 
     def _cmp_method(self, other, op):
         if isinstance(other, int):
@@ -152,7 +152,9 @@ class DataFeed(pd.DataFrame):
         # print(data.index.tz_convert(pytz.utc))
 
         super().__init__(*args, **kwargs)
+        self.index.rename("datetime", inplace=True)
         self.index.__class__ = DataFeedIndex
+
         # if not isinstance(self.index, pd.RangeIndex):
         #     self.reset_index(inplace=True)
         # self.index = pd.RangeIndex(start=0, stop=len(self.index), step=1)
@@ -172,7 +174,7 @@ class DataFeed(pd.DataFrame):
 
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
-        df = self.__class__(name=self.name, data=df)
+        df = self.__class__(data=df, name=self.name, timeframe=self.timeframe)
         # df.reset_index(inplace=True)
         return df
 

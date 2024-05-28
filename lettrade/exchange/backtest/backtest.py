@@ -37,6 +37,7 @@ def logging_filter_optimize():
     logging.getLogger("lettrade.exchange.backtest.commander").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.backtest.exchange").setLevel(logging.WARNING)
     logging.getLogger("lettrade.stats.stats").setLevel(logging.WARNING)
+    logging.getLogger("lettrade.bot").setLevel(logging.WARNING)
 
 
 class LetTradeBackTestBot(LetTradeBot):
@@ -65,8 +66,8 @@ class LetTradeBackTest(LetTrade):
         **kwargs,
     ):
         match data:
-            case str():
-                data = CSVBackTestDataFeed(data)
+            # case list():
+            #     data = CSVBackTestDataFeed(*data)
             case BackTestDataFeed():
                 pass
             case DataFeed():

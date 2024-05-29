@@ -2,9 +2,8 @@ import logging
 from datetime import datetime, timedelta
 from time import sleep
 
-from mt5linux import MetaTrader5 as MT5
-
 from lettrade.exchange.live.base import LiveAPI
+from mt5linux import MetaTrader5 as MT5
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +44,6 @@ class MetaTraderAPI(LiveAPI):
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
             cls._singleton = object.__new__(cls)
-            cls._singleton.__init__(*args, **kwargs)
         return cls._singleton
 
     @classmethod

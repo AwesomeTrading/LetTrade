@@ -66,6 +66,13 @@ class Statistic:
 
         # Trades
         self.result.loc["trades"] = len(trades)
+        if trades:
+            win_count = sum(1 for t in trades if t.pl > 0)
+            win_rate = win_count / len(trades) * 100
+        else:
+            win_rate = 0
+
+        self.result.loc["win_rate"] = round(win_rate, 2)
         self.result.loc["fee"] = sum(t.fee for t in trades) if trades else 0
         self.result.loc["best_trade_percent"] = (
             max(t.pl for t in trades) if trades else 0
@@ -97,6 +104,7 @@ class Statistic:
                 "max_drawdown_duration": "Max. Drawdown Duration",
                 "avg_drawdown_duration": "Avg. Drawdown Duration",
                 "trades": "# Trades",
+                "win_rate": "Win Rate [%]",
                 "fee": "Fee [$]",
                 "best_trade_percent": "Best Trade [%]",
                 "worst_trade_percent": "Worst Trade [%]",

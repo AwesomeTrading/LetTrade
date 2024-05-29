@@ -1,9 +1,10 @@
 import logging
+import time
 from datetime import datetime, timedelta
-from time import sleep
+
+from mt5linux import MetaTrader5 as MT5
 
 from lettrade.exchange.live.base import LiveAPI
-from mt5linux import MetaTrader5 as MT5
 
 logger = logging.getLogger(__name__)
 
@@ -57,11 +58,12 @@ class MetaTraderAPI(LiveAPI):
 
     @classmethod
     def _wine_process(cls, wine: str):
-        import time
         from subprocess import Popen
 
         logger.info("Start Wine MetaTrader rpyc from path: %s", wine)
         Popen(wine, shell=True)
+
+        # Wait for wine start
         time.sleep(5)
 
     def __init__(
@@ -104,7 +106,7 @@ class MetaTraderAPI(LiveAPI):
                 if __debug__:
                     logger.info("Login retry: %d", retry)
 
-                sleep(1)
+                time.sleep(1)
                 retry -= 1
 
             if retry == 0:
@@ -121,6 +123,13 @@ class MetaTraderAPI(LiveAPI):
         logger.info("Terminal information: %s", str(terminal))
         if not terminal.trade_allowed:
             logger.warning("Terminal trading mode is not allowed")
+
+        # Preload trading data
+        now = datetime.now()
+        self._mt5.history_deals_get(now - timedelta(weeks=4), now)
+        self._mt5.orders_get()
+        self._mt5.positions_get()
+        time.sleep(5)
 
     def start(self, callbacker=None):
         self._callbacker = callbacker

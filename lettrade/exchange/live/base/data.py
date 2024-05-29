@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime, timezone
 from typing import Type
 
 import pandas as pd

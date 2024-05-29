@@ -85,7 +85,8 @@ class DataFeedIndex(pd.DatetimeIndex):
     def __getitem__(self, value):
         if isinstance(value, int):
             # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
-            return super().__getitem__(self._pointer + value)
+            # return super().__getitem__(self._pointer + value)
+            value += self._pointer
         return super().__getitem__(value)
 
     def get_loc(self, key, *args, **kwargs):
@@ -117,7 +118,11 @@ class DataFeedIndex(pd.DatetimeIndex):
     def _cmp_method(self, other, op):
         if isinstance(other, int):
             other = self[other]
-        logger.warning("[TEST] DataFeedIndex._cmp_method %s %s", other, op)
+        logger.warning(
+            "[TEST] DataFeedIndex._cmp_method other=%s, operator=%s",
+            other,
+            op,
+        )
         return super()._cmp_method(other, op)
 
 

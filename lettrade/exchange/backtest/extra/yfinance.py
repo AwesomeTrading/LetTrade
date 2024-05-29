@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from lettrade.data.exporter.csv import csv_export
+from lettrade.data.extra.csv import csv_export
 
 logger = logging.getLogger(__name__)
 

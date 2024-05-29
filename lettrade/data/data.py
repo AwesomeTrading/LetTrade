@@ -1,5 +1,4 @@
 import logging
-import math
 import re
 from typing import Optional
 
@@ -90,115 +89,6 @@ class TimeFrame:
         return at.ceil(freq=self.string_pandas)
 
 
-# _timeframe_foramt = re.compile(r"^(\d+)(\w+)$")
-# class TimeFrame(pd.Timedelta):
-#     _tf_value: int
-#     _tf_unit: str
-
-#     def __new__(cls, tf: str | pd.Timedelta) -> None:
-#         if isinstance(tf, str):
-#             string = tf
-#             delta = TIMEFRAME_STR_2_DELTA[tf]
-#         elif isinstance(tf, pd.Timedelta):
-#             delta = tf
-#             string = TIMEFRAME_DELTA_2_STR[tf]
-#         elif isinstance(tf, int):
-#             delta = pd.Timedelta(tf, unit="m")
-#             string = TIMEFRAME_DELTA_2_STR[tf]
-#         elif isinstance(tf, cls.__class__):
-#             string = tf.string()
-#             delta = tf
-#         else:
-#             raise RuntimeError("Timeframe %s is invalid format", tf)
-
-#         # # Parse unit
-#         # if delta.unit == "ns":
-#         #     seconds = delta.total_seconds()
-#         #     if seconds < 60:  # Seconds
-#         #         raise NotImplementedError("TimeFrame seconds is not implement yet")
-#         #     if seconds < 60 * 60:  # Minutes
-#         #         minutes = math.floor(seconds / 60)
-#         #         delta = pd.Timedelta(minutes, unit="m")
-#         #     elif seconds < 24 * 60 * 60:  # Hours
-#         #         hours = math.floor(seconds / (60 * 60))
-#         #         delta = pd.Timedelta(hours, unit="h")
-#         #     elif seconds < 7 * 24 * 60 * 60:  # Days
-#         #         hours = math.floor(seconds / (24 * 60 * 60))
-#         #         delta = pd.Timedelta(hours, unit="day")
-#         #     elif seconds == 7 * 24 * 60 * 60:  # Days
-#         #         delta = pd.Timedelta(1, unit="W")
-#         #     else:
-#         #         raise NotImplementedError(f"TimeFrame {delta} is not implement yet")
-
-#         searchs = _timeframe_foramt.search(string)
-#         if not searchs:
-#             raise RuntimeError(
-#                 f"TimeFrame {string} is invalid format {_timeframe_foramt}"
-#             )
-#         value = int(searchs.group(1))
-#         unit = searchs.group(2)
-
-#         # Init object
-#         delta = super().__new__(TimeFrame, delta)
-#         delta.__class__ = cls
-
-#         print("__new__", delta, type(delta))
-
-#         setattr(delta, "_tf_value", value)
-#         setattr(delta, "_tf_unit", unit)
-#         return delta
-
-#     def __init__(self, *args, **kwargs) -> None:
-#         print("init", *args, **kwargs)
-#         super().__init__()
-
-#     def get_string(self, pandas=False):
-#         return f"{self._tf_value}{self.get_unit(pandas=pandas)}"
-
-#     def get_value(self):
-#         return self._tf_value
-
-#     def get_unit(self, pandas=False):
-#         if pandas:
-#             if self._tf_unit == "d":
-#                 return "day"
-#             if self._tf_unit == "w":
-#                 return "W"
-#         return self._tf_unit
-
-#     def get_floor(self, at: pd.Timestamp):
-#         # seconds = self.total_seconds()
-
-#         # if seconds < 60:  # Seconds
-#         #     raise NotImplementedError("TimeFrame seconds is not implement yet")
-
-#         # if seconds < 60 * 60:  # Minutes
-#         #     # begin = at.replace(minute=0, second=0, microsecond=0)
-#         #     begin = at.floor(freq=self.get_string(pandas=True))
-#         # elif seconds < 24 * 60 * 60:  # Hours
-#         #     begin = at.replace(hour=0, minute=0, second=0, microsecond=0)
-#         # elif seconds < 7 * 24 * 60 * 60:  # Days
-#         #     begin = at.replace(day=0, hour=0, minute=0, second=0, microsecond=0)
-#         # else:
-#         #     raise NotImplementedError(f"TimeFrame {self} is not implement yet")
-
-#         # step = math.floor((at - begin) / self)
-#         # return begin + step * self
-
-#         return at.floor(freq=self.get_string(pandas=True))
-
-#     def get_ceil(self, at: pd.Timestamp):
-#         # return self.floor(at) + self
-#         return at.ceil(freq=self.get_string(pandas=True))
-
-#     # Bypass pickle
-#     def __copy__(self):
-#         return self.__new__(TimeFrame, self)
-
-#     def __deepcopy__(self, memo=None):
-#         return self.__new__(TimeFrame, self)
-
-
 class DataFeedIndex(pd.DatetimeIndex):
     _pointer: int = 0
 
@@ -211,7 +101,10 @@ class DataFeedIndex(pd.DatetimeIndex):
 
     def get_loc(self, key, *args, **kwargs):
         # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
-        return key + self._pointer
+        if isinstance(key, int):
+            # return self._values[key + self._pointer]
+            key += self._pointer
+        return super().get_loc(key)
 
     @property
     def pointer(self):
@@ -219,6 +112,9 @@ class DataFeedIndex(pd.DatetimeIndex):
 
     def next(self, next=1):
         self._pointer += next
+
+    def go_end(self):
+        self._pointer = len(self._values) - 1
 
     @property
     def start(self) -> int:
@@ -245,6 +141,13 @@ class DataFeedIndex(pd.DatetimeIndex):
         )
         return super()._cmp_method(other, op)
 
+    # # Bypass pickle
+    # def __copy__(self):
+    #     return self.__new__(DataFeedIndex, self)
+
+    # def __deepcopy__(self, memo=None):
+    #     return self.__new__(DataFeedIndex, self)
+
 
 class DataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
@@ -256,7 +159,7 @@ class DataFeed(pd.DataFrame):
         # data: pd.DataFrame,
         timeframe: TimeFrame,
         meta: Optional[dict] = None,
-        # dtype={},
+        # dtype: list[tuple] = [],
         **kwargs,
     ) -> None:
         """_summary_
@@ -270,34 +173,17 @@ class DataFeed(pd.DataFrame):
         # Validate
         if not _data_name_pattern.match(name):
             raise RuntimeError(
-                "Bot name %s is not valid format %s",
-                name,
-                _data_name_pattern,
+                f"Bot name {name} is not valid format {_data_name_pattern}"
             )
 
-        # dtype.update(
-        #     {
-        #         "datetime": "datetime64[ns, UTC]",
-        #         "open": "float",
-        #         "high": "float",
-        #         "low": "float",
-        #         "close": "float",
-        #         "volume": "float",
-        #     }
-        # )
-        # print(dtype)
-        # data.set_index(
-        #     pd.DatetimeIndex(data.datetime, dtype="datetime64[ns, UTC]"), inplace=True
-        # )
-        # print(data.index.tz_convert(pytz.utc))
-
         super().__init__(*args, **kwargs)
+        if not isinstance(self.index, pd.DatetimeIndex):
+            if not self.empty:
+                raise RuntimeError("Index is not pandas.DatetimeIndex format")
+            self.index = self.index.astype("datetime64[ns, UTC]")
+
         self.index.rename("datetime", inplace=True)
         self.index.__class__ = DataFeedIndex
-
-        # if not isinstance(self.index, pd.RangeIndex):
-        #     self.reset_index(inplace=True)
-        # self.index = pd.RangeIndex(start=0, stop=len(self.index), step=1)
 
         # Metadata
         if not meta:
@@ -309,13 +195,12 @@ class DataFeed(pd.DataFrame):
     def __getitem__(self, i):
         if isinstance(i, int):
             logger.warning("[TEST] DataFeed get item %s", i)
-            return self.loc[i]
+            return self.iloc[i]
         return super().__getitem__(i)
 
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
         df = self.__class__(data=df, name=self.name, timeframe=self.timeframe)
-        # df.reset_index(inplace=True)
         return df
 
     # Properties
@@ -350,6 +235,41 @@ class DataFeed(pd.DataFrame):
     def next(self, size=1) -> bool:
         raise NotImplementedError("Method is not implement yet")
 
+    # def append(self, index, columns, row):
+    #     df = pd.DataFrame()
+    #     self.loc[
+    #         index,
+    #         columns,
+    #     ] = [
+    #         row[1],  # open
+    #         row[2],  # high
+    #         row[3],  # low
+    #         row[4],  # close
+    #         row[5],  # volume
+    #     ]
+
     def _set_main(self):
         """Set this dataframe is main datafeed"""
         self.meta["is_main"] = True
+
+    def push(self, rows: list):
+        cls = self.index.__class__
+        for row in rows:
+            dt = pd.to_datetime(row[0], unit="s")
+            self.loc[
+                dt,
+                [
+                    "open",
+                    "high",
+                    "low",
+                    "close",
+                    "volume",
+                ],
+            ] = [
+                row[1],  # open
+                row[2],  # high
+                row[3],  # low
+                row[4],  # close
+                row[5],  # volume
+            ]
+        self.index.__class__ = cls

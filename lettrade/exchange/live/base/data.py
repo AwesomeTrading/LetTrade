@@ -25,7 +25,7 @@ class LiveDataFeed(DataFeed):
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
             timeframe=timeframe,
-            columns=["datetime", "open", "high", "low", "close", "volume"],
+            columns=["open", "high", "low", "close", "volume"],
             # dtype=[
             #     ("datetime", "datetime64[ns]"),
             #     ("open", "float64"),
@@ -70,48 +70,8 @@ class LiveDataFeed(DataFeed):
         return self.on_rates(rates, tick=tick)
 
     def on_rates(self, rates, tick=0):
-        i_next = 0
-        if not self.empty:
-            now = self.now.timestamp()
-
-            # Remove incompleted bar
-            if tick < 0:
-                rates = rates[:-1]
-
-            rates = rates[rates["time"] >= now]
-            if __debug__:
-                logger.info("[%s] Rates: %s", self.name, rates)
-
-            # No new data
-            if len(rates) == 0:
-                return False
-
-            # Update next bar if has new time
-            if rates[0][0] > now:
-                i_next = 1
-
-        for i, rate in enumerate(rates, start=i_next):
-            # TODO: using self.insert()
-            self.loc[
-                i,
-                [
-                    "datetime",
-                    "open",
-                    "high",
-                    "low",
-                    "close",
-                    "volume",
-                ],
-            ] = [
-                datetime.fromtimestamp(rate[0], timezone.utc),  # datetime
-                rate[1],  # open
-                rate[2],  # high
-                rate[3],  # low
-                rate[4],  # close
-                rate[5],  # volume
-            ]
-
-        self.index = range(-len(self.index) + 1, 1, 1)
+        self.push(rates)
+        self.index.go_end()
         return True
 
     def dump_csv(self, path: str = None, since=0, to=1000):

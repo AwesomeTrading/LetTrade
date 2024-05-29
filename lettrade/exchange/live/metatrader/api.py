@@ -50,11 +50,15 @@ class MetaTraderAPI(LiveAPI):
 
     @classmethod
     def multiprocess(cls, kwargs, **other_kwargs):
-        if "wine" not in kwargs or kwargs["wine"] is None:
+        # Pop to remove parameter "wine", then subprocess will not start wine server
+        wine = kwargs.pop("wine", None)
+        if not wine:
             return
 
-        wine = kwargs["wine"]
+        cls._wine_process(wine)
 
+    @classmethod
+    def _wine_process(cls, wine: str):
         import time
         from subprocess import Popen
 
@@ -71,8 +75,13 @@ class MetaTraderAPI(LiveAPI):
         retry: int = 20,
         host: str = "localhost",
         port: int = 18812,
+        wine: str = None,
         **kwargs,
     ):
+        # Start wine server if not inited
+        if wine:
+            self.__class__._wine_process(wine)
+
         try:
             self._mt5 = MT5(host=host, port=port)
         except ConnectionRefusedError as e:

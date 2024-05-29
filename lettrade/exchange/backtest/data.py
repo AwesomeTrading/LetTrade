@@ -3,7 +3,6 @@ import re
 from typing import Optional
 
 import pandas as pd
-
 from lettrade.data import DataFeed, TimeFrame
 
 logger = logging.getLogger(__name__)
@@ -144,7 +143,8 @@ class CSVBackTestDataFeed(BackTestDataFeed):
                 delimiter=delimiter,
                 header=header,
             )
-            data.index = data.index.astype("datetime64[ns, UTC]")
+            if not isinstance(data.index, pd.DatetimeIndex):
+                data.index = data.index.astype("datetime64[ns, UTC]")
         # df.reset_index(inplace=True)
 
         super().__init__(

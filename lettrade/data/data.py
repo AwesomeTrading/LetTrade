@@ -96,7 +96,6 @@ class DataFeedIndex(pd.DatetimeIndex):
     def __getitem__(self, value):
         if isinstance(value, int):
             # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
-            # return super().__getitem__(self._pointer + value)
             value += self._pointer
         return super().__getitem__(value)
 
@@ -192,6 +191,7 @@ class DataFeed(pd.DataFrame):
             self.index = self.index.astype("datetime64[ns, UTC]")
 
         self.index.rename("datetime", inplace=True)
+
         self._mgr.__class__ = DataFeedBlockManager
         self.index.__class__ = DataFeedIndex
         self.index.go_start()
@@ -284,3 +284,5 @@ class DataFeed(pd.DataFrame):
                 row[5],  # volume
             ]
         self.index.__class__ = cls
+
+        logger.info("[%s] New bar: \n%s", self.name, self.tail(1))

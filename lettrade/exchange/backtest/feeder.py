@@ -59,12 +59,16 @@ class BackTestDataFeeder(DataFeeder):
 
         next = self.data.datetime[1]
 
-        has_next = True
+        no_next = 0
         for data in self.datas:
             if not data.next(next=next):
-                has_next = False
+                if data is self.data:
+                    # Always end
+                    no_next += 1000
+                    break
+                no_next += 1
 
-        if not has_next:
+        if no_next >= len(self.datas):
             # Skip lastest available bar, because if next some data feeded some are not
             raise LetTradeNoMoreDataFeed()
 

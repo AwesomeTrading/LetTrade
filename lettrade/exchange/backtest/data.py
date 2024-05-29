@@ -64,15 +64,20 @@ class BackTestDataFeed(DataFeed):
 
             size = 0
             while True:
-                dt_next = self.datetime[size + 1]
-                # No more next data
-                if not dt_next:
+                try:
+                    dt_next = self.datetime[size + 1]
+                    # No more next data
+                    # if not dt_next:
+                    #     has_next = False
+                    #     break
+
+                    if dt_next > next:
+                        break
+                    size += 1
+                except IndexError:
+                    # raise LetTradeNoMoreDataFeed()
                     has_next = False
                     break
-
-                if dt_next > next:
-                    break
-                size += 1
 
             # validate
             now = self.datetime[size]
@@ -175,7 +180,7 @@ class YFBackTestDataFeed(BackTestDataFeed):
         df = yf.download(ticker, **params)
 
         # Parse to lettrade datafeed
-        from .yfinance import yf_parse
+        from .extra.yfinance import yf_parse
 
         df = yf_parse(df)
         # TODO: WIP

@@ -19,26 +19,14 @@ class LiveDataFeed(DataFeed):
         symbol: str,
         timeframe: str | int | pd.Timedelta,
         name: str = None,
-        *args,
         **kwargs,
     ) -> None:
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
             timeframe=timeframe,
             columns=["open", "high", "low", "close", "volume"],
-            # dtype=[
-            #     ("datetime", "datetime64[ns]"),
-            #     ("open", "float64"),
-            #     ("high", "float64"),
-            #     ("low", "float64"),
-            #     ("close", "float64"),
-            #     ("volume", "float64"),
-            # ],
-            *args,
             **kwargs,
         )
-        # self["datetime"] = pd.to_datetime(self["datetime"])
-
         self.meta.update(dict(symbol=symbol))
 
     @property

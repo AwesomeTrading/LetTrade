@@ -3,6 +3,7 @@ import re
 from typing import Optional
 
 import pandas as pd
+from pandas.core.internals.managers import BlockManager, SingleBlockManager
 
 logger = logging.getLogger(__name__)
 _data_name_pattern = re.compile(r"^[\w\_]+$")
@@ -102,8 +103,7 @@ class DataFeedIndex(pd.DatetimeIndex):
     def get_loc(self, key, *args, **kwargs):
         # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
         if isinstance(key, int):
-            # return self._values[key + self._pointer]
-            key += self._pointer
+            return key + self._pointer
         return super().get_loc(key)
 
     @property
@@ -112,6 +112,9 @@ class DataFeedIndex(pd.DatetimeIndex):
 
     def next(self, next=1):
         self._pointer += next
+
+    def go_start(self):
+        self._pointer = 0
 
     def go_end(self):
         self._pointer = len(self._values) - 1
@@ -149,6 +152,12 @@ class DataFeedIndex(pd.DatetimeIndex):
     #     return self.__new__(DataFeedIndex, self)
 
 
+class DataFeedBlockManager(BlockManager):
+    def fast_xs(self, loc: int) -> SingleBlockManager:
+        index = self.axes[1]
+        return super().fast_xs(loc + index._pointer)
+
+
 class DataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
@@ -183,7 +192,9 @@ class DataFeed(pd.DataFrame):
             self.index = self.index.astype("datetime64[ns, UTC]")
 
         self.index.rename("datetime", inplace=True)
+        self._mgr.__class__ = DataFeedBlockManager
         self.index.__class__ = DataFeedIndex
+        self.index.go_start()
 
         # Metadata
         if not meta:
@@ -194,7 +205,7 @@ class DataFeed(pd.DataFrame):
 
     def __getitem__(self, i):
         if isinstance(i, int):
-            logger.warning("[TEST] DataFeed get item %s", i)
+            # logger.warning("[TEST] DataFeed get item %s", i)
             return self.iloc[i]
         return super().__getitem__(i)
 

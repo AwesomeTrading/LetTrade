@@ -120,7 +120,7 @@ class PlotlyPlotter(Plotter):
             ),
             # autosize=False,
             # width=800,
-            height=600 * plot_rows,
+            height=1_000 * plot_rows,
             modebar_add=[
                 "v1hovermode",
                 "hoverclosest",

@@ -79,7 +79,7 @@ class LiveDataFeed(DataFeed):
             self._next(size=to)
 
         if path is None:
-            path = f"data/{self.name}_{since}_{to}.csv"
+            path = f"data/{self.name}-{since}_{to}.csv"
 
         from lettrade.data.extra.csv import csv_export
 

@@ -59,7 +59,7 @@ class LiveDataFeed(DataFeed):
     def _next(self, size=1, tick=0):
         rates = self._api.bars(
             symbol=self.symbol,
-            timeframe=self.timeframe.string(),
+            timeframe=self.timeframe.string,
             since=0,
             to=size + 1,  # Get last completed bar
         )
@@ -121,7 +121,7 @@ class LiveDataFeed(DataFeed):
         if path is None:
             path = f"data/{self.name}_{since}_{to}.csv"
 
-        from lettrade.data.exporter.csv import csv_export
+        from lettrade.data.extra.csv import csv_export
 
         csv_export(dataframe=self, path=path)
 

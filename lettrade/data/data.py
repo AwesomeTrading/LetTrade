@@ -48,13 +48,19 @@ class TimeFrame:
             self.unit = tf.unit
             self.unit_pandas = tf.unit_pandas
             self.value = tf.value
-        if isinstance(tf, str):
+        elif isinstance(tf, str):
             map = TIMEFRAME_STR_2_DELTA[tf]
             self.value = map[0]
             self.unit = map[1]
             self.unit_pandas = map[2]
             self.delta = pd.Timedelta(map[3])
-        if isinstance(tf, pd.Timedelta):
+        elif isinstance(tf, int):
+            map = TIMEFRAME_STR_2_DELTA[f"{tf}m"]
+            self.value = map[0]
+            self.unit = map[1]
+            self.unit_pandas = map[2]
+            self.delta = pd.Timedelta(map[3])
+        elif isinstance(tf, pd.Timedelta):
             map = TIMEFRAME_DELTA_2_STR[tf]
             self.value = map[0]
             self.unit = map[1]
@@ -62,6 +68,9 @@ class TimeFrame:
             self.delta = pd.Timedelta(tf)
         else:
             raise RuntimeError(f"Timeframe {tf} is invalid format")
+
+    def __repr__(self) -> str:
+        return self.string
 
     @property
     def string(self):

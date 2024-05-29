@@ -36,7 +36,7 @@ class BackTestDataFeed(DataFeed):
         dt = df.datetime if "datetime" in df.columns else df.index
         if len(df.index) < 3:
             raise RuntimeError("DataFeed not enough data to detect timeframe")
-        for i in range(0, 5):
+        for i in range(0, 3):
             tf = dt[i + 1] - dt[i]
             if tf == dt[i + 2] - dt[i + 1]:
                 return tf
@@ -55,47 +55,36 @@ class BackTestDataFeed(DataFeed):
         self,
         size: int = 1,
         next: Optional[pd.Timestamp] = None,
-        timeframe: Optional[TimeFrame] = None,
+        missing="bypass",
     ) -> bool:
         has_next = True
         if not self.is_main:
             if next is None:
                 raise RuntimeError("DataFeed parameter next is None")
-            size = 0
 
+            size = 0
             while True:
-                dt = self.datetime[size]
+                dt_next = self.datetime[size + 1]
                 # No more next data
-                if not dt:
+                if not dt_next:
                     has_next = False
                     break
 
-                if dt == next:
+                if dt_next > next:
                     break
-                if dt > next:
-                    # Higher timeframe
-                    if self.timeframe > timeframe:
-                        if dt - next > self.timeframe:
-                            raise RuntimeError(
-                                f"DataFeed {self.name} missing data from {next} to {dt}",
-                            )
-                        break
-
-                    raise RuntimeError(
-                        f"DataFeed {self.name} missing data from {next} to {dt}",
-                    )
                 size += 1
+
+            # validate
+            now = self.datetime[size]
+            floor = self.timeframe.floor(next)
+            if now != floor and missing != "bypass":
+                raise RuntimeError(
+                    f"DataFeed {self.name}: jump from [{now} to {self.datetime[size+1]}]"
+                    f" missing range [{floor} to {next}]",
+                )
+
         if size > 0:
             self.index.next(size)
-            # self.index = pd.RangeIndex(
-            #     self.index.start - size,
-            #     self.index.stop - size,
-            # )
-        # else:
-        #     if self.timeframe == timeframe:
-        #         print(
-        #             "------>", self.name, self.datetime[-1], self.now, next, self.index
-        #         )
         return has_next
 
 

@@ -23,9 +23,12 @@ class BackTestDataFeeder(DataFeeder):
         # self._cleanup_data()
 
         next = self.data.datetime[size]
-        timeframe = self.data.timeframe
         for data in self.datas:
-            data.next(size=size, next=next, timeframe=timeframe)
+            data.next(
+                size=size,
+                next=next,
+                missing="bypass",
+            )
 
     # def _cleanup_data(self):
     #     # Synchronize start time
@@ -55,11 +58,10 @@ class BackTestDataFeeder(DataFeeder):
             return False
 
         next = self.data.datetime[1]
-        timeframe = self.data.timeframe
 
         has_next = True
         for data in self.datas:
-            if not data.next(next=next, timeframe=timeframe):
+            if not data.next(next=next):
                 has_next = False
 
         if not has_next:

@@ -144,6 +144,7 @@ class CSVBackTestDataFeed(BackTestDataFeed):
                 delimiter=delimiter,
                 header=header,
             )
+            data.index = data.index.astype("datetime64[ns, UTC]")
         # df.reset_index(inplace=True)
 
         super().__init__(

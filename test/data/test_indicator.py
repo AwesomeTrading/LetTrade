@@ -16,6 +16,7 @@ class IndicatorTestCase(unittest.TestCase):
             index_col=0,
             parse_dates=["datetime"],
         )
+        self.raw_data.reset_index(inplace=True)
 
         # Ta-Lib
         self.ta_ema = ta.EMA(self.data, timeperiod=21)

@@ -14,6 +14,7 @@ class DataFeedTestCase(unittest.TestCase):
             index_col=0,
             parse_dates=["datetime"],
         )
+        self.raw_data.reset_index(inplace=True)
 
     def test_value(self):
         pdtest.assert_frame_equal(
@@ -22,6 +23,55 @@ class DataFeedTestCase(unittest.TestCase):
             "DataFrame is not equal pandas.DataFrame",
             check_index_type=False,
         )
+
+    def test_next(self):
+        df = self.data.copy(deep=True)
+        df._set_main()
+
+        for i in range(0, len(df)):
+            row = df[0]
+            raw_row = self.raw_data.iloc[i]
+
+            pdtest.assert_series_equal(
+                row,
+                raw_row,
+                f"DataFeed[{i}] is not equal",
+                check_names=False,
+            )
+
+            df.next()
+
+    def test_iloc(self):
+        df = self.data.copy(deep=True)
+        df._set_main()
+
+        for i in range(0, len(df)):
+            row = df.iloc[i]
+            raw_row = self.raw_data.iloc[i]
+
+            pdtest.assert_series_equal(
+                row,
+                raw_row,
+                f"DataFeed[{i}] is not equal",
+                check_names=False,
+            )
+            df.next()
+
+    def test_loc(self):
+        df = self.data.copy(deep=True)
+        df._set_main()
+
+        for i in range(0, len(df)):
+            row = df.loc[0]
+            raw_row = self.raw_data.iloc[i]
+
+            pdtest.assert_series_equal(
+                row,
+                raw_row,
+                f"DataFeed[{i}] is not equal",
+                check_names=False,
+            )
+            df.next()
 
 
 if __name__ == "__main__":

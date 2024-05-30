@@ -47,7 +47,7 @@ class PlotlyPlotter(Plotter):
             self._data_shape[data.name] = shape
             self.figure.add_trace(
                 go.Candlestick(
-                    x=data.index,
+                    x=data.datetime,
                     open=data["open"],
                     high=data["high"],
                     low=data["low"],

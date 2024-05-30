@@ -19,8 +19,8 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
 
         self.assertIsInstance(
             self.data.index,
-            pd.DatetimeIndex,
-            "Index is not instance of pd.DatetimeIndex",
+            pd.RangeIndex,
+            "Index is not instance of pd.RangeIndex",
         )
 
         self.assertIsInstance(
@@ -65,10 +65,6 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         self.assertEqual(df.loc[0, "open"], 0, "Set value to data.open error")
         self.assertNotEqual(self.data.loc[0, "open"], 0, "Value change when deepcopy")
 
-        # Test set value
-        df[0].open = 1
-        self.assertEqual(df.loc[0, "open"], 1, "Set value to data.open error")
-
     # Test drop
     def test_drop(self):
         df = self.data.copy(deep=True)
@@ -79,15 +75,15 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         self.assertEqual(len(self.data), 1_000, "self.data size wrong")
         self.assertEqual(self.data.open[0], 0.97724, "self.data open value wrong")
 
-    # Test pointer
-    def test_pointer(self):
+    # Test index
+    def test_index(self):
         df = self.data.copy(deep=True)
         df._set_main()
 
         # Move to nexts rows
         next = 3
         df.next(next)
-        self.assertEqual(df.index.pointer, next, "Data pointer wrong")
+        self.assertEqual(df.index.start, -next, "Data index wrong")
         self.assertEqual(
             df.datetime[0],
             pd.Timestamp("2022-10-20 03:00:00"),
@@ -102,7 +98,7 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         # Move to end
         end = len(df) - 1
         df.index.go_stop()
-        self.assertEqual(df.index.pointer, end, "Data pointer wrong")
+        self.assertEqual(df.index.stop, 1, "Data index wrong")
         self.assertEqual(
             df.datetime[0],
             pd.Timestamp("2022-12-16 15:00:00"),

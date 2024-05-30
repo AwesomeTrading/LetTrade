@@ -3,7 +3,6 @@ import re
 from typing import Optional
 
 import pandas as pd
-from pandas.core.internals.managers import BlockManager, SingleBlockManager
 
 logger = logging.getLogger(__name__)
 _data_name_pattern = re.compile(r"^[\w\_]+$")
@@ -90,74 +89,18 @@ class TimeFrame:
         return at.ceil(freq=self.string_pandas)
 
 
-class DataFeedIndex(pd.DatetimeIndex):
-    _pointer: int = 0
-
-    def __getitem__(self, value):
-        if isinstance(value, int):
-            # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
-            value += self._pointer
-        return super().__getitem__(value)
-
-    def get_loc(self, key, *args, **kwargs):
-        if isinstance(key, int):
-            # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
-            return key + self._pointer
-        return super().get_loc(key)
-
-    @property
-    def pointer(self):
-        return self._pointer
-
+class DataFeedIndex(pd.RangeIndex):
     def next(self, next=1):
-        self._pointer += next
+        self._range = range(self._range.start - next, self._range.stop - next)
 
     def go_start(self):
-        self._pointer = 0
+        self._range = range(0, len(self._values))
 
     def go_stop(self):
-        self._pointer = len(self._values) - 1
-
-    @property
-    def start(self) -> int:
-        return -self._pointer
-
-    @property
-    def stop(self) -> int:
-        return len(self._values) - self._pointer
-
-    @property
-    def _should_fallback_to_positional(self):
-        return False
+        self._range = range(-len(self._values) + 1, 1)
 
     def at(self, index: int):
         return self._values[index]
-
-    def _cmp_method(self, other, op):
-        if isinstance(other, int):
-            other = self[other]
-
-        if __debug__:
-            logger.warning(
-                "[TEST] DataFeedIndex._cmp_method other=%s, operator=%s",
-                other,
-                op,
-            )
-
-        return super()._cmp_method(other, op)
-
-    # # Bypass pickle
-    # def __copy__(self):
-    #     return self.__new__(DataFeedIndex, self)
-
-    # def __deepcopy__(self, memo=None):
-    #     return self.__new__(DataFeedIndex, self)
-
-
-class DataFeedBlockManager(BlockManager):
-    def fast_xs(self, loc: int) -> SingleBlockManager:
-        index = self.axes[1]
-        return super().fast_xs(loc + index._pointer)
 
 
 class DataFeed(pd.DataFrame):
@@ -188,16 +131,18 @@ class DataFeed(pd.DataFrame):
             )
 
         super().__init__(*args, **kwargs)
-        if not isinstance(self.index, pd.DatetimeIndex):
-            if not self.empty:
-                raise RuntimeError("Index is not pandas.DatetimeIndex format")
-            self.index = self.index.astype("datetime64[ns, UTC]")
+        if isinstance(self.index, pd.DatetimeIndex):
+            self.reset_index(inplace=True)
+        #     if not self.empty:
+        #         raise RuntimeError("Index is not pandas.DatetimeIndex format")
+        #     self.index = self.index.astype("datetime64[ns, UTC]")
 
-        self.index.rename("datetime", inplace=True)
+        if not isinstance(self.index, pd.RangeIndex):
+            self.reset_index(inplace=True)
+            # self.index = pd.RangeIndex(start=0, stop=len(self.index), step=1)
 
-        self._mgr.__class__ = DataFeedBlockManager
         self.index.__class__ = DataFeedIndex
-        self.index.go_start()
+        # self.index.go_start()
 
         # Metadata
         if not meta:
@@ -209,7 +154,7 @@ class DataFeed(pd.DataFrame):
     def __getitem__(self, i):
         if isinstance(i, int):
             # logger.warning("[TEST] DataFeed get item %s", i)
-            return self.iloc[i]
+            return self.loc[i]
         return super().__getitem__(i)
 
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
@@ -218,10 +163,6 @@ class DataFeed(pd.DataFrame):
         return df
 
     # Properties
-    @property
-    def datetime(self) -> pd.DatetimeIndex:
-        return self.index
-
     @property
     def meta(self) -> dict:
         return self.attrs["lt_meta"]
@@ -239,12 +180,13 @@ class DataFeed(pd.DataFrame):
         return self.meta.get("is_main", False)
 
     @property
-    def now(self) -> datetime:
-        return self.index[0]
+    def now(self) -> pd.Timestamp:
+        return self.datetime.loc[0]
 
     # Functions
-    def bar(self, i=0) -> datetime:
-        return self.index[i]
+    def bar(self, i=0) -> pd.Timestamp:
+        print(self, self.index)
+        return self.datetime.loc[i]
 
     def next(self, size=1) -> bool:
         raise NotImplementedError("Method is not implement yet")
@@ -267,12 +209,20 @@ class DataFeed(pd.DataFrame):
         self.meta["is_main"] = True
 
     def push(self, rows: list):
-        cls = self.index.__class__
-        for row in rows:
+        if len(rows) == 0:
+            return
+
+        if self.empty:
+            i_start = 0
+        else:
+            i_start = -len(rows) + 1
+
+        for i, row in enumerate(rows):
             dt = pd.to_datetime(row[0], unit="s")
             self.loc[
-                dt,
+                i_start + i,
                 [
+                    "datetime",
                     "open",
                     "high",
                     "low",
@@ -280,13 +230,14 @@ class DataFeed(pd.DataFrame):
                     "volume",
                 ],
             ] = [
+                dt,
                 row[1],  # open
                 row[2],  # high
                 row[3],  # low
                 row[4],  # close
                 row[5],  # volume
             ]
-        self.index.__class__ = cls
+        self.index = DataFeedIndex(-len(self.index) + 1, 1)
 
         if __debug__:
             logger.info("[%s] New bar: \n%s", self.name, self.tail(1))

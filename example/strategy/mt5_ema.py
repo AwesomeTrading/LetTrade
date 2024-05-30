@@ -43,13 +43,13 @@ class SmaCross(Strategy):
         return dict(
             scatters=[
                 dict(
-                    x=df.index,
+                    x=df.datetime,
                     y=df["ema1"],
                     line=dict(color="blue", width=1),
                     name="ema1",
                 ),
                 dict(
-                    x=df.index,
+                    x=df.datetime,
                     y=df["ema2"],
                     line=dict(color="green", width=1),
                     name="ema2",
@@ -61,7 +61,8 @@ class SmaCross(Strategy):
 if __name__ == "__main__":
     lt = let_metatrader(
         strategy=SmaCross,
-        datas=[[("EURUSD", "1m")], [("GBPUSD", "1m")]],
+        datas=[("EURUSD", "1m")],
+        # datas=[[("EURUSD", "1m")], [("GBPUSD", "1m")]],
         login=int(os.environ["MT5_LOGIN"]),
         password=os.environ["MT5_PASSWORD"],
         server=os.environ["MT5_SERVER"],

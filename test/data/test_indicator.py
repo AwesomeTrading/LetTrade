@@ -17,7 +17,6 @@ class IndicatorTestCase(unittest.TestCase):
 
         # Pandas_TA
         self.pdta_ema = pdta.ema(self.data.close, length=21)
-        self.pdta_ema.name = None
 
     def test_types(self):
         self.assertIsInstance(
@@ -32,7 +31,7 @@ class IndicatorTestCase(unittest.TestCase):
         )
 
     def test_value(self):
-        pdtest.assert_series_equal(self.ta_ema, self.pdta_ema)
+        pdtest.assert_series_equal(self.ta_ema, self.pdta_ema, check_names=False)
 
 
 if __name__ == "__main__":

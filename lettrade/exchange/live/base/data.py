@@ -59,7 +59,7 @@ class LiveDataFeed(DataFeed):
 
     def on_rates(self, rates, tick=0):
         self.push(rates)
-        self.index.go_end()
+        self.index.go_stop()
         return True
 
     def dump_csv(

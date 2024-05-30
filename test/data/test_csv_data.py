@@ -101,7 +101,7 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
 
         # Move to end
         end = len(df) - 1
-        df.index.go_end()
+        df.index.go_stop()
         self.assertEqual(df.index.pointer, end, "Data pointer wrong")
         self.assertEqual(
             df.datetime[0],

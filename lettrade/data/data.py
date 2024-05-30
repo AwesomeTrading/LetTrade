@@ -100,8 +100,8 @@ class DataFeedIndex(pd.DatetimeIndex):
         return super().__getitem__(value)
 
     def get_loc(self, key, *args, **kwargs):
-        # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
         if isinstance(key, int):
+            # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
             return key + self._pointer
         return super().get_loc(key)
 
@@ -115,7 +115,7 @@ class DataFeedIndex(pd.DatetimeIndex):
     def go_start(self):
         self._pointer = 0
 
-    def go_end(self):
+    def go_stop(self):
         self._pointer = len(self._values) - 1
 
     @property

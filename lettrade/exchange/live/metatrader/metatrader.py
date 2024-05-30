@@ -84,6 +84,8 @@ class LetTradeMetaTraderBot(LetTradeLiveBot):
 class LetTradeMetaTrader(LetTradeLive):
     """Help to maintain metatrader bots"""
 
+    _data_cls: Type[MetaTraderDataFeed] = MetaTraderDataFeed
+
     def __init__(
         self,
         feeder: Type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
@@ -119,6 +121,7 @@ def let_metatrader(
     plotter: Optional[Type["Plotter"]] = None,
     stats: Optional[Type["Statistic"]] = Statistic,
     bot: Optional[Type[LetTradeMetaTraderBot]] = LetTradeMetaTraderBot,
+    lettrade: Optional[Type[LetTradeMetaTrader]] = LetTradeMetaTrader,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     wine: Optional[str] = None,
     **kwargs,
@@ -161,7 +164,8 @@ def let_metatrader(
         commander=commander,
         plotter=plotter,
         stats=stats,
-        api=api,
         bot=bot,
+        lettrade=lettrade,
+        api=api,
         **kwargs,
     )

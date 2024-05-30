@@ -42,6 +42,8 @@ class LetTradeLiveBot(LetTradeBot):
 class LetTradeLive(LetTrade):
     """Help to maintain live bots"""
 
+    _data_cls: Type[LiveDataFeed] = LiveDataFeed
+
     def _multiprocess(self, **kwargs):
         # Impletement api dependencies and save to api_kwargs
         api: Type[LiveAPI] = self._kwargs.get("api")
@@ -63,18 +65,18 @@ class LetTradeLive(LetTrade):
             symbol, timeframe = data[0], data[1]
             name = data[2] if len(data) > 2 else None
 
-            data = LiveDataFeed(
+            data = self._data_cls(
                 name=name,
                 symbol=symbol,
                 timeframe=timeframe,
             )
         elif isinstance(data, Dict):
-            data = LiveDataFeed(
+            data = self._data_cls(
                 symbol=data.get("symbol"),
                 timeframe=data.get("timeframe"),
                 name=data.get("name", None),
             )
-        elif isinstance(data, LiveDataFeed):
+        elif isinstance(data, self._data_cls):
             pass
         else:
             return RuntimeError(f"Data {data} is not support yet")
@@ -88,8 +90,9 @@ def let_live(
     commander: Optional[Commander] = None,
     plotter: Optional[Type["Plotter"]] = None,
     stats: Optional[Type["Statistic"]] = Statistic,
-    api: Optional[Type[LiveAPI]] = LiveAPI,
+    lettrade: Optional[Type[LetTradeLive]] = LetTradeLive,
     bot: Optional[Type[LetTradeLiveBot]] = LetTradeLiveBot,
+    api: Optional[Type[LiveAPI]] = LiveAPI,
     **kwargs,
 ) -> "LetTradeLive":
     """Help to build `LetTradeLive`
@@ -102,11 +105,12 @@ def let_live(
         stats (Optional[Type[&quot;Statistic&quot;]], optional): _description_. Defaults to Statistic.
         api (Optional[Type[LiveAPI]], optional): _description_. Defaults to LiveAPI.
         bot (Optional[Type[LetTradeLiveBot]], optional): _description_. Defaults to LetTradeLiveBot.
+        lettrade (Optional[Type[LetTradeLive]], optional): _description_. Defaults to LetTradeLive.
 
     Returns:
         LetTradeLive: _description_
     """
-    return LetTradeLive(
+    return lettrade(
         strategy=strategy,
         datas=datas,
         commander=commander,

@@ -13,7 +13,7 @@ import logging
 import time
 from functools import partial, wraps
 from multiprocessing import Manager, Queue
-from multiprocessing.managers import BaseManager, SyncManager
+from multiprocessing.managers import BaseManager
 from threading import Thread
 from typing import Any, Callable, Coroutine, Dict, List, Literal, Optional, Union
 

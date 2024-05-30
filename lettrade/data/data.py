@@ -285,4 +285,5 @@ class DataFeed(pd.DataFrame):
             ]
         self.index.__class__ = cls
 
-        logger.info("[%s] New bar: \n%s", self.name, self.tail(1))
+        if __debug__:
+            logger.info("[%s] New bar: \n%s", self.name, self.tail(1))

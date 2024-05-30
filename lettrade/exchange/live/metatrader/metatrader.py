@@ -24,14 +24,14 @@ logger = logging.getLogger(__name__)
 
 
 class MetaTraderDataFeed(LiveDataFeed):
-    """"""
+    """DataFeed for MetaTrader"""
 
     api_cls: Type[MetaTraderAPI] = MetaTraderAPI
     """API to communicate with MetaTrader Terminal"""
 
 
 class MetaTraderDataFeeder(LiveDataFeeder):
-    """"""
+    """DataFeeder for MetaTrader"""
 
 
 class MetaTraderExecute(LiveExecute):
@@ -41,7 +41,7 @@ class MetaTraderExecute(LiveExecute):
 
 
 class MetaTraderOrder(LiveOrder):
-    """"""
+    """Order for MetaTrader"""
 
     def _build_place_request(self):
         tick = self._api.tick_get(self.data.symbol)
@@ -66,11 +66,11 @@ class MetaTraderOrder(LiveOrder):
 
 
 class MetaTraderTrade(LiveTrade):
-    """"""
+    """Trade for MetaTrader"""
 
 
 class MetaTraderAccount(LiveAccount):
-    """"""
+    """Account for MetaTrader"""
 
 
 class MetaTraderExchange(LiveExchange):
@@ -78,11 +78,11 @@ class MetaTraderExchange(LiveExchange):
 
 
 class LetTradeMetaTraderBot(LetTradeLiveBot):
-    """"""
+    """LetTradeBot for MetaTrader"""
 
 
 class LetTradeMetaTrader(LetTradeLive):
-    """Help to maintain metatrader bots"""
+    """Help to maintain MetaTrader bots"""
 
     _data_cls: Type[MetaTraderDataFeed] = MetaTraderDataFeed
 
@@ -119,13 +119,13 @@ def let_metatrader(
     account: Type[MetaTraderAccount] = MetaTraderAccount,
     commander: Optional[Type[Commander]] = None,
     plotter: Optional[Type["Plotter"]] = None,
-    stats: Optional[Type["Statistic"]] = Statistic,
+    stats: Optional[Type[Statistic]] = Statistic,
     bot: Optional[Type[LetTradeMetaTraderBot]] = LetTradeMetaTraderBot,
     lettrade: Optional[Type[LetTradeMetaTrader]] = LetTradeMetaTrader,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
     wine: Optional[str] = None,
     **kwargs,
-) -> "LetTradeMetaTrader":
+) -> LetTradeMetaTrader:
     """Help to build `LetTradeMetaTrader`
 
     Args:
@@ -138,9 +138,10 @@ def let_metatrader(
         exchange (Type[MetaTraderExchange], optional): _description_. Defaults to MetaTraderExchange.
         account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
-        plotter (Optional[Type[&quot;Plotter&quot;]], optional): _description_. Defaults to None.
-        stats (Optional[Type[&quot;Statistic&quot;]], optional): _description_. Defaults to Statistic.
+        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
+        stats (Optional[Type[Statistic]], optional): _description_. Defaults to Statistic.
         bot (Optional[Type[LetTradeMetaTraderBot]], optional): _description_. Defaults to LetTradeMetaTraderBot.
+        lettrade (Optional[Type[LetTradeMetaTrader]], optional): _description_. Defaults to LetTradeMetaTrader.
         api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
         wine (Optional[str], optional): _description_. Defaults to None.
 

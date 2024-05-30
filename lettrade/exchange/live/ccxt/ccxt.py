@@ -117,12 +117,12 @@ def let_ccxt(
     account: Type[CCXTAccount] = CCXTAccount,
     commander: Optional[Type[Commander]] = None,
     plotter: Optional[Type["Plotter"]] = None,
-    stats: Optional[Type["Statistic"]] = Statistic,
+    stats: Optional[Type[Statistic]] = Statistic,
     lettrade: Optional[Type[LetTradeCCXT]] = LetTradeCCXT,
     bot: Optional[Type[LetTradeCCXTBot]] = LetTradeCCXTBot,
     api: Optional[Type[CCXTAPI]] = CCXTAPI,
     **kwargs,
-) -> "LetTradeCCXT":
+) -> LetTradeCCXT:
     """Help to build `LetTradeCCXT`
 
     Args:
@@ -135,8 +135,9 @@ def let_ccxt(
         exchange (Type[CCXTExchange], optional): _description_. Defaults to CCXTExchange.
         account (Type[CCXTAccount], optional): _description_. Defaults to CCXTAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
-        plotter (Optional[Type[&quot;Plotter&quot;]], optional): _description_. Defaults to None.
-        stats (Optional[Type[&quot;Statistic&quot;]], optional): _description_. Defaults to Statistic.
+        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
+        stats (Optional[Type[Statistic]], optional): _description_. Defaults to Statistic.
+        lettrade (Optional[Type[LetTradeCCXT]], optional): _description_. Defaults to LetTradeCCXT.
         bot (Optional[Type[LetTradeCCXTBot]], optional): _description_. Defaults to LetTradeCCXTBot.
         api (Optional[Type[CCXTAPI]], optional): _description_. Defaults to CCXTAPI.
 

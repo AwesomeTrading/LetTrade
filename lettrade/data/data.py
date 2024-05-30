@@ -136,11 +136,14 @@ class DataFeedIndex(pd.DatetimeIndex):
     def _cmp_method(self, other, op):
         if isinstance(other, int):
             other = self[other]
-        logger.warning(
-            "[TEST] DataFeedIndex._cmp_method other=%s, operator=%s",
-            other,
-            op,
-        )
+
+        if __debug__:
+            logger.warning(
+                "[TEST] DataFeedIndex._cmp_method other=%s, operator=%s",
+                other,
+                op,
+            )
+
         return super()._cmp_method(other, op)
 
     # # Bypass pickle

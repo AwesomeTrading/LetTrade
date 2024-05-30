@@ -97,13 +97,11 @@ def let_live(
     Args:
         strategy (Type[Strategy]): _description_
         datas (set[set[str]]): _description_
-        login (int): _description_
-        password (str): _description_
-        server (str): _description_
         commander (Optional[Commander], optional): _description_. Defaults to None.
-        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
-        stats (Optional[Type["Statistic"]], optional): _description_. Defaults to None.
+        plotter (Optional[Type[&quot;Plotter&quot;]], optional): _description_. Defaults to None.
+        stats (Optional[Type[&quot;Statistic&quot;]], optional): _description_. Defaults to Statistic.
         api (Optional[Type[LiveAPI]], optional): _description_. Defaults to LiveAPI.
+        bot (Optional[Type[LetTradeLiveBot]], optional): _description_. Defaults to LetTradeLiveBot.
 
     Returns:
         LetTradeLive: _description_

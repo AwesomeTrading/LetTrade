@@ -3,6 +3,7 @@ import re
 from typing import Optional
 
 import pandas as pd
+
 from lettrade.data import DataFeed, TimeFrame
 
 logger = logging.getLogger(__name__)
@@ -130,7 +131,7 @@ class CSVBackTestDataFeed(BackTestDataFeed):
             delimiter (str, optional): _description_. Defaults to ",".
             index_col (int, optional): _description_. Defaults to 0.
             header (int, optional): _description_. Defaults to 0.
-            **kwargs (dict): [DataFeed](./data.md#lettrade.data.data.DataFeed) dict parameters
+            **kwargs (dict): [DataFeed](../../data/data.md#lettrade.data.data.DataFeed) dict parameters
         """
         if name is None:
             name = _path_to_name(path)

@@ -64,7 +64,7 @@ class Strategy(ABC):
             df (DataFeed): main data of strategy
         """
 
-    def start(self, *dfs: list[DataFeed]) -> None:
+    def start(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
         """call after `init()` and before first `next()` is called
 
         Args:
@@ -74,17 +74,17 @@ class Strategy(ABC):
             _type_: `None`
         """
 
-    def next(self, *dfs: list[DataFeed]) -> None:
+    def next(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
         """Next bar event"""
 
-    def end(self, *dfs: list[DataFeed]) -> None:
+    def end(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
         """Call when strategy run completed
 
         Args:
             df (DataFeed): main data of strategy
         """
 
-    def plot(self, *dfs: list[DataFeed]) -> dict:
+    def plot(self, df: DataFeed, *dfs: list[DataFeed]) -> dict:
         """Custom config of plot
 
         Args:

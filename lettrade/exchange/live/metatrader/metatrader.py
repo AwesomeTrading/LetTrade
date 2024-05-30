@@ -131,10 +131,15 @@ def let_metatrader(
         login (int): _description_
         password (str): _description_
         server (str): _description_
+        feeder (Type[MetaTraderDataFeeder], optional): _description_. Defaults to MetaTraderDataFeeder.
+        exchange (Type[MetaTraderExchange], optional): _description_. Defaults to MetaTraderExchange.
+        account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
-        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
-        stats (Optional[Type["Statistic"]], optional): _description_. Defaults to None.
+        plotter (Optional[Type[&quot;Plotter&quot;]], optional): _description_. Defaults to None.
+        stats (Optional[Type[&quot;Statistic&quot;]], optional): _description_. Defaults to Statistic.
+        bot (Optional[Type[LetTradeMetaTraderBot]], optional): _description_. Defaults to LetTradeMetaTraderBot.
         api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
+        wine (Optional[str], optional): _description_. Defaults to None.
 
     Returns:
         LetTradeMetaTrader: _description_

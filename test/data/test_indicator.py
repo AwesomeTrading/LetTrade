@@ -42,7 +42,6 @@ class IndicatorTestCase(unittest.TestCase):
             self.ta_ema,
             self.pdta_ema,
             check_names=False,
-            # check_index_type=False,
         )
         pdtest.assert_series_equal(
             self.ta_ema,

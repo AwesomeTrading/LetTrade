@@ -94,19 +94,45 @@ class PlotlyPlotter(Plotter):
                     for s in ss:
                         self.figure.add_scatter(**s, **shape)
 
+        # Buttons
+        buttons = [dict(step="all")]
+        match self.data.timeframe.unit:
+            case "m":
+                count = 1
+                step = "day"
+            case "h":
+                count = 1
+                step = "week"
+            case _:
+                count = 1
+                step = "month"
+        buttons.extend(
+            [
+                dict(
+                    count=6 * count,
+                    label=f"{6*count}",
+                    step=step,
+                    stepmode="backward",
+                ),
+                dict(
+                    count=3 * count,
+                    label=f"{3*count}",
+                    step=step,
+                    stepmode="backward",
+                ),
+                dict(
+                    count=count,
+                    label=f"{count}",
+                    step=step,
+                    stepmode="backward",
+                ),
+            ]
+        )
+
         # Layout
         layout_params = dict(
             xaxis=dict(
-                rangeselector=dict(
-                    buttons=(
-                        dict(count=1, label="1m", step="month", stepmode="backward"),
-                        dict(count=3, label="3m", step="month", stepmode="backward"),
-                        dict(count=6, label="6m", step="month", stepmode="backward"),
-                        dict(count=1, label="YTD", step="year", stepmode="todate"),
-                        dict(count=1, label="1y", step="year", stepmode="backward"),
-                        dict(step="all"),
-                    )
-                ),
+                rangeselector=dict(buttons=buttons),
             ),
             yaxis=dict(
                 autorange=True,

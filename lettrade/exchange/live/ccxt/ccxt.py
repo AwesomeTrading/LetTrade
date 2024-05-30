@@ -22,53 +22,30 @@ logger = logging.getLogger(__name__)
 
 
 class CCXTDataFeed(LiveDataFeed):
-    """"""
+    """DataFeed for CCXT"""
 
     api_cls: Type[CCXTAPI] = CCXTAPI
     """API to communicate with CCXT Terminal"""
 
 
 class CCXTDataFeeder(LiveDataFeeder):
-    """"""
+    """DataFeeder for CCXT"""
 
 
 class CCXTExecute(LiveExecute):
-    """
-    Execute for CCXT
-    """
+    """Execute for CCXT"""
 
 
 class CCXTOrder(LiveOrder):
-    """"""
-
-    # def _build_place_request(self):
-    #     tick = self._api.tick_get(self.data.symbol)
-    #     price = tick.ask if self.is_long else tick.bid
-    #     type = MT5.ORDER_TYPE_BUY if self.is_long else MT5.ORDER_TYPE_SELL
-    #     deviation = 20
-    #     request = {
-    #         "action": MT5.TRADE_ACTION_DEAL,
-    #         "symbol": self.data.symbol,
-    #         "volume": self.size,
-    #         "type": type,
-    #         "price": price,
-    #         "sl": self.sl,
-    #         "tp": self.tp,
-    #         "deviation": deviation,
-    #         "magic": 234000,
-    #         "comment": self.tag,
-    #         "type_time": MT5.ORDER_TIME_GTC,
-    #         "type_filling": MT5.ORDER_FILLING_IOC,
-    #     }
-    #     return request
+    """Order for CCXT"""
 
 
 class CCXTTrade(LiveTrade):
-    """"""
+    """Trade for CCXT"""
 
 
 class CCXTAccount(LiveAccount):
-    """"""
+    """Account for CCXT"""
 
 
 class CCXTExchange(LiveExchange):
@@ -76,11 +53,11 @@ class CCXTExchange(LiveExchange):
 
 
 class LetTradeCCXTBot(LetTradeLiveBot):
-    """"""
+    """LetTradeBot for CCXT"""
 
 
 class LetTradeCCXT(LetTradeLive):
-    """Help to maintain ccxt bots"""
+    """Help to maintain CCXT bot"""
 
     _data_cls: Type[CCXTDataFeed] = CCXTDataFeed
 

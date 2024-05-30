@@ -1,8 +1,6 @@
 import logging
 from typing import Optional, Type
 
-from mt5linux import MetaTrader5 as MT5
-
 from lettrade import Commander, Statistic
 from lettrade.exchange.live.base import (
     LetTradeLive,
@@ -35,34 +33,11 @@ class MetaTraderDataFeeder(LiveDataFeeder):
 
 
 class MetaTraderExecute(LiveExecute):
-    """
-    Execute for MetaTrader
-    """
+    """Execute for MetaTrader"""
 
 
 class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
-
-    def _build_place_request(self):
-        tick = self._api.tick_get(self.data.symbol)
-        price = tick.ask if self.is_long else tick.bid
-        type = MT5.ORDER_TYPE_BUY if self.is_long else MT5.ORDER_TYPE_SELL
-        deviation = 20
-        request = {
-            "action": MT5.TRADE_ACTION_DEAL,
-            "symbol": self.data.symbol,
-            "volume": self.size,
-            "type": type,
-            "price": price,
-            "sl": self.sl,
-            "tp": self.tp,
-            "deviation": deviation,
-            "magic": 234000,
-            "comment": self.tag,
-            "type_time": MT5.ORDER_TIME_GTC,
-            "type_filling": MT5.ORDER_FILLING_IOC,
-        }
-        return request
 
 
 class MetaTraderTrade(LiveTrade):

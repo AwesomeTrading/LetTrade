@@ -122,11 +122,8 @@ class LiveOrder(Order):
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
-        request = self._build_place_request()
-        result = self._api.order_send(request)
-
+        result = self._api.order_send(self)
         self.raw = result
-
         if result.code != 0:
             logger.error("Place order %s", str(result))
             error = OrderResultError(
@@ -142,17 +139,6 @@ class LiveOrder(Order):
         ok = super().place()
         ok.raw = result
         return ok
-
-    def _build_place_request(self):
-        request = {
-            "symbol": self.data.symbol,
-            "volume": self.size,
-            "price": self.limit_price or self.stop_price,
-            "sl": self.sl,
-            "tp": self.tp,
-            "comment": self.tag,
-        }
-        return request
 
     @classmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveOrder":

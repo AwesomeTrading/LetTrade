@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from mt5linux import MetaTrader5 as MT5
 
-from lettrade.exchange.live.base import LiveAPI
+from lettrade.exchange.live.base import LiveAPI, LiveOrder
 
 logger = logging.getLogger(__name__)
 
@@ -162,12 +162,37 @@ class MetaTraderAPI(LiveAPI):
         )
         return rates
 
-    def order_send(self, request: "TradeRequest"):
-        result = self._mt5.order_send(request)
-        result.code = result.retcode
-        if result.code == MT5.TRADE_RETCODE_DONE:
-            result.code == 0
-        return result
+    # Order
+    def order_send(self, order: LiveOrder):
+        raw = self._mt5.order_send(order)
+        return self._parse_order_response(raw)
+
+    def _parse_order_request(self, order: LiveOrder):
+        tick = self.tick_get(order.data.symbol)
+        price = tick.ask if order.is_long else tick.bid
+        type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
+        deviation = 20
+        request = {
+            "action": MT5.TRADE_ACTION_DEAL,
+            "symbol": order.data.symbol,
+            "volume": order.size,
+            "type": type,
+            "price": price,
+            "sl": order.sl,
+            "tp": order.tp,
+            "deviation": deviation,
+            "magic": 234000,
+            "comment": order.tag,
+            "type_time": MT5.ORDER_TIME_GTC,
+            "type_filling": MT5.ORDER_FILLING_IOC,
+        }
+        return request
+
+    def _parse_order_response(self, raw):
+        raw.code = raw.retcode
+        if raw.code == MT5.TRADE_RETCODE_DONE:
+            raw.code = 0
+        return raw
 
     def orders_total(self):
         return self._mt5.orders_total()

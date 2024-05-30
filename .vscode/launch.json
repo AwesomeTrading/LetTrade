@@ -9,6 +9,19 @@
             "type": "debugpy",
             "request": "launch",
             "module": "example.strategy.backtest_order",
+            "envFile": "${workspaceFolder}/.env",
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Debug Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "purpose": [
+                "debug-test"
+            ],
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env",
             "justMyCode": false
         }
     ]

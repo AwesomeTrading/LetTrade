@@ -55,7 +55,7 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
             f"Copy data.index is not instance of {self.data.index.__class__}",
         )
         self.assertIsInstance(
-            df.index,
+            df.timeframe,
             self.data.timeframe.__class__,
             f"Copy data.timeframe is not instance of {self.data.timeframe.__class__}",
         )
@@ -78,3 +78,42 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         self.assertEqual(df.open[0], 0.99474, "Drop data open value wrong")
         self.assertEqual(len(self.data), 1_000, "self.data size wrong")
         self.assertEqual(self.data.open[0], 0.97724, "self.data open value wrong")
+
+    # Test pointer
+    def test_pointer(self):
+        df = self.data.copy(deep=True)
+        df._set_main()
+
+        # Move to nexts rows
+        next = 3
+        df.next(next)
+        self.assertEqual(df.index.pointer, next, "Data pointer wrong")
+        self.assertEqual(
+            df.datetime[0],
+            pd.Timestamp("2022-10-20 03:00:00"),
+            f"Data.datetime[{next}] wrong",
+        )
+        self.assertEqual(df.open[0], 0.97656, f"Data.open[{next}] wrong")
+        self.assertEqual(df.high[0], 0.97718, f"Data.high[{next}] wrong")
+        self.assertEqual(df.low[0], 0.97585, f"Data.low[{next}] wrong")
+        self.assertEqual(df.close[0], 0.9765, f"Data.close[{next}] wrong")
+        self.assertEqual(df.volume[0], 5050.0, f"Data.volume[{next}] wrong")
+
+        # Move to end
+        end = len(df) - 1
+        df.index.go_end()
+        self.assertEqual(df.index.pointer, end, "Data pointer wrong")
+        self.assertEqual(
+            df.datetime[0],
+            pd.Timestamp("2022-12-16 15:00:00"),
+            f"Data.datetime[{end}] wrong",
+        )
+        self.assertEqual(df.open[0], 1.06215, f"Data.open[{end}] wrong")
+        self.assertEqual(df.high[0], 1.06359, f"Data.high[{end}] wrong")
+        self.assertEqual(df.low[0], 1.06134, f"Data.low[{end}] wrong")
+        self.assertEqual(df.close[0], 1.06341, f"Data.close[{end}] wrong")
+        self.assertEqual(df.volume[0], 5679.0, f"Data.volume[{end}] wrong")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

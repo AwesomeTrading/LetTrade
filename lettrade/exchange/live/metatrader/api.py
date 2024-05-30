@@ -1,6 +1,7 @@
 import logging
 import time
 from datetime import datetime, timedelta
+from typing import Optional
 
 from mt5linux import MetaTrader5 as MT5
 
@@ -153,18 +154,27 @@ class MetaTraderAPI(LiveAPI):
     def tick_get(self, symbol):
         return self._mt5.symbol_info_tick(symbol)
 
-    def bars(self, symbol, timeframe, since=0, to=1000):
-        rates = self._mt5.copy_rates_from_pos(
-            symbol,
-            TIMEFRAME_L2M[timeframe],
-            since,
-            to,
-        )
-        return rates
+    def bars(
+        self,
+        symbol,
+        timeframe,
+        since: Optional[int | datetime] = 0,
+        to: Optional[int | datetime] = 1_000,
+    ):
+        timeframe = TIMEFRAME_L2M[timeframe]
+
+        if isinstance(since, int):
+            return self._mt5.copy_rates_from_pos(symbol, timeframe, since, to)
+
+        if isinstance(to, int):
+            return self._mt5.copy_rates_from(symbol, timeframe, since, to)
+
+        return self._mt5.copy_rates_range(symbol, timeframe, since, to)
 
     # Order
     def order_send(self, order: LiveOrder):
-        raw = self._mt5.order_send(order)
+        request = self._parse_order_request(order)
+        raw = self._mt5.order_send(request)
         return self._parse_order_response(raw)
 
     def _parse_order_request(self, order: LiveOrder):

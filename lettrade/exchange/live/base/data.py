@@ -1,5 +1,6 @@
 import logging
-from typing import Type
+from datetime import datetime
+from typing import Optional, Type
 
 import pandas as pd
 
@@ -61,9 +62,25 @@ class LiveDataFeed(DataFeed):
         self.index.go_end()
         return True
 
-    def dump_csv(self, path: str = None, since=0, to=1000):
+    def dump_csv(
+        self,
+        path: str = None,
+        since: Optional[int | str | datetime] = 0,
+        to: Optional[int | str | datetime] = 1_000,
+    ):
         if self.empty:
-            self._next(size=to)
+            if isinstance(since, str):
+                since = pd.to_datetime(since).to_pydatetime()
+            if isinstance(to, str):
+                to = pd.to_datetime(to).to_pydatetime()
+
+            rates = self._api.bars(
+                symbol=self.symbol,
+                timeframe=self.timeframe.string,
+                since=since,
+                to=to,
+            )
+            self.on_rates(rates)
 
         if path is None:
             path = f"data/{self.name}-{since}_{to}.csv"

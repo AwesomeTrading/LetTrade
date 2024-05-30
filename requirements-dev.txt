@@ -10,6 +10,5 @@ tqdm
 
 # conda install -c conda-forge ta-lib
 TA-Lib
-tulipy
-pandas_ta
-
+pandas-ta==0.3.14b0
+technical==1.4.3

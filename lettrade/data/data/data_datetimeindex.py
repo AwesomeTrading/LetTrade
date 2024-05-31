@@ -105,7 +105,7 @@ class DataFeed(BaseDataFeed):
         self.index.__class__ = DataFeedIndex
 
         if __debug__:
-            logger.info("[%s] New bar: \n%s", self.name, self.tail(1))
+            logger.info("[%s] New bar: \n%s", self.name, self.tail(len(rows)))
 
     def drop(self, *args, since=None, **kwargs):
         if since is None:

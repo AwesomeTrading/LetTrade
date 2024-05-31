@@ -30,7 +30,7 @@ class BackTestDataFeed(DataFeed):
             **kwargs,
         )
         if drop_since is not None:
-            self.drop_since(drop_since)
+            self.drop(since=drop_since)
 
     def _find_timeframe(self, df):
         if len(df.index) < 3:
@@ -41,12 +41,6 @@ class BackTestDataFeed(DataFeed):
             if tf == dt[i + 2] - dt[i + 1]:
                 return tf
         raise RuntimeError("DataFeed cannot detect timeframe")
-
-    def drop_since(self, since: int):
-        df = self[self.index < since]
-        self.drop(index=df.index, inplace=True)
-        # self.reset_index(inplace=True)
-        logger.info("BackTestDataFeed %s dropped %s rows", self.name, len(df.index))
 
     def alive(self):
         return self.stop > 1

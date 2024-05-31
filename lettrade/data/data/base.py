@@ -71,11 +71,6 @@ class BaseDataFeed(pd.DataFrame):
     def next(self, next=1):
         raise NotImplementedError("Method is not implement yet")
 
-    # Properties
-    @property
-    def datetime(self) -> pd.DatetimeIndex:
-        return self.index
-
     @property
     def meta(self) -> dict:
         return self.attrs["lt_meta"]

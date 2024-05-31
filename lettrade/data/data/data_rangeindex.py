@@ -87,6 +87,19 @@ class DataFeed(BaseDataFeed):
         if __debug__:
             logger.info("[%s] New bar: \n%s", self.name, self.tail(1))
 
+    def drop(self, *args, since=None, **kwargs):
+        if since is None:
+            return super().drop(*args, **kwargs)
+
+        if isinstance(since, int):
+            index = range(self.pointer_start, self.pointer_start + since)
+            self.drop(index=index, inplace=True)
+            self.reset_index(inplace=True)
+            logger.info("BackTestDataFeed %s dropped %s rows", self.name, len(index))
+            return
+
+        raise RuntimeError(f"No implement to handle drop since {since}")
+
     # Pointer
     @property
     def pointer(self):

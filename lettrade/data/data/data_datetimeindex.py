@@ -75,15 +75,6 @@ class DataFeed(BaseDataFeed):
         df._pointer_rebase()
         return df
 
-    # Properties
-    @property
-    def datetime(self) -> pd.DatetimeIndex:
-        return self.index
-
-    @property
-    def now(self) -> pd.Timestamp:
-        return self.datetime._values[self.pointer]
-
     # Functions
     def next(self, next=1):
         self._lt_pointers[0] += next
@@ -116,6 +107,15 @@ class DataFeed(BaseDataFeed):
         if __debug__:
             logger.info("[%s] New bar: \n%s", self.name, self.tail(1))
 
+    # Properties
+    @property
+    def datetime(self) -> pd.DatetimeIndex:
+        return self.index
+
+    @property
+    def now(self) -> pd.Timestamp:
+        return self.datetime._values[self.pointer]
+
     # Pointer
     @property
     def pointer(self):
@@ -144,7 +144,7 @@ class DataFeed(BaseDataFeed):
     def __getitem__(self, i):
         if isinstance(i, int):
             # logger.warning("[TEST] DataFeed get item %s", i)
-            return self.iloc[i]
+            return self.loc[i]
         return super().__getitem__(i)
 
     def _get_value(self, index, col, takeable: bool = False) -> "Scalar":
@@ -155,7 +155,7 @@ class DataFeed(BaseDataFeed):
     def _ixs(self, i: int, axis: 0) -> pd.Series:
         # TODO: PATCH return
         if axis == 0:
-            i += self.pointer
+            # i += self.pointer
             new_mgr = self._mgr.fast_xs(i)
 
             # if we are a copy, mark as such
@@ -174,9 +174,9 @@ class DataFeed(BaseDataFeed):
             if isinstance(key, (pd.Timestamp, int)):
                 if isinstance(key, pd.Timestamp):
                     loc = self.index.get_loc(key)
-                    loc += self.pointer
+                    # loc += self.pointer
                 elif isinstance(key, int):
-                    loc = key
+                    loc = key + self.pointer
 
                 new_mgr = self._mgr.fast_xs(loc)
 

@@ -14,8 +14,8 @@ class DataFeedTestCase(unittest.TestCase):
             index_col=0,
             parse_dates=["datetime"],
         )
-        if isinstance(self.data.index, pd.RangeIndex):
-            self.raw_data.reset_index(inplace=True)
+        # if isinstance(self.data.index, pd.RangeIndex):
+        self.raw_data.reset_index(inplace=True)
 
     def test_value(self):
         pdtest.assert_frame_equal(
@@ -57,7 +57,7 @@ class DataFeedTestCase(unittest.TestCase):
         df._set_main()
 
         for i in range(0, len(df)):
-            row = df.iloc[0]
+            row = df.iloc[i]
             raw_row = self.raw_data.iloc[i]
 
             pdtest.assert_series_equal(
@@ -84,7 +84,7 @@ class DataFeedTestCase(unittest.TestCase):
         self.assertEqual(df.pointer, 0, f"Data.pointer move after deepcopy")
 
         for i in range(0, len(df)):
-            row = df.loc[i]
+            row = df.loc[0]
             raw_row = self.raw_data.iloc[i]
 
             pdtest.assert_series_equal(

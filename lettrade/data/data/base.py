@@ -25,7 +25,7 @@ class BaseDataFeed(pd.DataFrame):
         # data: pd.DataFrame,
         timeframe: TimeFrame,
         meta: Optional[dict] = None,
-        # dtype: list[tuple] = [],
+        columns=["open", "high", "low", "close", "volume"],
         **kwargs,
     ) -> None:
         """_summary_
@@ -42,8 +42,8 @@ class BaseDataFeed(pd.DataFrame):
                 f"Bot name {name} is not valid format {_data_name_pattern}"
             )
 
-        super().__init__(*args, **kwargs)
-        # self.pointer_go_start()
+        # Init
+        super().__init__(*args, columns=columns, **kwargs)
 
         # Metadata
         if not meta:
@@ -52,7 +52,7 @@ class BaseDataFeed(pd.DataFrame):
         meta["timeframe"] = TimeFrame(timeframe)
         self.attrs = {"lt_meta": meta}
 
-    def copy(self, deep=False, *args, **kwargs) -> "DataFeedBase":
+    def copy(self, deep=False, *args, **kwargs) -> "BaseDataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
         df = self.__class__(data=df, name=self.name, timeframe=self.timeframe)
         return df

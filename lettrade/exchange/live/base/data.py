@@ -24,7 +24,6 @@ class LiveDataFeed(DataFeed):
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
             timeframe=timeframe,
-            columns=["open", "high", "low", "close", "volume"],
             **kwargs,
         )
         self.meta.update(dict(symbol=symbol))

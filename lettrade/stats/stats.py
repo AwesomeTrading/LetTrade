@@ -42,8 +42,8 @@ class Statistic:
         self.result = pd.Series(dtype=object)
 
         self.result.loc["strategy"] = str(self.strategy.__class__)
-        self.result.loc["start"] = data.datetime.at(0)
-        self.result.loc["end"] = data.datetime.at(-1)
+        self.result.loc["start"] = data.datetime.iloc[0]
+        self.result.loc["end"] = data.datetime.iloc[-1]
         self.result.loc["duration"] = self.result.end - self.result.start
 
         # Equity

@@ -90,7 +90,7 @@ class LetTradeBackTest(LetTrade):
         Args:
             multiprocessing (Optional[str], optional): _description_. Defaults to "auto".
         """
-        if self.data.start != 0:
+        if self.data.pointer_start != 0:
             # TODO: Can drop unnecessary columns by snapshort data.columns from init time
             raise RuntimeError(
                 "Optimize datas is not clean, don't run() backtest before optimize()"
@@ -243,7 +243,7 @@ class LetTradeBackTest(LetTrade):
         Returns:
             float | Any: Return score and more for external optimizer
         """
-        if self.data.start != 0:
+        if self.data.pointer_start != 0:
             raise RuntimeError(
                 "Optimize datas is not clean, don't run() backtest before optimize()"
             )
@@ -267,7 +267,7 @@ class LetTradeBackTest(LetTrade):
 
     def _optimize_model(self, *args, **kwargs):
         # Check data didn't reload by multiprocessing
-        if self.data.start != 0:
+        if self.data.pointer_start != 0:
             raise RuntimeError(
                 "Optimize model data changed, set fork_data=True to reload"
             )

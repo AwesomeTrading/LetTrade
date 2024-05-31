@@ -25,7 +25,11 @@ class DataFeed(BaseDataFeed):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+        super().__init__(
+            *args,
+            **kwargs,
+            columns=["datetime", "open", "high", "low", "close", "volume"],
+        )
         self._init_index()
 
     def _init_index(self):

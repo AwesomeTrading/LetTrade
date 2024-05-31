@@ -43,7 +43,7 @@ class BackTestDataFeed(DataFeed):
         raise RuntimeError("DataFeed cannot detect timeframe")
 
     def alive(self):
-        return self.stop > 1
+        return self.pointer_stop > 1
 
     def next(
         self,

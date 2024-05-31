@@ -3,6 +3,7 @@ import unittest
 import pandas as pd
 from pandas import testing as pdtest
 
+from lettrade.data import DataFeedIndex
 from lettrade.exchange.backtest.data import CSVBackTestDataFeed
 
 
@@ -103,6 +104,28 @@ class DataFeedTestCase(unittest.TestCase):
             )
 
             df.next()
+
+    def test_shift(self):
+        df = self.data.copy(deep=True)
+        df._set_main()
+
+        df_close1 = df.close.shift(1)
+        self.assertEqual(
+            df_close1[1], self.raw_data.close.iloc[0], f"Data.close.shift() wrong"
+        )
+
+        df_close3 = df_close1.shift(2)
+        self.assertEqual(
+            df_close3[3], self.raw_data.close.iloc[0], f"Data.close.shift() wrong"
+        )
+
+        self.assertIsInstance(
+            df_close3.index,
+            DataFeedIndex,
+            f"Data.close.index is not instance of DataFeedIndex",
+        )
+
+        self.assertEqual(df.pointer, 0, f"Data.pointer move after deepcopy and shift")
 
 
 if __name__ == "__main__":

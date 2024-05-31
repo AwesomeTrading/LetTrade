@@ -28,8 +28,6 @@ class LiveExchange(Exchange):
 
     def start(self) -> None:
         """Start Live exchange by: Sync orders from server, Sync trades from server"""
-        # self._sync_orders()
-        # self._sync_trades()
         self._api.start(callbacker=self)
         return super().start()
 

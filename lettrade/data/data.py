@@ -96,18 +96,19 @@ class DataFeedIndex(pd.DatetimeIndex):
     def __getitem__(self, value):
         if isinstance(value, int):
             # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
-            value += self._lt_pointers[0]
+            value += self.pointer
         return super().__getitem__(value)
 
     def get_loc(self, key, *args, **kwargs):
         if isinstance(key, int):
             # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
-            return key + self._lt_pointers[0]
-        return super().get_loc(key)
+            # return key  # + self.pointer
+            return key + self.pointer
+        return super().get_loc(key) - self.pointer
 
-        #     @property
-        #     def pointer(self):
-        #         return self._pointer
+    @property
+    def pointer(self):
+        return self._lt_pointers[0]
 
         #     def next(self, next=1):
         #         self._pointer += next
@@ -135,7 +136,7 @@ class DataFeedIndex(pd.DatetimeIndex):
 
     def _cmp_method(self, other, op):
         if isinstance(other, int):
-            other = self[other]
+            other = self._values[other + self.pointer]
 
         if __debug__:
             logger.warning(
@@ -209,8 +210,7 @@ class DataFeed(pd.DataFrame):
         self.index.rename("datetime", inplace=True)
 
         self.index.__class__ = DataFeedIndex
-        self.go_start()
-        self.index._lt_pointers = self._lt_pointers
+        self.rebase_pointer()
         # setattr(self.index, "_lt_pointers", self._lt_pointers)
 
     # @final
@@ -224,7 +224,7 @@ class DataFeed(pd.DataFrame):
     def __getitem__(self, i):
         if isinstance(i, int):
             # logger.warning("[TEST] DataFeed get item %s", i)
-            return self.iloc[i]
+            return self.loc[i]
         return super().__getitem__(i)
 
     # def _set_item(self, key, value) -> None:
@@ -243,22 +243,41 @@ class DataFeed(pd.DataFrame):
     def _ixs(self, i: int, axis: 0) -> pd.Series:
         # TODO: PATCH return
         if axis == 0:
-            new_mgr = self._mgr.fast_xs(i + self.pointer)
+            i += self.pointer
+            new_mgr = self._mgr.fast_xs(i)
 
             # if we are a copy, mark as such
             copy = isinstance(new_mgr.array, np.ndarray) and new_mgr.array.base is None
             result = self._constructor_sliced_from_mgr(new_mgr, axes=new_mgr.axes)
-            result._name = self.index[i]
+            result._name = self.index._values[i]
             result = result.__finalize__(self)
             result._set_is_copy(self, copy=copy)
             return result
 
         return super()._ixs(i, axis)
 
+    # @final
+    # def xs(
+    #     self,
+    #     key,
+    #     axis=0,
+    #     *args,
+    #     **kwargs,
+    # ):
+    #     if isinstance(key, pd.Timestamp):
+    #         loc = self.index.get_loc(key)
+    #         return
+    #     super().xs(
+    #         key,
+    #         axis=0,
+    #         *args,
+    #         **kwargs,
+    #     )
+
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
         df = self.__class__(data=df, name=self.name, timeframe=self.timeframe)
-        df._lt_pointers = [0]
+        df.rebase_pointer()
         return df
 
     # Properties
@@ -335,7 +354,7 @@ class DataFeed(pd.DataFrame):
         if __debug__:
             logger.info("[%s] New bar: \n%s", self.name, self.tail(1))
 
-    # Attr
+    # Pointer
     @property
     def pointer(self):
         return self._lt_pointers[0]
@@ -348,6 +367,10 @@ class DataFeed(pd.DataFrame):
 
     def go_stop(self):
         self._lt_pointers[0] = len(self) - 1
+
+    def rebase_pointer(self):
+        self._lt_pointers = [0]
+        self.index._lt_pointers = self._lt_pointers
 
     @property
     def start(self) -> int:

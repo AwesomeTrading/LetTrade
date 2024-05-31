@@ -129,8 +129,8 @@ class DataFeedIndex(pd.DatetimeIndex):
     def _should_fallback_to_positional(self):
         return False
 
-    #     def at(self, index: int):
-    #         return self._values[index]
+    def at(self, index: int):
+        return self._values[index]
 
     def _cmp_method(self, other, op):
         if isinstance(other, int):
@@ -226,11 +226,11 @@ class DataFeed(pd.DataFrame):
             return self.iloc[i]
         return super().__getitem__(i)
 
-    def _set_item(self, key, value) -> None:
-        print("----> data._set_item:", key, value)
-        super()._set_item(key, value)
-        # if isinstance(value, pd.Series):
-        #     print("----> data._set_item:", key, value)
+    # def _set_item(self, key, value) -> None:
+    #     print("----> data._set_item:", key, value)
+    #     super()._set_item(key, value)
+    #     # if isinstance(value, pd.Series):
+    #     #     print("----> data._set_item:", key, value)
 
     def _get_value(self, index, col, takeable: bool = False) -> "Scalar":
         if isinstance(index, int):

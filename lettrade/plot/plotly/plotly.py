@@ -101,8 +101,8 @@ class PlotlyPlotter(Plotter):
                 count = 1
                 step = "day"
             case "h":
-                count = 1
-                step = "week"
+                count = 7
+                step = "day"
             case _:
                 count = 1
                 step = "month"

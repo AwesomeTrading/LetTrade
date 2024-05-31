@@ -61,9 +61,6 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         )
 
         # Test deepcopy is not a mirror
-        print('\n\n----------> df.loc[0, "open"]:::', df.loc[0, "open"])
-        print(df)
-        print(df.index)
         df.loc[0, "open"] = 0
         self.assertEqual(df.loc[0, "open"], 0, "Set value to data.open error")
         self.assertNotEqual(self.data.loc[0, "open"], 0, "Value change when deepcopy")

@@ -49,7 +49,7 @@ class BackTestDataFeed(DataFeed):
         logger.info("BackTestDataFeed %s dropped %s rows", self.name, len(df.index))
 
     def alive(self):
-        return self.index.stop > 1
+        return self.stop > 1
 
     def next(
         self,

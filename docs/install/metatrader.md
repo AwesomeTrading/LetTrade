@@ -13,10 +13,10 @@ wget https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5ubuntu.sh
 ### Python
 
 ```sh
-wget https://www.python.org/ftp/python/3.10.9/python-3.10.9.exe
+wget https://www.python.org/ftp/python/3.10.11/python-3.10.11.exe
 
 export WINEPREFIX=$HOME/.mt5
-wine python-3.10.9.exe
+wine python-3.10.11.exe
 ```
 
 ### Python requirements

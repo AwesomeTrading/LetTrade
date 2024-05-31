@@ -185,7 +185,6 @@ class DataFeed(pd.DataFrame):
 
     # Functions
     def bar(self, i=0) -> pd.Timestamp:
-        print(self, self.index)
         return self.datetime.loc[i]
 
     def next(self, size=1) -> bool:

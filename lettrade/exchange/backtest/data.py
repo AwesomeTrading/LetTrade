@@ -3,7 +3,6 @@ import re
 from typing import Optional
 
 import pandas as pd
-
 from lettrade.data import DataFeed, TimeFrame
 
 logger = logging.getLogger(__name__)
@@ -68,8 +67,7 @@ class BackTestDataFeed(DataFeed):
                     if dt_next > next:
                         break
                     size += 1
-                except KeyError:
-                    # raise LetTradeNoMoreDataFeed()
+                except (KeyError, IndexError):
                     has_next = False
                     break
 

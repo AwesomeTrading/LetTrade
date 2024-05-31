@@ -1227,16 +1227,143 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../../data/data/" class="md-nav__link">
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_8_2" id="__nav_6_1_8_2_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_1_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../data/data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Index
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../data/data/base/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> base
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../data/data/data_datetimeindex/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_datetimeindex
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../data/data/data_rangeindex/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_rangeindex
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../data/data/timeframe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> timeframe
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -3403,7 +3530,33 @@
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load plot config from `Strategy.plot()` and setup candlestick/equity&quot;&quot;&quot;</span>
 
     <span class="c1"># Strategy plot</span>
@@ -3433,7 +3586,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_shape</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
             <span class="n">go</span><span class="o">.</span><span class="n">Candlestick</span><span class="p">(</span>
-                <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
                 <span class="nb">open</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;open&quot;</span><span class="p">],</span>
                 <span class="n">high</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">],</span>
                 <span class="n">low</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">],</span>
@@ -3480,19 +3633,45 @@
                 <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ss</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_scatter</span><span class="p">(</span><span class="o">**</span><span class="n">s</span><span class="p">,</span> <span class="o">**</span><span class="n">shape</span><span class="p">)</span>
 
+    <span class="c1"># Buttons</span>
+    <span class="n">buttons</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">step</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)]</span>
+    <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="o">.</span><span class="n">unit</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="s2">&quot;day&quot;</span>
+        <span class="k">case</span> <span class="s2">&quot;h&quot;</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">7</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="s2">&quot;day&quot;</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="s2">&quot;month&quot;</span>
+    <span class="n">buttons</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">count</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">count</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">6</span><span class="o">*</span><span class="n">count</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span>
+                <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">count</span><span class="o">=</span><span class="mi">3</span> <span class="o">*</span> <span class="n">count</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">3</span><span class="o">*</span><span class="n">count</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span>
+                <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span>
+                <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
     <span class="c1"># Layout</span>
     <span class="n">layout_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">rangeselector</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">buttons</span><span class="o">=</span><span class="p">(</span>
-                    <span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;1m&quot;</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">),</span>
-                    <span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;3m&quot;</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">),</span>
-                    <span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;6m&quot;</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">),</span>
-                    <span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;YTD&quot;</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;todate&quot;</span><span class="p">),</span>
-                    <span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;1y&quot;</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">stepmode</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">),</span>
-                    <span class="nb">dict</span><span class="p">(</span><span class="n">step</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">),</span>
-                <span class="p">)</span>
-            <span class="p">),</span>
+            <span class="n">rangeselector</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">buttons</span><span class="o">=</span><span class="n">buttons</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">autorange</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -3549,24 +3728,24 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/plotly.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot `equity`, `orders`, and `trades` then show&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>

@@ -2,6 +2,7 @@ import logging
 import re
 from typing import Optional, final
 
+import numpy as np
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -222,7 +223,7 @@ class DataFeed(pd.DataFrame):
     @final
     def __getitem__(self, i):
         if isinstance(i, int):
-            logger.warning("[TEST] DataFeed get item %s", i)
+            # logger.warning("[TEST] DataFeed get item %s", i)
             return self.iloc[i]
         return super().__getitem__(i)
 
@@ -234,14 +235,30 @@ class DataFeed(pd.DataFrame):
 
     def _get_value(self, index, col, takeable: bool = False) -> "Scalar":
         if isinstance(index, int):
-            print("----> data._get_value:", index, col, takeable)
+            # print("----> data._get_value:", index, col, takeable)
             # index += self.pointer
             index = self.index._values[index + self.pointer]
         return super()._get_value(index, col, takeable)
 
+    def _ixs(self, i: int, axis: 0) -> pd.Series:
+        # TODO: PATCH return
+        if axis == 0:
+            new_mgr = self._mgr.fast_xs(i + self.pointer)
+
+            # if we are a copy, mark as such
+            copy = isinstance(new_mgr.array, np.ndarray) and new_mgr.array.base is None
+            result = self._constructor_sliced_from_mgr(new_mgr, axes=new_mgr.axes)
+            result._name = self.index[i]
+            result = result.__finalize__(self)
+            result._set_is_copy(self, copy=copy)
+            return result
+
+        return super()._ixs(i, axis)
+
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
         df = self.__class__(data=df, name=self.name, timeframe=self.timeframe)
+        df._lt_pointers = [0]
         return df
 
     # Properties

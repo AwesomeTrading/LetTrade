@@ -62,10 +62,10 @@ class IndicatorTestCase(unittest.TestCase):
             check_names=False,
         )
 
-    def test_pointer(self):
+    def test_next(self):
         df = self.data.copy(deep=True)
-        df._set_main()
         df["ema"] = self.ta_ema
+        df._set_main()
 
         for i in range(0, len(df)):
             ema_value = df.ema[0]

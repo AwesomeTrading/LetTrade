@@ -14,7 +14,8 @@ class DataFeedTestCase(unittest.TestCase):
             index_col=0,
             parse_dates=["datetime"],
         )
-        self.raw_data.reset_index(inplace=True)
+        if isinstance(self.data.index, pd.RangeIndex):
+            self.raw_data.reset_index(inplace=True)
 
     def test_value(self):
         pdtest.assert_frame_equal(
@@ -39,7 +40,17 @@ class DataFeedTestCase(unittest.TestCase):
                 check_names=False,
             )
 
+            self.assertEqual(row.open, raw_row.open, f"Data[{i}] open value wrong")
+            self.assertEqual(row.high, raw_row.high, f"Data[{i}] high value wrong")
+            self.assertEqual(row.low, raw_row.low, f"Data[{i}] low value wrong")
+            self.assertEqual(row.close, raw_row.close, f"Data[{i}] close value wrong")
+            self.assertEqual(
+                row.volume, raw_row.volume, f"Data[{i}] volume value wrong"
+            )
+
             df.next()
+
+        self.assertEqual(self.data.pointer, 0, f"Data.pointer move after deepcopy")
 
     def test_iloc(self):
         df = self.data.copy(deep=True)
@@ -55,11 +66,22 @@ class DataFeedTestCase(unittest.TestCase):
                 f"DataFeed[{i}] is not equal",
                 check_names=False,
             )
+
+            self.assertEqual(row.open, raw_row.open, f"Data[{i}] open value wrong")
+            self.assertEqual(row.high, raw_row.high, f"Data[{i}] high value wrong")
+            self.assertEqual(row.low, raw_row.low, f"Data[{i}] low value wrong")
+            self.assertEqual(row.close, raw_row.close, f"Data[{i}] close value wrong")
+            self.assertEqual(
+                row.volume, raw_row.volume, f"Data[{i}] volume value wrong"
+            )
+
             df.next()
 
     def test_loc(self):
         df = self.data.copy(deep=True)
         df._set_main()
+
+        self.assertEqual(df.pointer, 0, f"Data.pointer move after deepcopy")
 
         for i in range(0, len(df)):
             row = df.loc[0]
@@ -71,6 +93,15 @@ class DataFeedTestCase(unittest.TestCase):
                 f"DataFeed[{i}] is not equal",
                 check_names=False,
             )
+
+            self.assertEqual(row.open, raw_row.open, f"Data[{i}] open value wrong")
+            self.assertEqual(row.high, raw_row.high, f"Data[{i}] high value wrong")
+            self.assertEqual(row.low, raw_row.low, f"Data[{i}] low value wrong")
+            self.assertEqual(row.close, raw_row.close, f"Data[{i}] close value wrong")
+            self.assertEqual(
+                row.volume, raw_row.volume, f"Data[{i}] volume value wrong"
+            )
+
             df.next()
 
 

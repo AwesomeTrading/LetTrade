@@ -24,10 +24,18 @@ class LiveDataFeed(DataFeed):
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
             timeframe=timeframe,
-            columns=["datetime", "open", "high", "low", "close", "volume"],
             **kwargs,
         )
         self.meta.update(dict(symbol=symbol))
+
+        # Columns
+        if isinstance(self.index, pd.RangeIndex):
+            self["datetime"] = pd.Series(dtype="datetime64[ns, UTC]")
+        self["open"] = pd.Series(dtype="float64")
+        self["high"] = pd.Series(dtype="float64")
+        self["low"] = pd.Series(dtype="float64")
+        self["close"] = pd.Series(dtype="float64")
+        self["volume"] = pd.Series(dtype="float64")
 
     @property
     def symbol(self) -> str:
@@ -59,7 +67,7 @@ class LiveDataFeed(DataFeed):
 
     def on_rates(self, rates, tick=0):
         self.push(rates)
-        self.index.go_stop()
+        self.pointer_go_stop()
         return True
 
     def dump_csv(

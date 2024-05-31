@@ -1,5 +1,6 @@
 import unittest
 
+import numpy as np
 import pandas as pd
 import pandas_ta as pdta
 import talib.abstract as ta
@@ -16,7 +17,8 @@ class IndicatorTestCase(unittest.TestCase):
             index_col=0,
             parse_dates=["datetime"],
         )
-        self.raw_data.reset_index(inplace=True)
+        if isinstance(self.data.index, pd.RangeIndex):
+            self.raw_data.reset_index(inplace=True)
 
         # Ta-Lib
         self.ta_ema = ta.EMA(self.data, timeperiod=21)
@@ -61,6 +63,23 @@ class IndicatorTestCase(unittest.TestCase):
             self.pdta_ema_raw,
             check_names=False,
         )
+
+    def test_next(self):
+        df = self.data.copy(deep=True)
+        df["ema"] = self.ta_ema
+        df._set_main()
+
+        for i in range(0, len(df)):
+            ema_value = df.ema[0]
+            raw_ema_value = self.ta_ema_raw.iloc[i]
+
+            # Next first to by pass next continue condiction
+            df.next()
+
+            if np.isnan(ema_value) and np.isnan(raw_ema_value):
+                continue
+
+            self.assertEqual(ema_value, raw_ema_value, f"EMA[{i}] is wrong")
 
 
 if __name__ == "__main__":

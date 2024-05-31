@@ -54,7 +54,7 @@ class BackTestDataFeeder(DataFeeder):
 
     def next(self):
         # End of main data
-        if self.data.index.stop <= 0:
+        if self.data.pointer_stop <= 0:
             return False
 
         next = self.data.datetime[1]

@@ -25,11 +25,7 @@ class DataFeed(BaseDataFeed):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(
-            *args,
-            **kwargs,
-            columns=["datetime", "open", "high", "low", "close", "volume"],
-        )
+        super().__init__(*args, **kwargs)
         self._init_index()
 
     def _init_index(self):
@@ -97,7 +93,7 @@ class DataFeed(BaseDataFeed):
 
         if isinstance(since, int):
             index = range(self.pointer_start, self.pointer_start + since)
-            self.drop(index=index, inplace=True)
+            super().drop(index=index, inplace=True)
             self.reset_index(inplace=True)
             logger.info("BackTestDataFeed %s dropped %s rows", self.name, len(index))
             return

@@ -17,8 +17,8 @@ class IndicatorTestCase(unittest.TestCase):
             index_col=0,
             parse_dates=["datetime"],
         )
-        # if isinstance(self.data.index, pd.RangeIndex):
-        self.raw_data.reset_index(inplace=True)
+        if isinstance(self.data.index, pd.RangeIndex):
+            self.raw_data.reset_index(inplace=True)
 
         # Ta-Lib
         self.ta_ema = ta.EMA(self.data, timeperiod=21)

@@ -25,7 +25,6 @@ class BaseDataFeed(pd.DataFrame):
         # data: pd.DataFrame,
         timeframe: TimeFrame,
         meta: Optional[dict] = None,
-        columns=["open", "high", "low", "close", "volume"],
         **kwargs,
     ) -> None:
         """_summary_
@@ -43,7 +42,7 @@ class BaseDataFeed(pd.DataFrame):
             )
 
         # Init
-        super().__init__(*args, columns=columns, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Metadata
         if not meta:

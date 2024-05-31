@@ -168,12 +168,12 @@ class DataFeed(pd.DataFrame):
         return self.meta.get("is_main", False)
 
     @property
-    def now(self) -> datetime:
-        return self.index[0]
+    def now(self) -> pd.Timestamp:
+        return self.datetime._values[self.pointer]
 
     # Functions
-    def bar(self, i=0) -> datetime:
-        return self.index[i]
+    def bar(self, i=0) -> pd.Timestamp:
+        return self.datetime._values[self.pointer + i]
 
     def _set_main(self):
         """Set this dataframe is main datafeed"""

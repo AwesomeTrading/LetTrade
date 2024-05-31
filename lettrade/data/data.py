@@ -90,78 +90,6 @@ class TimeFrame:
         return at.ceil(freq=self.string_pandas)
 
 
-class DataFeedIndex(pd.DatetimeIndex):
-    _lt_pointers: list[int] = [0]
-
-    def __getitem__(self, value):
-        if isinstance(value, int):
-            # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
-            value += self.pointer
-        return super().__getitem__(value)
-
-    def get_loc(self, key, *args, **kwargs):
-        if isinstance(key, int):
-            # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
-            # return key  # + self.pointer
-            return key + self.pointer
-        return super().get_loc(key) - self.pointer
-
-    @property
-    def pointer(self):
-        return self._lt_pointers[0]
-
-        #     def next(self, next=1):
-        #         self._pointer += next
-
-        #     def go_start(self):
-        #         self._pointer = 0
-
-        #     def go_stop(self):
-        #         self._pointer = len(self._values) - 1
-
-        #     @property
-        #     def start(self) -> int:
-        #         return -self._pointer
-
-        #     @property
-        #     def stop(self) -> int:
-        #         return len(self._values) - self._pointer
-
-    @property
-    def _should_fallback_to_positional(self):
-        return False
-
-    def at(self, index: int):
-        return self._values[index]
-
-    def _cmp_method(self, other, op):
-        if isinstance(other, int):
-            other = self._values[other + self.pointer]
-
-        if __debug__:
-            logger.warning(
-                "[TEST] DataFeedIndex._cmp_method other=%s, operator=%s",
-                other,
-                op,
-            )
-
-        return super()._cmp_method(other, op)
-
-
-# # Bypass pickle
-# def __copy__(self):
-#     return self.__new__(DataFeedIndex, self)
-
-# def __deepcopy__(self, memo=None):
-#     return self.__new__(DataFeedIndex, self)
-
-
-# class DataFeedBlockManager(BlockManager):
-#     def fast_xs(self, loc: int) -> SingleBlockManager:
-#         index = self.axes[1]
-#         return super().fast_xs(loc + index._pointer)
-
-
 class DataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
@@ -211,68 +139,6 @@ class DataFeed(pd.DataFrame):
 
         self.index.__class__ = DataFeedIndex
         self.rebase_pointer()
-        # setattr(self.index, "_lt_pointers", self._lt_pointers)
-
-    # @final
-    # def __setattr__(self, name: str, value) -> None:
-    #     print('data.__setattr__:',name, value)
-    #     if not hasattr(self, name, value):
-    #         pass
-    #     return super().__setattr__(name, value)
-
-    @final
-    def __getitem__(self, i):
-        if isinstance(i, int):
-            # logger.warning("[TEST] DataFeed get item %s", i)
-            return self.iloc[i]
-        return super().__getitem__(i)
-
-    # def _set_item(self, key, value) -> None:
-    #     print("----> data._set_item:", key, value)
-    #     super()._set_item(key, value)
-    #     # if isinstance(value, pd.Series):
-    #     #     print("----> data._set_item:", key, value)
-
-    def _get_value(self, index, col, takeable: bool = False) -> "Scalar":
-        if isinstance(index, int):
-            # print("----> data._get_value:", index, col, takeable)
-            # index += self.pointer
-            index = self.index._values[index + self.pointer]
-        return super()._get_value(index, col, takeable)
-
-    def _ixs(self, i: int, axis: 0) -> pd.Series:
-        # TODO: PATCH return
-        if axis == 0:
-            i += self.pointer
-            new_mgr = self._mgr.fast_xs(i)
-
-            # if we are a copy, mark as such
-            copy = isinstance(new_mgr.array, np.ndarray) and new_mgr.array.base is None
-            result = self._constructor_sliced_from_mgr(new_mgr, axes=new_mgr.axes)
-            result._name = self.index._values[i]
-            result = result.__finalize__(self)
-            result._set_is_copy(self, copy=copy)
-            return result
-
-        return super()._ixs(i, axis)
-
-    # @final
-    # def xs(
-    #     self,
-    #     key,
-    #     axis=0,
-    #     *args,
-    #     **kwargs,
-    # ):
-    #     if isinstance(key, pd.Timestamp):
-    #         loc = self.index.get_loc(key)
-    #         return
-    #     super().xs(
-    #         key,
-    #         axis=0,
-    #         *args,
-    #         **kwargs,
-    #     )
 
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
@@ -309,22 +175,6 @@ class DataFeed(pd.DataFrame):
     def bar(self, i=0) -> datetime:
         return self.index[i]
 
-    # def next(self, size=1) -> bool:
-    #     raise NotImplementedError("Method is not implement yet")
-
-    # def append(self, index, columns, row):
-    #     df = pd.DataFrame()
-    #     self.loc[
-    #         index,
-    #         columns,
-    #     ] = [
-    #         row[1],  # open
-    #         row[2],  # high
-    #         row[3],  # low
-    #         row[4],  # close
-    #         row[5],  # volume
-    #     ]
-
     def _set_main(self):
         """Set this dataframe is main datafeed"""
         self.meta["is_main"] = True
@@ -349,7 +199,7 @@ class DataFeed(pd.DataFrame):
                 row[4],  # close
                 row[5],  # volume
             ]
-        # self.index.__class__ = cls
+        self.index.__class__ = DataFeedIndex
 
         if __debug__:
             logger.info("[%s] New bar: \n%s", self.name, self.tail(1))
@@ -379,3 +229,98 @@ class DataFeed(pd.DataFrame):
     @property
     def stop(self) -> int:
         return len(self) - self._lt_pointers[0]
+
+    ########## Pandas Hack ##########
+    @final
+    def __getitem__(self, i):
+        if isinstance(i, int):
+            # logger.warning("[TEST] DataFeed get item %s", i)
+            return self.iloc[i]
+        return super().__getitem__(i)
+
+    def _get_value(self, index, col, takeable: bool = False) -> "Scalar":
+        if isinstance(index, int):
+            index = self.index._values[index + self.pointer]
+        return super()._get_value(index, col, takeable)
+
+    def _ixs(self, i: int, axis: 0) -> pd.Series:
+        # TODO: PATCH return
+        if axis == 0:
+            i += self.pointer
+            new_mgr = self._mgr.fast_xs(i)
+
+            # if we are a copy, mark as such
+            copy = isinstance(new_mgr.array, np.ndarray) and new_mgr.array.base is None
+            result = self._constructor_sliced_from_mgr(new_mgr, axes=new_mgr.axes)
+            result._name = self.index._values[i]
+            result = result.__finalize__(self)
+            result._set_is_copy(self, copy=copy)
+            return result
+
+        return super()._ixs(i, axis)
+
+    @final
+    def xs(self, key, axis=0, *args, **kwargs):
+        if axis == 0:
+            if isinstance(key, (pd.Timestamp, int)):
+                if isinstance(key, pd.Timestamp):
+                    loc = self.index.get_loc(key)
+                    loc += self.pointer
+                elif isinstance(key, int):
+                    loc = key
+
+                new_mgr = self._mgr.fast_xs(loc)
+
+                result = self._constructor_sliced_from_mgr(new_mgr, axes=new_mgr.axes)
+                result._name = self.index._values[loc]
+                result = result.__finalize__(self)
+                result._set_is_copy(self, copy=not result._is_view)
+                return result
+
+        super().xs(
+            key,
+            axis=0,
+            *args,
+            **kwargs,
+        )
+
+
+########## Pandas Hack ##########
+class DataFeedIndex(pd.DatetimeIndex):
+    _lt_pointers: list[int] = [0]
+
+    def __getitem__(self, value):
+        if isinstance(value, int):
+            # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
+            value += self.pointer
+        return super().__getitem__(value)
+
+    def get_loc(self, key, *args, **kwargs):
+        if isinstance(key, int):
+            # logger.warning("[TEST] DataFeedIndex.get_loc %s", key)
+            return key + self.pointer
+        return super().get_loc(key) - self.pointer
+
+    @property
+    def pointer(self):
+        return self._lt_pointers[0]
+
+    @property
+    def _should_fallback_to_positional(self):
+        return False
+
+    def at(self, index: int):
+        return self._values[index]
+
+    def _cmp_method(self, other, op):
+        if isinstance(other, int):
+            other = self._values[other + self.pointer]
+
+        if __debug__:
+            logger.warning(
+                "[TEST] DataFeedIndex._cmp_method other=%s, operator=%s",
+                other,
+                op,
+            )
+
+        return super()._cmp_method(other, op)

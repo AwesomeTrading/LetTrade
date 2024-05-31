@@ -224,7 +224,7 @@ class DataFeed(pd.DataFrame):
     def __getitem__(self, i):
         if isinstance(i, int):
             # logger.warning("[TEST] DataFeed get item %s", i)
-            return self.loc[i]
+            return self.iloc[i]
         return super().__getitem__(i)
 
     # def _set_item(self, key, value) -> None:

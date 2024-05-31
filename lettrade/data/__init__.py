@@ -1,2 +1,2 @@
-from .data import DataFeed, DataFeedIndex, TimeFrame
+from .data import DataFeed, TimeFrame
 from .feeder import DataFeeder

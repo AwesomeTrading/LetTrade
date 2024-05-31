@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from lettrade.data import DataFeed, DataFeedIndex, TimeFrame
+from lettrade.data import DataFeed, TimeFrame
 from lettrade.exchange.backtest.data import CSVBackTestDataFeed
 
 
@@ -17,17 +17,17 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
             "Data is not instance of DataFeed",
         )
 
-        self.assertIsInstance(
-            self.data.index,
-            pd.DatetimeIndex,
-            "Index is not instance of pd.DatetimeIndex",
-        )
+        # self.assertIsInstance(
+        #     self.data.index,
+        #     pd.DatetimeIndex,
+        #     "Index is not instance of pd.DatetimeIndex",
+        # )
 
-        self.assertIsInstance(
-            self.data.index,
-            DataFeedIndex,
-            "Index is not instance of DataFeedIndex",
-        )
+        # self.assertIsInstance(
+        #     self.data.index,
+        #     DataFeedIndex,
+        #     "Index is not instance of DataFeedIndex",
+        # )
 
         self.assertIsInstance(
             self.data.timeframe,

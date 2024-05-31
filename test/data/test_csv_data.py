@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from lettrade.data import DataFeed, TimeFrame
+from lettrade.data import DataFeed, DataFeedIndex, TimeFrame
 from lettrade.exchange.backtest.data import CSVBackTestDataFeed
 
 
@@ -23,11 +23,11 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         #     "Index is not instance of pd.DatetimeIndex",
         # )
 
-        # self.assertIsInstance(
-        #     self.data.index,
-        #     DataFeedIndex,
-        #     "Index is not instance of DataFeedIndex",
-        # )
+        self.assertIsInstance(
+            self.data.index,
+            DataFeedIndex,
+            "Index is not instance of DataFeedIndex",
+        )
 
         self.assertIsInstance(
             self.data.timeframe,
@@ -71,7 +71,7 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
 
     # Test drop
     def test_drop(self):
-        df = self.data.copy(deep=True)
+        df: DataFeed = self.data.copy(deep=True)
         df.drop_since(100)
 
         self.assertEqual(len(df), 900, "Drop data size wrong")

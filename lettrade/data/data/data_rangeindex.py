@@ -63,7 +63,7 @@ class DataFeed(BaseDataFeed):
             i_start = -len(rows) + 1
 
         for i, row in enumerate(rows):
-            dt = pd.to_datetime(row[0], unit="s")
+            dt = pd.to_datetime(row[0], unit="s", utc=True)
             self.loc[
                 i_start + i,
                 [
@@ -85,7 +85,7 @@ class DataFeed(BaseDataFeed):
         self.index = DataFeedIndex(-len(self.index) + 1, 1)
 
         if __debug__:
-            logger.info("[%s] New bar: \n%s", self.name, self.tail(1))
+            logger.info("[%s] New bar: \n%s", self.name, self.tail(len(rows)))
 
     def drop(self, *args, since=None, **kwargs):
         if since is None:

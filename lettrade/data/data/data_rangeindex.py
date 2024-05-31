@@ -50,6 +50,9 @@ class DataFeed(BaseDataFeed):
     def bar(self, i=0) -> pd.Timestamp:
         return self.datetime.loc[i]
 
+    def ibar(self, i=0) -> pd.Timestamp:
+        return self.datetime.iloc[i]
+
     def next(self, size=1) -> bool:
         self.index._next(size)
 

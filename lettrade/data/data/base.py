@@ -64,6 +64,9 @@ class BaseDataFeed(pd.DataFrame):
     def bar(self, i=0) -> pd.Timestamp:
         raise NotImplementedError("Method is not implement yet")
 
+    def ibar(self, i=0) -> pd.Timestamp:
+        raise NotImplementedError("Method is not implement yet")
+
     def push(self, rows: list):
         raise NotImplementedError("Method is not implement yet")
 

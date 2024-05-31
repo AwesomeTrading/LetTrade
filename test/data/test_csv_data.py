@@ -9,6 +9,7 @@ from lettrade.exchange.backtest.data import CSVBackTestDataFeed
 class CSVBackTestDataFeedTestCase(unittest.TestCase):
     def setUp(self):
         self.data = CSVBackTestDataFeed("test/assets/EURUSD_1h-0_1000.csv")
+        self.data._set_main()
 
     def test_types(self):
         self.assertIsInstance(
@@ -84,7 +85,6 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
     # Test index
     def test_index(self):
         df = self.data.copy(deep=True)
-        df._set_main()
 
         # Move to nexts rows
         next = 3

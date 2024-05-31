@@ -10,6 +10,8 @@ from lettrade.exchange.backtest.data import CSVBackTestDataFeed
 class DataFeedTestCase(unittest.TestCase):
     def setUp(self):
         self.data = CSVBackTestDataFeed("test/assets/EURUSD_1h-0_1000.csv")
+        self.data._set_main()
+
         self.raw_data = pd.read_csv(
             "test/assets/EURUSD_1h-0_1000.csv",
             index_col=0,
@@ -28,7 +30,6 @@ class DataFeedTestCase(unittest.TestCase):
 
     def test_next(self):
         df = self.data.copy(deep=True)
-        df._set_main()
 
         for i in range(0, len(df)):
             row = df[0]
@@ -55,7 +56,6 @@ class DataFeedTestCase(unittest.TestCase):
 
     def test_iloc(self):
         df = self.data.copy(deep=True)
-        df._set_main()
 
         for i in range(0, len(df)):
             row = df.iloc[i]
@@ -80,7 +80,6 @@ class DataFeedTestCase(unittest.TestCase):
 
     def test_loc(self):
         df = self.data.copy(deep=True)
-        df._set_main()
 
         self.assertEqual(df.pointer, 0, f"Data.pointer move after deepcopy")
 
@@ -107,7 +106,6 @@ class DataFeedTestCase(unittest.TestCase):
 
     def test_shift(self):
         df = self.data.copy(deep=True)
-        df._set_main()
 
         df_close1 = df.close.shift(1)
         self.assertEqual(

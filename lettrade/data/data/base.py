@@ -53,7 +53,12 @@ class BaseDataFeed(pd.DataFrame):
 
     def copy(self, deep=False, *args, **kwargs) -> "BaseDataFeed":
         df = super().copy(deep=deep, *args, **kwargs)
-        df = self.__class__(data=df, name=self.name, timeframe=self.timeframe)
+        df = self.__class__(
+            data=df,
+            name=self.name,
+            timeframe=self.timeframe,
+            meta=self.meta.copy(),
+        )
         return df
 
     # Functions

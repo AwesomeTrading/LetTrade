@@ -1,18 +1,25 @@
 import logging
-from typing import Optional, final
+from typing import final
 
 import numpy as np
 import pandas as pd
 
-from .base import DataFeedBase, TimeFrame
+from .base import BaseDataFeed
 
 logger = logging.getLogger(__name__)
 
 
-########## Pandas Hack ##########
 class DataFeedIndex(pd.DatetimeIndex):
     _lt_pointers: list[int] = [0]
 
+    @property
+    def pointer(self):
+        return self._lt_pointers[0]
+
+    def at(self, index: int):
+        return self._values[index]
+
+    ########## Pandas Hack ##########
     def __getitem__(self, value):
         if isinstance(value, int):
             # logger.warning("[TEST] DataFeedIndex.__getitem__ %s", value)
@@ -26,15 +33,8 @@ class DataFeedIndex(pd.DatetimeIndex):
         return super().get_loc(key) - self.pointer
 
     @property
-    def pointer(self):
-        return self._lt_pointers[0]
-
-    @property
     def _should_fallback_to_positional(self):
         return False
-
-    def at(self, index: int):
-        return self._values[index]
 
     def _cmp_method(self, other, op):
         if isinstance(other, int):
@@ -50,7 +50,7 @@ class DataFeedIndex(pd.DatetimeIndex):
         return super()._cmp_method(other, op)
 
 
-class DateTimeIndexDataFeed(DataFeedBase):
+class DataFeed(BaseDataFeed):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
     _lt_pointers: list[int] = [0]
@@ -68,11 +68,11 @@ class DateTimeIndexDataFeed(DataFeedBase):
         self.index.rename("datetime", inplace=True)
 
         self.index.__class__ = DataFeedIndex
-        self._rebase_pointer()
+        self._pointer_rebase()
 
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
-        df = super().copy(deep=deep, *args, **kwargs)
-        df._rebase_pointer()
+        df: "DataFeed" = super().copy(deep=deep, *args, **kwargs)
+        df._pointer_rebase()
         return df
 
     # Properties
@@ -81,32 +81,15 @@ class DateTimeIndexDataFeed(DataFeedBase):
         return self.index
 
     @property
-    def meta(self) -> dict:
-        return self.attrs["lt_meta"]
-
-    @property
-    def name(self) -> str:
-        return self.meta["name"]
-
-    @property
-    def timeframe(self) -> TimeFrame:
-        return self.meta["timeframe"]
-
-    @property
-    def is_main(self) -> bool:
-        return self.meta.get("is_main", False)
-
-    @property
     def now(self) -> pd.Timestamp:
         return self.datetime._values[self.pointer]
 
     # Functions
+    def next(self, next=1):
+        self._lt_pointers[0] += next
+
     def bar(self, i=0) -> pd.Timestamp:
         return self.datetime._values[self.pointer + i]
-
-    def _set_main(self):
-        """Set this dataframe is main datafeed"""
-        self.meta["is_main"] = True
 
     def push(self, rows: list):
         # cls = self.index.__class__
@@ -138,25 +121,22 @@ class DateTimeIndexDataFeed(DataFeedBase):
     def pointer(self):
         return self._lt_pointers[0]
 
-    def next(self, next=1):
-        self._lt_pointers[0] += next
-
-    def go_start(self):
+    def pointer_go_start(self):
         self._lt_pointers[0] = 0
 
-    def go_stop(self):
+    def pointer_go_stop(self):
         self._lt_pointers[0] = len(self) - 1
 
-    def _rebase_pointer(self):
+    def _pointer_rebase(self):
         self._lt_pointers = [0]
         self.index._lt_pointers = self._lt_pointers
 
     @property
-    def start(self) -> int:
+    def pointer_start(self) -> int:
         return -self._lt_pointers[0]
 
     @property
-    def stop(self) -> int:
+    def pointer_stop(self) -> int:
         return len(self) - self._lt_pointers[0]
 
     ########## Pandas Hack ##########

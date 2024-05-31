@@ -92,7 +92,7 @@ class TimeFrame:
 _data_name_pattern = re.compile(r"^[\w\_]+$")
 
 
-class DataFeedBase(pd.DataFrame):
+class BaseDataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
     _lt_pointers: list[int] = [0]
@@ -122,6 +122,7 @@ class DataFeedBase(pd.DataFrame):
             )
 
         super().__init__(*args, **kwargs)
+        # self.pointer_go_start()
 
         # Metadata
         if not meta:
@@ -136,14 +137,17 @@ class DataFeedBase(pd.DataFrame):
         return df
 
     # Functions
-    def bar(self, i=0) -> pd.Timestamp:
-        raise NotImplementedError("Method is not implement yet")
-
     def _set_main(self):
         """Set this dataframe is main datafeed"""
         self.meta["is_main"] = True
 
+    def bar(self, i=0) -> pd.Timestamp:
+        raise NotImplementedError("Method is not implement yet")
+
     def push(self, rows: list):
+        raise NotImplementedError("Method is not implement yet")
+
+    def next(self, next=1):
         raise NotImplementedError("Method is not implement yet")
 
     # Properties
@@ -176,22 +180,16 @@ class DataFeedBase(pd.DataFrame):
     def pointer(self):
         raise NotImplementedError("Method is not implement yet")
 
-    def next(self, next=1):
+    def pointer_go_start(self):
         raise NotImplementedError("Method is not implement yet")
 
-    def go_start(self):
-        raise NotImplementedError("Method is not implement yet")
-
-    def go_stop(self):
-        raise NotImplementedError("Method is not implement yet")
-
-    def rebase_pointer(self):
+    def pointer_go_stop(self):
         raise NotImplementedError("Method is not implement yet")
 
     @property
-    def start(self) -> int:
+    def pointer_start(self) -> int:
         raise NotImplementedError("Method is not implement yet")
 
     @property
-    def stop(self) -> int:
+    def pointer_stop(self) -> int:
         raise NotImplementedError("Method is not implement yet")

@@ -28,6 +28,15 @@ class LiveDataFeed(DataFeed):
         )
         self.meta.update(dict(symbol=symbol))
 
+        # Columns
+        if isinstance(self.index, pd.RangeIndex):
+            self["datetime"] = pd.Series(dtype="datetime64[ns, UTC]")
+        self["open"] = pd.Series(dtype="float64")
+        self["high"] = pd.Series(dtype="float64")
+        self["low"] = pd.Series(dtype="float64")
+        self["close"] = pd.Series(dtype="float64")
+        self["volume"] = pd.Series(dtype="float64")
+
     @property
     def symbol(self) -> str:
         return self.meta["symbol"]

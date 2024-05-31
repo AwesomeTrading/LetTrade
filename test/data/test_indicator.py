@@ -25,6 +25,10 @@ class IndicatorTestCase(unittest.TestCase):
         self.pdta_ema = pdta.ema(self.data.close, length=21)
         self.pdta_ema_raw = pdta.ema(self.raw_data.close, length=21)
 
+    def test_set_indicator(self):
+        df = self.data.copy(deep=True)
+        df["ema"] = self.ta_ema
+
     def test_types(self):
         self.assertIsInstance(
             self.ta_ema,

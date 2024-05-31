@@ -89,7 +89,7 @@ class BackTestDataFeed(DataFeed):
                 )
 
         if size > 0:
-            self.index.next(size)
+            super().next(size)
         return has_next
 
 

@@ -61,6 +61,9 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         )
 
         # Test deepcopy is not a mirror
+        print('\n\n----------> df.loc[0, "open"]:::', df.loc[0, "open"])
+        print(df)
+        print(df.index)
         df.loc[0, "open"] = 0
         self.assertEqual(df.loc[0, "open"], 0, "Set value to data.open error")
         self.assertNotEqual(self.data.loc[0, "open"], 0, "Value change when deepcopy")
@@ -87,7 +90,7 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         # Move to nexts rows
         next = 3
         df.next(next)
-        self.assertEqual(df.index.pointer, next, "Data pointer wrong")
+        self.assertEqual(df.pointer, next, "Data pointer wrong")
         self.assertEqual(
             df.datetime[0],
             pd.Timestamp("2022-10-20 03:00:00"),
@@ -101,8 +104,8 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
 
         # Move to end
         end = len(df) - 1
-        df.index.go_stop()
-        self.assertEqual(df.index.pointer, end, "Data pointer wrong")
+        df.go_stop()
+        self.assertEqual(df.pointer, end, "Data pointer wrong")
         self.assertEqual(
             df.datetime[0],
             pd.Timestamp("2022-12-16 15:00:00"),

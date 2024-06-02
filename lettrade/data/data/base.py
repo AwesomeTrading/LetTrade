@@ -97,22 +97,3 @@ class BaseDataFeed(pd.DataFrame):
     @property
     def now(self) -> pd.Timestamp:
         raise NotImplementedError("Method is not implement yet")
-
-    # Pointer
-    @property
-    def pointer(self):
-        raise NotImplementedError("Method is not implement yet")
-
-    def pointer_go_start(self):
-        raise NotImplementedError("Method is not implement yet")
-
-    def pointer_go_stop(self):
-        raise NotImplementedError("Method is not implement yet")
-
-    @property
-    def pointer_start(self) -> int:
-        raise NotImplementedError("Method is not implement yet")
-
-    @property
-    def pointer_stop(self) -> int:
-        raise NotImplementedError("Method is not implement yet")

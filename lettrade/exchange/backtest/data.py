@@ -3,6 +3,7 @@ import re
 from typing import Optional
 
 import pandas as pd
+
 from lettrade.data import DataFeed, TimeFrame
 
 logger = logging.getLogger(__name__)
@@ -42,7 +43,7 @@ class BackTestDataFeed(DataFeed):
         raise RuntimeError("DataFeed cannot detect timeframe")
 
     def alive(self):
-        return self.pointer_stop > 1
+        return self.l.stop > 1
 
     def next(
         self,

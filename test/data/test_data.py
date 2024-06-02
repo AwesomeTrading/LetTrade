@@ -3,7 +3,6 @@ import unittest
 import pandas as pd
 from pandas import testing as pdtest
 
-from lettrade.data import DataFeedIndex
 from lettrade.exchange.backtest.data import CSVBackTestDataFeed
 
 
@@ -32,7 +31,7 @@ class DataFeedTestCase(unittest.TestCase):
         df = self.data.copy(deep=True)
 
         for i in range(0, len(df)):
-            row = df[0]
+            row = df.l[0]
             raw_row = self.raw_data.iloc[i]
 
             pdtest.assert_series_equal(
@@ -52,7 +51,7 @@ class DataFeedTestCase(unittest.TestCase):
 
             df.next()
 
-        self.assertEqual(self.data.pointer, 0, f"Data.pointer move after deepcopy")
+        self.assertEqual(self.data.l.pointer, 0, f"Data.pointer move after deepcopy")
 
     def test_iloc(self):
         df = self.data.copy(deep=True)
@@ -81,10 +80,10 @@ class DataFeedTestCase(unittest.TestCase):
     def test_loc(self):
         df = self.data.copy(deep=True)
 
-        self.assertEqual(df.pointer, 0, f"Data.pointer move after deepcopy")
+        self.assertEqual(df.l.pointer, 0, f"Data.pointer move after deepcopy")
 
         for i in range(0, len(df)):
-            row = df.loc[0]
+            row = df.l[0]
             raw_row = self.raw_data.iloc[i]
 
             pdtest.assert_series_equal(
@@ -109,21 +108,21 @@ class DataFeedTestCase(unittest.TestCase):
 
         df_close1 = df.close.shift(1)
         self.assertEqual(
-            df_close1[1], self.raw_data.close.iloc[0], f"Data.close.shift() wrong"
+            df_close1.iloc[1], self.raw_data.close.iloc[0], f"Data.close.shift() wrong"
         )
 
         df_close3 = df_close1.shift(2)
         self.assertEqual(
-            df_close3[3], self.raw_data.close.iloc[0], f"Data.close.shift() wrong"
+            df_close3.iloc[3], self.raw_data.close.iloc[0], f"Data.close.shift() wrong"
         )
 
         self.assertIsInstance(
             df_close3.index,
-            DataFeedIndex,
-            f"Data.close.index is not instance of DataFeedIndex",
+            pd.DatetimeIndex,
+            f"Data.close.index is not instance of pd.DatetimeIndex",
         )
 
-        self.assertEqual(df.pointer, 0, f"Data.pointer move after deepcopy and shift")
+        self.assertEqual(df.l.pointer, 0, f"Data.pointer move after deepcopy and shift")
 
 
 if __name__ == "__main__":

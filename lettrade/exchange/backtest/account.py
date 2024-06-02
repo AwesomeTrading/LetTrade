@@ -25,7 +25,7 @@ class ForexBackTestAccount(Account):
 
     def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
         if exit_price is None:
-            exit_price = self._exchange.data.open[0]
+            exit_price = self._exchange.data.open.l[0]
 
         pl = size * (exit_price - entry_price) * 100_000
 

@@ -71,7 +71,7 @@ class IndicatorTestCase(unittest.TestCase):
         df["ema"] = self.ta_ema
 
         for i in range(0, len(df)):
-            ema_value = df.ema[0]
+            ema_value = df.ema.l[0]
             raw_ema_value = self.ta_ema_raw.iloc[i]
 
             # Next first to by pass next continue condiction

@@ -48,9 +48,9 @@ class SmaCross(Strategy):
         df["crossunder"] = crossunder(df.ema1, df.ema2)
 
     def next(self, df: DataFeed):
-        if df.crossover[-1]:
+        if df.crossover.l[-1]:
             self.buy(0.1)
-        elif df.crossunder[-1]:
+        elif df.crossunder.l[-1]:
             self.sell(0.1)
 
 lt = let_backtest(

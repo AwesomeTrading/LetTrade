@@ -46,11 +46,11 @@ class SmaCross(Strategy):
         if len(self.orders) > 0 or len(self.trades) > 0:
             return
 
-        if df.signal_ema_crossover[-1]:
-            price = self.data.close[-1]
+        if df.signal_ema_crossover.l[-1]:
+            price = self.data.close.l[-1]
             self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
-        elif df.signal_ema_crossunder[-1]:
-            price = self.data.close[-1]
+        elif df.signal_ema_crossunder.l[-1]:
+            price = self.data.close.l[-1]
             self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
 
     def end(self, df: DataFeed):

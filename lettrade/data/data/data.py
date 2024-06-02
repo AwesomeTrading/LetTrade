@@ -82,9 +82,6 @@ class DataFeed(pd.DataFrame):
     def bar(self, i=0) -> pd.Timestamp:
         return self.datetime.l[i]
 
-    def ibar(self, i=0) -> pd.Timestamp:
-        return self.datetime.iloc[i]
-
     def push(self, rows: list):
         # cls = self.index.__class__
         for row in rows:

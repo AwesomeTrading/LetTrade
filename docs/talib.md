@@ -39,3 +39,21 @@ pip install TA-Lib
 ```bash
 pip install pandas_ta
 ```
+
+## Technical Analysis Library in Python
+
+[Home](https://github.com/bukosabino/ta) |
+[Indicators](https://technical-analysis-library-in-python.readthedocs.io/en/latest/ta.html)
+
+```bash
+pip install --upgrade ta
+```
+
+## Technical
+
+[Home](https://github.com/freqtrade/technical/) |
+[Indicators](https://github.com/freqtrade/technical/)
+
+```bash
+pip install technical
+```

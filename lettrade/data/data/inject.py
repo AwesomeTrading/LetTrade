@@ -3,9 +3,10 @@ import pandas as pd
 
 class IndexInject:
     _pointers: list[int]
-    _index: pd.DatetimeIndex
+    _owner: pd.DataFrame | pd.Series | pd.DatetimeIndex
 
-    def __init__(self, index) -> None:
+    def __init__(self, owner) -> None:
+        index = owner.index if hasattr(owner, "index") else owner
         if not isinstance(index, pd.DatetimeIndex):
             raise RuntimeError("Index is not instance of pd.DatetimeIndex")
 
@@ -13,10 +14,10 @@ class IndexInject:
             setattr(index, "_lt_pointers", [0])
         self._pointers = getattr(index, "_lt_pointers")
 
-        self._index = index
+        self._owner = owner
 
     def __getitem__(self, value):
-        return self._index._values[value + self.pointer]
+        return self._owner._values[value + self.pointer]
 
     # Function
     def next(self, next=0):
@@ -31,7 +32,7 @@ class IndexInject:
         self._pointers[0] = 0
 
     def go_stop(self):
-        self._pointers[0] = len(self._index) - 1
+        self._pointers[0] = len(self._owner) - 1
 
     def reset(self, *args, **kwargs):
         self._pointers[0] = 0
@@ -42,27 +43,14 @@ class IndexInject:
 
     @property
     def stop(self) -> int:
-        return len(self._index) - self._pointers[0]
+        return len(self._owner) - self._pointers[0]
 
 
 class SeriesInject(IndexInject):
-    _owner: pd.DatetimeIndex
-
-    def __init__(self, owner: pd.Series) -> None:
-        super().__init__(index=owner.index)
-        self._owner = owner
-
-    def __getitem__(self, value):
-        return self._owner._values[value + self.pointer]
+    pass
 
 
 class DataFrameInject(IndexInject):
-    _owner: pd.DatetimeIndex
-
-    def __init__(self, owner: pd.DataFrame) -> None:
-        super().__init__(index=owner.index)
-        self._owner = owner
-
     def __getitem__(self, value):
         return self._owner.iloc[value + self.pointer]
 
@@ -78,7 +66,6 @@ def _lettrade_injector(self):
             inject = IndexInject(self)
 
         setattr(self, "_lt_inject", inject)
-        self.__dict__["l"] = inject
 
     return self._lt_inject
 

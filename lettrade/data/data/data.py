@@ -57,25 +57,30 @@ class IndexPointer:
 
 class IndexInject:
     _pointer: IndexPointer
-    _owner: pd.DatetimeIndex
+    # _index: pd.DatetimeIndex
 
-    def __init__(self, owner, index) -> None:
+    def __init__(self, index) -> None:
         if not isinstance(index, pd.DatetimeIndex):
             raise RuntimeError("Index is not instance of pd.DatetimeIndex")
 
         if not hasattr(index, "_lt_pointer"):
             setattr(index, "_lt_pointer", IndexPointer(index))
 
-        self._owner = owner
+        self._index = index
         self._pointer = getattr(index, "_lt_pointer")
+        # self._pointer.add_owner(self)
         # print("new index injector")
 
     def __getitem__(self, value):
-        return self._owner._values[value + self.pointer]
+        return self._index._values[value + self.pointer]
 
     # Function
     def next(self, next=0):
         self._pointer.next(next)
+
+    # def new_pointer(self, pointer: IndexPointer):
+    #     self._pointer = pointer
+    #     self._pointer.add_owner(self)
 
     # Pointer
     @property
@@ -100,15 +105,37 @@ class IndexInject:
         return self._pointer.stop
 
 
+class SeriesInject(IndexInject):
+    _owner: pd.DatetimeIndex
+
+    def __init__(self, owner: pd.Series) -> None:
+        super().__init__(index=owner.index)
+        self._owner = owner
+
+    def __getitem__(self, value):
+        return self._owner._values[value + self.pointer]
+
+
+class DataFrameInject(IndexInject):
+    _owner: pd.DatetimeIndex
+
+    def __init__(self, owner: pd.DataFrame) -> None:
+        super().__init__(index=owner.index)
+        self._owner = owner
+
+    def __getitem__(self, value):
+        return self._owner.iloc[value + self.pointer]
+
+
 @property
 def _lt_obj(self):
     if not hasattr(self, "_lt_inject"):
         if isinstance(self, pd.DataFrame):
-            inject = IndexInject(self, self.index)
+            inject = DataFrameInject(self)
         elif isinstance(self, pd.Series):
-            inject = IndexInject(self, self.index)
+            inject = SeriesInject(self)
         if isinstance(self, pd.DatetimeIndex):
-            inject = IndexInject(self, self)
+            inject = IndexInject(self)
 
         setattr(self, "_lt_inject", inject)
         self.__dict__["l"] = inject
@@ -134,7 +161,7 @@ setattr(pd.DatetimeIndex, "l", _lt_obj)
 class DataFeed(BaseDataFeed):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
-    l: IndexInject
+    l: DataFrameInject
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

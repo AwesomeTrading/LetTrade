@@ -1408,11 +1408,11 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/data/data/base/" class="md-nav__link">
+      <a href="reference/data/data/data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> base
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data
   </span>
   
 
@@ -1429,32 +1429,11 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/data/data/data_datetimeindex/" class="md-nav__link">
+      <a href="reference/data/data/inject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_datetimeindex
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/data/data/data_rangeindex/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_rangeindex
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> inject
   </span>
   
 
@@ -3421,9 +3400,9 @@
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">crossover</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">crossover</span><span class="o">.</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">crossunder</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">crossunder</span><span class="o">.</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="n">lt</span> <span class="o">=</span> <span class="n">let_backtest</span><span class="p">(</span>
@@ -3463,16 +3442,16 @@ SQN                                            1.78
 <h4 id="backtest-strategy">Backtest strategy<a class="headerlink" href="#backtest-strategy" title="Permanent link">¤</a></h4>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>example.strategy.backtest_sma_cross
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>2024-05-31 21:19:51,464   INFO lettrade.exchange.backtest.data         __init__(): DataFeed EURUSD_1h auto detect timeframe 0 days 01:00:00
-2024-05-31 21:19:51,464   INFO     lettrade.bot         __init__(): New bot: None-17235-EURUSD_1h
+<div class="highlight"><pre><span></span><code>2024-06-02 16:51:02,172   INFO lettrade.exchange.backtest.data         __init__(): DataFeed EURUSD_1h auto detect timeframe 0 days 01:00:00
+2024-06-02 16:51:02,172   INFO     lettrade.bot         __init__(): New bot: None-48828-EURUSD_1h
 # Strategy                &lt;class &#39;__main__.SmaCross&#39;&gt;
-Start                       2023-01-02 00:00:00+00:00
-End                         2023-12-29 21:00:00+00:00
-Duration                            361 days 21:00:00
+Start                                           -6126
+End                                                 1
+Duration                                         6127
 Start Balance                                    1000
-Equity [$]                                    3819.95
-PL [$]                                        2819.95
-PL [%]                                         281.99
+Equity [$]                                    1497.29
+PL [$]                                         497.29
+PL [%]                                          49.73
 Buy &amp; Hold PL [%]                                 2.0
 Max. Drawdown [%]                              -33.08
 Avg. Drawdown [%]                               -5.58
@@ -3480,10 +3459,10 @@ Max. Drawdown Duration              688 days 00:00:00
 Avg. Drawdown Duration               41 days 00:00:00
 
 # Trades                                          248
-Win Rate [%]                                    50.81
+Win Rate [%]                                     50.0
 Fee [$]                                         -4.96
-Best Trade [%]                             555.925635
-Worst Trade [%]                           -543.852779
+Best Trade [%]                             554.825333
+Worst Trade [%]                           -525.077316
 Profit Factor                                    2.13
 SQN                                              1.78
 </code></pre></div>

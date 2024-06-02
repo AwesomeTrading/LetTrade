@@ -1284,11 +1284,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../data/data/base/" class="md-nav__link">
+      <a href="../data/data/data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> base
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data
   </span>
   
 
@@ -1305,32 +1305,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../data/data/data_datetimeindex/" class="md-nav__link">
+      <a href="../data/data/inject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_datetimeindex
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../data/data/data_rangeindex/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_rangeindex
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> inject
   </span>
   
 
@@ -3366,7 +3345,7 @@
 <a href="#lettrade.lettrade.LetTrade" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">LetTrade</span><span class="p">(</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">],</span>
-    <span class="n">datas</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data_datetimeindex/#lettrade.data.data.data_datetimeindex.DataFeed">DataFeed</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data_datetimeindex/#lettrade.data.data.data_datetimeindex.DataFeed">DataFeed</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">],</span>
+    <span class="n">datas</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data/#lettrade.data.data.data.DataFeed">DataFeed</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data/#lettrade.data.data.data.DataFeed">DataFeed</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">],</span>
     <span class="n">feeder</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeeder" href="../data/feeder/#lettrade.data.feeder.DataFeeder">DataFeeder</a></span><span class="p">],</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../exchange/exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">],</span>
     <span class="n">account</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.account.Account" href="../account/account/#lettrade.account.account.Account">Account</a></span><span class="p">],</span>
@@ -3469,7 +3448,7 @@
   </span>
 
 <a href="#lettrade.lettrade.LetTrade.data" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data_datetimeindex/#lettrade.data.data.data_datetimeindex.DataFeed">DataFeed</a></span> <span class="o">=</span> <span class="n"><span title="self.datas">datas</span></span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data/#lettrade.data.data.data.DataFeed">DataFeed</a></span> <span class="o">=</span> <span class="n"><span title="self.datas">datas</span></span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3492,7 +3471,7 @@
   </span>
 
 <a href="#lettrade.lettrade.LetTrade.datas" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">datas</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data_datetimeindex/#lettrade.data.data.data_datetimeindex.DataFeed">DataFeed</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="self._init_datafeeds">_init_datafeeds</span></span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade.datas" href="#lettrade.lettrade.LetTrade.datas">datas</a></span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">datas</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../data/data/data/#lettrade.data.data.data.DataFeed">DataFeed</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="self._init_datafeeds">_init_datafeeds</span></span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade.datas" href="#lettrade.lettrade.LetTrade.datas">datas</a></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">

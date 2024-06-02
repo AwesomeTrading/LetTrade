@@ -1284,11 +1284,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../data/data/base/" class="md-nav__link">
+      <a href="../../data/data/data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> base
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data
   </span>
   
 
@@ -1305,32 +1305,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../data/data/data_datetimeindex/" class="md-nav__link">
+      <a href="../../data/data/inject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_datetimeindex
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../data/data/data_rangeindex/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> data_rangeindex
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> inject
   </span>
   
 
@@ -3446,8 +3425,8 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;strategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ibar</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ibar</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">start</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">stop</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">start</span>
 
     <span class="c1"># Equity</span>

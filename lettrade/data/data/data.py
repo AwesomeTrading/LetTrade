@@ -7,102 +7,48 @@ from .base import BaseDataFeed
 logger = logging.getLogger(__name__)
 
 
-class IndexPointer:
-    _at: list[int]
-    _index: pd.DatetimeIndex
-    # _owners: set
-
-    def __init__(self, index) -> None:
-        if not isinstance(index, pd.DatetimeIndex):
-            raise RuntimeError("Index is not instance of pd.DatetimeIndex")
-
-        self._at = 0
-        # self._owners = set()
-        self._index = index
-        # print("\n\n\nNew index pointer...")
-
-    # Function
-    def next(self, next=0):
-        self._at += next
-
-    # def add_owner(self, owner):
-    #     self._owners.add(owner)
-
-    # Pointer
-    @property
-    def at(self):
-        return self._at
-
-    def go_start(self):
-        self._at = 0
-
-    def go_stop(self):
-        self._at = len(self._index) - 1
-
-    def reset(self, *args, **kwargs):
-        # new_pointer = IndexPointer(self._index)
-        # setattr(self._index, "_lt_pointer", new_pointer)
-        # for owner in self._owners:
-        #     owner.new_pointer(new_pointer)
-        self.go_start()
-
-    @property
-    def start(self) -> int:
-        return -self._at
-
-    @property
-    def stop(self) -> int:
-        return len(self._index) - self._at
-
-
 class IndexInject:
-    _pointer: IndexPointer
-    # _index: pd.DatetimeIndex
+    _ats: list[int]
+    _index: pd.DatetimeIndex
 
     def __init__(self, index) -> None:
         if not isinstance(index, pd.DatetimeIndex):
             raise RuntimeError("Index is not instance of pd.DatetimeIndex")
 
-        if not hasattr(index, "_lt_pointer"):
-            setattr(index, "_lt_pointer", IndexPointer(index))
+        if not hasattr(index, "_lt_ats"):
+            setattr(index, "_lt_ats", [0])
+        self._ats = getattr(index, "_lt_ats")
 
         self._index = index
-        self._pointer = getattr(index, "_lt_pointer")
-        # self._pointer.add_owner(self)
-        # print("new index injector")
 
     def __getitem__(self, value):
         return self._index._values[value + self.pointer]
 
     # Function
     def next(self, next=0):
-        self._pointer.next(next)
-
-    # def new_pointer(self, pointer: IndexPointer):
-    #     self._pointer = pointer
-    #     self._pointer.add_owner(self)
+        self._ats[0] += next
 
     # Pointer
     @property
     def pointer(self):
-        return self._pointer._at
+        return self._ats[0]
 
     def go_start(self):
-        self._pointer.go_start()
+        self._ats[0] = 0
 
     def go_stop(self):
-        self._pointer.go_stop()
+        self._ats[0] = len(self._index) - 1
 
     def reset(self, *args, **kwargs):
-        self._pointer.reset()
+        self._ats[0] = 0
 
     @property
     def start(self) -> int:
-        return self._pointer.start
+        return -self._ats[0]
 
     @property
     def stop(self) -> int:
-        return self._pointer.stop
+        return len(self._index) - self._ats[0]
 
 
 class SeriesInject(IndexInject):

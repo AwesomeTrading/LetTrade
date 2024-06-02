@@ -1,23 +1,58 @@
 import logging
+import re
+from typing import Optional
 
 import pandas as pd
 
-from .base import BaseDataFeed
 from .inject import DataFrameInject
+from .timeframe import TimeFrame
 
 logger = logging.getLogger(__name__)
 
+_data_name_pattern = re.compile(r"^[\w\_]+$")
 
-class DataFeed(BaseDataFeed):
+
+class DataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
     l: DataFrameInject
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(
+        self,
+        *args,
+        name: str,
+        timeframe: TimeFrame,
+        meta: Optional[dict] = None,
+        **kwargs,
+    ) -> None:
+        """_summary_
+
+        Args:
+            name (str): _description_
+            timeframe (TimeFrame): _description_
+            meta (Optional[dict], optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+        """
+        # Validate
+        if not _data_name_pattern.match(name):
+            raise RuntimeError(
+                f"Bot name {name} is not valid format {_data_name_pattern}"
+            )
+
+        # Init
         super().__init__(*args, **kwargs)
         self._init_index()
 
-    # Functions
+        # Metadata
+        if not meta:
+            meta = dict()
+        meta["name"] = name
+        meta["timeframe"] = TimeFrame(timeframe)
+        self.attrs = {"lt_meta": meta}
+
+    # Internal
     def _init_index(self):
         if not isinstance(self.index, pd.DatetimeIndex):
             if not self.empty:
@@ -26,9 +61,19 @@ class DataFeed(BaseDataFeed):
 
         self.index.rename("datetime", inplace=True)
 
+    def _set_main(self):
+        """Set this dataframe is main datafeed"""
+        self.meta["is_main"] = True
+
+    # External
     def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
-        df: "DataFeed" = super().copy(deep=deep, *args, **kwargs)
-        # df.l_rebase()
+        df = super().copy(deep=deep, *args, **kwargs)
+        df = self.__class__(
+            data=df,
+            name=self.name,
+            timeframe=self.timeframe,
+            meta=self.meta.copy(),
+        )
         return df
 
     def next(self, next=1):
@@ -86,3 +131,19 @@ class DataFeed(BaseDataFeed):
     @property
     def now(self) -> pd.Timestamp:
         return self.datetime.l[0]
+
+    @property
+    def meta(self) -> dict:
+        return self.attrs["lt_meta"]
+
+    @property
+    def name(self) -> str:
+        return self.meta["name"]
+
+    @property
+    def timeframe(self) -> TimeFrame:
+        return self.meta["timeframe"]
+
+    @property
+    def is_main(self) -> bool:
+        return self.meta.get("is_main", False)

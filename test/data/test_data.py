@@ -16,8 +16,6 @@ class DataFeedTestCase(unittest.TestCase):
             index_col=0,
             parse_dates=["datetime"],
         )
-        if isinstance(self.data.index, pd.RangeIndex):
-            self.raw_data.reset_index(inplace=True)
 
     def test_value(self):
         pdtest.assert_frame_equal(

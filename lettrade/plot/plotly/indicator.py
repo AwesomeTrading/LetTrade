@@ -1,7 +1,7 @@
 import pandas as pd
-from lettrade.data import DataFeed
-
 import plotly.graph_objects as go
+
+from lettrade.data import DataFeed
 
 
 def plot_ichimoku(
@@ -81,14 +81,14 @@ def plot_line(df: DataFeed, line: str, color: str = "blue", width: int = 1, **kw
 
 def plot_candle_highlight(
     df: DataFeed,
-    signal: pd.Series,
+    signal: str,
     name: str = "Candle {df.name}",
     width: int = 1,
     increasing_line_color="cyan",
     decreasing_line_color="gray",
     **kwargs
 ):
-    plot_df = df.loc[(df.index == signal.index) & (signal == True)]
+    plot_df = df.loc[(df[signal] == True)]
     name = name.format(df=df)
     return dict(
         traces=[

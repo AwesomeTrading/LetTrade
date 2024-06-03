@@ -1,4 +1,7 @@
+import pandas as pd
 from lettrade.data import DataFeed
+
+import plotly.graph_objects as go
 
 
 def plot_ichimoku(
@@ -62,7 +65,7 @@ def plot_ichimoku(
     )
 
 
-def plot_line(df: DataFeed, line: str, color: str = "blue", width: int = 1):
+def plot_line(df: DataFeed, line: str, color: str = "blue", width: int = 1, **kwargs):
     return dict(
         scatters=[
             dict(
@@ -70,6 +73,38 @@ def plot_line(df: DataFeed, line: str, color: str = "blue", width: int = 1):
                 y=df[line],
                 line=dict(color=color, width=width),
                 name=line,
+                **kwargs
             )
+        ]
+    )
+
+
+def plot_candle_highlight(
+    df: DataFeed,
+    signal: pd.Series,
+    name: str = "Candle {df.name}",
+    width: int = 1,
+    increasing_line_color="cyan",
+    decreasing_line_color="gray",
+    **kwargs
+):
+    plot_df = df.loc[(df.index == signal.index) & (signal == True)]
+    name = name.format(df=df)
+    return dict(
+        traces=[
+            go.Candlestick(
+                x=plot_df.index,
+                open=plot_df.open,
+                high=plot_df.high,
+                low=plot_df.low,
+                close=plot_df.close,
+                name=name,
+                line=dict(width=width),
+                increasing_line_color=increasing_line_color,
+                decreasing_line_color=decreasing_line_color,
+                hoverinfo="text",
+                hovertext=name,
+                **kwargs
+            ),
         ]
     )

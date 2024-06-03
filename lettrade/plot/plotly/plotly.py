@@ -81,18 +81,7 @@ class PlotlyPlotter(Plotter):
                 **shape,
             )
 
-        if "scatters" in config:
-            scatters = config["scatters"]
-            if isinstance(scatters, list):
-                for s in scatters:
-                    s.setdefault("row", 1)
-                    s.setdefault("col", 1)
-                    self.figure.add_scatter(**s)
-            elif isinstance(scatters, dict):
-                for name, ss in scatters.items():
-                    shape = self._data_shape[name]
-                    for s in ss:
-                        self.figure.add_scatter(**s, **shape)
+        self._load_extend(config)
 
         # Buttons
         buttons = [dict(step="all")]
@@ -166,6 +155,37 @@ class PlotlyPlotter(Plotter):
         if "layout" in config:
             layout_params.update(config["layout"])
         self.figure.update_layout(**layout_params)
+
+    def _load_extend(self, config: dict):
+        # Plot scatter/trace
+        if "scatters" in config:
+            pname = f"data_{self.data.name}"
+            data_config = config.setdefault(pname, {})
+            data_scatters: list = data_config.setdefault("scatters", [])
+            data_scatters.extend(config["scatters"])
+        if "traces" in config:
+            pname = f"data_{self.data.name}"
+            data_config = config.setdefault(pname, {})
+            data_traces: list = data_config.setdefault("traces", [])
+            data_traces.extend(config["traces"])
+
+        for data in self.datas:
+            pname = f"data_{data.name}"
+            if pname not in config:
+                continue
+
+            data_config = config[pname]
+            data_shape = self._data_shape[data.name]
+
+            if "scatters" in data_config:
+                for scatter in data_config["scatters"]:
+                    scatter.setdefault("row", data_shape["row"])
+                    scatter.setdefault("col", data_shape["col"])
+                    self.figure.add_scatter(**scatter)
+
+            if "traces" in data_config:
+                for trace in data_config["traces"]:
+                    self.figure.add_trace(trace, **data_shape)
 
     def plot(self, **kwargs):
         """Plot `equity`, `orders`, and `trades` then show"""

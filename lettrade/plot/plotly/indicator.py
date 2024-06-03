@@ -65,7 +65,13 @@ def plot_ichimoku(
     )
 
 
-def plot_line(df: DataFeed, line: str, color: str = "blue", width: int = 1, **kwargs):
+def plot_line(
+    df: DataFeed,
+    line: str,
+    color: str = "#ffee58",
+    width: int = 1,
+    **kwargs,
+):
     return dict(
         scatters=[
             dict(
@@ -73,7 +79,7 @@ def plot_line(df: DataFeed, line: str, color: str = "blue", width: int = 1, **kw
                 y=df[line],
                 line=dict(color=color, width=width),
                 name=line,
-                **kwargs
+                **kwargs,
             )
         ]
     )
@@ -84,9 +90,9 @@ def plot_candle_highlight(
     signal: str,
     name: str = "Candle {df.name}",
     width: int = 1,
-    increasing_line_color="cyan",
-    decreasing_line_color="gray",
-    **kwargs
+    increasing_line_color="#26c6da",
+    decreasing_line_color="#ab47bc",
+    **kwargs,
 ):
     plot_df = df.loc[(df[signal] == True)]
     name = name.format(df=df)
@@ -104,7 +110,7 @@ def plot_candle_highlight(
                 decreasing_line_color=decreasing_line_color,
                 hoverinfo="text",
                 hovertext=name,
-                **kwargs
+                **kwargs,
             ),
         ]
     )

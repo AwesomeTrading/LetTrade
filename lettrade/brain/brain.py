@@ -45,8 +45,7 @@ class Brain:
         self.datas = self.feeder.datas
         self.data = self.feeder.data
 
-    def run(self):
-        """Run the trading bot"""
+    def start(self):
         self.data._set_main()
 
         self.strategy.init()
@@ -54,11 +53,10 @@ class Brain:
         self.feeder.start()
         self.exchange.start()
 
-        # Load indicators
-        indicators_loaders = self._indicators_loaders()
-        self._indicators_load(indicators_loaders)
+        self.strategy._start()
 
-        self.strategy.start(*self.datas)
+    def run(self):
+        """Run the trading bot"""
 
         while self.feeder.alive():
             # Load feeder next data
@@ -66,39 +64,14 @@ class Brain:
                 self.feeder.next()
                 self.exchange.next()
 
-                # Realtime continous update data, then rebuild indicator data
-                if self.feeder.is_continous:
-                    self._indicators_load(indicators_loaders)
-
-                self.strategy.next(*self.datas)
+                self.strategy._next()
             except LetTradeNoMoreDataFeed:
                 break
             except Exception as e:
                 logger.exception("Bot running error", exc_info=e)
                 break
 
-        self.strategy.end(*self.datas)
-
-    def _indicators_loaders(self) -> list:
-        """Init indicators loaders function and args
-
-        Returns:
-            list: List of indicator loader. Ex: [_loader_function_, list[...args]]
-        """
-        loaders = []
-        for data in self.datas:
-            fn_name = f"indicators_{data.name.lower()}"
-            if hasattr(self.strategy, fn_name):
-                fn = getattr(self.strategy, fn_name)
-            else:
-                fn = self.strategy.indicators
-            loaders.append([fn, [data]])
-        return loaders
-
-    def _indicators_load(self, loaders: list):
-        for loader in loaders:
-            fn, args = loader
-            fn(*args)
+        self.strategy._end()
 
     def stop(self):
         """Stop the trading bot"""

@@ -1,6 +1,6 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Optional, final
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -53,6 +53,7 @@ class Strategy(ABC):
             raise RuntimeError("Optimize a live datafeeder")
         self.__is_optimize: bool = is_optimize
 
+    @final
     def init(self) -> None:
         """Init strategy variables"""
 
@@ -64,6 +65,27 @@ class Strategy(ABC):
             df (DataFeed): main data of strategy
         """
 
+    @final
+    def _indicators_loader_inject(self):
+        for data in self.datas:
+            fn_name = f"indicators_{data.name.lower()}"
+            if hasattr(self, fn_name):
+                fn = getattr(self, fn_name)
+            else:
+                fn = self.indicators
+            setattr(data, "indicator_loader", fn)
+
+    @final
+    def _indicators_load(self):
+        for data in self.datas:
+            data.indicator_loader(data)
+
+    @final
+    def _start(self):
+        self._indicators_loader_inject()
+        self._indicators_load()
+        self.start(*self.datas)
+
     def start(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
         """call after `init()` and before first `next()` is called
 
@@ -74,8 +96,18 @@ class Strategy(ABC):
             _type_: `None`
         """
 
+    @final
+    def _next(self) -> None:
+        if self.is_live:
+            self._indicators_load()
+        self.next(*self.datas)
+
     def next(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
         """Next bar event"""
+
+    @final
+    def _end(self) -> None:
+        self.end(*self.datas)
 
     def end(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
         """Call when strategy run completed
@@ -344,8 +376,8 @@ class Strategy(ABC):
         """
 
     # Commander
-    def notify(self, msg: str, **kwargs) -> Any:
-        """Notify message to commander
+    def send(self, msg: str, **kwargs) -> Any:
+        """Send message to commander
 
         Args:
             msg (str): message string

@@ -75,7 +75,7 @@ class LetTradeBot:
         self.datas = datas
         self.data = self.datas[0]
 
-    def _init(self):
+    def init(self):
         # Feeder
         self.feeder = self._feeder_cls(**self._kwargs.get("feeder_kwargs", {}))
         self.feeder.init(self.datas)
@@ -133,10 +133,14 @@ class LetTradeBot:
             **self._kwargs.get("stats_kwargs", {}),
         )
 
-    def run(self, **kwargs):
-        # Init objects
-        self._init(**kwargs)
+    def start(self):
+        if not hasattr(self, "brain"):
+            self.init()
 
+        self.brain.start()
+        logger.info("Bot started with %d datas", len(self.datas))
+
+    def run(self):
         if self.commander:
             self.commander.start()
 

@@ -125,7 +125,20 @@ class LetTrade:
             feeds = [self._datafeed(data=data, index=i) for i, data in enumerate(datas)]
         return feeds
 
-    def run(self, worker: Optional[int] = None, *args, **kwargs):
+    def init(self, force=False):
+        if force:
+            if self._bot is not None:
+                self._bot = None
+
+        if self._bot is None:
+            self._bot = self._init_bot()
+
+    def start(self):
+        if self._bot is None:
+            self.init()
+        self._start_bot(bot=self._bot)
+
+    def run(self, worker: Optional[int] = None, **kwargs):
         """Run strategy in single or multiple processing
 
         Args:
@@ -153,7 +166,6 @@ class LetTrade:
                         self._run_process,
                         datas=datas,
                         index=i,
-                        # multiprocess="worker",
                     )
                     for i, datas in enumerate(self.datas)
                 ]
@@ -161,42 +173,69 @@ class LetTrade:
                     result = future.result()
                     print(result)
         else:
-            result = self._run_process(*args, **kwargs)
+            result = self._run_process(bot=self._bot, **kwargs)
             print(result)
 
-    def _run_process(self, **kwargs):
+    def _run_process(self, bot: LetTradeBot = None, **kwargs):
         # Skip pickle bot object between processing
-        bot = self._run_bot(**kwargs)
+        if bot is None:
+            bot = self._init_bot(**kwargs)
+        bot = self._start_bot(bot=bot, **kwargs)
+        bot = self._run_bot(bot=bot, **kwargs)
+        self._bot = bot
         return str(bot.stats)
+
+    def _init_bot(self, bot=None, datas=None, name=None):
+        if bot is None:
+            bot = self._new_bot(
+                datas=datas,
+                name=name,
+                **self._kwargs.get("bot_kwargs", {}),
+            )
+        bot.init()
+        return bot
+
+    def _start_bot(self, bot=None, datas=None, name=None):
+        if bot is None:
+            bot = self._init_bot(bot=bot, datas=datas, name=name)
+
+        bot.start()
+        return bot
 
     def _run_bot(
         self,
+        bot: LetTradeBot,
         datas: Optional[list[DataFeed]] = None,
         index: Optional[int] = None,
-        # multiprocess: Optional[str] = None,
         name: str = None,
         **kwargs,
     ):
+        if bot is None:
+            bot = self._new_bot(
+                datas=datas,
+                name=name,
+                **self._kwargs.get("bot_kwargs", {}),
+            )
+
         # Set name for current processing
         if name is None:
             d = datas[0] if datas else self.data
             name = f"{index}-{os.getpid()}-{d.name}"
 
         # build bot
-        bot = self._new_bot(
-            datas=datas,
-            name=name,
-            **self._kwargs.get("bot_kwargs", {}),
-        )
+
         bot.run(
             # multiprocess=multiprocess,
             **kwargs.pop("bot_kwargs", {}),
         )
 
-        self._bot = bot
         return bot
 
     def _multiprocess(self, **kwargs):
+        if self._bot is not None:
+            logger.warning("Remove exist bot when running in multiprocessing")
+            self._bot = None
+
         if self._commander_cls:
             # Impletement commander dependencies and save to commander_kwargs
             commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
@@ -205,6 +244,11 @@ class LetTrade:
                 # self_kwargs=self._kwargs,
                 **kwargs,
             )
+
+    # def reset(self):
+    #     self._bot = None
+    #     self.datas = self._init_datafeeds(datas)
+    #     self.data = self.datas[0]
 
     def stop(self):
         """Stop strategy"""

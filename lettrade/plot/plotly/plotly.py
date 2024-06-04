@@ -193,7 +193,7 @@ class PlotlyPlotter(Plotter):
             self.load()
 
         self._plot_equity()
-        # self._plot_orders()
+        self._plot_orders()
         self._plot_trades()
 
         params = dict(layout_xaxis_rangeslider_visible=False)

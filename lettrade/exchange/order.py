@@ -1,6 +1,7 @@
 from typing import Optional, Type
 
 from .base import BaseTransaction, OrderState, OrderType
+from .error import LetTradeOrderValidateException
 
 
 class Order(BaseTransaction):
@@ -45,6 +46,8 @@ class Order(BaseTransaction):
         self.entry_at: int = None
         self.entry_price: int = None
 
+        self.validate()
+
     def __repr__(self):
         return "<Order {}>".format(
             ", ".join(
@@ -63,6 +66,37 @@ class Order(BaseTransaction):
                 if value is not None
             )
         )
+
+    def validate(self):
+        # Validate
+        price = self.limit_price or self.stop_price or self.data.close.l[-1]
+
+        # Buy side
+        if self.size > 0:
+            if self.sl_price is not None:
+                if self.sl_price >= price:
+                    raise LetTradeOrderValidateException(
+                        f"Order buy sl {self.sl_price} >= price {price}"
+                    )
+            if self.tp_price is not None:
+                if self.tp_price <= price:
+                    raise LetTradeOrderValidateException(
+                        f"Order buy tp {self.tp_price} >= price {price}"
+                    )
+        # Sell side
+        elif self.size < 0:
+            if self.sl_price is not None:
+                if self.sl_price <= price:
+                    raise LetTradeOrderValidateException(
+                        f"Order sell sl {self.sl_price} <= price {price}"
+                    )
+            if self.tp_price is not None:
+                if self.tp_price >= price:
+                    raise LetTradeOrderValidateException(
+                        f"Order sell tp {self.tp_price} >= price {price}"
+                    )
+        else:
+            raise LetTradeOrderValidateException(f"Order side {self.size} is invalid")
 
     def place(self) -> "OrderResult":
         """Place `Order`

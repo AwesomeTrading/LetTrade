@@ -101,9 +101,9 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         self.assertEqual(df.close.l[0], 0.9765, f"Data.close[{next}] wrong")
         self.assertEqual(df.volume.l[0], 5050.0, f"Data.volume[{next}] wrong")
         self.assertEqual(
-            df.datetime.l[0],
+            df.index.l[0],
             pd.Timestamp("2022-10-20 03:00:00"),
-            f"Data.datetime[{next}] wrong",
+            f"Data.index[{next}] wrong",
         )
 
         # Move to end
@@ -116,9 +116,9 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         self.assertEqual(df.close.l[0], 1.06341, f"Data.close[{end}] wrong")
         self.assertEqual(df.volume.l[0], 5679.0, f"Data.volume[{end}] wrong")
         self.assertEqual(
-            df.datetime.l[0],
+            df.index.l[0],
             pd.Timestamp("2022-12-16 15:00:00"),
-            f"Data.datetime[{end}] wrong",
+            f"Data.index[{end}] wrong",
         )
 
 

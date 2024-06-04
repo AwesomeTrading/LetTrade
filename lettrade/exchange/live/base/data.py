@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Optional, Type
 
 import pandas as pd
-
 from lettrade.data import DataFeed
 
 from .api import LiveAPI
@@ -65,7 +64,7 @@ class LiveDataFeed(DataFeed):
 
     def on_rates(self, rates, tick=0):
         self.push(rates)
-        self.pointer_go_stop()
+        self.l.go_stop()
         return True
 
     def dump_csv(

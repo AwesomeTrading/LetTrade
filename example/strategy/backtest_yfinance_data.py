@@ -40,32 +40,32 @@ class SmaCross(Strategy):
             scatters=[
                 # EMA
                 dict(
-                    x=df.datetime,
+                    x=df.index,
                     y=df["ema1"],
                     line=dict(color="blue", width=1),
                     name="ema1",
                 ),
                 dict(
-                    x=df.datetime,
+                    x=df.index,
                     y=df["ema2"],
                     line=dict(color="green", width=1),
                     name="ema2",
                 ),
                 # BBands
                 dict(
-                    x=df.datetime,
+                    x=df.index,
                     y=df["bbands_low"],
                     line=dict(color="blue", width=1),
                     name="bbands_low",
                 ),
                 dict(
-                    x=df.datetime,
+                    x=df.index,
                     y=df["bbands_mid"],
                     line=dict(color="green", width=1),
                     name="bbands_mid",
                 ),
                 dict(
-                    x=df.datetime,
+                    x=df.index,
                     y=df["bbands_high"],
                     line=dict(color="blue", width=1),
                     name="bbands_high",

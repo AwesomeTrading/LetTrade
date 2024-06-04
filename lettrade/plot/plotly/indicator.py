@@ -21,7 +21,7 @@ def plot_ichimoku(
     return dict(
         scatters=[
             dict(
-                x=df.datetime,
+                x=df.index,
                 y=df[tenkan_sen],
                 name=tenkan_sen,
                 type="scatter",
@@ -29,7 +29,7 @@ def plot_ichimoku(
                 line=dict(color=tenkan_sen_color, width=width),
             ),
             dict(
-                x=df.datetime,
+                x=df.index,
                 y=df[kijun_sen],
                 name=kijun_sen,
                 type="scatter",
@@ -37,7 +37,7 @@ def plot_ichimoku(
                 line=dict(color=kijun_sen_color, width=width),
             ),
             dict(
-                x=df.datetime,
+                x=df.index,
                 y=df[senkou_span_a],
                 name=senkou_span_a,
                 type="scatter",
@@ -45,7 +45,7 @@ def plot_ichimoku(
                 line=dict(color=senkou_span_a_color, width=width),
             ),
             dict(
-                x=df.datetime,
+                x=df.index,
                 y=df[senkou_span_b],
                 name=senkou_span_b,
                 type="scatter",
@@ -54,7 +54,7 @@ def plot_ichimoku(
                 line=dict(color=senkou_span_b_color, width=width),
             ),
             dict(
-                x=df.datetime,
+                x=df.index,
                 y=df[chikou_span],
                 name=chikou_span,
                 type="scatter",
@@ -75,7 +75,7 @@ def plot_line(
     return dict(
         scatters=[
             dict(
-                x=df.datetime,
+                x=df.index,
                 y=df[line],
                 line=dict(color=color, width=width),
                 name=line,

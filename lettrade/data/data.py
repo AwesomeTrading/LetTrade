@@ -80,12 +80,12 @@ class DataFeed(pd.DataFrame):
         self.l.next(next)
 
     def bar(self, i=0) -> pd.Timestamp:
-        return self.datetime.l[i]
+        return self.index.l[i]
 
     def push(self, rows: list):
         # cls = self.index.__class__
         for row in rows:
-            dt = pd.to_datetime(row[0], unit="s")
+            dt = pd.to_datetime(row[0], unit="s", utc=True)
             self.loc[
                 dt,
                 [
@@ -121,13 +121,13 @@ class DataFeed(pd.DataFrame):
         raise RuntimeError(f"No implement to handle drop since {since}")
 
     # Properties
-    @property
-    def datetime(self) -> pd.DatetimeIndex:
-        return self.index
+    # @property
+    # def datetime(self) -> pd.DatetimeIndex:
+    #     return self.index
 
     @property
     def now(self) -> pd.Timestamp:
-        return self.datetime.l[0]
+        return self.index.l[0]
 
     @property
     def meta(self) -> dict:

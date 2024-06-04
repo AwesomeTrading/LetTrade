@@ -1,7 +1,17 @@
 import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
 
 from lettrade.plot import Plotter
+
+pio.templates.default = "plotly_dark"
+
+if __debug__:  # __debug__ to remove code in production
+    from lettrade.utils.docs import is_docs_session
+    from lettrade.utils.notebook import is_notebook_session
+
+    if is_docs_session() or is_notebook_session():
+        pio.renderers.default = "notebook"
 
 
 class PlotlyPlotter(Plotter):
@@ -149,7 +159,7 @@ class PlotlyPlotter(Plotter):
                 "drawrect",
                 "eraseshape",
             ],
-            template="plotly_dark",
+            # template="plotly_dark",
             hovermode="x unified",
         )
         if "layout" in config:
@@ -199,10 +209,6 @@ class PlotlyPlotter(Plotter):
         params = dict(layout_xaxis_rangeslider_visible=False)
         params.update(**kwargs)
         self.figure.update(**params)
-
-        if __debug__:
-            if self._docs_plot(**kwargs):
-                return
 
         self.figure.show()
 
@@ -306,13 +312,3 @@ class PlotlyPlotter(Plotter):
                 ),
                 showlegend=False,
             )
-
-    def _docs_plot(self, **kwargs):
-        if __debug__:
-            from lettrade.utils.docs import is_docs_session
-
-            if not is_docs_session():
-                return
-
-            # self.figure.to_html(full_html=False, include_plotlyjs="cdn")
-            return True

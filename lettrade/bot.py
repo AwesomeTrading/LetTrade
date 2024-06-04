@@ -133,12 +133,15 @@ class LetTradeBot:
             **self._kwargs.get("stats_kwargs", {}),
         )
 
+        logger.info("Bot %s inited with %d datas", self._name, len(self.datas))
+
     def start(self):
         if not hasattr(self, "brain"):
             self.init()
 
         self.brain.start()
-        logger.info("Bot started with %d datas", len(self.datas))
+
+        logger.info("Bot %s started with %d datas", self._name, len(self.datas))
 
     def run(self):
         if self.commander:

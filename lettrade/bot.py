@@ -1,5 +1,6 @@
 import logging
-from typing import Optional, Type
+import os
+from typing import Literal, Optional, Type
 
 from lettrade.account import Account
 from lettrade.brain import Brain
@@ -182,3 +183,79 @@ class LetTradeBot:
         self.brain.stop()
         if self.plotter is not None:
             self.plotter.stop()
+
+    @classmethod
+    def new_bot(
+        cls,
+        datas: Optional[list],
+        strategy_cls: Type[Strategy],
+        feeder_cls: Type[DataFeeder],
+        exchange_cls: Type[Exchange],
+        account_cls: Type[Account],
+        commander_cls: Type[Commander],
+        plotter_cls: Type["Plotter"],
+        stats_cls: Type["Statistic"],
+        name: Optional[str] = None,
+        **kwargs,
+    ) -> "LetTradeBot":
+        bot = cls(
+            strategy=strategy_cls,
+            datas=datas,
+            feeder=feeder_cls,
+            exchange=exchange_cls,
+            account=account_cls,
+            commander=commander_cls,
+            plotter=plotter_cls,
+            stats=stats_cls,
+            name=name,
+            **kwargs,
+        )
+        return bot
+
+    @classmethod
+    def init_bot(
+        cls,
+        bot: Optional["LetTradeBot"] = None,
+        **kwargs,
+    ):
+        if bot is None:
+            bot = cls.new_bot(**kwargs)
+        bot.init()
+        return bot
+
+    @classmethod
+    def run_bot(
+        cls,
+        bot: "LetTradeBot",
+        datas: Optional[list[DataFeed]] = None,
+        id: Optional[int] = None,
+        name: Optional[str] = None,
+        result: Literal["str", "stats", "bot", None] = "str",
+        **kwargs,
+    ):
+        # Set name for current processing
+        if name is None:
+            d = datas[0] if datas else bot.data
+            name = f"{id}-{os.getpid()}-{d.name}"
+
+        if bot is None:
+            bot = cls.init_bot(
+                datas=datas,
+                name=name,
+                **kwargs,
+            )
+            bot.start()
+
+        # bot
+        bot.run(
+            # multiprocess=multiprocess,
+            **kwargs.pop("bot_kwargs", {}),
+        )
+
+        # Return type
+        if result == "stats":
+            return bot.stats
+        if result == "str":
+            return str(bot.stats)
+
+        return bot

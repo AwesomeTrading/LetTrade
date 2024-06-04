@@ -2,6 +2,7 @@ import logging
 import os
 import queue
 import threading
+import time
 from concurrent.futures import Future, ProcessPoolExecutor
 from itertools import product, repeat
 from multiprocessing import Manager, Queue
@@ -42,11 +43,11 @@ def logging_filter_optimize():
 
 class LetTradeBackTestBot(LetTradeBot):
 
-    def _init(self, optimize=None, **kwargs):
+    def init(self, optimize=None, **kwargs):
         strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
         strategy_kwargs.update(is_optimize=optimize is not None)
 
-        super()._init()
+        super().init()
 
         if not optimize:
             return
@@ -203,20 +204,20 @@ class LetTradeBackTest(LetTrade):
         datas: list[DataFeed],
         optimize: dict[str, object],
         index: int,
-        multiprocess: Optional[str] = "worker",
         q: Queue = None,
-        **kwargs,
+        # **kwargs,
     ):
         try:
-            bot = self._run_bot(
-                datas=datas,
-                multiprocess=multiprocess,
-                index=index,
-                bot_kwargs=dict(
-                    is_optimize=True,
-                    optimize=optimize,
-                    **kwargs,
-                ),
+            kwargs = self._kwargs.copy()
+            if datas:
+                kwargs["datas"] = datas
+
+            bot = self._bot_cls.run_bot(
+                optimize=optimize,
+                id=index,
+                init_kwargs=dict(optimize=optimize),
+                result="bot",
+                **kwargs,
             )
 
             if q is not None:
@@ -289,7 +290,6 @@ class LetTradeBackTest(LetTrade):
             datas=datas,
             optimize=optimize,
             index=0,
-            multiprocess=None,
         )
         if self._opt_result_parser:
             result = self._opt_result_parser(result)
@@ -389,7 +389,10 @@ def _process_bar(size: int, q: Queue, manager: SyncManager):
             break
 
     pbar.close()
-    # manager.shutdown()
+
+    time.sleep(1)  # Wait for return finish
+
+    manager.shutdown()
 
 
 def _batch(seq, workers=None):

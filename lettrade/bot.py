@@ -220,13 +220,13 @@ class LetTradeBot:
     ):
         if bot is None:
             bot = cls.new_bot(**kwargs)
-        bot.init()
+        bot.init(**kwargs.get("init_kwargs", {}))
         return bot
 
     @classmethod
     def run_bot(
         cls,
-        bot: "LetTradeBot",
+        bot: Optional["LetTradeBot"] = None,
         datas: Optional[list[DataFeed]] = None,
         id: Optional[int] = None,
         name: Optional[str] = None,
@@ -247,10 +247,7 @@ class LetTradeBot:
             bot.start()
 
         # bot
-        bot.run(
-            # multiprocess=multiprocess,
-            **kwargs.pop("bot_kwargs", {}),
-        )
+        bot.run(**kwargs.get("bot_kwargs", {}))
 
         # Return type
         if result == "stats":

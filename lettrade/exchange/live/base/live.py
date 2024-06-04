@@ -34,9 +34,9 @@ class LetTradeLiveBot(LetTradeBot):
         for data in self.datas:
             data._api = self._api
 
-    def _init(self):
+    def init(self):
         self._api.init()
-        super()._init()
+        super().init()
 
 
 class LetTradeLive(LetTrade):

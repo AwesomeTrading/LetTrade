@@ -125,6 +125,7 @@ class LetTrade:
                         datas=datas,
                         id=i,
                         result="str",
+                        **self._kwargs,
                     )
                     for i, datas in enumerate(self.datas)
                 ]
@@ -132,8 +133,12 @@ class LetTrade:
                     result = future.result()
                     print(result)
         else:
-            result = self._bot_cls.run_bot(bot=self._bot, result="str", **kwargs)
-            print(result)
+            self._bot = self._bot_cls.run_bot(
+                bot=self._bot,
+                result="bot",
+                **self._kwargs,
+            )
+            print(str(self._bot.stats))
 
     def _multiprocess(self, **kwargs):
         if self._bot is not None:

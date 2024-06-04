@@ -112,13 +112,17 @@ class DataFeed(pd.DataFrame):
 
         if isinstance(since, int):
             loc = self.index.l[since]
-            index = self[self.index < loc].index
-            super().drop(index=index, inplace=True)
-            self.l.reset()
-            logger.info("BackTestDataFeed %s dropped %s rows", self.name, len(index))
-            return
+        elif isinstance(since, str):
+            loc = pd.Timestamp(since)
+        elif isinstance(since, pd.Timestamp):
+            loc = since
+        else:
+            raise RuntimeError(f"DataFeed.drop since {since} is invalid")
 
-        raise RuntimeError(f"No implement to handle drop since {since}")
+        index = self[self.index < loc].index
+        super().drop(index=index, inplace=True)
+        self.l.reset()
+        logger.info("BackTestDataFeed %s dropped %s rows", self.name, len(index))
 
     # Properties
     # @property

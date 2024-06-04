@@ -3,6 +3,7 @@ import re
 from typing import Optional
 
 import pandas as pd
+
 from lettrade.data import DataFeed, TimeFrame
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ class BackTestDataFeed(DataFeed):
         name: str,
         timeframe: Optional[str | int | pd.Timedelta] = None,
         meta: Optional[dict] = None,
-        drop_since: Optional[int] = None,
+        since: Optional[int] = None,
         **kwargs,
     ) -> None:
         if timeframe is None:
@@ -28,8 +29,8 @@ class BackTestDataFeed(DataFeed):
             meta=meta,
             **kwargs,
         )
-        if drop_since is not None:
-            self.drop(since=drop_since)
+        if since is not None:
+            self.drop(since=since)
 
     def _find_timeframe(self, df):
         if len(df.index) < 3:

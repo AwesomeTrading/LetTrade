@@ -1,10 +1,10 @@
-import plotly.graph_objects as go
+import pandas as pd
 
-from lettrade.data import DataFeed
+import plotly.graph_objects as go
 
 
 def plot_ichimoku(
-    df: DataFeed,
+    dataframe: pd.DataFrame,
     tenkan_sen="tenkan_sen",
     kijun_sen="kijun_sen",
     senkou_span_a="senkou_span_a",
@@ -20,32 +20,32 @@ def plot_ichimoku(
     return dict(
         scatters=[
             dict(
-                x=df.index,
-                y=df[tenkan_sen],
+                x=dataframe.index,
+                y=dataframe[tenkan_sen],
                 name=tenkan_sen,
                 type="scatter",
                 mode="lines",
                 line=dict(color=tenkan_sen_color, width=width),
             ),
             dict(
-                x=df.index,
-                y=df[kijun_sen],
+                x=dataframe.index,
+                y=dataframe[kijun_sen],
                 name=kijun_sen,
                 type="scatter",
                 mode="lines",
                 line=dict(color=kijun_sen_color, width=width),
             ),
             dict(
-                x=df.index,
-                y=df[senkou_span_a],
+                x=dataframe.index,
+                y=dataframe[senkou_span_a],
                 name=senkou_span_a,
                 type="scatter",
                 mode="lines",
                 line=dict(color=senkou_span_a_color, width=width),
             ),
             dict(
-                x=df.index,
-                y=df[senkou_span_b],
+                x=dataframe.index,
+                y=dataframe[senkou_span_b],
                 name=senkou_span_b,
                 type="scatter",
                 mode="lines",
@@ -53,8 +53,8 @@ def plot_ichimoku(
                 line=dict(color=senkou_span_b_color, width=width),
             ),
             dict(
-                x=df.index,
-                y=df[chikou_span],
+                x=dataframe.index,
+                y=dataframe[chikou_span],
                 name=chikou_span,
                 type="scatter",
                 mode="lines",
@@ -65,20 +65,20 @@ def plot_ichimoku(
 
 
 def plot_line(
-    df: DataFeed,
-    line: str,
+    series: pd.Series,
     color: str = "#ffee58",
     width: int = 1,
+    name=None,
     mode="lines",
     **kwargs,
 ):
     return dict(
         scatters=[
             dict(
-                x=df.index,
-                y=df[line],
+                x=series.index,
+                y=series,
                 line=dict(color=color, width=width),
-                name=line,
+                name=name or series.name,
                 mode=mode,
                 **kwargs,
             )
@@ -87,42 +87,39 @@ def plot_line(
 
 
 def plot_mark(
-    df: DataFeed,
-    mark: str,
+    series: pd.Series,
     color: str = "#ffee58",
     width: int = 1,
     mode="markers",
+    name=None,
     **kwargs,
 ):
     return plot_line(
-        df=df,
-        line=mark,
+        series=series,
         color=color,
         width=width,
         mode=mode,
+        name=name,
         **kwargs,
     )
 
 
 def plot_candle_highlight(
-    df: DataFeed,
-    signal: str,
-    name: str = "Candle {df.name}",
+    dataframe: pd.DataFrame,
+    name: str = "Candle highlight",
     width: int = 1,
     increasing_line_color="#26c6da",
     decreasing_line_color="#ab47bc",
     **kwargs,
 ):
-    plot_df = df.loc[(df[signal] == True)]
-    name = name.format(df=df)
     return dict(
         traces=[
             go.Candlestick(
-                x=plot_df.index,
-                open=plot_df.open,
-                high=plot_df.high,
-                low=plot_df.low,
-                close=plot_df.close,
+                x=dataframe.index,
+                open=dataframe.open,
+                high=dataframe.high,
+                low=dataframe.low,
+                close=dataframe.close,
                 name=name,
                 line=dict(width=width),
                 increasing_line_color=increasing_line_color,

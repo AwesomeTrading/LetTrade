@@ -163,11 +163,6 @@ class LetTradeBot:
             if is_docs_session():
                 return
 
-            from .utils.notebook import is_notebook_session
-
-            if is_notebook_session():
-                return
-
         if self.plotter is None:
             if self._plotter_cls is None:
                 raise RuntimeError("Plotter class is None")

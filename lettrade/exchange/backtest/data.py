@@ -3,7 +3,6 @@ import re
 from typing import Optional
 
 import pandas as pd
-
 from lettrade.data import DataFeed, TimeFrame
 
 logger = logging.getLogger(__name__)
@@ -37,8 +36,8 @@ class BackTestDataFeed(DataFeed):
             raise RuntimeError("DataFeed not enough data to detect timeframe")
         dt = df.index
         for i in range(0, 3):
-            tf = dt[i + 1] - dt[i]
-            if tf == dt[i + 2] - dt[i + 1]:
+            tf = dt.l[i + 1] - dt.l[i]
+            if tf == dt.l[i + 2] - dt.l[i + 1]:
                 return tf
         raise RuntimeError("DataFeed cannot detect timeframe")
 

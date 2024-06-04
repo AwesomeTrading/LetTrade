@@ -144,3 +144,37 @@ class DataFeed(pd.DataFrame):
     @property
     def is_main(self) -> bool:
         return self.meta.get("is_main", False)
+
+
+if __debug__:
+    # __debug__ code willbe remove when run in python production flag `python -O` or `python -OO`
+    from lettrade.base.flag import validate_data_getitem_pointer
+
+    if validate_data_getitem_pointer:
+        # Check missing data get item by pointer:
+        # Wrong: data.index[<pointer>] -> Right: data.index.l[<pointer>]
+        # Wrong: data.open[<pointer>] -> Right: data.open.l[<pointer>]
+
+        import logging
+
+        logger = logging.getLogger(__name__)
+
+        def inject_data_validator(cls):
+            # __class__ = cls
+
+            def data_getitem(self, value):
+                if isinstance(value, int):
+                    logger.warning(
+                        "[%s] Get data by pointer %d many wrong data. "
+                        "using <data>.l[<pointer>] to get data at pointer",
+                        self.__class__,
+                        value,
+                    )
+                return self.__my__getitem__(value)
+
+            cls.__my__getitem__ = cls.__getitem__
+            cls.__getitem__ = data_getitem
+
+        inject_data_validator(DataFeed)
+        inject_data_validator(pd.Series)
+        inject_data_validator(pd.DatetimeIndex)

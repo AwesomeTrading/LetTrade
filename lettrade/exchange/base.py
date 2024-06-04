@@ -46,9 +46,9 @@ class BaseTransaction:
 
 
 if __debug__:
-    from lettrade.base.flag import strategy_validate_trade
+    from lettrade.base.flag import validate_strategy_trade
 
-    if strategy_validate_trade:
+    if validate_strategy_trade:
 
         import inspect
 

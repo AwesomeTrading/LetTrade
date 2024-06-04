@@ -1,2 +1,3 @@
 if __debug__:
-    strategy_validate_trade: bool = False
+    validate_strategy_trade: bool = False
+    validate_data_getitem_pointer: bool = False

@@ -193,7 +193,7 @@ class PlotlyPlotter(Plotter):
             self.load()
 
         self._plot_equity()
-        self._plot_orders()
+        # self._plot_orders()
         self._plot_trades()
 
         params = dict(layout_xaxis_rangeslider_visible=False)
@@ -272,11 +272,11 @@ class PlotlyPlotter(Plotter):
         for trade in trades:
             x = [trade.entry_at]
             y = [trade.entry_price]
-            customdata = [[trade.entry_at, trade.size, trade.pl, trade.fee]]
+            customdata = [["Entry", trade.size, trade.pl, trade.fee]]
             if trade.exit_at:
                 x.append(trade.exit_at)
                 y.append(trade.exit_price)
-                customdata.append([trade.exit_at, trade.size, trade.pl, trade.fee])
+                customdata.append(["Exit", trade.size, trade.pl, trade.fee])
 
             color = "green" if trade.is_long else "red"
             self.figure.add_scatter(
@@ -284,10 +284,10 @@ class PlotlyPlotter(Plotter):
                 y=y,
                 customdata=customdata,
                 hovertemplate=(
-                    f"Trade id: {trade.id}<br>"
-                    "Index: %{x}<br>"
-                    "At: %{customdata[0]}<br>"
+                    "<br>"
+                    "At: %{x}<br>"
                     "Price: %{y}<br>"
+                    "Status: %{customdata[0]}<br>"
                     "Size: %{customdata[1]}<br>"
                     "PL: %{customdata[2]:.2f}$<br>"
                     "Fee: %{customdata[3]:.2f}$"

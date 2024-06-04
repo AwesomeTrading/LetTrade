@@ -213,7 +213,7 @@ class LetTradeBot:
         return bot
 
     @classmethod
-    def init_bot(
+    def start_bot(
         cls,
         bot: Optional["LetTradeBot"] = None,
         **kwargs,
@@ -221,6 +221,7 @@ class LetTradeBot:
         if bot is None:
             bot = cls.new_bot(**kwargs)
         bot.init(**kwargs.get("init_kwargs", {}))
+        bot.start()
         return bot
 
     @classmethod
@@ -239,15 +240,14 @@ class LetTradeBot:
             name = f"{id}-{os.getpid()}-{d.name}"
 
         if bot is None:
-            bot = cls.init_bot(
+            bot = cls.start_bot(
                 datas=datas,
                 name=name,
                 **kwargs,
             )
-            bot.start()
 
         # bot
-        bot.run(**kwargs.get("bot_kwargs", {}))
+        bot.run(**kwargs.get("run_kwargs", {}))
 
         # Return type
         if result == "stats":

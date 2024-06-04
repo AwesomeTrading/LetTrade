@@ -48,7 +48,6 @@ class LetTrade:
         self._kwargs["bot_cls"] = bot
         self._kwargs["name"] = name
 
-        # DataFeeds
         self._kwargs["datas"] = self._init_datafeeds(datas)
 
     def _datafeed(self, data: DataFeed, **kwargs) -> DataFeed:
@@ -91,10 +90,7 @@ class LetTrade:
         if force and self._bot is not None:
             self._bot = None
 
-        if self._bot is None:
-            self._bot = self._bot_cls.init_bot(**self._kwargs)
-
-        self._bot.start()
+        self._bot = self._bot_cls.start_bot(bot=self._bot, **self._kwargs)
 
     def run(self, worker: Optional[int] = None, **kwargs):
         """Run strategy in single or multiple processing

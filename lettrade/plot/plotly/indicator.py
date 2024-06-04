@@ -1,4 +1,3 @@
-import pandas as pd
 import plotly.graph_objects as go
 
 from lettrade.data import DataFeed
@@ -70,6 +69,7 @@ def plot_line(
     line: str,
     color: str = "#ffee58",
     width: int = 1,
+    mode="lines",
     **kwargs,
 ):
     return dict(
@@ -79,9 +79,28 @@ def plot_line(
                 y=df[line],
                 line=dict(color=color, width=width),
                 name=line,
+                mode=mode,
                 **kwargs,
             )
         ]
+    )
+
+
+def plot_mark(
+    df: DataFeed,
+    mark: str,
+    color: str = "#ffee58",
+    width: int = 1,
+    mode="markers",
+    **kwargs,
+):
+    return plot_line(
+        df=df,
+        line=mark,
+        color=color,
+        width=width,
+        mode=mode,
+        **kwargs,
     )
 
 

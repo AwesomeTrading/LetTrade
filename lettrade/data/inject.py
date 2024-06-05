@@ -17,7 +17,17 @@ class IndexInject:
         self._owner = owner
 
     def __getitem__(self, value):
-        return self._owner._values[value + self.pointer]
+        if isinstance(value, int):
+            value += self.pointer
+        elif isinstance(value, slice):
+            value = slice(
+                value.start + self.pointer,
+                value.stop + self.pointer,
+                value.step,
+            )
+        else:
+            raise NotImplementedError(f"Getitem by {value} is not implement")
+        return self._owner._values[value]
 
     # Function
     def next(self, next=0):
@@ -51,8 +61,18 @@ class SeriesInject(IndexInject):
 
 
 class DataFrameInject(IndexInject):
-    def __getitem__(self, value):
-        return self._owner.iloc[value + self.pointer]
+    def __getitem__(self, value: slice):
+        if isinstance(value, int):
+            value += self.pointer
+        elif isinstance(value, slice):
+            value = slice(
+                value.start + self.pointer,
+                value.stop + self.pointer,
+                value.step,
+            )
+        else:
+            raise NotImplementedError(f"Getitem by {value} is not implement")
+        return self._owner.iloc[value]
 
 
 @property

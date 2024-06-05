@@ -10,6 +10,7 @@ class IndexInject:
         if not isinstance(index, pd.DatetimeIndex):
             raise RuntimeError("Index is not instance of pd.DatetimeIndex")
 
+        # Share pointer between DataFrame
         if not hasattr(index, "_lt_pointers"):
             setattr(index, "_lt_pointers", [0])
         self._pointers = getattr(index, "_lt_pointers")
@@ -54,6 +55,14 @@ class IndexInject:
     @property
     def stop(self) -> int:
         return len(self._owner) - self._pointers[0]
+
+    @property
+    def start_value(self) -> pd.Timestamp:
+        return self._owner._values[0]
+
+    @property
+    def stop_value(self) -> pd.Timestamp:
+        return self._owner._values[-1]
 
 
 class SeriesInject(IndexInject):

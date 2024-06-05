@@ -122,7 +122,7 @@ class LiveOrder(Order):
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
-        result = self._api.order_send(self)
+        result = self._api.order_open(self)
         self.raw = result
         if result.code != 0:
             logger.error("Place order %s", str(result))

@@ -185,13 +185,16 @@ class CCXTAPI(LiveAPI):
     def heartbeat(self):
         return True
 
-    def markets(self, symbol):
+    def market(self, symbol):
+        pass
+
+    def markets(self, symbols: list):
         pass
 
     def tick_get(self, symbol):
         pass
 
-    # Get bars
+    # Bars
     def bars(self, symbol, timeframe, since=0, to=1000):
         raws = self._ccxt.fetch_ohlcv(symbol, timeframe, limit=to)
         return self._parse_bars(raws)
@@ -201,21 +204,27 @@ class CCXTAPI(LiveAPI):
             raw[0] = raw[0] / 1_000
         return raws
 
-    # Get private
+    ### Private
+    # Account
     def account(self):
-        pass
+        """"""
 
-    def order_send(self, order: LiveOrder):
-        pass
+    #  Order
+    def order_open(self, **kwargs):
+        """"""
+
+    def order_close(self, **kwargs):
+        """"""
 
     def orders_total(self):
-        pass
+        """"""
 
     def orders_get(self, **kwargs):
-        pass
+        """"""
 
-    def positions_total(self):
-        pass
+    # Trade
+    def trades_total(self):
+        """"""
 
-    def positions_get(self, **kwargs):
-        pass
+    def trades_get(self, **kwargs):
+        """"""

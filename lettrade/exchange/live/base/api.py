@@ -18,30 +18,53 @@ class LiveAPI(ABC):
     def start(self, callbacker=None):
         """"""
 
-    def stop(self):
-        """"""
-
     def next(self):
         """"""
 
+    def stop(self):
+        """"""
+
+    # Public
     @abstractmethod
     def heartbeat(self):
         """"""
 
+    # Market
     @abstractmethod
-    def account(self):
+    def market(self, symbol: str):
         """"""
 
     @abstractmethod
-    def markets(self, symbol):
+    def markets(self, symbols: list[str]):
         """"""
 
+    # Bars
+    @abstractmethod
+    def bars(self, **kwargs):
+        """"""
+
+    # Tick
     @abstractmethod
     def tick_get(self, symbol):
         """"""
 
+    ### Private
+    # Account
     @abstractmethod
-    def order_send(self, **kwargs):
+    def account(self):
+        """"""
+
+    #  Order
+    @abstractmethod
+    def order_open(self, **kwargs):
+        """"""
+
+    @abstractmethod
+    def order_update(self, **kwargs):
+        """"""
+
+    @abstractmethod
+    def order_close(self, **kwargs):
         """"""
 
     @abstractmethod
@@ -52,14 +75,11 @@ class LiveAPI(ABC):
     def orders_get(self, **kwargs):
         """"""
 
+    # Trade
     @abstractmethod
-    def positions_total(self):
+    def trades_total(self):
         """"""
 
     @abstractmethod
-    def positions_get(self, **kwargs):
-        """"""
-
-    @abstractmethod
-    def bars(self, **kwargs):
+    def trades_get(self, **kwargs):
         """"""

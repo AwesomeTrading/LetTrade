@@ -145,11 +145,11 @@ class MetaTraderAPI(LiveAPI):
     def heartbeat(self):
         return True
 
-    def account(self):
-        return self._mt5.account_info()
+    def market(self, symbol):
+        return self._mt5.symbol_info(symbol)
 
     def markets(self, symbol):
-        return self._mt5.symbol_info(symbol)
+        pass
 
     def tick_get(self, symbol):
         return self._mt5.symbol_info_tick(symbol)
@@ -171,8 +171,13 @@ class MetaTraderAPI(LiveAPI):
 
         return self._mt5.copy_rates_range(symbol, timeframe, since, to)
 
+    ### Private
+    # Account
+    def account(self):
+        return self._mt5.account_info()
+
     # Order
-    def order_send(self, order: LiveOrder):
+    def order_open(self, order: LiveOrder):
         request = self._parse_order_request(order)
         raw = self._mt5.order_send(request)
         return self._parse_order_response(raw)
@@ -198,6 +203,12 @@ class MetaTraderAPI(LiveAPI):
         }
         return request
 
+    def order_update(self, **kwargs):
+        pass
+
+    def order_close(self, **kwargs):
+        pass
+
     def _parse_order_response(self, raw):
         raw.code = raw.retcode
         if raw.code == MT5.TRADE_RETCODE_DONE:
@@ -210,10 +221,11 @@ class MetaTraderAPI(LiveAPI):
     def orders_get(self, **kwargs):
         return self._mt5.orders_get(**kwargs)
 
-    def positions_total(self):
+    # Trade
+    def trades_total(self):
         return self._mt5.positions_total()
 
-    def positions_get(self, **kwargs):
+    def trades_get(self, **kwargs):
         return self._mt5.positions_get(**kwargs)
 
     # Transaction

@@ -103,20 +103,14 @@ class LetTrade:
         """
         if worker or isinstance(self.data, list):
             if not isinstance(self.data, list):
-                self.data = self.datas
+                # self.data = self.datas
                 self.datas = [self.data]
 
-            if not worker:
-                worker = len(self.datas)
-            elif worker > len(self.datas):
-                logger.warning(
-                    "Worker size %s is more then datas size %s",
-                    worker,
-                    len(self.datas),
-                )
-                worker = len(self.datas)
+            worker = self._max_workers(worker)
 
             self._multiprocess()
+
+            datas_source = self._kwargs.pop("datas")
             with ProcessPoolExecutor(max_workers=worker) as executor:
                 futures = [
                     executor.submit(
@@ -126,7 +120,7 @@ class LetTrade:
                         result="str",
                         **self._kwargs,
                     )
-                    for i, datas in enumerate(self.datas)
+                    for i, datas in enumerate(datas_source)
                 ]
                 for future in futures:
                     result = future.result()
@@ -138,6 +132,18 @@ class LetTrade:
                 **self._kwargs,
             )
             print(str(self._bot.stats))
+
+    def _max_workers(self, worker):
+        if not worker:
+            worker = len(self.datas)
+        elif worker > len(self.datas):
+            logger.warning(
+                "Worker size %s is more then datas size %s",
+                worker,
+                len(self.datas),
+            )
+            worker = len(self.datas)
+        return worker
 
     def _multiprocess(self, **kwargs):
         if self._bot is not None:

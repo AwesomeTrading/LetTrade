@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import Optional
+
+import pandas as pd
 
 from lettrade.account import Account
 from lettrade.data import DataFeed, DataFeeder
@@ -11,7 +14,7 @@ class Plotter(ABC):
     Base class help to plot strategy
     """
 
-    _datas_stored: dict = {}
+    _datas_stored: dict = None
 
     def __init__(
         self,
@@ -26,7 +29,14 @@ class Plotter(ABC):
         self.strategy: Strategy = strategy
 
         self.datas: list[DataFeed] = self.feeder.datas
-        self.data: DataFeed = self.feeder.data
+
+    @property
+    def data(self) -> DataFeed:
+        return self.datas[0]
+
+    @data.setter
+    def data(self, value: DataFeed) -> DataFeed:
+        self.datas[0] = value
 
     @abstractmethod
     def stop(self):
@@ -40,13 +50,38 @@ class Plotter(ABC):
     def plot(self, **kwargs):
         """Plot `equity`, `orders`, and `trades` then show"""
 
-    def jump(self, index, range=300, data: DataFeed = None):
-        if data is None:
-            data = self.data
+    def jump(
+        self,
+        since: Optional[int | str | pd.Timestamp] = 0,
+        range=300,
+        name: str = None,
+    ):
+        if self._datas_stored is None:
+            self._datas_stored = {d.name: d for d in self.datas}
 
-        name = data.meta["name"]
+        # Reset
+        if since is None:
+            self.datas = list(self._datas_stored.values())
+        else:  # Jump to range
+            if name is None:
+                name = self.data.name
 
-        stored_data: DataFeed = self._datas_stored.setdefault(name, data)
-        self.data = DataFeed(name=name, data=stored_data[index : index + range])
+            for i, data in enumerate(self._datas_stored.values()):
+                if i == 0:
+                    self.datas[i] = data.__class__(
+                        name=data.name,
+                        data=data.l[since : since + range],
+                    )
+                else:
+                    self.datas[i] = data.__class__(
+                        name=data.name,
+                        data=data.__class__(
+                            name=data.name,
+                            data=data.loc[
+                                (data.index >= self.data.index.l.start_value)
+                                & (data.index <= self.data.index.l.stop_value)
+                            ],
+                        ),
+                    )
 
         self.load()

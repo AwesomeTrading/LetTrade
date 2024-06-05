@@ -7,6 +7,7 @@ from lettrade.brain import Brain
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
+from lettrade.plot import Plotter
 from lettrade.stats import Statistic
 from lettrade.strategy import Strategy
 
@@ -32,7 +33,7 @@ class LetTradeBot:
     """Strategy"""
     commander: Optional[Commander] = None
     """Control the bot"""
-    plotter: Optional["Plotter"] = None
+    plotter: Optional[Plotter] = None
     """Plot graphic results"""
     stats: Optional[Statistic] = None
 
@@ -41,8 +42,8 @@ class LetTradeBot:
     _exchange_cls: Type[Exchange]
     _account_cls: Type[Account]
     _commander_cls: Type[Commander]
-    _plotter_cls: Type["Plotter"]
-    _stats_cls: Type["Statistic"]
+    _plotter_cls: Type[Plotter]
+    _stats_cls: Type[Statistic]
     _kwargs: dict
     _name: str
 
@@ -54,8 +55,8 @@ class LetTradeBot:
         exchange: Type[Exchange],
         account: Type[Account],
         commander: Optional[Type[Commander]] = None,
-        plotter: Optional[Type["Plotter"]] = None,
-        stats: Optional[Type["Statistic"]] = None,
+        plotter: Optional[Type[Plotter]] = None,
+        stats: Optional[Type[Statistic]] = None,
         name: Optional[str] = None,
         **kwargs,
     ) -> None:
@@ -156,18 +157,7 @@ class LetTradeBot:
         if self._stats_cls:
             self.stats.compute()
 
-    def plot(self, *args, **kwargs):
-        """Plot strategy result"""
-        if __debug__:
-            from .utils.docs import is_docs_session
-
-            if is_docs_session():
-                return
-
-        if self.plotter is None:
-            if self._plotter_cls is None:
-                raise RuntimeError("Plotter class is None")
-
+        if self._plotter_cls is not None:
             self.plotter = self._plotter_cls(
                 feeder=self.feeder,
                 exchange=self.exchange,
@@ -175,6 +165,14 @@ class LetTradeBot:
                 strategy=self.strategy,
                 **self._kwargs.get("plotter_kwargs", {}),
             )
+
+    def plot(self, *args, **kwargs):
+        """Plot strategy result"""
+        if __debug__:
+            from .utils.docs import is_docs_session
+
+            if is_docs_session():
+                return
 
         self.plotter.plot(*args, **kwargs)
 
@@ -193,8 +191,8 @@ class LetTradeBot:
         exchange_cls: Type[Exchange],
         account_cls: Type[Account],
         commander_cls: Type[Commander],
-        plotter_cls: Type["Plotter"],
-        stats_cls: Type["Statistic"],
+        plotter_cls: Type[Plotter],
+        stats_cls: Type[Statistic],
         name: Optional[str] = None,
         **kwargs,
     ) -> "LetTradeBot":

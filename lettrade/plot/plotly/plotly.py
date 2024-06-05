@@ -21,7 +21,6 @@ class PlotlyPlotter(Plotter):
 
     figure: go.Figure = None
 
-    _datas_stored: dict = {}
     _data_shape: dict
 
     def stop(self):
@@ -197,9 +196,11 @@ class PlotlyPlotter(Plotter):
                 for trace in data_config["traces"]:
                     self.figure.add_trace(trace, **data_shape)
 
-    def plot(self, **kwargs):
+    def plot(self, jump: dict = None, **kwargs):
         """Plot `equity`, `orders`, and `trades` then show"""
-        if self.figure is None:
+        if jump is not None:
+            self.jump(**jump)
+        elif self.figure is None:
             self.load()
 
         self._plot_equity()

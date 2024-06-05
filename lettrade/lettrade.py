@@ -2,11 +2,14 @@ import logging
 from concurrent.futures import ProcessPoolExecutor
 from typing import Optional, Type
 
+import pandas as pd
+
 from lettrade.account import Account
 from lettrade.bot import LetTradeBot
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
+from lettrade.plot import Plotter
 from lettrade.stats import Statistic
 from lettrade.strategy import Strategy
 
@@ -16,7 +19,7 @@ logger = logging.getLogger(__name__)
 class LetTrade:
     """Building new bot object and handle multiprocessing"""
 
-    _plotter: "Plotter" = None
+    _plotter: Plotter = None
     """Plot graphic results"""
     _stats: Statistic = None
     _bot: LetTradeBot = None
@@ -31,8 +34,8 @@ class LetTrade:
         exchange: Type[Exchange],
         account: Type[Account],
         commander: Optional[Type[Commander]] = None,
-        plotter: Optional[Type["Plotter"]] = None,
-        stats: Optional[Type["Statistic"]] = None,
+        plotter: Optional[Type[Plotter]] = None,
+        stats: Optional[Type[Statistic]] = None,
         name: Optional[str] = None,
         bot: Optional[Type[LetTradeBot]] = LetTradeBot,
         **kwargs,
@@ -167,14 +170,20 @@ class LetTrade:
         if self._bot is not None:
             return self._bot.stats
 
-    def plot(self, *args, **kwargs):
-        """Plot strategy result"""
+    # Plotter
+    @property
+    def plotter(self) -> Plotter:
         if self._plotter is not None:
-            return self._plotter.plot(*args, **kwargs)
+            return self._plotter
         if self._bot is not None:
-            return self._bot.plot(*args, **kwargs)
+            return self._bot.plotter
+        raise RuntimeError("Plotter is not defined")
 
-    # kwargs properties
+    def plot(self, *args, jump: dict = None, **kwargs):
+        """Plot strategy result"""
+        return self.plotter.plot(*args, jump=jump, **kwargs)
+
+    # Bot kwargs properties
     @property
     def name(self) -> Type[LetTradeBot]:
         return self._kwargs.get("name", None)
@@ -207,9 +216,9 @@ class LetTrade:
     def _stats_cls(self) -> Type[Statistic]:
         return self._kwargs.get("stats_cls", None)
 
-    @_stats_cls.setter
-    def _stats_cls(self, value):
-        self._kwargs["stats_cls"] = value
+    # @_stats_cls.setter
+    # def _stats_cls(self, value):
+    #     self._kwargs["stats_cls"] = value
 
     @property
     def _plotter_cls(self) -> Type["Plotter"]:

@@ -1,5 +1,4 @@
 import pandas as pd
-
 import plotly.graph_objects as go
 
 
@@ -116,10 +115,10 @@ def plot_candle_highlight(
         traces=[
             go.Candlestick(
                 x=dataframe.index,
-                open=dataframe.open,
-                high=dataframe.high,
-                low=dataframe.low,
-                close=dataframe.close,
+                open=dataframe["open"],
+                high=dataframe["high"],
+                low=dataframe["low"],
+                close=dataframe["close"],
                 name=name,
                 line=dict(width=width),
                 increasing_line_color=increasing_line_color,

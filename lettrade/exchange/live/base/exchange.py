@@ -81,7 +81,7 @@ class LiveExchange(Exchange):
             sl_price=sl,
             tp_price=tp,
             tag=tag,
-            open_price=self.data.open.l[0],
+            open_price=self.data["open"].l[0],
             open_at=self.data.bar(),
         )
         ok = order.place()

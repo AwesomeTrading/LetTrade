@@ -37,12 +37,12 @@ class Position:
         """True if the position is short (position size is negative)."""
         return self.size < 0
 
-    def close(self, portion: float = 1.0):
+    def close(self, position: float = 1.0):
         """
-        Close portion of position by closing `portion` of each active trade. See `Trade.close`.
+        Close position of position by closing `position` of each active trade. See `Trade.close`.
         """
         for trade in self.__exchange.trades:
-            trade.close(portion)
+            trade.close(position)
 
     def __repr__(self):
         return f"<Position: {self.size} ({len(self.__exchange.trades)} trades)>"

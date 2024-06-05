@@ -90,7 +90,7 @@ class DataFrameInject(IndexInject):
 
 
 @property
-def _lettrade_injector(self):
+def _lettrade_injector(self) -> IndexInject:
     if not hasattr(self, "_lt_inject"):
         if isinstance(self, pd.DataFrame):
             inject = DataFrameInject(self)

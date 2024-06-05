@@ -76,32 +76,31 @@ class DataFeed(pd.DataFrame):
         )
         return df
 
-    def next(self, next=1):
-        self.l.next(next)
+    def next(self, size=1):
+        self.l.next(size)
 
     def bar(self, i=0) -> pd.Timestamp:
         return self.index.l[i]
 
     def push(self, rows: list):
-        # cls = self.index.__class__
         for row in rows:
             dt = pd.to_datetime(row[0], unit="s", utc=True)
-            self.loc[
+            self.at[
                 dt,
-                [
+                (
                     "open",
                     "high",
                     "low",
                     "close",
                     "volume",
-                ],
-            ] = [
+                ),
+            ] = (
                 row[1],  # open
                 row[2],  # high
                 row[3],  # low
                 row[4],  # close
                 row[5],  # volume
-            ]
+            )
 
         if __debug__:
             logger.info("[%s] New bar: \n%s", self.name, self.tail(len(rows)))

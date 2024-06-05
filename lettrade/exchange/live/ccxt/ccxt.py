@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, Type
 
-from lettrade import Commander, Statistic
+from lettrade import Commander, Plotter, Statistic
 from lettrade.exchange.live.base import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class CCXTDataFeed(LiveDataFeed):
     """DataFeed for CCXT"""
 
-    api_cls: Type[CCXTAPI] = CCXTAPI
+    _api_cls: Type[CCXTAPI] = CCXTAPI
     """API to communicate with CCXT Terminal"""
 
 
@@ -93,7 +93,7 @@ def let_ccxt(
     exchange: Type[CCXTExchange] = CCXTExchange,
     account: Type[CCXTAccount] = CCXTAccount,
     commander: Optional[Type[Commander]] = None,
-    plotter: Optional[Type["Plotter"]] = None,
+    plotter: Optional[Type[Plotter]] = None,
     stats: Optional[Type[Statistic]] = Statistic,
     lettrade: Optional[Type[LetTradeCCXT]] = LetTradeCCXT,
     bot: Optional[Type[LetTradeCCXTBot]] = LetTradeCCXTBot,
@@ -112,7 +112,7 @@ def let_ccxt(
         exchange (Type[CCXTExchange], optional): _description_. Defaults to CCXTExchange.
         account (Type[CCXTAccount], optional): _description_. Defaults to CCXTAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
-        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
         stats (Optional[Type[Statistic]], optional): _description_. Defaults to Statistic.
         lettrade (Optional[Type[LetTradeCCXT]], optional): _description_. Defaults to LetTradeCCXT.
         bot (Optional[Type[LetTradeCCXTBot]], optional): _description_. Defaults to LetTradeCCXTBot.

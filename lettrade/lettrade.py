@@ -2,8 +2,6 @@ import logging
 from concurrent.futures import ProcessPoolExecutor
 from typing import Optional, Type
 
-import pandas as pd
-
 from lettrade.account import Account
 from lettrade.bot import LetTradeBot
 from lettrade.commander import Commander

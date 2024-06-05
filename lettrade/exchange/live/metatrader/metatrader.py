@@ -1,7 +1,10 @@
 import logging
 from typing import Optional, Type
 
-from lettrade import Commander, Statistic
+import numpy as np
+import pandas as pd
+
+from lettrade import Commander, Plotter, Statistic
 from lettrade.exchange.live.base import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -24,8 +27,34 @@ logger = logging.getLogger(__name__)
 class MetaTraderDataFeed(LiveDataFeed):
     """DataFeed for MetaTrader"""
 
-    api_cls: Type[MetaTraderAPI] = MetaTraderAPI
+    _api_cls: Type[MetaTraderAPI] = MetaTraderAPI
     """API to communicate with MetaTrader Terminal"""
+
+    # def push(self, rows: list):
+    #     if isinstance(rows, np.ndarray):
+    #         df = pd.DataFrame(
+    #             rows,
+    #             columns=[
+    #                 "time",
+    #                 "open",
+    #                 "high",
+    #                 "low",
+    #                 "close",
+    #                 "tick_volume",
+    #             ],
+    #         )
+    #         df.rename(
+    #             columns={
+    #                 "time": "datetime",
+    #                 "tick_volume": "volume",
+    #             },
+    #             inplace=True,
+    #         )
+    #         df["datetime"] = pd.to_datetime(df["datetime"], unit="s")
+    #         df.set_index("datetime", inplace=True)
+    #         print(df, df.dtypes)
+
+    #     return super().push(df)
 
 
 class MetaTraderDataFeeder(LiveDataFeeder):
@@ -93,7 +122,7 @@ def let_metatrader(
     exchange: Type[MetaTraderExchange] = MetaTraderExchange,
     account: Type[MetaTraderAccount] = MetaTraderAccount,
     commander: Optional[Type[Commander]] = None,
-    plotter: Optional[Type["Plotter"]] = None,
+    plotter: Optional[Type[Plotter]] = None,
     stats: Optional[Type[Statistic]] = Statistic,
     bot: Optional[Type[LetTradeMetaTraderBot]] = LetTradeMetaTraderBot,
     lettrade: Optional[Type[LetTradeMetaTrader]] = LetTradeMetaTrader,
@@ -113,7 +142,7 @@ def let_metatrader(
         exchange (Type[MetaTraderExchange], optional): _description_. Defaults to MetaTraderExchange.
         account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
-        plotter (Optional[Type["Plotter"]], optional): _description_. Defaults to None.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
         stats (Optional[Type[Statistic]], optional): _description_. Defaults to Statistic.
         bot (Optional[Type[LetTradeMetaTraderBot]], optional): _description_. Defaults to LetTradeMetaTraderBot.
         lettrade (Optional[Type[LetTradeMetaTrader]], optional): _description_. Defaults to LetTradeMetaTrader.

@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Optional, Type
 
 import pandas as pd
+
 from lettrade.data import DataFeed
 
 from .api import LiveAPI
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class LiveDataFeed(DataFeed):
-    api_cls: Type[LiveAPI] = LiveAPI
+    _api_cls: Type[LiveAPI] = LiveAPI
 
     def __init__(
         self,
@@ -47,9 +48,6 @@ class LiveDataFeed(DataFeed):
         setattr(self, "__api", value)
 
     def next(self, size=1, tick=0) -> bool:
-        return self._next(size=size, tick=tick)
-
-    def _next(self, size=1, tick=0):
         rates = self._api.bars(
             symbol=self.symbol,
             timeframe=self.timeframe.string,
@@ -116,7 +114,7 @@ class LiveDataFeed(DataFeed):
         if api is None:
             if api_kwargs is None:
                 raise RuntimeError("api or api_kwargs cannot missing")
-            api = cls.api_cls(**api_kwargs)
+            api = cls._api_cls(**api_kwargs)
         data = cls(**kwargs)
         data._api = api
         return data

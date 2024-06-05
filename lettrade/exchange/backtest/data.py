@@ -82,7 +82,7 @@ class BackTestDataFeed(DataFeed):
                 )
 
         if size > 0:
-            super().next(size)
+            super().next(size=size)
         return has_next
 
 

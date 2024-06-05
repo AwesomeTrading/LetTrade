@@ -5,5 +5,6 @@ from .data import *
 from .exchange import *
 from .indicator import *
 from .lettrade import LetTrade, LetTradeBot
+from .plot import *
 from .stats import *
 from .strategy import *

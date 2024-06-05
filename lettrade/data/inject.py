@@ -39,6 +39,10 @@ class IndexInject:
     def pointer(self):
         return self._pointers[0]
 
+    def pointer_of(self, value: pd.Timestamp) -> int:
+        """Get pointer of value"""
+        return self._owner.get_loc(value) - self.pointer
+
     def go_start(self):
         self._pointers[0] = 0
 
@@ -56,12 +60,13 @@ class IndexInject:
     def stop(self) -> int:
         return len(self._owner) - self._pointers[0]
 
+    # Value
     @property
-    def start_value(self) -> pd.Timestamp:
+    def value_start(self) -> pd.Timestamp:
         return self._owner._values[0]
 
     @property
-    def stop_value(self) -> pd.Timestamp:
+    def value_stop(self) -> pd.Timestamp:
         return self._owner._values[-1]
 
 

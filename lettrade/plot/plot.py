@@ -52,7 +52,7 @@ class Plotter(ABC):
 
     def jump(
         self,
-        since: Optional[int | str | pd.Timestamp] = 0,
+        since: Optional[int | str | pd.Timestamp | None] = 0,
         range=300,
         name: str = None,
     ):
@@ -63,6 +63,10 @@ class Plotter(ABC):
         if since is None:
             self.datas = list(self._datas_stored.values())
         else:  # Jump to range
+            if isinstance(since, str):
+                since = pd.to_datetime(since, utc=True)
+                since = self.data.index.l.pointer_of(since)
+
             if name is None:
                 name = self.data.name
 
@@ -78,8 +82,8 @@ class Plotter(ABC):
                         data=data.__class__(
                             name=data.name,
                             data=data.loc[
-                                (data.index >= self.data.index.l.start_value)
-                                & (data.index <= self.data.index.l.stop_value)
+                                (data.index >= self.data.index.l.value_start)
+                                & (data.index <= self.data.index.l.value_stop)
                             ],
                         ),
                     )

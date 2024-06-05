@@ -1,5 +1,8 @@
 import unittest
 
+import pandas as pd
+from pandas import testing as pdtest
+
 from lettrade.exchange.backtest.data import CSVBackTestDataFeed
 
 
@@ -63,6 +66,21 @@ class DataFeedInjectTestCase(unittest.TestCase):
             df.open.l.pointer,
             "Data.l.pointer value wrong",
         )
+
+    def test_index_overrite(self):
+        df = self.data.copy(deep=True)
+
+        index_id = id(df.index)
+        pointer_id = id(df.l._pointers)
+
+        dt = pd.Timestamp("2024-01-01 00:00:00")
+
+        self.assertTrue(df[df.index == dt].empty, f"Datetime {dt} existed in data")
+
+        df.loc[dt, ["open", "close"]] = [1, 2]
+
+        self.assertNotEqual(index_id, id(df.index))
+        self.assertEqual(pointer_id, id(df.index.l._pointers))
 
 
 if __name__ == "__main__":

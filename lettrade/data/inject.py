@@ -1,5 +1,7 @@
 import pandas as pd
 
+__POINTER_KEY__ = "_lt_pointers"
+
 
 class IndexInject:
     _pointers: list[int]
@@ -11,9 +13,9 @@ class IndexInject:
             raise RuntimeError("Index is not instance of pd.DatetimeIndex")
 
         # Share pointer between DataFrame
-        if not hasattr(index, "_lt_pointers"):
-            setattr(index, "_lt_pointers", [0])
-        self._pointers = getattr(index, "_lt_pointers")
+        if not hasattr(index, __POINTER_KEY__):
+            setattr(index, __POINTER_KEY__, [0])
+        self._pointers = getattr(index, __POINTER_KEY__)
 
         self._owner = owner
 
@@ -107,3 +109,23 @@ def _lettrade_injector(self) -> IndexInject:
 setattr(pd.DataFrame, "l", _lettrade_injector)
 setattr(pd.Series, "l", _lettrade_injector)
 setattr(pd.DatetimeIndex, "l", _lettrade_injector)
+
+# Inject overrite pointer
+from pandas.core.indexing import _LocationIndexer
+
+__pd_loc__setitem__ = _LocationIndexer.__setitem__
+
+
+def _lt_loc__setitem__(self, key, value) -> None:
+    if hasattr(self.obj.index, __POINTER_KEY__):
+        pointer = getattr(self.obj.index, __POINTER_KEY__)
+    else:
+        pointer = [0]
+        setattr(self.obj.index, __POINTER_KEY__, pointer)
+
+    __pd_loc__setitem__(self, key, value)
+
+    setattr(self.obj.index, __POINTER_KEY__, pointer)
+
+
+_LocationIndexer.__setitem__ = _lt_loc__setitem__

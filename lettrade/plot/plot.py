@@ -15,6 +15,8 @@ class Plotter(ABC):
     """
 
     _datas_stored: dict = None
+    _jump_start_dt: pd.Timestamp = None
+    _jump_stop_dt: pd.Timestamp = None
 
     def __init__(
         self,
@@ -62,10 +64,13 @@ class Plotter(ABC):
         # Reset
         if since is None:
             self.datas = list(self._datas_stored.values())
+            self._jump_start_dt = None
+            self._jump_stop_dt = None
         else:  # Jump to range
             if isinstance(since, str):
                 since = pd.to_datetime(since, utc=True)
-                since = self.data.index.l.pointer_of(since)
+                since = self.data.index.get_loc(since)
+                print("since", since)
 
             if name is None:
                 name = self.data.name
@@ -76,14 +81,16 @@ class Plotter(ABC):
                         name=data.name,
                         data=data.l[since : since + range],
                     )
+                    self._jump_start_dt = self.data.index[0]
+                    self._jump_stop_dt = self.data.index[-1]
                 else:
                     self.datas[i] = data.__class__(
                         name=data.name,
                         data=data.__class__(
                             name=data.name,
                             data=data.loc[
-                                (data.index >= self.data.index.l.value_start)
-                                & (data.index <= self.data.index.l.value_stop)
+                                (data.index >= self._jump_start_dt)
+                                & (data.index <= self._jump_stop_dt)
                             ],
                         ),
                     )

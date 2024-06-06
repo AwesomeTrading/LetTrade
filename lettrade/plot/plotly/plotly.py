@@ -214,8 +214,19 @@ class PlotlyPlotter(Plotter):
         self.figure.show()
 
     def _plot_equity(self):
-        x = list(self.account._equities.keys())
-        y = list(self.account._equities.values())
+        equities = self.account._equities
+
+        # Filter jump range only
+        if self._jump_stop_dt is not None:
+            equities = {
+                k: e
+                for k, e in equities.items()
+                if k > self._jump_start_dt and k < self._jump_stop_dt
+            }
+
+        # Axis
+        x = list(equities.keys())
+        y = list(equities.values())
 
         # Get figure rows size
         row_length = len(self.figure._get_subplot_rows_columns()[0])
@@ -242,6 +253,15 @@ class PlotlyPlotter(Plotter):
         orders = list(self.exchange.history_orders.values()) + list(
             self.exchange.orders.values()
         )
+
+        # Filter jump range only
+        if self._jump_stop_dt is not None:
+            orders = [
+                o
+                for o in orders
+                if o.open_at > self._jump_start_dt and o.open_at < self._jump_stop_dt
+            ]
+
         for order in orders:
             x = [order.open_at]
             y = [order.open_price or order.limit or order.stop]
@@ -276,6 +296,22 @@ class PlotlyPlotter(Plotter):
         trades = list(self.exchange.history_trades.values()) + list(
             self.exchange.trades.values()
         )
+
+        # Filter jump range only
+        if self._jump_stop_dt is not None:
+            _trades = []
+            for t in trades:
+                if t.entry_at < self._jump_start_dt or t.entry_at > self._jump_stop_dt:
+                    continue
+                if t.exit_at:
+                    if (
+                        t.exit_at < self._jump_start_dt
+                        or t.exit_at > self._jump_stop_dt
+                    ):
+                        continue
+                _trades.append(t)
+            trades = _trades
+
         for trade in trades:
             x = [trade.entry_at]
             y = [trade.entry_price]

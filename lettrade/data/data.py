@@ -55,6 +55,11 @@ class DataFeed(pd.DataFrame):
         # LetWrapper
         object.__setattr__(self, "l", DataFeedWrapper(self))
 
+    def __setstate__(self, data):
+        super().__setstate__(data)
+        if not hasattr(self, "l"):
+            object.__setattr__(self, "l", DataFeedWrapper(self))
+
     # Internal
     def _init_index(self):
         if not isinstance(self.index, pd.DatetimeIndex):
@@ -106,7 +111,7 @@ class DataFeed(pd.DataFrame):
             )
 
         if __debug__:
-            logger.info("[%s] New bar: \n%s", self.name, self.tail(len(rows)))
+            logger.info("[%s] Update bar: \n%s", self.name, self.tail(len(rows)))
 
     def drop(self, *args, since=None, **kwargs):
         if since is None:

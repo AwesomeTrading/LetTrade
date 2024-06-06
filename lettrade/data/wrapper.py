@@ -3,12 +3,12 @@ from typing import Any
 import pandas as pd
 from pandas.core.indexing import _iLocIndexer
 
-__WRAPPER_KEY__ = "_lt_wrapper"
+__LET_WRAPPER_KEY__ = "_lt_wrapper"
 
 
-class ILocWrapper:
+class LetILocWrapper:
     _data: pd.DatetimeIndex
-    _owner: "DataFeedWrapper"
+    _owner: "LetDataFeedWrapper"
 
     def __init__(self, data, owner) -> None:
         self._data = data
@@ -42,9 +42,9 @@ class ILocWrapper:
         return self._owner._pointer
 
 
-class IndexWapper:
+class LetIndexWapper:
     _data: pd.DatetimeIndex
-    _owner: "DataFeedWrapper"
+    _owner: "LetDataFeedWrapper"
 
     def __init__(self, data, owner) -> None:
         self._data = data
@@ -78,15 +78,15 @@ class IndexWapper:
         return self._owner._pointer
 
 
-class SeriesWapper:
+class LetSeriesWapper:
     _data: pd.DatetimeIndex
-    _owner: "DataFeedWrapper"
-    _iloc: ILocWrapper
+    _owner: "LetDataFeedWrapper"
+    _iloc: LetILocWrapper
 
     def __init__(self, data, owner) -> None:
         self._data = data
         self._owner = owner
-        self._iloc = ILocWrapper(self._data, self._owner)
+        self._iloc = LetILocWrapper(self._data, self._owner)
 
         # print("-----> SeriesWapper", data.name, type(data))
 
@@ -112,42 +112,42 @@ class SeriesWapper:
         return self._owner._pointer
 
 
-class DataFeedWrapper:
+class LetDataFeedWrapper:
     _data: pd.DataFrame
     _pointer: int
-    _iloc: ILocWrapper
+    _iloc: LetILocWrapper
 
     def __init__(self, data: pd.DataFrame) -> None:
         # Validate new instance not load an existed wrapper
-        if hasattr(data.index, __WRAPPER_KEY__):
+        if hasattr(data.index, __LET_WRAPPER_KEY__):
             raise RuntimeError("DataFeed.index reuses a loaded wrapper")
         for column in data.columns:
-            if hasattr(data[column], __WRAPPER_KEY__):
+            if hasattr(data[column], __LET_WRAPPER_KEY__):
                 raise RuntimeError(f"DataFeed.{column} reuses a loaded wrapper")
 
         self._pointer = 0
         self._data = data
-        self._iloc = ILocWrapper(self._data, self)
+        self._iloc = LetILocWrapper(self._data, self)
 
     def __getattr__(
         self, name: str
-    ) -> pd.Series | pd.Index | pd.DatetimeIndex | SeriesWapper | IndexWapper:
+    ) -> pd.Series | pd.Index | pd.DatetimeIndex | LetSeriesWapper | LetIndexWapper:
         # if hasattr(self._data, name):
         result = getattr(self._data, name)
 
         # Exist
-        if hasattr(result, __WRAPPER_KEY__):
-            return getattr(result, __WRAPPER_KEY__)
+        if hasattr(result, __LET_WRAPPER_KEY__):
+            return getattr(result, __LET_WRAPPER_KEY__)
 
         # Set wrapper
         if isinstance(result, pd.Series):
-            wrapper = SeriesWapper(result, self)
-            setattr(result, __WRAPPER_KEY__, wrapper)
+            wrapper = LetSeriesWapper(result, self)
+            setattr(result, __LET_WRAPPER_KEY__, wrapper)
             return wrapper
 
         if isinstance(result, pd.DatetimeIndex):
-            wrapper = IndexWapper(result, self)
-            setattr(result, __WRAPPER_KEY__, wrapper)
+            wrapper = LetIndexWapper(result, self)
+            setattr(result, __LET_WRAPPER_KEY__, wrapper)
             return wrapper
 
         return result
@@ -196,9 +196,9 @@ class DataFeedWrapper:
 
 # @property
 # def _lettrade_wrapper(self) -> DataFeedWrapper:
-#     if not hasattr(self, __WRAPPER_KEY__):
-#         object.__setattr__(self, __WRAPPER_KEY__, DataFeedWrapper(self))
-#     return getattr(self, __WRAPPER_KEY__)
+#     if not hasattr(self, __LET_WRAPPER_KEY__):
+#         object.__setattr__(self, __LET_WRAPPER_KEY__, DataFeedWrapper(self))
+#     return getattr(self, __LET_WRAPPER_KEY__)
 
 
 # setattr(pd.DataFrame, "l", _lettrade_wrapper)

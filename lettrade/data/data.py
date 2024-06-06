@@ -5,7 +5,7 @@ from typing import Optional
 import pandas as pd
 
 from .timeframe import TimeFrame
-from .wrapper import DataFeedWrapper
+from .wrapper import LetDataFeedWrapper
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ _data_name_pattern = re.compile(r"^[\w\_]+$")
 class DataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
-    l: DataFeedWrapper
+    l: LetDataFeedWrapper
 
     def __init__(
         self,
@@ -53,12 +53,12 @@ class DataFeed(pd.DataFrame):
         self.attrs = {"lt_meta": meta}
 
         # LetWrapper
-        object.__setattr__(self, "l", DataFeedWrapper(self))
+        object.__setattr__(self, "l", LetDataFeedWrapper(self))
 
     def __setstate__(self, data):
         super().__setstate__(data)
         if not hasattr(self, "l"):
-            object.__setattr__(self, "l", DataFeedWrapper(self))
+            object.__setattr__(self, "l", LetDataFeedWrapper(self))
 
     # Internal
     def _init_index(self):

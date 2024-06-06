@@ -158,6 +158,8 @@ class DataFeedWrapper:
         # return self._iloc[item]
         if isinstance(item, (int, slice)):
             return self._iloc[item]
+        if isinstance(item, str):
+            return self.__getattr__(item)
         return self._data[item]
 
     # Function

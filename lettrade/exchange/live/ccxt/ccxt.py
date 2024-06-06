@@ -2,7 +2,7 @@ import logging
 from typing import Optional, Type
 
 from lettrade import Commander, Plotter, Statistic
-from lettrade.exchange.live.base import (
+from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
     LiveAccount,

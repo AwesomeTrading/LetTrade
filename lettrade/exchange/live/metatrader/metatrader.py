@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from lettrade import Commander, Plotter, Statistic
-from lettrade.exchange.live.base import (
+from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
     LiveAccount,

@@ -5,7 +5,7 @@ from typing import Optional
 
 from mt5linux import MetaTrader5 as MT5
 
-from lettrade.exchange.live.base import LiveAPI, LiveOrder
+from lettrade.exchange.live import LiveAPI, LiveOrder
 
 logger = logging.getLogger(__name__)
 
@@ -203,10 +203,10 @@ class MetaTraderAPI(LiveAPI):
         }
         return request
 
-    def order_update(self, **kwargs):
+    def order_update(self, order: LiveOrder):
         pass
 
-    def order_close(self, **kwargs):
+    def order_close(self, order: LiveOrder):
         pass
 
     def _parse_order_response(self, raw):

@@ -4,7 +4,7 @@ from typing import Optional
 
 import ccxt
 
-from lettrade.exchange.live.base import LiveAPI, LiveOrder
+from lettrade.exchange.live import LiveAPI, LiveOrder
 
 logger = logging.getLogger(__name__)
 
@@ -210,10 +210,13 @@ class CCXTAPI(LiveAPI):
         """"""
 
     #  Order
-    def order_open(self, **kwargs):
+    def order_open(self, order: LiveOrder):
         """"""
 
-    def order_close(self, **kwargs):
+    def order_update(self, order: LiveOrder):
+        pass
+
+    def order_close(self, order: LiveOrder):
         """"""
 
     def orders_total(self):

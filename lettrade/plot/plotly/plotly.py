@@ -1,17 +1,7 @@
 import plotly.graph_objects as go
-import plotly.io as pio
 from plotly.subplots import make_subplots
 
 from lettrade.plot import Plotter
-
-pio.templates.default = "plotly_dark"
-
-if __debug__:  # __debug__ to remove code in production
-    from lettrade.utils.docs import is_docs_session
-    from lettrade.utils.notebook import is_notebook_session
-
-    if is_docs_session() or is_notebook_session():
-        pio.renderers.default = "notebook"
 
 
 class PlotlyPlotter(Plotter):

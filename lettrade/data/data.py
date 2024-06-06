@@ -52,6 +52,9 @@ class DataFeed(pd.DataFrame):
         meta["timeframe"] = TimeFrame(timeframe)
         self.attrs = {"lt_meta": meta}
 
+        # LetWrapper
+        object.__setattr__(self, "l", DataFeedWrapper(self))
+
     # Internal
     def _init_index(self):
         if not isinstance(self.index, pd.DatetimeIndex):

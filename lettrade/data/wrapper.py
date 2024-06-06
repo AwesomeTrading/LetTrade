@@ -13,6 +13,7 @@ class ILocWrapper:
     def __init__(self, data, owner) -> None:
         self._data = data
         self._owner = owner
+        # print("-----> ILocWrapper", data.name, type(data))
 
     # def __getattr__(self, name: str):
     #     if hasattr(self._data.iloc, name):
@@ -21,19 +22,24 @@ class ILocWrapper:
 
     def __getitem__(self, item: int | slice):
         if isinstance(item, int):
-            item += self.pointer
+            item += self._owner._pointer
         elif isinstance(item, slice):
             item = slice(
-                item.start + self.pointer,
-                item.stop + self.pointer,
+                item.start + self._owner._pointer,
+                item.stop + self._owner._pointer,
                 item.step,
             )
+        else:
+            raise NotImplementedError(
+                f"Get item {item} type {type(item)} is not implement yet"
+            )
+
         return self._data._values[item]
 
     # Property
     @property
     def pointer(self):
-        return self._owner.pointer
+        return self._owner._pointer
 
 
 class IndexWapper:
@@ -43,27 +49,33 @@ class IndexWapper:
     def __init__(self, data, owner) -> None:
         self._data = data
         self._owner = owner
+        # print("-----> IndexWapper", data.name, type(data))
 
     def __getattr__(self, name: str):
-        if hasattr(self._data, name):
-            return getattr(self._data, name)
-        raise NotImplementedError(f"Method {name} is not implement yet")
+        return getattr(self._data, name)
+        # if hasattr(self._data, name):
+        #     return getattr(self._data, name)
+        # raise NotImplementedError(f"Method {name} is not implement yet")
 
     def __getitem__(self, item: int | slice):
         if isinstance(item, int):
-            item += self.pointer
+            item += self._owner._pointer
         elif isinstance(item, slice):
             item = slice(
-                item.start + self.pointer,
-                item.stop + self.pointer,
+                item.start + self._owner._pointer,
+                item.stop + self._owner._pointer,
                 item.step,
+            )
+        else:
+            raise NotImplementedError(
+                f"Get item {item} type {type(item)} is not implement yet"
             )
         return self._data._values[item]
 
     # Property
     @property
     def pointer(self):
-        return self._owner.pointer
+        return self._owner._pointer
 
 
 class SeriesWapper:
@@ -76,15 +88,19 @@ class SeriesWapper:
         self._owner = owner
         self._iloc = ILocWrapper(self._data, self._owner)
 
+        # print("-----> SeriesWapper", data.name, type(data))
+
     def __getattr__(self, name: str):
-        if hasattr(self._data, name):
-            return getattr(self._data, name)
-        raise NotImplementedError(f"Method {name} is not implement yet")
+        return getattr(self._data, name)
+        # if hasattr(self._data, name):
+        #     return getattr(self._data, name)
+        # raise NotImplementedError(f"Method {name} is not implement yet")
 
     def __getitem__(self, item: int | slice | Any):
-        if isinstance(item, (int, slice)):
-            return self._iloc[item]
-        return self._data[item]
+        return self._iloc[item]
+        # if isinstance(item, (int, slice)):
+        #     return self._iloc[item]
+        # return self._data[item]
 
     # Property
     @property
@@ -93,7 +109,7 @@ class SeriesWapper:
 
     @property
     def pointer(self):
-        return self._owner.pointer
+        return self._owner._pointer
 
 
 class DataFeedWrapper:
@@ -109,32 +125,33 @@ class DataFeedWrapper:
     def __getattr__(
         self, name: str
     ) -> pd.Series | pd.Index | pd.DatetimeIndex | SeriesWapper | IndexWapper:
-        if hasattr(self._data, name):
-            result = getattr(self._data, name)
+        # if hasattr(self._data, name):
+        result = getattr(self._data, name)
 
-            # Exist
-            if hasattr(result, __WRAPPER_KEY__):
-                return getattr(result, __WRAPPER_KEY__)
+        # Exist
+        if hasattr(result, __WRAPPER_KEY__):
+            return getattr(result, __WRAPPER_KEY__)
 
-            # Set wrapper
-            if isinstance(result, pd.Series):
-                wrapper = SeriesWapper(result, self)
-                setattr(result, __WRAPPER_KEY__, wrapper)
-                return wrapper
+        # Set wrapper
+        if isinstance(result, pd.Series):
+            wrapper = SeriesWapper(result, self)
+            setattr(result, __WRAPPER_KEY__, wrapper)
+            return wrapper
 
-            if isinstance(result, pd.DatetimeIndex):
-                wrapper = IndexWapper(result, self)
-                setattr(result, __WRAPPER_KEY__, wrapper)
-                return wrapper
+        if isinstance(result, pd.DatetimeIndex):
+            wrapper = IndexWapper(result, self)
+            setattr(result, __WRAPPER_KEY__, wrapper)
+            return wrapper
 
-            return result
+        return result
 
-        raise NotImplementedError(f"Method {name} is not implement yet")
+        # raise NotImplementedError(f"Method {name} is not implement yet")
 
     def __getitem__(self, item: int | slice | Any):
-        if isinstance(item, (int, slice)):
-            return self._iloc[item]
-        return self._data[item]
+        return self._iloc[item]
+        # if isinstance(item, (int, slice)):
+        #     return self._iloc[item]
+        # return self._data[item]
 
     # Function
     def next(self, size=1):
@@ -167,11 +184,11 @@ class DataFeedWrapper:
         return len(self._data) - self._pointer
 
 
-@property
-def _lettrade_wrapper(self) -> DataFeedWrapper:
-    if not hasattr(self, __WRAPPER_KEY__):
-        object.__setattr__(self, __WRAPPER_KEY__, DataFeedWrapper(self))
-    return getattr(self, __WRAPPER_KEY__)
+# @property
+# def _lettrade_wrapper(self) -> DataFeedWrapper:
+#     if not hasattr(self, __WRAPPER_KEY__):
+#         object.__setattr__(self, __WRAPPER_KEY__, DataFeedWrapper(self))
+#     return getattr(self, __WRAPPER_KEY__)
 
 
-setattr(pd.DataFrame, "l", _lettrade_wrapper)
+# setattr(pd.DataFrame, "l", _lettrade_wrapper)

@@ -17,8 +17,6 @@ from multiprocessing.managers import BaseManager
 from threading import Thread
 from typing import Any, Callable, Coroutine, Dict, List, Literal, Optional, Union
 
-from lettrade.stats import Statistic
-
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -36,6 +34,8 @@ from telegram.ext import (
     CommandHandler,
 )
 from telegram.helpers import escape_markdown
+
+from lettrade.stats import Statistic
 
 from .commander import Commander
 
@@ -84,7 +84,8 @@ class TelegramAPI:
 
     _app: Application
     _loop: asyncio.AbstractEventLoop
-    _action_queues: dict[Queue]
+    _bots_queue: dict[str, Queue]
+    _bot_selected: str
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
@@ -95,13 +96,14 @@ class TelegramAPI:
     def __init__(self, token: str, chat_id: int, *args, **kwargs) -> None:
         self._token: str = token
         self._chat_id: int = int(chat_id)
-        self._action_queues = dict()
+        self._bots_queue = dict()
+        self._bot_selected = None
 
     def start(self, pname: str, action_queue: Queue):
         """Start"""
-        if pname in self._action_queues:
+        if pname in self._bots_queue:
             logger.warning("Process name %s override existed action queue", pname)
-        self._action_queues[pname] = action_queue
+        self._bots_queue[pname] = action_queue
 
         logger.info("New join process: %s", pname)
 
@@ -114,12 +116,12 @@ class TelegramAPI:
 
     def _action(self, action: str, pname: str = None):
         if pname is None:
-            pname = list(self._action_queues.keys())
+            pname = list(self._bots_queue.keys())
         elif isinstance(pname, str):
             pname = [pname]
 
         for name in pname:
-            q: Queue = self._action_queues[name]
+            q: Queue = self._bots_queue[name]
             q.put(action)
 
     def send_message(self, msg: str, pname: str, **kwargs) -> None:
@@ -131,7 +133,7 @@ class TelegramAPI:
         Returns:
             _type_: `None`
         """
-        msg = f"*[Process: {pname}]*\n{msg}"
+        msg = f"*[Process: {pname}]*\n\n{msg}"
         asyncio.run_coroutine_threadsafe(self._send_msg(msg, **kwargs), self._loop)
 
     async def _cleanup_telegram(self) -> None:
@@ -159,7 +161,7 @@ class TelegramAPI:
         section.
         """
         self._keyboard: List[List[Union[str, KeyboardButton]]] = [
-            ["/stats", "/profit", "/balance"],
+            ["/stats", "/bots", "/bot"],
             ["/status", "/status table", "/performance"],
             ["/count", "/start", "/stop", "/help"],
         ]
@@ -185,6 +187,7 @@ class TelegramAPI:
         # Register command handler and start telegram message polling
         handles = [
             CommandHandler("bots", self._cmd_bots),
+            CommandHandler("bot", self._cmd_bot),
             CommandHandler("status", self._cmd_status),
             # CommandHandler("profit", self._profit),
             # CommandHandler("balance", self._balance),
@@ -334,6 +337,7 @@ class TelegramAPI:
                 "TelegramError: %s! Giving up on that message.", telegram_err.message
             )
 
+    ##### COMMAND #####
     @authorized_only
     async def _cmd_help(self, update: Update, context: CallbackContext) -> None:
         """Handler for /help.
@@ -346,6 +350,7 @@ class TelegramAPI:
         msg = (
             "_Bots Control_\n"
             "*/bots:* `Show list of bot`\n"
+            "*/bot <bot_index>:* `Select a bot`\n"
             "\n_Bot Control_\n"
             "------------\n"
             "*/balance:* `Show bot managed balance per currency`\n"
@@ -397,9 +402,55 @@ class TelegramAPI:
             update (Update): message update
             context (CallbackContext): Telegram context
         """
-        msg = "\n".join(list(self._action_queues.keys()))
-        print("bots", msg)
-        await self._send_msg(msg, parse_mode=ParseMode.HTML)
+        msg = "_Listening Bots_"
+        keyboard = []
+        for i, name in enumerate(list(self._bots_queue.keys())):
+            msg += f"\n*{i}*: [*{escape_markdown(name,2)}*](/bot {i})"
+            keyboard.append(
+                [
+                    InlineKeyboardButton(
+                        text=f"/bot {name}",
+                        callback_data=f"bot_select_{i}",
+                    )
+                ]
+            )
+
+        print("Telegram: bots:\n", msg, keyboard)
+        await self._send_msg(msg, parse_mode=ParseMode.MARKDOWN_V2, keyboard=keyboard)
+
+    @authorized_only
+    async def _cmd_bot(self, update: Update, context: CallbackContext) -> None:
+        """Handler for /bot
+        Returns the current Strategy Statistic
+
+        Args:
+            update (Update): message update
+            context (CallbackContext): Telegram context
+        """
+        if (
+            not context.args
+            or not len(context.args) >= 1
+            or not context.args[0].isnumeric()
+        ):
+            msg = (
+                "*/bot <bot_index>*: to select a bot"
+                "\n*/bots*: to get list of bot index"
+            )
+        else:
+            bot_index = int(context.args[0])
+            names = list(self._bots_queue.keys())
+
+            if bot_index < 0 or bot_index >= len(names):
+                msg = f"_Error select bot: {bot_index} "
+                msg += f"is out of range {len(names)}_"
+            else:
+                bot_name = names[bot_index]
+                self._bot_selected = bot_name
+                msg = "_Success select bot_"
+
+        if self._bot_selected is not None:
+            msg += f"\n------\nSelected bot: *{self._bot_selected}*"
+        await self._send_msg(msg)
 
     @authorized_only
     async def _cmd_stats(self, update: Update, context: CallbackContext) -> None:

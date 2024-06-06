@@ -17,6 +17,8 @@ from multiprocessing.managers import BaseManager
 from threading import Thread
 from typing import Any, Callable, Coroutine, Dict, List, Literal, Optional, Union
 
+from lettrade.stats import Statistic
+
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -34,8 +36,6 @@ from telegram.ext import (
     CommandHandler,
 )
 from telegram.helpers import escape_markdown
-
-from lettrade.stats import Statistic
 
 from .commander import Commander
 

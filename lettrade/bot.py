@@ -135,7 +135,8 @@ class LetTradeBot:
             **self._kwargs.get("stats_kwargs", {}),
         )
 
-        logger.info("Bot %s inited with %d datas", self._name, len(self.datas))
+        if __debug__:
+            logger.info("Bot %s inited with %d datas", self._name, len(self.datas))
 
     def start(self):
         if not hasattr(self, "brain"):
@@ -143,7 +144,8 @@ class LetTradeBot:
 
         self.brain.start()
 
-        logger.info("Bot %s started with %d datas", self._name, len(self.datas))
+        if __debug__:
+            logger.info("Bot %s started with %d datas", self._name, len(self.datas))
 
     def run(self):
         if self.commander:

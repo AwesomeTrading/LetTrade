@@ -80,7 +80,7 @@ class DataFeed(pd.DataFrame):
         self.l.next(size)
 
     def bar(self, i=0) -> pd.Timestamp:
-        return self.index.l[i]
+        return self.l.index[i]
 
     def push(self, rows: list):
         for row in rows:
@@ -110,7 +110,7 @@ class DataFeed(pd.DataFrame):
             return super().drop(*args, **kwargs)
 
         if isinstance(since, int):
-            loc = self.index.l[since]
+            loc = self.l.index[since]
         elif isinstance(since, str):
             loc = pd.Timestamp(since)
         elif isinstance(since, pd.Timestamp):
@@ -130,7 +130,7 @@ class DataFeed(pd.DataFrame):
 
     @property
     def now(self) -> pd.Timestamp:
-        return self.index.l[0]
+        return self.l.index[0]
 
     @property
     def meta(self) -> dict:
@@ -155,8 +155,8 @@ if __debug__:
 
     if validate_data_getitem_pointer:
         # Check missing data get item by pointer:
-        # Wrong: data.index[<pointer>] -> Right: data.index.l[<pointer>]
-        # Wrong: data.open[<pointer>] -> Right: data.open.l[<pointer>]
+        # Wrong: data.index[<pointer>] -> Right: data.l.index[<pointer>]
+        # Wrong: data.open[<pointer>] -> Right: data.l.open[<pointer>]
 
         import logging
 

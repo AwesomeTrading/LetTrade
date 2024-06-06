@@ -68,7 +68,7 @@ class BackTestExchange(Exchange):
             sl_price=sl,
             tp_price=tp,
             tag=tag,
-            open_price=self.data.open.l[0],
+            open_price=self.data.l.open[0],
             open_at=self.data.bar(),
         )
         ok = order.place()
@@ -91,7 +91,7 @@ class BackTestExchange(Exchange):
 
         if order.type == OrderType.Market:
             order.execute(
-                price=self.data.open.l[0],
+                price=self.data.l.open[0],
                 at=self.data.bar(),
             )
             return
@@ -99,26 +99,26 @@ class BackTestExchange(Exchange):
         if order.type == OrderType.Limit:
             if order.is_long:
                 # Buy Limit
-                price = self.data.low.l[-1]
+                price = self.data.l.low[-1]
                 if order.limit_price > price:
                     order.execute(price=order.limit_price, at=self.data.bar(-1))
                     return
             else:
                 # Sell Limit
-                price = self.data.high.l[-1]
+                price = self.data.l.high[-1]
                 if order.limit_price < price:
                     order.execute(price=order.limit_price, at=self.data.bar(-1))
                     return
         elif order.type == OrderType.Stop:
             if order.is_long:
                 # Buy Stop
-                price = self.data.high.l[-1]
+                price = self.data.l.high[-1]
                 if order.stop_price < price:
                     order.execute(price=order.stop_price, at=self.data.bar(-1))
                     return
             else:
                 # Sell Stop
-                price = self.data.low.l[-1]
+                price = self.data.l.low[-1]
                 if order.stop_price > price:
                     order.execute(price=order.stop_price, at=self.data.bar(-1))
                     return

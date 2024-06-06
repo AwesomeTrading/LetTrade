@@ -35,7 +35,7 @@ class BackTestDataFeed(DataFeed):
     def _find_timeframe(self, df):
         if len(df.index) < 3:
             raise RuntimeError("DataFeed not enough data to detect timeframe")
-        dtl = df.l.index
+        dtl = df.index
         for i in range(0, 3):
             tf = dtl[i + 1] - dtl[i]
             if tf == dtl[i + 2] - dtl[i + 1]:
@@ -43,7 +43,7 @@ class BackTestDataFeed(DataFeed):
         raise RuntimeError("DataFeed cannot detect timeframe")
 
     def alive(self):
-        return self.l.stop > 1
+        return self.l.pointer_stop > 1
 
     def next(
         self,
@@ -59,7 +59,7 @@ class BackTestDataFeed(DataFeed):
             size = 0
             while True:
                 try:
-                    dt_next = self.index.l[size + 1]
+                    dt_next = self.l.index[size + 1]
                     # No more next data
                     # if not dt_next:
                     #     has_next = False
@@ -73,11 +73,11 @@ class BackTestDataFeed(DataFeed):
                     break
 
             # validate
-            now = self.index.l[size]
+            now = self.l.index[size]
             floor = self.timeframe.floor(next)
             if now != floor and missing != "bypass":
                 raise RuntimeError(
-                    f"DataFeed {self.name}: jump from [{now} to {self.index.l[size+1]}]"
+                    f"DataFeed {self.name}: jump from [{now} to {self.l.index[size+1]}]"
                     f" missing range [{floor} to {next}]",
                 )
 

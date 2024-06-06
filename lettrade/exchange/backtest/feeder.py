@@ -22,7 +22,7 @@ class BackTestDataFeeder(DataFeeder):
     def start(self, size=100):
         # self._cleanup_data()
 
-        next = self.data.index.l[size]
+        next = self.data.l.index[size]
         for data in self.datas:
             data.next(
                 size=size,
@@ -54,10 +54,10 @@ class BackTestDataFeeder(DataFeeder):
 
     def next(self):
         # End of main data
-        if self.data.l.stop <= 0:
+        if self.data.l.pointer_stop <= 0:
             return False
 
-        next = self.data.index.l[1]
+        next = self.data.l.index[1]
 
         no_next = 0
         for data in self.datas:

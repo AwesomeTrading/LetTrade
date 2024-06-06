@@ -62,13 +62,13 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         )
 
         # Test deepcopy is not a mirror
-        loc = df.index.l[0]
+        loc = df.l.index[0]
         df.loc[loc, "open"] = 0
         self.assertEqual(df.loc[loc, "open"], 0, "Set value to data.open error")
         self.assertEqual(df.l[0].open, 0, "Set value to data.open error")
         self.assertNotEqual(self.data.loc[loc, "open"], 0, "Value change when deepcopy")
 
-        loc = df.index.l[1]
+        loc = df.l.index[1]
         df.at[loc, "close"] = 1
         self.assertEqual(df.loc[loc, "close"], 1, "Set value to data.open error")
         self.assertEqual(df.l[1].close, 1, "Set value to data.open error")
@@ -82,9 +82,9 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         df.drop(since=100)
 
         self.assertEqual(len(df), 900, "Drop data size wrong")
-        self.assertEqual(df.open.l[0], 0.99474, "Drop data open value wrong")
+        self.assertEqual(df.l.open[0], 0.99474, "Drop data open value wrong")
         self.assertEqual(len(self.data), 1_000, "self.data size wrong")
-        self.assertEqual(self.data.open.l[0], 0.97724, "self.data open value wrong")
+        self.assertEqual(self.data.l.open[0], 0.97724, "self.data open value wrong")
 
     # Test index
     def test_index(self):
@@ -95,13 +95,13 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         df.next(next)
         self.assertEqual(df.l.pointer, next, "Data pointer wrong")
 
-        self.assertEqual(df.open.l[0], 0.97656, f"Data.open[{next}] wrong")
-        self.assertEqual(df.high.l[0], 0.97718, f"Data.high[{next}] wrong")
-        self.assertEqual(df.low.l[0], 0.97585, f"Data.low[{next}] wrong")
-        self.assertEqual(df.close.l[0], 0.9765, f"Data.close[{next}] wrong")
-        self.assertEqual(df.volume.l[0], 5050.0, f"Data.volume[{next}] wrong")
+        self.assertEqual(df.l.open[0], 0.97656, f"Data.open[{next}] wrong")
+        self.assertEqual(df.l.high[0], 0.97718, f"Data.high[{next}] wrong")
+        self.assertEqual(df.l.low[0], 0.97585, f"Data.low[{next}] wrong")
+        self.assertEqual(df.l.close[0], 0.9765, f"Data.close[{next}] wrong")
+        self.assertEqual(df.l.volume[0], 5050.0, f"Data.volume[{next}] wrong")
         self.assertEqual(
-            df.index.l[0],
+            df.l.index[0],
             pd.Timestamp("2022-10-20 03:00:00"),
             f"Data.index[{next}] wrong",
         )
@@ -110,13 +110,13 @@ class CSVBackTestDataFeedTestCase(unittest.TestCase):
         end = len(df) - 1
         df.l.go_stop()
         self.assertEqual(df.l.pointer, end, "Data pointer wrong")
-        self.assertEqual(df.open.l[0], 1.06215, f"Data.open[{end}] wrong")
-        self.assertEqual(df.high.l[0], 1.06359, f"Data.high[{end}] wrong")
-        self.assertEqual(df.low.l[0], 1.06134, f"Data.low[{end}] wrong")
-        self.assertEqual(df.close.l[0], 1.06341, f"Data.close[{end}] wrong")
-        self.assertEqual(df.volume.l[0], 5679.0, f"Data.volume[{end}] wrong")
+        self.assertEqual(df.l.open[0], 1.06215, f"Data.open[{end}] wrong")
+        self.assertEqual(df.l.high[0], 1.06359, f"Data.high[{end}] wrong")
+        self.assertEqual(df.l.low[0], 1.06134, f"Data.low[{end}] wrong")
+        self.assertEqual(df.l.close[0], 1.06341, f"Data.close[{end}] wrong")
+        self.assertEqual(df.l.volume[0], 5679.0, f"Data.volume[{end}] wrong")
         self.assertEqual(
-            df.index.l[0],
+            df.l.index[0],
             pd.Timestamp("2022-12-16 15:00:00"),
             f"Data.index[{end}] wrong",
         )

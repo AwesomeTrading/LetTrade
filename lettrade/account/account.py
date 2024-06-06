@@ -60,7 +60,7 @@ class Account(ABC):
     def pl(self, size, entry_price: float, exit_price=None):
         """Estimate temporary profit and loss"""
         if exit_price is None:
-            exit_price = self._exchange.data.open.l[0]
+            exit_price = self._exchange.data.l.open[0]
 
         return size * (exit_price - entry_price)
 

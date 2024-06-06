@@ -1,7 +1,10 @@
+import logging
 from typing import Optional, Type
 
 from .base import BaseTransaction, OrderState, OrderType
 from .error import LetTradeOrderValidateException
+
+logger = logging.getLogger(__name__)
 
 
 class Order(BaseTransaction):
@@ -113,6 +116,9 @@ class Order(BaseTransaction):
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
         self.state = OrderState.Placed
+
+        logger.info("Placing new order: %s", self)
+
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 

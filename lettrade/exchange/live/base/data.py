@@ -24,16 +24,10 @@ class LiveDataFeed(DataFeed):
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
             timeframe=timeframe,
+            columns=["open", "high", "low", "close", "volume"],
             **kwargs,
         )
         self.meta.update(dict(symbol=symbol))
-
-        # Columns
-        self["open"] = pd.Series(dtype="float64")
-        self["high"] = pd.Series(dtype="float64")
-        self["low"] = pd.Series(dtype="float64")
-        self["close"] = pd.Series(dtype="float64")
-        self["volume"] = pd.Series(dtype="float64")
 
     @property
     def symbol(self) -> str:

@@ -1,13 +1,10 @@
 from typing import Dict, List, Optional, Set, Tuple, Type
 
-from lettrade import Commander, LetTrade, LetTradeBot, Statistic
+from lettrade import Commander, LetTrade, LetTradeBot, Plotter, Statistic
 from lettrade.strategy.strategy import Strategy
 
-from .account import LiveAccount
 from .api import LiveAPI
 from .data import LiveDataFeed
-from .exchange import LiveExchange
-from .feeder import LiveDataFeeder
 
 
 class LetTradeLiveBot(LetTradeBot):
@@ -88,8 +85,8 @@ def let_live(
     strategy: Type[Strategy],
     datas: set[set[str]],
     commander: Optional[Commander] = None,
-    plotter: Optional[Type["Plotter"]] = None,
-    stats: Optional[Type["Statistic"]] = Statistic,
+    plotter: Optional[Type[Plotter]] = None,
+    stats: Optional[Type[Statistic]] = Statistic,
     lettrade: Optional[Type[LetTradeLive]] = LetTradeLive,
     bot: Optional[Type[LetTradeLiveBot]] = LetTradeLiveBot,
     api: Optional[Type[LiveAPI]] = LiveAPI,
@@ -101,8 +98,8 @@ def let_live(
         strategy (Type[Strategy]): _description_
         datas (set[set[str]]): _description_
         commander (Optional[Commander], optional): _description_. Defaults to None.
-        plotter (Optional[Type[&quot;Plotter&quot;]], optional): _description_. Defaults to None.
-        stats (Optional[Type[&quot;Statistic&quot;]], optional): _description_. Defaults to Statistic.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
+        stats (Optional[Type[Statistic]], optional): _description_. Defaults to Statistic.
         api (Optional[Type[LiveAPI]], optional): _description_. Defaults to LiveAPI.
         bot (Optional[Type[LetTradeLiveBot]], optional): _description_. Defaults to LetTradeLiveBot.
         lettrade (Optional[Type[LetTradeLive]], optional): _description_. Defaults to LetTradeLive.

@@ -117,7 +117,14 @@ class DataFeedWrapper:
     _pointer: int
     _iloc: ILocWrapper
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: pd.DataFrame) -> None:
+        # Validate new instance not load an existed wrapper
+        if hasattr(data.index, __WRAPPER_KEY__):
+            raise RuntimeError("DataFeed.index reuses a loaded wrapper")
+        for column in data.columns:
+            if hasattr(data[column], __WRAPPER_KEY__):
+                raise RuntimeError(f"DataFeed.{column} reuses a loaded wrapper")
+
         self._pointer = 0
         self._data = data
         self._iloc = ILocWrapper(self._data, self)
@@ -147,11 +154,11 @@ class DataFeedWrapper:
 
         # raise NotImplementedError(f"Method {name} is not implement yet")
 
-    def __getitem__(self, item: int | slice | Any):
-        return self._iloc[item]
-        # if isinstance(item, (int, slice)):
-        #     return self._iloc[item]
-        # return self._data[item]
+    def __getitem__(self, item: int | slice | str | Any):
+        # return self._iloc[item]
+        if isinstance(item, (int, slice)):
+            return self._iloc[item]
+        return self._data[item]
 
     # Function
     def next(self, size=1):

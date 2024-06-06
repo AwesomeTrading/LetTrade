@@ -4,8 +4,8 @@ from typing import Optional
 
 import pandas as pd
 
-from .inject import DataFrameInject
 from .timeframe import TimeFrame
+from .wrapper import DataFeedWrapper
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ _data_name_pattern = re.compile(r"^[\w\_]+$")
 class DataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
-    l: DataFrameInject
+    l: DataFeedWrapper
 
     def __init__(
         self,

@@ -35,7 +35,7 @@ class BackTestDataFeed(DataFeed):
     def _find_timeframe(self, df):
         if len(df.index) < 3:
             raise RuntimeError("DataFeed not enough data to detect timeframe")
-        dtl = df.index.l
+        dtl = df.l.index
         for i in range(0, 3):
             tf = dtl[i + 1] - dtl[i]
             if tf == dtl[i + 2] - dtl[i + 1]:

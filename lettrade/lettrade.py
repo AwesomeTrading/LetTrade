@@ -87,7 +87,7 @@ class LetTrade:
             feeds = [self._datafeed(data=data, index=i) for i, data in enumerate(datas)]
         return feeds
 
-    def start(self, force=False):
+    def start(self, force: bool = False):
         if force and self._bot is not None:
             self._bot = None
 

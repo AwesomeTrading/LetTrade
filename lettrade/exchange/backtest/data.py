@@ -139,7 +139,6 @@ class CSVBackTestDataFeed(BackTestDataFeed):
             )
             if not isinstance(data.index, pd.DatetimeIndex):
                 data.index = data.index.astype("datetime64[ns, UTC]")
-        # df.reset_index(inplace=True)
 
         super().__init__(
             data=data,
@@ -178,11 +177,7 @@ class YFBackTestDataFeed(BackTestDataFeed):
         from .extra.yfinance import yf_parse
 
         df = yf_parse(df)
-        # TODO: WIP
         df["date"] = pd.to_datetime(df["date"], unit="ms", utc=True)
-
-        # # Reindex to 0,1,2,3...
-        # df.reset_index(inplace=True)
 
         # Metadata
         meta = dict(yf=dict(ticker=ticker, **params))

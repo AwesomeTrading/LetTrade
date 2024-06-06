@@ -23,7 +23,7 @@ from lettrade import (
     Statistic,
     Strategy,
 )
-from lettrade.plot.plotly import PlotlyPlotter, Plotter
+from lettrade.plot import Plotter
 
 from .account import BackTestAccount
 from .commander import BackTestCommander
@@ -79,6 +79,24 @@ class LetTradeBackTest(LetTrade):
                 raise RuntimeError(f"Data {data} type is invalid")
 
         return super()._datafeed(data, index=index, **kwargs)
+
+    def start(self, force: bool = False):
+        # Load plotly here just for backtest to improve performance
+        if self._plotter_cls == "PlotlyPlotter":
+            from lettrade.plot.plotly import PlotlyPlotter
+
+            self._plotter_cls = PlotlyPlotter
+
+        return super().start(force)
+
+    def run(self, worker: int | None = None, **kwargs):
+        # Load plotly here just for backtest to improve performance
+        if self._plotter_cls == "PlotlyPlotter":
+            from lettrade.plot.plotly import PlotlyPlotter
+
+            self._plotter_cls = PlotlyPlotter
+
+        return super().run(worker, **kwargs)
 
     def optimize(
         self,
@@ -304,7 +322,7 @@ def let_backtest(
     exchange: Type[Exchange] = BackTestExchange,
     account: Type[Account] = BackTestAccount,
     commander: Optional[Type[Commander]] = BackTestCommander,
-    plotter: Optional[Type["Plotter"]] = PlotlyPlotter,
+    plotter: Optional[Type[Plotter]] = "PlotlyPlotter",
     stats: Optional[Type[Statistic]] = Statistic,
     cash: Optional[float] = 1_000,
     commission: Optional[float] = 0.2,

@@ -8,10 +8,9 @@ use_directory_urls: True
 
 nav:
   - Home: index.md
-  - Install:
-      - LetTrade: install/index.md
-      - MetaTrader 5: install/metatrader.md
+  - Install: install/
   - Tutorials: tutorial/
+  - Indicator: indicator/
   - TA Libraries: talib.md
   - Development: dev.md
   - API reference:

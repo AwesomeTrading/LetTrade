@@ -145,11 +145,19 @@ class MetaTraderAPI(LiveAPI):
     def heartbeat(self):
         return True
 
+    ### Public
     def market(self, symbol):
         return self._mt5.symbol_info(symbol)
 
-    def markets(self, symbol):
-        pass
+    def markets(self, search=None):
+        """The filter for arranging a group of necessary symbols. Optional parameter.
+        If the group is specified, the function returns only symbols meeting a specified criteria.
+
+        Search example:
+            Get symbols whose names do not contain USD, EUR, JPY and GBP
+            search="*,!*USD*,!*EUR*,!*JPY*,!*GBP*"
+        """
+        return self._mt5.symbols_get(search)
 
     def tick_get(self, symbol):
         return self._mt5.symbol_info_tick(symbol)

@@ -1,4 +1,5 @@
 import time
+from typing import Type
 
 from lettrade.data import DataFeeder
 
@@ -7,6 +8,11 @@ from .data import LiveDataFeed
 
 
 class LiveDataFeeder(DataFeeder):
+    # Class properties
+    _api_cls: Type[LiveAPI] = LiveAPI
+    _data_cls: Type[LiveDataFeed] = LiveDataFeed
+
+    # Object properties
     datas: list[LiveDataFeed]
     data: LiveDataFeed
 
@@ -36,3 +42,36 @@ class LiveDataFeeder(DataFeeder):
             time.sleep(self._tick)
         for data in self.datas:
             data.next(tick=self._tick)
+
+    ### Extend
+    def data_new(self, **kwargs):
+        return self._data_cls(api=self._api, **kwargs)
+
+    def markets(self, search=None):
+        return self._api.markets(search=search)
+
+    @classmethod
+    def instance(
+        cls,
+        api: LiveAPI = None,
+        api_kwargs: dict = None,
+        **kwargs,
+    ) -> "LiveDataFeed":
+        """_summary_
+
+        Args:
+            api (LiveAPI, optional): _description_. Defaults to None.
+            api_kwargs (dict, optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: Missing api requirement
+
+        Returns:
+            LiveDataFeed: DataFeed object
+        """
+        if api is None:
+            if api_kwargs is None:
+                raise RuntimeError("api or api_kwargs cannot missing")
+            api = cls._api_cls(**api_kwargs)
+        obj = cls(api=api, **kwargs)
+        return obj

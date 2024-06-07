@@ -19,6 +19,7 @@ class LiveDataFeed(DataFeed):
         symbol: str,
         timeframe: str | int | pd.Timedelta,
         name: str = None,
+        api: LiveAPI = None,
         **kwargs,
     ) -> None:
         super().__init__(
@@ -28,6 +29,9 @@ class LiveDataFeed(DataFeed):
             **kwargs,
         )
         self.meta.update(dict(symbol=symbol))
+
+        if api is not None:
+            self._api = api
 
     @property
     def symbol(self) -> str:
@@ -39,26 +43,58 @@ class LiveDataFeed(DataFeed):
 
     @_api.setter
     def _api(self, value) -> LiveAPI:
-        setattr(self, "__api", value)
+        object.__setattr__(self, "__api", value)
 
     def next(self, size=1, tick=0) -> bool:
-        rates = self._api.bars(
-            symbol=self.symbol,
-            timeframe=self.timeframe.string,
-            since=0,
-            to=size + 1,  # Get last completed bar
-        )
-        if len(rates) == 0:
-            logger.warning("No rates data for %s", self.name)
-            return False
-
-        return self.on_rates(rates, tick=tick)
-
-    def on_rates(self, rates, tick=0):
-        self.push(rates)
+        self.bars_load(since=0, to=size + 1)
         self.l.go_stop()
         return True
 
+    def bars_load(
+        self,
+        since: int | str | pd.Timestamp,
+        to: int | str | pd.Timestamp,
+    ) -> bool:
+        """Get bar and push to DataFeed
+
+        Args:
+            since (int | str | pd.Timestamp): _description_
+            to (int | str | pd.Timestamp): _description_
+
+        Returns:
+            bool: True if has data, False if no data
+        """
+        bars = self.bars(since=since, to=to)
+
+        if len(bars) == 0:
+            logger.warning("No bars data for %s", self.name)
+            return False
+
+        self.push(bars)
+        return True
+
+    def bars(
+        self,
+        since: int | str | pd.Timestamp,
+        to: int | str | pd.Timestamp,
+    ) -> list:
+        """Get bars from LiveAPI
+
+        Args:
+            since (int | str | pd.Timestamp): _description_
+            to (int | str | pd.Timestamp): _description_
+
+        Returns:
+            list: list of bar
+        """
+        return self._api.bars(
+            symbol=self.symbol,
+            timeframe=self.timeframe.string,
+            since=since,
+            to=to,
+        )
+
+    ### Extend
     def dump_csv(
         self,
         path: str = None,
@@ -109,6 +145,5 @@ class LiveDataFeed(DataFeed):
             if api_kwargs is None:
                 raise RuntimeError("api or api_kwargs cannot missing")
             api = cls._api_cls(**api_kwargs)
-        data = cls(**kwargs)
-        data._api = api
-        return data
+        obj = cls(api=api, **kwargs)
+        return obj

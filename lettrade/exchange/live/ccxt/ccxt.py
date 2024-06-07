@@ -31,6 +31,12 @@ class CCXTDataFeed(LiveDataFeed):
 class CCXTDataFeeder(LiveDataFeeder):
     """DataFeeder for CCXT"""
 
+    _api_cls: Type[CCXTAPI] = CCXTAPI
+    """API to communicate with CCXT Terminal"""
+
+    _data_cls: Type[CCXTDataFeed] = CCXTDataFeed
+    """DataFeed for CCXT"""
+
 
 class CCXTExecute(LiveExecute):
     """Execute for CCXT"""

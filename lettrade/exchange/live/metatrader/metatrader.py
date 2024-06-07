@@ -60,6 +60,12 @@ class MetaTraderDataFeed(LiveDataFeed):
 class MetaTraderDataFeeder(LiveDataFeeder):
     """DataFeeder for MetaTrader"""
 
+    _api_cls: Type[MetaTraderAPI] = MetaTraderAPI
+    """API to communicate with MetaTrader Terminal"""
+
+    _data_cls: Type[MetaTraderDataFeed] = MetaTraderDataFeed
+    """DataFeed for MetaTrader"""
+
 
 class MetaTraderExecute(LiveExecute):
     """Execute for MetaTrader"""
@@ -148,6 +154,7 @@ def let_metatrader(
         lettrade (Optional[Type[LetTradeMetaTrader]], optional): _description_. Defaults to LetTradeMetaTrader.
         api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
         wine (Optional[str], optional): _description_. Defaults to None.
+        **kwargs (dict): All remaining properties are passed to the constructor of `LetTradeLive`
 
     Returns:
         LetTradeMetaTrader: _description_

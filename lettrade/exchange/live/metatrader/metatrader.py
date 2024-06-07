@@ -1,8 +1,5 @@
-import logging
+# import logging
 from typing import Optional, Type
-
-import numpy as np
-import pandas as pd
 
 from lettrade import Commander, Plotter, Statistic
 from lettrade.exchange.live import (
@@ -21,7 +18,11 @@ from lettrade.strategy.strategy import Strategy
 
 from .api import MetaTraderAPI
 
-logger = logging.getLogger(__name__)
+# import numpy as np
+# import pandas as pd
+
+
+# logger = logging.getLogger(__name__)
 
 
 class MetaTraderDataFeed(LiveDataFeed):

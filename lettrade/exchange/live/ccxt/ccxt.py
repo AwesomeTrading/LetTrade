@@ -1,4 +1,4 @@
-import logging
+# import logging
 from typing import Optional, Type
 
 from lettrade import Commander, Plotter, Statistic
@@ -18,7 +18,7 @@ from lettrade.strategy.strategy import Strategy
 
 from .api import CCXTAPI
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 class CCXTDataFeed(LiveDataFeed):

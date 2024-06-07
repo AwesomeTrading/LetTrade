@@ -40,7 +40,7 @@ TIMEFRAME_DELTA_2_STR = {
     # "1mn": pd.Timedelta(days=30),
 }
 
-_pattern_timeframe_str = re.compile(f"^([0-9]+)([a-z]+)$")
+_pattern_timeframe_str = re.compile(r"^([0-9]+)([a-z]+)$")
 
 
 class TimeFrame:
@@ -58,12 +58,8 @@ class TimeFrame:
             if not match:
                 raise RuntimeError(f"TimeFrame value {tf} is invalid")
 
-            unit = match.group(2)
-            if unit not in TIMEFRAME_UNIT_LET_2_PANDAS:
-                raise RuntimeError(f"TimeFrame value {tf} with unit {unit} is invalid")
-
             self.value = int(match.group(1))
-            self.unit = unit
+            self.unit = match.group(2)
         elif isinstance(tf, int):
             self.value = tf
             self.unit = "m"
@@ -77,9 +73,35 @@ class TimeFrame:
         else:
             raise RuntimeError(f"Timeframe {tf} is invalid format")
 
+        # Validate
+        self._validate()
+
         # Setup
         self.unit_pandas = TIMEFRAME_UNIT_LET_2_PANDAS[self.unit]
         self.delta = pd.Timedelta(self.value, self.unit_pandas)
+
+        # Warning
+        if self.delta not in TIMEFRAME_DELTA_2_STR:
+            if self.unit not in ["s", "m"]:
+                logger.warning(
+                    "Unsupport TimeFrame(%s), some function may not work floor()/ceil()...",
+                    self.delta,
+                )
+
+    def _validate(self):
+        # Unit
+        if self.unit not in TIMEFRAME_UNIT_LET_2_PANDAS:
+            raise RuntimeError(f"TimeFrame unit {self.unit} is invalid")
+
+        # Value
+        if self.value <= 0:
+            raise RuntimeError(f"Timeframe value {self.value} is <= 0")
+        elif self.unit in ["s", "m"] and self.value >= 60:
+            raise RuntimeError(f"Timeframe value {self.value} is >= 60{self.unit}")
+        elif self.unit == "h" and self.value >= 24:
+            raise RuntimeError(f"Timeframe value {self.value} is >= 24h")
+        elif self.unit == "d" and self.value >= 7:
+            raise RuntimeError(f"Timeframe value {self.value} is >= 7d")
 
     def __repr__(self) -> str:
         return self.string

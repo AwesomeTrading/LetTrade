@@ -26,15 +26,8 @@ class DataFeedInjectTestCase(unittest.TestCase):
         tf = TimeFrame("1d")
         self.assertEqual(tf.string, "1d")
 
-        tf = TimeFrame("7d")
-        self.assertEqual(tf.string, "7d")
-
-        # ERROR
-        tf = TimeFrame("12d")
-        self.assertEqual(tf.string, "12d")
-
-        tf = TimeFrame("9999d")
-        self.assertEqual(tf.string, "9999d")
+        tf = TimeFrame("3d")
+        self.assertEqual(tf.string, "3d")
 
     def test_timedelta(self):
         tf = TimeFrame(pd.Timedelta(minutes=3))
@@ -75,6 +68,12 @@ class DataFeedInjectTestCase(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             TimeFrame(pd.Timestamp("2020-01-01"))
 
+        with self.assertRaises(RuntimeError):
+            TimeFrame("12d")
+
+        with self.assertRaises(RuntimeError):
+            TimeFrame("-1d")
+
     def test_floor(self):
         # Second
         tf = TimeFrame("5s")
@@ -104,6 +103,7 @@ class DataFeedInjectTestCase(unittest.TestCase):
         self.assertEqual(floor, pd.Timestamp("2020-01-01 20:00:00"))
 
     def test_ceil(self):
+        # Second
         tf = TimeFrame("5s")
 
         ceil = tf.ceil(pd.Timestamp("2020-01-01 01:00:03"))
@@ -111,6 +111,24 @@ class DataFeedInjectTestCase(unittest.TestCase):
 
         ceil = tf.ceil(pd.Timestamp("2020-01-01 01:00:23"))
         self.assertEqual(ceil, pd.Timestamp("2020-01-01 01:00:25"))
+
+        # Minute
+        tf = TimeFrame("5m")
+
+        ceil = tf.ceil(pd.Timestamp("2020-01-01 01:00:03"))
+        self.assertEqual(ceil, pd.Timestamp("2020-01-01 01:05:00"))
+
+        ceil = tf.ceil(pd.Timestamp("2020-01-01 01:12:23"))
+        self.assertEqual(ceil, pd.Timestamp("2020-01-01 01:15:00"))
+
+        # Hour
+        tf = TimeFrame("4h")
+
+        ceil = tf.ceil(pd.Timestamp("2020-01-01 11:11:03"))
+        self.assertEqual(ceil, pd.Timestamp("2020-01-01 12:00:00"))
+
+        ceil = tf.ceil(pd.Timestamp("2020-01-01 21:12:23"))
+        self.assertEqual(ceil, pd.Timestamp("2020-01-02 00:00:00"))
 
 
 if __name__ == "__main__":

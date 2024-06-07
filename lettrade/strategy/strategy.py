@@ -73,7 +73,7 @@ class Strategy(ABC):
                 fn = getattr(self, fn_name)
             else:
                 fn = self.indicators
-            setattr(data, "indicator_loader", fn)
+            object.__setattr__(data, "indicator_loader", fn)
 
     @final
     def _indicators_load(self):

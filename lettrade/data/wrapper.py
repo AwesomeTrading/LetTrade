@@ -203,10 +203,11 @@ class LetDataFeedWrapper:
 
 
 # @property
-# def _lettrade_wrapper(self) -> DataFeedWrapper:
+# def _lettrade_wrapper(self) -> LetDataFeedWrapper:
 #     if not hasattr(self, __LET_WRAPPER_KEY__):
-#         object.__setattr__(self, __LET_WRAPPER_KEY__, DataFeedWrapper(self))
+#         object.__setattr__(self, __LET_WRAPPER_KEY__, LetDataFeedWrapper(self))
 #     return getattr(self, __LET_WRAPPER_KEY__)
 
 
-# setattr(pd.DataFrame, "l", _lettrade_wrapper)
+# from pandas.core.base import PandasObject
+# PandasObject.l = _lettrade_wrapper

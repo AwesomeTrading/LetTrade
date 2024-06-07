@@ -56,7 +56,7 @@ class Account(ABC):
     def stop(self):
         pass
 
-    def risk(self, side: "OrderSide", size: float, **kwargs):
+    def risk(self, side: "OrderSide", size: float, **kwargs) -> float:
         """
         Risk calculation
         """

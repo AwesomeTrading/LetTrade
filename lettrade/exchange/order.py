@@ -1,6 +1,8 @@
 import logging
 from typing import Optional, Type
 
+import pandas as pd
+
 from .base import BaseTransaction, OrderState, OrderType
 from .error import LetTradeOrderValidateException
 
@@ -25,8 +27,8 @@ class Order(BaseTransaction):
         tp_price: Optional[float] = None,
         trade: Optional["Trade"] = None,
         tag: Optional[object] = None,
-        open_at: Optional[int] = None,
-        open_price: Optional[int] = None,
+        open_at: Optional[pd.Timestamp] = None,
+        open_price: Optional[float] = None,
     ):
         super().__init__(
             id=id,
@@ -42,12 +44,12 @@ class Order(BaseTransaction):
         self.sl_price: Optional[float] = sl_price
         self.tp_price: Optional[float] = tp_price
         self.trade: Optional["Trade"] = trade
-        self.tag: object = tag
+        self.tag: Optional[object] = tag
 
-        self.open_at: int = open_at
-        self.open_price: int = open_price
-        self.entry_at: int = None
-        self.entry_price: int = None
+        self.open_at: Optional[pd.Timestamp] = open_at
+        self.open_price: Optional[float] = open_price
+        self.entry_at: Optional[pd.Timestamp] = None
+        self.entry_price: Optional[float] = None
 
         self.validate()
 
@@ -122,14 +124,14 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def execute(self, price: float, at: object) -> "OrderResult":
+    def execute(self, price: float, at: pd.Timestamp) -> "OrderResult":
         """Execute `Order`.
         Set `status` to `OrderState.Executed`.
         Send event to `Exchange`
 
         Args:
             price (float): Executed price
-            at (object): Executed bar
+            at (pd.Timestamp): Executed bar
 
         Raises:
             RuntimeError: _description_
@@ -265,9 +267,9 @@ class OrderResult:
 
     def __init__(
         self,
-        ok: Optional[bool] = True,
+        ok: bool = True,
+        code: int = 0,
         order: Optional["Order"] = None,
-        code: Optional[int] = 0,
         raw: Optional[object] = None,
     ) -> None:
         """_summary_
@@ -279,9 +281,9 @@ class OrderResult:
             raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
         """
         self.ok: bool = ok
-        self.order: "Order" = order
         self.code: int = code
-        self.raw: object = raw
+        self.order: Optional["Order"] = order
+        self.raw: Optional[object] = raw
 
 
 class OrderResultOk(OrderResult):

@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Literal, Optional, Type
+from typing import Any, Literal, Optional, Type
 
 from lettrade.account import Account
 from lettrade.brain import Brain
@@ -41,10 +41,10 @@ class LetTradeBot:
     _feeder_cls: Type[DataFeeder]
     _exchange_cls: Type[Exchange]
     _account_cls: Type[Account]
-    _commander_cls: Type[Commander]
-    _plotter_cls: Type[Plotter]
-    _stats_cls: Type[Statistic]
-    _kwargs: dict
+    _commander_cls: Optional[Type[Commander]]
+    _plotter_cls: Optional[Type[Plotter]]
+    _stats_cls: Optional[Type[Statistic]]
+    _kwargs: dict[str, Any]
     _name: str
 
     def __init__(
@@ -187,7 +187,7 @@ class LetTradeBot:
     @classmethod
     def new_bot(
         cls,
-        datas: Optional[list],
+        datas: list[DataFeed],
         strategy_cls: Type[Strategy],
         feeder_cls: Type[DataFeeder],
         exchange_cls: Type[Exchange],

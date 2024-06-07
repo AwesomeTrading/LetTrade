@@ -1,7 +1,5 @@
-from datetime import datetime
-from typing import Optional, Tuple, Union
+from typing import Optional
 
-import numpy as np
 import pandas as pd
 
 from .base import BaseTransaction, TradeState
@@ -24,8 +22,8 @@ class Trade(BaseTransaction):
         tag: object = "",
         state: TradeState = TradeState.Open,
         entry_price: Optional[float] = None,
-        entry_fee: Optional[float] = 0.0,
-        entry_at: Optional[int] = None,
+        entry_fee: float = 0.0,
+        entry_at: Optional[pd.Timestamp] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
     ):
@@ -42,13 +40,13 @@ class Trade(BaseTransaction):
         self.parent: "Order" = parent
 
         self.entry_price: Optional[float] = entry_price
-        self.entry_fee: Optional[float] = entry_fee
-        self.entry_at: Optional[int] = entry_at
+        self.entry_fee: float = entry_fee
+        self.entry_at: Optional[pd.Timestamp] = entry_at
 
         self.exit_price: Optional[float] = None
-        self.exit_at: Optional[int] = None
+        self.exit_fee: float = 0.0
+        self.exit_at: Optional[pd.Timestamp] = None
         self.exit_pl: Optional[float] = None
-        self.exit_fee: Optional[float] = 0.0
 
         self.sl_order: Optional[Order] = sl_order
         self.tp_order: Optional[Order] = tp_order
@@ -61,15 +59,15 @@ class Trade(BaseTransaction):
         #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
         # )
 
-    def entry(self, price: float, at: object, fee: float) -> bool:
+    def entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:
         self.entry_price = price
-        self.entry_at: int = at
+        self.entry_at = at
         self.entry_fee = fee
         self.state = TradeState.Open
         self.exchange.on_trade(self)
         return True
 
-    def exit(self, price: float, at: object, pl: float, fee: float) -> bool:
+    def exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
         if self.state != TradeState.Open:
             return False
 

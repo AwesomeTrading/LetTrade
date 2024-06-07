@@ -7,16 +7,23 @@ class Account(ABC):
     Manage account balance, leverage, commission. Risk calculate and control
     """
 
+    _risk: float
+    _cash: float
+    _commission: float
+    _margin: float
+    _leverage: float
+    _equities: dict[str, float]
+
     _exchange: "Exchange"
     _do_snapshot_equity: bool
 
     def __init__(
         self,
-        risk: Optional[float] = 0.02,
-        cash: Optional[float] = 10_000,
-        commission: Optional[float] = 0.2,
-        margin: Optional[float] = None,
-        leverage: Optional[float] = 1.0,
+        risk: float = 0.02,
+        cash: float = 10_000,
+        commission: float = 0.2,
+        margin: float = 1.0,
+        leverage: float = 1.0,
         **kwargs,
     ) -> None:
         """_summary_
@@ -28,13 +35,13 @@ class Account(ABC):
             margin (Optional[float], optional): _description_. Defaults to None.
             leverage (Optional[float], optional): _description_. Defaults to 1.0.
         """
-        self._risk: risk
-        self._cash: float = cash
-        self._commission: float = commission
+        self._risk = risk
+        self._cash = cash
+        self._commission = commission
         self._margin = margin
-        self._leverage: float = leverage
+        self._leverage = leverage
 
-        self._equities: dict[str, object] = dict()
+        self._equities = dict()
         self._do_snapshot_equity = True  # Snapshot balance
 
     def __repr__(self):

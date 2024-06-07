@@ -69,7 +69,7 @@ class LetTrade:
             case _:
                 raise RuntimeError(f"data {data} is invalid")
 
-    def _init_datafeeds(self, datas) -> list[DataFeed]:
+    def _init_datafeeds(self, datas) -> list[DataFeed] | list[list[DataFeed]]:
         # Support single and multiple data
         if not isinstance(datas, list):
             datas = [datas]

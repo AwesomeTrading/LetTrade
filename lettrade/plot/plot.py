@@ -14,9 +14,16 @@ class Plotter(ABC):
     Base class help to plot strategy
     """
 
+    feeder: DataFeeder
+    exchange: Exchange
+    account: Account
+    strategy: Strategy
+
+    datas: list[DataFeed]
+
     _datas_stored: Optional[dict[str, DataFeed]] = None
-    _jump_start_dt: pd.Timestamp = None
-    _jump_stop_dt: pd.Timestamp = None
+    _jump_start_dt: Optional[pd.Timestamp] = None
+    _jump_stop_dt: Optional[pd.Timestamp] = None
 
     def __init__(
         self,
@@ -25,19 +32,19 @@ class Plotter(ABC):
         account: Account,
         strategy: Strategy,
     ) -> None:
-        self.feeder: DataFeeder = feeder
-        self.exchange: Exchange = exchange
-        self.account: Account = account
-        self.strategy: Strategy = strategy
+        self.feeder = feeder
+        self.exchange = exchange
+        self.account = account
+        self.strategy = strategy
 
-        self.datas: list[DataFeed] = self.feeder.datas
+        self.datas = self.feeder.datas
 
     @property
     def data(self) -> DataFeed:
         return self.datas[0]
 
     @data.setter
-    def data(self, value: DataFeed) -> DataFeed:
+    def data(self, value: DataFeed) -> None:
         self.datas[0] = value
 
     @abstractmethod
@@ -54,7 +61,7 @@ class Plotter(ABC):
 
     def jump(
         self,
-        since: Optional[int | str | pd.Timestamp | None] = 0,
+        since: int | str | pd.Timestamp | None = 0,
         range: int = 300,
         name: Optional[str] = None,
     ):
@@ -70,7 +77,8 @@ class Plotter(ABC):
             if isinstance(since, str):
                 since = pd.to_datetime(since, utc=True)
                 since = self.data.index.get_loc(since)
-                print("since", since)
+            elif isinstance(since, pd.Timestamp):
+                since = self.data.index.get_loc(since)
 
             if name is None:
                 name = self.data.name
@@ -78,21 +86,20 @@ class Plotter(ABC):
             for i, data in enumerate(self._datas_stored.values()):
                 if i == 0:
                     self.datas[i] = data.__class__(
-                        name=data.name,
                         data=data.l[since : since + range],
+                        name=data.name,
+                        timeframe=data.timeframe,
                     )
                     self._jump_start_dt = self.data.index[0]
                     self._jump_stop_dt = self.data.index[-1]
                 else:
                     self.datas[i] = data.__class__(
+                        data=data.loc[
+                            (data.index >= self._jump_start_dt)
+                            & (data.index <= self._jump_stop_dt)
+                        ],
                         name=data.name,
-                        data=data.__class__(
-                            name=data.name,
-                            data=data.loc[
-                                (data.index >= self._jump_start_dt)
-                                & (data.index <= self._jump_stop_dt)
-                            ],
-                        ),
+                        timeframe=data.timeframe,
                     )
 
         self.load()

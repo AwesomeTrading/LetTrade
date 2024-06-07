@@ -17,10 +17,6 @@ class Position(BaseTransaction):
         )
 
     @property
-    def size(self) -> float:
-        """Position size in units of asset. Negative if position is short."""
-
-    @property
     def pl(self) -> float:
         """Profit (positive) or loss (negative) of the current position in cash units."""
 

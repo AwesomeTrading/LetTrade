@@ -81,7 +81,7 @@ class LetIndexWapper:
 class LetSeriesWapper:
     _data: pd.DatetimeIndex
     _owner: "LetDataFeedWrapper"
-    _iloc: LetILocWrapper
+    _iloc: LetILocWrapper | _iLocIndexer
 
     def __init__(self, data, owner) -> None:
         self._data = data
@@ -104,7 +104,7 @@ class LetSeriesWapper:
 
     # Property
     @property
-    def iloc(self) -> _iLocIndexer:
+    def iloc(self) -> LetILocWrapper | _iLocIndexer:
         return self._iloc
 
     @property
@@ -115,7 +115,7 @@ class LetSeriesWapper:
 class LetDataFeedWrapper:
     _data: pd.DataFrame
     _pointer: int
-    _iloc: LetILocWrapper
+    _iloc: LetILocWrapper | _iLocIndexer
 
     def __init__(self, data: pd.DataFrame) -> None:
         # Validate new instance not load an existed wrapper
@@ -154,7 +154,7 @@ class LetDataFeedWrapper:
 
         # raise NotImplementedError(f"Method {name} is not implement yet")
 
-    def __getitem__(self, item: int | slice | str | Any):
+    def __getitem__(self, item: int | slice | str | Any) -> pd.DataFrame:
         # return self._iloc[item]
         # if isinstance(item, (int, slice)):
         #     return self._iloc[item]
@@ -186,7 +186,7 @@ class LetDataFeedWrapper:
 
     # Property
     @property
-    def iloc(self) -> _iLocIndexer:
+    def iloc(self) -> LetILocWrapper | _iLocIndexer:
         return self._iloc
 
     @property

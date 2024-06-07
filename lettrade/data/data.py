@@ -74,8 +74,8 @@ class DataFeed(pd.DataFrame):
         self.meta["is_main"] = True
 
     # External
-    def copy(self, deep=False, *args, **kwargs) -> "DataFeed":
-        df = super().copy(deep=deep, *args, **kwargs)
+    def copy(self, deep: bool = False, **kwargs) -> "DataFeed":
+        df = super().copy(deep=deep, **kwargs)
         df = self.__class__(
             data=df,
             name=self.name,

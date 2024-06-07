@@ -1,6 +1,6 @@
 from abc import ABC
 from datetime import datetime
-from typing import Any, Optional, final
+from typing import Any, Optional, Sequence, final
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -27,7 +27,7 @@ class Strategy(ABC):
         exchange: Exchange,
         account: Account,
         commander: Commander,
-        is_optimize: Optional[bool] = False,
+        is_optimize: bool = False,
     ):
         """_summary_
 
@@ -86,7 +86,7 @@ class Strategy(ABC):
         self._indicators_load()
         self.start(*self.datas)
 
-    def start(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
+    def start(self, df: DataFeed, *others: list[DataFeed]) -> None:
         """call after `init()` and before first `next()` is called
 
         Args:
@@ -102,21 +102,21 @@ class Strategy(ABC):
             self._indicators_load()
         self.next(*self.datas)
 
-    def next(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
+    def next(self, df: DataFeed, *others: list[DataFeed]) -> None:
         """Next bar event"""
 
     @final
     def _end(self) -> None:
         self.end(*self.datas)
 
-    def end(self, df: DataFeed, *dfs: list[DataFeed]) -> None:
+    def end(self, df: DataFeed, *others: list[DataFeed]) -> None:
         """Call when strategy run completed
 
         Args:
             df (DataFeed): main data of strategy
         """
 
-    def plot(self, df: DataFeed, *dfs: list[DataFeed]) -> dict:
+    def plot(self, df: DataFeed, *others: list[DataFeed]) -> dict:
         """Custom config of plot
 
         Args:
@@ -256,11 +256,11 @@ class Strategy(ABC):
         return self.__data
 
     @property
-    def datas(self) -> list[DataFeed]:
+    def datas(self) -> Sequence[DataFeed]:
         """Getter of all DataFeed
 
         Returns:
-            list[DataFeed]: _description_
+            Sequence[DataFeed]: _description_
         """
         return self.__datas
 

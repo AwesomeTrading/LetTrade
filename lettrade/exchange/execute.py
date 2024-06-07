@@ -1,4 +1,5 @@
 from .base import BaseTransaction
+from typing import Optional
 
 
 class Execute(BaseTransaction):
@@ -25,10 +26,10 @@ class Execute(BaseTransaction):
         size: float,
         price: float,
         at: float,
-        order_id: str = None,
-        order: "Order" = None,
-        trade_id: str = None,
-        trade: "Trade" = None,
+        order_id: Optional[str] = None,
+        order: Optional["Order"] = None,
+        trade_id: Optional[str] = None,
+        trade: Optional["Trade"] = None,
     ):
         super().__init__(
             id=id,

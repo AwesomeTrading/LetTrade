@@ -33,7 +33,8 @@ class Statistic:
         """
         Calculate strategy report
         """
-        data: pd.DataFrame = self.feeder.data
+        data = self.feeder.data
+
         equities = list(self.account._equities.values())
         trades = list(self.exchange.history_trades.values()) + list(
             self.exchange.trades.values()

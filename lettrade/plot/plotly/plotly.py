@@ -2,6 +2,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 from lettrade.plot import Plotter
+from typing import Optional
 
 
 class PlotlyPlotter(Plotter):
@@ -186,7 +187,7 @@ class PlotlyPlotter(Plotter):
                 for trace in data_config["traces"]:
                     self.figure.add_trace(trace, **data_shape)
 
-    def plot(self, jump: dict = None, **kwargs):
+    def plot(self, jump: Optional[dict] = None, **kwargs):
         """Plot `equity`, `orders`, and `trades` then show"""
         if jump is not None:
             self.jump(**jump)

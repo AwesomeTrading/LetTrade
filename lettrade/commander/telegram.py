@@ -114,7 +114,7 @@ class TelegramAPI:
         self._init_keyboard()
         self._start_thread()
 
-    def _action(self, action: str, pname: str = None):
+    def _action(self, action: str, pname: Optional[str] = None):
         if pname is None:
             pname = list(self._bots_queue.keys())
         elif isinstance(pname, str):

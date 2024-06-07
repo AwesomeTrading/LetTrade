@@ -14,7 +14,7 @@ class Plotter(ABC):
     Base class help to plot strategy
     """
 
-    _datas_stored: dict = None
+    _datas_stored: Optional[dict[str, DataFeed]] = None
     _jump_start_dt: pd.Timestamp = None
     _jump_stop_dt: pd.Timestamp = None
 
@@ -55,8 +55,8 @@ class Plotter(ABC):
     def jump(
         self,
         since: Optional[int | str | pd.Timestamp | None] = 0,
-        range=300,
-        name: str = None,
+        range: int = 300,
+        name: Optional[str] = None,
     ):
         if self._datas_stored is None:
             self._datas_stored = {d.name: d for d in self.datas}

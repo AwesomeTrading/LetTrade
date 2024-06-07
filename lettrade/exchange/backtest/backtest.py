@@ -101,7 +101,7 @@ class LetTradeBackTest(LetTrade):
     def optimize(
         self,
         multiprocessing: Optional[str] = "auto",
-        workers: int = None,
+        workers: Optional[int] = None,
         **kwargs,
     ):
         """Backtest optimization
@@ -152,7 +152,7 @@ class LetTradeBackTest(LetTrade):
         optimizes: list[set],
         multiprocessing: str,
         processbar_queue: Queue,
-        workers: int = None,
+        workers: Optional[int] = None,
     ):
         results = []
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
@@ -222,7 +222,7 @@ class LetTradeBackTest(LetTrade):
         datas: list[DataFeed],
         optimize: dict[str, object],
         index: int,
-        q: Queue = None,
+        q: Optional[Queue] = None,
         # **kwargs,
     ):
         try:

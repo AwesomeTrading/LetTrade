@@ -108,24 +108,6 @@ class Trade(BaseTransaction):
 
     # Extra properties
     @property
-    def is_long(self) -> bool:
-        """Flag to check Trade is long side.
-
-        Returns:
-            bool: True if the trade is long (trade size is positive).
-        """
-        return self.size > 0
-
-    @property
-    def is_short(self) -> bool:
-        """Flag to check Trade is short side.
-
-        Returns:
-            bool: True if the trade is short (trade size is negative).
-        """
-        return not self.is_long
-
-    @property
     def is_exited(self) -> bool:
         """Flag to check Trade state.
 

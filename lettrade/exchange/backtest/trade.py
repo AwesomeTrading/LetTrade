@@ -93,7 +93,7 @@ class BackTestOrder(Order):
 
     def build_trade(
         self,
-        size: float = None,
+        size: Optional[float] = None,
         state: TradeState = TradeState.Open,
     ) -> "BackTestTrade":
         """Build Trade object from Order object
@@ -125,7 +125,7 @@ class BackTestTrade(Trade):
         fee = self._account.fee(size=self.size)
         return super().entry(price, at, fee)
 
-    def exit(self, price: float, at: object, caller: Order | Trade = None):
+    def exit(self, price: float, at: object, caller: Optional[Order | Trade] = None):
         """Exit trade
 
         Args:

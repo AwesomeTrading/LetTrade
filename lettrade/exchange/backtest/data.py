@@ -107,14 +107,14 @@ class CSVBackTestDataFeed(BackTestDataFeed):
 
     def __init__(
         self,
-        path: str = None,
-        name: str = None,
+        path: Optional[str] = None,
+        name: Optional[str] = None,
         timeframe: Optional[str | int | pd.Timedelta] = None,
         delimiter: str = ",",
         index_col: int = 0,
         header: int = 0,
-        meta: dict = None,
-        data: DataFeed = None,
+        meta: Optional[dict] = None,
+        data: Optional[DataFeed] = None,
         **kwargs: dict,
     ) -> None:
         """_summary_

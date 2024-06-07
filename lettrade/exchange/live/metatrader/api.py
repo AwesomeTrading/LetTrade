@@ -76,7 +76,7 @@ class MetaTraderAPI(LiveAPI):
         retry: int = 20,
         host: str = "localhost",
         port: int = 18812,
-        wine: str = None,
+        wine: Optional[str] = None,
         **kwargs,
     ):
         # Start wine server if not inited

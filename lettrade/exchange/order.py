@@ -24,9 +24,9 @@ class Order(BaseTransaction):
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
         trade: Optional["Trade"] = None,
-        tag: object = None,
-        open_at: int = None,
-        open_price: int = None,
+        tag: Optional[object] = None,
+        open_at: Optional[int] = None,
+        open_price: Optional[int] = None,
     ):
         super().__init__(
             id=id,
@@ -232,24 +232,6 @@ class Order(BaseTransaction):
         return self.tp_price
 
     # Extra properties
-    @property
-    def is_long(self) -> bool:
-        """True if the order is long (order size is positive).
-
-        Returns:
-            bool: True/False
-        """
-        return self.size > 0
-
-    @property
-    def is_short(self) -> bool:
-        """True if the order is short (order size is negative).
-
-        Returns:
-            bool: _description_
-        """
-        return self.size < 0
-
     @property
     def is_sl_order(self) -> bool:
         """`Order` is stop-loss order of a `Trade`

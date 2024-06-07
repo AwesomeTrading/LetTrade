@@ -69,7 +69,7 @@ class LetTrade:
             case _:
                 raise RuntimeError(f"data {data} is invalid")
 
-    def _init_datafeeds(self, datas) -> None:
+    def _init_datafeeds(self, datas) -> list[DataFeed]:
         # Support single and multiple data
         if not isinstance(datas, list):
             datas = [datas]
@@ -183,9 +183,9 @@ class LetTrade:
             return self._bot.plotter
         raise RuntimeError("Plotter is not defined")
 
-    def plot(self, *args, jump: dict = None, **kwargs):
+    def plot(self, *args, jump: Optional[dict] = None, **kwargs):
         """Plot strategy result"""
-        return self.plotter.plot(*args, jump=jump, **kwargs)
+        self.plotter.plot(*args, jump=jump, **kwargs)
 
     # Bot kwargs properties
     @property

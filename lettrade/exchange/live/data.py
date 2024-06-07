@@ -18,8 +18,8 @@ class LiveDataFeed(DataFeed):
         self,
         symbol: str,
         timeframe: str | int | pd.Timedelta,
-        name: str = None,
-        api: LiveAPI = None,
+        name: Optional[str] = None,
+        api: Optional[LiveAPI] = None,
         **kwargs,
     ) -> None:
         super().__init__(
@@ -97,7 +97,7 @@ class LiveDataFeed(DataFeed):
     ### Extend
     def dump_csv(
         self,
-        path: str = None,
+        path: Optional[str] = None,
         since: Optional[int | str | datetime] = 0,
         to: Optional[int | str | datetime] = 1_000,
     ):
@@ -125,8 +125,8 @@ class LiveDataFeed(DataFeed):
     @classmethod
     def instance(
         cls,
-        api: LiveAPI = None,
-        api_kwargs: dict = None,
+        api: Optional[LiveAPI] = None,
+        api_kwargs: Optional[dict] = None,
         **kwargs,
     ) -> "LiveDataFeed":
         """_summary_

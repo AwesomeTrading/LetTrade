@@ -2,7 +2,7 @@ import plotly.io as pio
 
 from .helper import *
 from .indicator import *
-from .plotly import PlotlyPlotter, Plotter
+from .plotly import *
 
 pio.templates.default = "plotly_dark"
 

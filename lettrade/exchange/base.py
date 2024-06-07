@@ -41,6 +41,24 @@ class BaseTransaction:
         self.data: "DataFeed" = data
         self.size: float = size
 
+    @property
+    def is_long(self) -> bool:
+        """True if side is long (size is positive).
+
+        Returns:
+            bool: True/False
+        """
+        return self.size > 0
+
+    @property
+    def is_short(self) -> bool:
+        """True if side is short (size is negative).
+
+        Returns:
+            bool: _description_
+        """
+        return self.size < 0
+
 
 if __debug__:
     from lettrade.base.flag import validate_strategy_trade

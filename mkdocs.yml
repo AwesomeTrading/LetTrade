@@ -11,7 +11,6 @@ nav:
   - Install: install/
   - Tutorials: tutorial/
   - Indicator: indicator/
-  - TA Libraries: talib.md
   - Development: dev.md
   - API reference:
       - LetTrade: reference/

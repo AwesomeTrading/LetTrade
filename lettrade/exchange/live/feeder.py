@@ -1,7 +1,8 @@
 import time
+from datetime import datetime
 from typing import Type
 
-from lettrade.data import DataFeeder
+from lettrade.data import DataFeeder, TimeFrame
 
 from .api import LiveAPI
 from .data import LiveDataFeed
@@ -18,6 +19,7 @@ class LiveDataFeeder(DataFeeder):
 
     _api: LiveAPI
     _tick: bool
+    _wait_timeframe: TimeFrame
 
     def __init__(self, api: LiveAPI, tick: bool = 5) -> None:
         """
@@ -30,6 +32,11 @@ class LiveDataFeeder(DataFeeder):
         self._api = api
         self._tick = tick
 
+        if isinstance(self._tick, int):
+            self._wait_timeframe = TimeFrame(f"{self._tick}s")
+        else:
+            self._wait_timeframe = None
+
     def alive(self):
         return self._api.heartbeat()
 
@@ -39,9 +46,14 @@ class LiveDataFeeder(DataFeeder):
 
     def next(self):
         if self._tick > 0:
-            time.sleep(self._tick)
+            time.sleep(self._wait_duration())
         for data in self.datas:
             data.next(tick=self._tick)
+
+    def _wait_duration(self) -> float:
+        now = datetime.now()
+        delta = self._wait_timeframe.ceil(now) - now
+        return delta.total_seconds()
 
     ### Extend
     def data_new(self, **kwargs):

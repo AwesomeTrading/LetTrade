@@ -1,5 +1,6 @@
 import logging
 import re
+from datetime import datetime
 
 import pandas as pd
 
@@ -114,13 +115,19 @@ class TimeFrame:
     def string_pandas(self):
         return f"{self.value}{self.unit_pandas}"
 
-    def floor(self, at: pd.Timestamp):
+    def floor(self, at: datetime | pd.Timestamp):
+        if isinstance(at, datetime):
+            at = pd.Timestamp(at)
+
         freq = self.string_pandas
         if self.unit == "m":
             freq += "in"
         return at.floor(freq=freq)
 
-    def ceil(self, at: pd.Timestamp):
+    def ceil(self, at: datetime | pd.Timestamp):
+        if isinstance(at, datetime):
+            at = pd.Timestamp(at)
+
         freq = self.string_pandas
         if self.unit == "m":
             freq += "in"

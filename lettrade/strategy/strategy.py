@@ -106,10 +106,10 @@ class Strategy(ABC):
         """Next bar event"""
 
     @final
-    def _end(self) -> None:
-        self.end(*self.datas)
+    def _stop(self) -> None:
+        self.stop(*self.datas)
 
-    def end(self, df: DataFeed, *others: list[DataFeed]) -> None:
+    def stop(self, df: DataFeed, *others: list[DataFeed]) -> None:
         """Call when strategy run completed
 
         Args:

@@ -27,7 +27,7 @@ class SmaCross(Strategy):
             price = self.data.l.close[-1]
             self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
 
-    def end(self, df: DataFeed):
+    def stop(self, df: DataFeed):
         print(df.tail())
         print(self.orders)
 

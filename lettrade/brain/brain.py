@@ -71,7 +71,7 @@ class Brain:
                 logger.exception("Bot running error", exc_info=e)
                 break
 
-        self.strategy._end()
+        self.strategy._stop()
 
     def stop(self):
         """Stop the trading bot"""

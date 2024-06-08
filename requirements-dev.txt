@@ -7,9 +7,9 @@ mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master
 python-dotenv
 python-telegram-bot
 tqdm
-ccxt==4.3.36
+ccxt
 
 # conda install -c conda-forge ta-lib
 TA-Lib
-pandas-ta==0.3.14b0
-technical==1.4.3
+pandas-ta
+technical

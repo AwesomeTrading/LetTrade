@@ -114,7 +114,7 @@ python -m example.strategy.backtest_sma_cross
 Set up conda environment
 
 ```sh
-conda create -y -n LetTrade python=3.10
+conda create -y -n LetTrade python=3.12
 conda activate LetTrade
 conda install -c conda-forge ta-lib
 pip install -r requirements-dev.txt

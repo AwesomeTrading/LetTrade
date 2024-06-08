@@ -2,427 +2,467 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/dev/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://AwesomeTrading.github.io/lettrade/talib/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <loc>https://AwesomeTrading.github.io/lettrade/indicator/install/</loc>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/indicator/talib/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/indicator/technical/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/install/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/install/metatrader/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/SUMMARY/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/all/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/bot/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/lettrade/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/account/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/account/account/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/base/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/base/error/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/base/flag/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/brain/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/brain/brain/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/calendar/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/calendar/calendar/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/commander/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/commander/commander/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/commander/telegram/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/data/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/feeder/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/replay/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/resample/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/timeframe/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/wrapper/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/extra/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/data/extra/csv/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/base/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/error/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/exchange/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/execute/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/order/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/position/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/trade/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/account/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/backtest/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/commander/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/data/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/exchange/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/feeder/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/trade/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/extra/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/backtest/extra/yfinance/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/account/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/api/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/data/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/exchange/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/feeder/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/live/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/trade/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/ccxt/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/ccxt/api/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/ccxt/ccxt/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/metatrader/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/metatrader/api/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/exchange/live/metatrader/metatrader/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/function/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/indicator/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/vendor/</loc>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/vendor/fastfinance/</loc>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/vendor/fastfinance/connector/</loc>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/vendor/fastfinance/fastfinance/</loc>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/vendor/qtpylib/</loc>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/vendor/qtpylib/inject/</loc>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/reference/indicator/vendor/qtpylib/qtpylib/</loc>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/plot/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/plot/color/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/plot/plot/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/plot/plotly/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/plot/plotly/helper/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/plot/plotly/indicator/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/plot/plotly/plotly/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/stats/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/stats/stats/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/strategy/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/strategy/strategy/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/utils/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/utils/docs/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/reference/utils/notebook/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/lettrade/tutorial/tut-001/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://AwesomeTrading.github.io/lettrade/tutorial/optimize/blackbox/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <loc>https://AwesomeTrading.github.io/lettrade/tutorial/metatrader/feeder/</loc>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://AwesomeTrading.github.io/lettrade/tutorial/optimize/hyperactive/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <loc>https://AwesomeTrading.github.io/lettrade/tutorial/optimize/1.hyperopt/</loc>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://AwesomeTrading.github.io/lettrade/tutorial/optimize/hyperopt/</loc>
-         <lastmod>2024-06-06</lastmod>
+         <loc>https://AwesomeTrading.github.io/lettrade/tutorial/optimize/2.blackbox/</loc>
+         <lastmod>2024-06-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/lettrade/tutorial/optimize/3.hyperactive/</loc>
+         <lastmod>2024-06-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

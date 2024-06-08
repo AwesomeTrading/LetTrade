@@ -11,4 +11,7 @@ def ema(
 ) -> pd.Series | np.ndarray:
     if isinstance(data, pd.DataFrame):
         data = data.close
-    return ff.ema(data.to_numpy(), period=period, smoothing=smoothing)
+    return pd.Series(
+        ff.ema(data.to_numpy(), period=period, smoothing=smoothing),
+        index=data.index,
+    )

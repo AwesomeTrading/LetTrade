@@ -1,1 +1,1 @@
-from .connect import *
+from .connector import *

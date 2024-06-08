@@ -16,16 +16,16 @@
 # limitations under the License.
 #
 
-import warnings
+# import warnings
 from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
 
-# =============================================
-warnings.simplefilter(action="ignore", category=RuntimeWarning)
+# # =============================================
+# warnings.simplefilter(action="ignore", category=RuntimeWarning)
 
-# =============================================
+# # =============================================
 
 
 def numpy_rolling_window(data, window):
@@ -60,9 +60,6 @@ def numpy_rolling_std(data, window, as_source=False):
     return np.std(numpy_rolling_window(data, window), axis=-1, ddof=1)
 
 
-# ---------------------------------------------
-
-
 def session(df, start="17:00", end="16:00"):
     """remove previous globex day from df"""
     if df.empty:
@@ -94,9 +91,6 @@ def session(df, start="17:00", end="16:00"):
     return df.copy()
 
 
-# ---------------------------------------------
-
-
 def heikinashi(bars):
     bars = bars.copy()
     bars["ha_close"] = (bars["open"] + bars["high"] + bars["low"] + bars["close"]) / 4
@@ -120,9 +114,6 @@ def heikinashi(bars):
             "close": bars["ha_close"],
         },
     )
-
-
-# ---------------------------------------------
 
 
 def tdi(
@@ -152,9 +143,6 @@ def tdi(
     )
 
 
-# ---------------------------------------------
-
-
 def awesome_oscillator(df, weighted=False, fast=5, slow=34):
     midprice = (df["high"] + df["low"]) / 2
 
@@ -166,16 +154,10 @@ def awesome_oscillator(df, weighted=False, fast=5, slow=34):
     return pd.Series(index=df.index, data=ao)
 
 
-# ---------------------------------------------
-
-
 def nans(length=1):
     mtx = np.empty(length)
     mtx[:] = np.nan
     return mtx
-
-
-# ---------------------------------------------
 
 
 def typical_price(bars):
@@ -183,24 +165,15 @@ def typical_price(bars):
     return pd.Series(index=bars.index, data=res)
 
 
-# ---------------------------------------------
-
-
 def mid_price(bars):
     res = (bars["high"] + bars["low"]) / 2.0
     return pd.Series(index=bars.index, data=res)
-
-
-# ---------------------------------------------
 
 
 def ibs(bars):
     """Internal bar strength"""
     res = np.round((bars["close"] - bars["low"]) / (bars["high"] - bars["low"]), 2)
     return pd.Series(index=bars.index, data=res)
-
-
-# ---------------------------------------------
 
 
 def true_range(bars):
@@ -213,9 +186,6 @@ def true_range(bars):
     ).max(axis=1)
 
 
-# ---------------------------------------------
-
-
 def atr(bars, window=14, exp=False):
     tr = true_range(bars)
 
@@ -225,9 +195,6 @@ def atr(bars, window=14, exp=False):
         res = rolling_mean(tr, window)
 
     return pd.Series(res)
-
-
-# ---------------------------------------------
 
 
 def crossed(series1, series2, direction=None):
@@ -257,9 +224,6 @@ def crossed_below(series1, series2):
     return crossed(series1, series2, "below")
 
 
-# ---------------------------------------------
-
-
 def rolling_std(series, window=200, min_periods=None):
     min_periods = window if min_periods is None else min_periods
     if min_periods == window and len(series) > window:
@@ -271,9 +235,6 @@ def rolling_std(series, window=200, min_periods=None):
             return (
                 pd.Series(series).rolling(window=window, min_periods=min_periods).std()
             )
-
-
-# ---------------------------------------------
 
 
 def rolling_mean(series, window=200, min_periods=None):
@@ -289,18 +250,12 @@ def rolling_mean(series, window=200, min_periods=None):
             )
 
 
-# ---------------------------------------------
-
-
 def rolling_min(series, window=14, min_periods=None):
     min_periods = window if min_periods is None else min_periods
     try:
         return series.rolling(window=window, min_periods=min_periods).min()
     except Exception as e:  # noqa: F841
         return pd.Series(series).rolling(window=window, min_periods=min_periods).min()
-
-
-# ---------------------------------------------
 
 
 def rolling_max(series, window=14, min_periods=None):
@@ -311,18 +266,12 @@ def rolling_max(series, window=14, min_periods=None):
         return pd.Series(series).rolling(window=window, min_periods=min_periods).max()
 
 
-# ---------------------------------------------
-
-
-def rolling_weighted_mean(series, window=200, min_periods=None):
+def rolling_weighted_mean(series: pd.Series, window=200, min_periods=None, **kwargs):
     min_periods = window if min_periods is None else min_periods
     try:
-        return series.ewm(span=window, min_periods=min_periods).mean()
+        return series.ewm(span=window, min_periods=min_periods, **kwargs).mean()
     except Exception as e:  # noqa: F841
-        return pd.ewma(series, span=window, min_periods=min_periods)
-
-
-# ---------------------------------------------
+        return pd.ewma(series, span=window, min_periods=min_periods, **kwargs)
 
 
 def hull_moving_average(series, window=200, min_periods=None):
@@ -333,28 +282,21 @@ def hull_moving_average(series, window=200, min_periods=None):
     return rolling_weighted_mean(ma, np.sqrt(window), min_periods)
 
 
-# ---------------------------------------------
-
-
 def sma(series, window=200, min_periods=None):
     return rolling_mean(series, window=window, min_periods=min_periods)
 
 
-# ---------------------------------------------
-
-
-def wma(series, window=200, min_periods=None):
-    return rolling_weighted_mean(series, window=window, min_periods=min_periods)
-
-
-# ---------------------------------------------
+def wma(series, window=200, min_periods=None, **kwargs):
+    return rolling_weighted_mean(
+        series,
+        window=window,
+        min_periods=min_periods,
+        **kwargs,
+    )
 
 
 def hma(series, window=200, min_periods=None):
     return hull_moving_average(series, window=window, min_periods=min_periods)
-
-
-# ---------------------------------------------
 
 
 def vwap(bars):
@@ -372,9 +314,6 @@ def vwap(bars):
 
     # return pd.Series(index=bars.index,
     #                  data=np.cumsum(volume * typical) / np.cumsum(volume))
-
-
-# ---------------------------------------------
 
 
 def rolling_vwap(bars, window=200, min_periods=None):
@@ -396,9 +335,6 @@ def rolling_vwap(bars, window=200, min_periods=None):
         .replace([np.inf, -np.inf], float("NaN"))
         .ffill()
     )
-
-
-# ---------------------------------------------
 
 
 def rsi(series, window=14):
@@ -434,9 +370,6 @@ def rsi(series, window=14):
     return pd.Series(index=series.index, data=rsival)
 
 
-# ---------------------------------------------
-
-
 def macd(series, fast=3, slow=10, smooth=16):
     """
     compute the MACD (Moving Average Convergence/Divergence)
@@ -459,9 +392,6 @@ def macd(series, fast=3, slow=10, smooth=16):
     )
 
 
-# ---------------------------------------------
-
-
 def bollinger_bands(series, window=20, stds=2):
     ma = rolling_mean(series, window=window, min_periods=1)
     std = rolling_std(series, window=window, min_periods=1)
@@ -471,9 +401,6 @@ def bollinger_bands(series, window=20, stds=2):
     return pd.DataFrame(
         index=series.index, data={"upper": upper, "mid": ma, "lower": lower}
     )
-
-
-# ---------------------------------------------
 
 
 def weighted_bollinger_bands(series, window=20, stds=2):
@@ -488,9 +415,6 @@ def weighted_bollinger_bands(series, window=20, stds=2):
     )
 
 
-# ---------------------------------------------
-
-
 def returns(series):
     try:
         res = (series / series.shift(1) - 1).replace([np.inf, -np.inf], float("NaN"))
@@ -500,9 +424,6 @@ def returns(series):
     return pd.Series(index=series.index, data=res)
 
 
-# ---------------------------------------------
-
-
 def log_returns(series):
     try:
         res = np.log(series / series.shift(1)).replace([np.inf, -np.inf], float("NaN"))
@@ -510,9 +431,6 @@ def log_returns(series):
         res = nans(len(series))
 
     return pd.Series(index=series.index, data=res)
-
-
-# ---------------------------------------------
 
 
 def implied_volatility(series, window=252):
@@ -525,9 +443,6 @@ def implied_volatility(series, window=252):
         res = nans(len(series))
 
     return pd.Series(index=series.index, data=res)
-
-
-# ---------------------------------------------
 
 
 def keltner_channel(bars, window=14, atrs=2):
@@ -543,18 +458,12 @@ def keltner_channel(bars, window=14, atrs=2):
     )
 
 
-# ---------------------------------------------
-
-
 def roc(series, window=14):
     """
     compute rate of change
     """
     res = (series - series.shift(window)) / series.shift(window)
     return pd.Series(index=series.index, data=res)
-
-
-# ---------------------------------------------
 
 
 def cci(series, window=14):
@@ -565,9 +474,6 @@ def cci(series, window=14):
     typical_mean = rolling_mean(price, window)
     res = (price - typical_mean) / (0.015 * np.std(typical_mean))
     return pd.Series(index=series.index, data=res)
-
-
-# ---------------------------------------------
 
 
 def stoch(df, window=14, d=3, k=3, fast=False):
@@ -595,9 +501,6 @@ def stoch(df, window=14, d=3, k=3, fast=False):
     my_df["slow_d"] = my_df["slow_k"].rolling(d).mean()
 
     return my_df.loc[:, ["slow_k", "slow_d"]]
-
-
-# ---------------------------------------------
 
 
 def zlma(series, window=20, min_periods=None, kind="ema"):
@@ -628,17 +531,11 @@ def zlhma(series, window, min_periods=None):
     return zlma(series, window, min_periods, kind="hma")
 
 
-# ---------------------------------------------
-
-
 def zscore(bars, window=20, stds=1, col="close"):
     """get zscore of price"""
     std = numpy_rolling_std(bars[col], window)
     mean = numpy_rolling_mean(bars[col], window)
     return (bars[col] - mean) / (std * stds)
-
-
-# ---------------------------------------------
 
 
 def pvt(bars):
@@ -656,4 +553,6 @@ def chopiness(bars, window=14):
     return 100 * np.log10(atrsum / (highs - lows)) / np.log10(window)
 
 
-# =============================================
+# Mapping
+ema = wma
+zlwma = zlema

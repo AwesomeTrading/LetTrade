@@ -221,7 +221,7 @@ class LetTradeBackTest(LetTrade):
         self,
         datas: list[DataFeed],
         optimize: dict[str, object],
-        index: int,
+        index: int = 0,
         q: Optional[Queue] = None,
         # **kwargs,
     ):
@@ -248,15 +248,13 @@ class LetTradeBackTest(LetTrade):
     # Create optimize model environment
     def optimize_model(
         self,
-        params_parser: Callable[[Any], list[set[str, Any]]],
-        result_parser: Callable[[Statistic], float],
+        params_parser: Callable[[Any], list[set[str, Any]]] = None,
+        result_parser: Callable[[Statistic], float] = None,
         fork_data: bool = False,
-    ) -> float | Any:
+    ) -> Callable[[Any], Any]:
         """Optimize function help to integrated with external optimizer
 
         Args:
-            params_parser (Callable[[Any], list[set[str, Any]]]): Function help to parse external parameters to LetTrade optimize parameters. Example return: `[('ema_period', 21)]`
-            result_parser (Callable[[Statistic], float]): Function help to get/calculate `score` from LetTrade `Statistic` result
             fork_data (bool, optional): Flag to reset data everytime rerun optimize function. Defaults to False.
 
         Returns:
@@ -284,7 +282,7 @@ class LetTradeBackTest(LetTrade):
 
         return self._optimize_model
 
-    def _optimize_model(self, *args, **kwargs):
+    def _optimize_model(self, optimize: list[set[str, Any]], **kwargs):
         # Check data didn't reload by multiprocessing
         if self.data.l.pointer != 0:
             print(self.data.l.pointer, self.data.l)
@@ -299,15 +297,13 @@ class LetTradeBackTest(LetTrade):
 
         # Load optimize parameters
         if self._opt_params_parser:
-            optimize = self._opt_params_parser(*args, **kwargs)
-        else:
-            optimize = kwargs
+            optimize = self._opt_params_parser(optimize)
 
         # Run
         result = self._optimize_run(
             datas=datas,
             optimize=optimize,
-            index=0,
+            **kwargs,
         )
         if self._opt_result_parser:
             result = self._opt_result_parser(result)

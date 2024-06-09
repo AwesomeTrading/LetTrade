@@ -33,7 +33,7 @@ class SmaCross(Strategy):
         elif df.l.signal_ema_crossunder[-1]:
             self.sell(size=0.1)
 
-    # def end(self, df: DataFeed):
+    # def stop(self, df: DataFeed):
     #     print(df.tail(10))
 
     def plot(self, df: DataFeed):

@@ -21,7 +21,7 @@ def yf_download(tickers, path=None, force=False, interval="1d", *args, **kwargs)
 
     # Download
     df: pd.DataFrame = yf.download(tickers=tickers, interval=interval, *args, **kwargs)
-    logger.info("YFinance downloaded:\n%s", df)
+    logger.info("YFinance downloaded:\n%s\n%s", df.head(), df.tail())
 
     # Parse
     df = yf_parse(df)

@@ -6,12 +6,17 @@ from lettrade.exchange.backtest.extra.yfinance import yf_download
 
 
 def dump_csv():
+    start = "2023-01-01"
+    end = "2023-12-31"
+
+    path = f"example/data/data/EURUSD_1h_YF_{start}_{end}.csv"
+
     df = yf_download(
         "EURUSD=X",
-        start="2023-01-01",
-        end="2023-12-31",
+        start=start,
+        end=end,
         interval="1h",
-        path="example/data/data/EURUSD_1h.csv",
+        path=path,
         force=True,
     )
     print(df)

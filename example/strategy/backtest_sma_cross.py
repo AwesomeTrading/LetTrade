@@ -1,3 +1,5 @@
+import logging
+
 import talib.abstract as ta
 
 from example.logger import logging_filter_necessary_only

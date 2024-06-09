@@ -8,8 +8,8 @@ python-dotenv
 python-telegram-bot
 tqdm
 ccxt
+numba
 
-# conda install -c conda-forge ta-lib
 TA-Lib
 pandas-ta
 technical

@@ -19,4 +19,5 @@ def logging_filter_necessary_only():
     logging.getLogger("lettrade.exchange.backtest.commander").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.backtest.exchange").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.backtest.data").setLevel(logging.WARNING)
+    logging.getLogger("lettrade.exchange.order").setLevel(logging.WARNING)
     logging.getLogger("lettrade.bot").setLevel(logging.WARNING)

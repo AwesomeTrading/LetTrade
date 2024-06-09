@@ -185,6 +185,12 @@ class LetTrade:
 
     def plot(self, *args, jump: Optional[dict] = None, **kwargs):
         """Plot strategy result"""
+        if __debug__:
+            from .utils.docs import is_docs_session
+
+            if is_docs_session():
+                return
+
         self.plotter.plot(*args, jump=jump, **kwargs)
 
     # Bot kwargs properties

@@ -161,10 +161,7 @@ class LetTradeBot:
 
         if self._plotter_cls is not None:
             self.plotter = self._plotter_cls(
-                feeder=self.feeder,
-                exchange=self.exchange,
-                account=self.account,
-                strategy=self.strategy,
+                self,
                 **self._kwargs.get("plotter_kwargs", {}),
             )
 

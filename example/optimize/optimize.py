@@ -73,4 +73,4 @@ lt.optimize(
     ema2_period=range(20, 25),
     # worker=1,
 )
-# lt.plot()
+lt.plot()

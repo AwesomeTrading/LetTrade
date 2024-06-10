@@ -1,11 +1,12 @@
+from typing import Optional
+
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from lettrade.plot import Plotter
-from typing import Optional
+from lettrade.plot import BotPlotter
 
 
-class PlotlyPlotter(Plotter):
+class PlotlyBotPlotter(BotPlotter):
     """
     Class help to plot `lettrade`
     """

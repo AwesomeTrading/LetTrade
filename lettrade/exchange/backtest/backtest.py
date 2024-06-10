@@ -1,19 +1,16 @@
 import logging
 import os
-import queue
-import threading
-import time
 from concurrent.futures import Future, ProcessPoolExecutor
 from itertools import product, repeat
-from multiprocessing import Manager, Queue
-from multiprocessing.managers import SyncManager
-from typing import Any, Callable, Optional, Type
+from multiprocessing import Queue
+from typing import Any, Callable, Literal, Optional, Type
 
 import numpy as np
 import pandas as pd
 
 from lettrade import (
     Account,
+    BotPlotter,
     Commander,
     DataFeed,
     DataFeeder,
@@ -23,32 +20,34 @@ from lettrade import (
     Statistic,
     Strategy,
 )
-from lettrade.plot import Plotter
 
 from .account import BackTestAccount
 from .commander import BackTestCommander
 from .data import BackTestDataFeed, CSVBackTestDataFeed
 from .exchange import BackTestExchange
 from .feeder import BackTestDataFeeder
+from .plot import OptimizePlotter
 
 logger = logging.getLogger(__name__)
 
 
 def logging_filter_optimize():
+    logging.getLogger("lettrade.exchange.backtest.backtest").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.backtest.commander").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.backtest.exchange").setLevel(logging.WARNING)
+    logging.getLogger("lettrade.exchange.order").setLevel(logging.WARNING)
     logging.getLogger("lettrade.stats.stats").setLevel(logging.WARNING)
     logging.getLogger("lettrade.bot").setLevel(logging.WARNING)
 
 
 class LetTradeBackTestBot(LetTradeBot):
-
     def init(self, optimize=None, **kwargs):
         strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
         strategy_kwargs.update(is_optimize=optimize is not None)
 
         super().init()
 
+        # Optimize
         if not optimize:
             return
 
@@ -57,8 +56,19 @@ class LetTradeBackTestBot(LetTradeBot):
             attr, val = param
             setattr(self.strategy, attr, val)
 
+        # Plotter
+        self._plotter_cls = None
+
 
 class LetTradeBackTest(LetTrade):
+
+    @property
+    def _optimize_plotter_cls(self) -> Type["OptimizePlotter"]:
+        return self._kwargs.get("optimize_plotter_cls", None)
+
+    @_optimize_plotter_cls.setter
+    def _optimize_plotter_cls(self, value):
+        self._kwargs["optimize_plotter_cls"] = value
 
     def _datafeed(
         self,
@@ -82,25 +92,25 @@ class LetTradeBackTest(LetTrade):
 
     def start(self, force: bool = False):
         # Load plotly here just for backtest to improve performance
-        if self._plotter_cls == "PlotlyPlotter":
-            from lettrade.plot.plotly import PlotlyPlotter
+        if self._plotter_cls == "PlotlyBotPlotter":
+            from lettrade.plot.plotly import PlotlyBotPlotter
 
-            self._plotter_cls = PlotlyPlotter
+            self._plotter_cls = PlotlyBotPlotter
 
         return super().start(force)
 
     def run(self, worker: int | None = None, **kwargs):
         # Load plotly here just for backtest to improve performance
-        if self._plotter_cls == "PlotlyPlotter":
-            from lettrade.plot.plotly import PlotlyPlotter
+        if self._plotter_cls == "PlotlyBotPlotter":
+            from lettrade.plot.plotly import PlotlyBotPlotter
 
-            self._plotter_cls = PlotlyPlotter
+            self._plotter_cls = PlotlyBotPlotter
 
         return super().run(worker, **kwargs)
 
     def optimize(
         self,
-        multiprocessing: Optional[str] = "auto",
+        multiprocessing: Literal["auto", "fork"] = "auto",
         workers: Optional[int] = None,
         **kwargs,
     ):
@@ -117,6 +127,26 @@ class LetTradeBackTest(LetTrade):
 
         optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
 
+        self._optimize_init(total=len(optimizes))
+
+        # Queue to update process bar
+        queue = self._plotter.queue if self._plotter else None
+
+        # Run optimize in multiprocessing
+        self._optimizes_multiproccess(
+            optimizes=optimizes,
+            multiprocessing=multiprocessing,
+            queue=queue,
+            workers=workers,
+        )
+
+        # Process bar queue None mean Done
+        try:
+            queue.put(None)
+        except Exception:
+            pass
+
+    def _optimize_init(self, total: int):
         # Disable logging
         logging_filter_optimize()
 
@@ -124,37 +154,29 @@ class LetTradeBackTest(LetTrade):
         if self._commander_cls:
             self._commander_cls = None
 
-        # Disable Plotter
+        # Disable Bot Plotter
         if self._plotter_cls:
             self._plotter_cls = None
 
-        # Queue to update process bar
-        processbar_queue = _t_process_bar(size=len(optimizes))
+        # Enable Optimize plotter
+        if self._optimize_plotter_cls == "PlotlyOptimizePlotter":
+            from .plot.plotly import PlotlyOptimizePlotter
 
-        # Run optimize in multiprocessing
-        results = self._optimizes_multiproccess(
-            optimizes=optimizes,
-            multiprocessing=multiprocessing,
-            processbar_queue=processbar_queue,
-            workers=workers,
-        )
+            self._optimize_plotter_cls = PlotlyOptimizePlotter
 
-        # Process bar queue None mean Done
-        try:
-            processbar_queue.put(None)
-        except Exception:
-            pass
-
-        print("results", results)
+        if self._optimize_plotter_cls is not None:
+            self._plotter = self._optimize_plotter_cls(
+                total=total,
+                **self._kwargs.get("optimize_plotter_kwargs", {}),
+            )
 
     def _optimizes_multiproccess(
         self,
         optimizes: list[set],
-        multiprocessing: str,
-        processbar_queue: Queue,
+        multiprocessing: Literal["auto", "fork"],
+        queue: Queue,
         workers: Optional[int] = None,
     ):
-        results = []
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
         # a pool of processes to compute results in parallel.
         # Otherwise (i.e. on Windows), sequential computation will be "faster".
@@ -173,17 +195,17 @@ class LetTradeBackTest(LetTrade):
                 index = 0
                 for optimizes in optimizes_batches:
                     future = executor.submit(
-                        self._optimizes_run,
+                        self.__class__._optimizes_run,
                         optimizes=optimizes,
                         index=index,
-                        q=processbar_queue,
+                        queue=queue,
+                        **self._kwargs,
                     )
                     futures.append(future)
                     index += len(optimizes)
 
                 for future in futures:
-                    result = future.result()
-                    results.extend(result)
+                    future.result()
         else:
             if os.name == "posix":
                 logger.warning(
@@ -191,66 +213,20 @@ class LetTradeBackTest(LetTrade):
                     "set multiprocessing='fork'."
                 )
 
-            result = self._optimizes_run(
+            self.__class__._optimizes_run(
                 optimizes=optimizes,
-                multiprocess=None,
-                q=processbar_queue,
+                queue=queue,
+                **self._kwargs,
             )
-            results.extend(result)
-        return results
-
-    def _optimizes_run(
-        self,
-        optimizes: list[dict],
-        index: int = 0,
-        **kwargs,
-    ):
-        results = []
-        for i, optimize in enumerate(optimizes):
-            result = self._optimize_run(
-                datas=[d.copy(deep=True) for d in self.datas],
-                optimize=optimize,
-                index=index + i,
-                **kwargs,
-            )
-            if result is not None:
-                results.append(result)
-        return results
-
-    def _optimize_run(
-        self,
-        datas: list[DataFeed],
-        optimize: dict[str, object],
-        index: int = 0,
-        q: Optional[Queue] = None,
-        # **kwargs,
-    ):
-        try:
-            kwargs = self._kwargs.copy()
-            if datas:
-                kwargs["datas"] = datas
-
-            bot = self._bot_cls.run_bot(
-                optimize=optimize,
-                id=index,
-                init_kwargs=dict(optimize=optimize),
-                result="bot",
-                **kwargs,
-            )
-
-            if q is not None:
-                q.put(index)
-            return bot.stats.result
-        except Exception as e:
-            logger.error("Optimize %d", index, exc_info=e)
-            raise e
 
     # Create optimize model environment
+    # TODO: Move to classmethod to skip copy Self across multiprocessing
     def optimize_model(
         self,
         params_parser: Callable[[Any], list[set[str, Any]]] = None,
         result_parser: Callable[[Statistic], float] = None,
         fork_data: bool = False,
+        total: int = 0,
     ) -> Callable[[Any], Any]:
         """Optimize function help to integrated with external optimizer
 
@@ -265,24 +241,27 @@ class LetTradeBackTest(LetTrade):
                 "Optimize datas is not clean, don't run() backtest before optimize()"
             )
 
+        # Optimize parameters
         self._opt_params_parser = params_parser
         self._opt_result_parser = result_parser
         self._opt_fork_data = fork_data
 
-        # Disable logging
-        logging_filter_optimize()
-
-        # Disable commander
-        if self._commander_cls:
-            self._commander_cls = None
-
-        # Disable Plotter
-        if self._plotter_cls:
-            self._plotter_cls = None
+        self._optimize_init(total)
 
         return self._optimize_model
 
     def _optimize_model(self, optimize: list[set[str, Any]], **kwargs):
+        """Model to run bot in singleprocessing or multiprocessing
+
+        Args:
+            optimize (list[set[str, Any]]): _description_
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            _type_: _description_
+        """
         # Check data didn't reload by multiprocessing
         if self.data.l.pointer != 0:
             print(self.data.l.pointer, self.data.l)
@@ -300,15 +279,75 @@ class LetTradeBackTest(LetTrade):
             optimize = self._opt_params_parser(optimize)
 
         # Run
-        result = self._optimize_run(
+        result = self.__class__._optimize_run(
             datas=datas,
             optimize=optimize,
-            **kwargs,
+            bot_cls=self._bot_cls,
+            **self._kwargs,
         )
         if self._opt_result_parser:
             result = self._opt_result_parser(result)
 
         return result
+
+    @classmethod
+    def _optimizes_run(
+        cls,
+        datas: list[DataFeed],
+        optimizes: list[dict],
+        index: int = 0,
+        **kwargs,
+    ):
+        """Run optimize in class method to not copy whole LetTradeBackTest self object
+
+        Args:
+            datas (list[DataFeed]): _description_
+            optimizes (list[dict]): _description_
+            index (int, optional): _description_. Defaults to 0.
+
+        Returns:
+            _type_: _description_
+        """
+        results = []
+        for i, optimize in enumerate(optimizes):
+            result = cls._optimize_run(
+                datas=[d.copy(deep=True) for d in datas],
+                optimize=optimize,
+                index=index + i,
+                **kwargs,
+            )
+            if result is not None:
+                results.append(result)
+        return results
+
+    @classmethod
+    def _optimize_run(
+        cls,
+        datas: list[DataFeed],
+        optimize: dict[str, object],
+        bot_cls: Type[LetTradeBot],
+        index: int = 0,
+        queue: Optional[Queue] = None,
+        **kwargs,
+    ):
+        try:
+            if datas:
+                kwargs["datas"] = datas
+
+            bot = bot_cls.run_bot(
+                optimize=optimize,
+                id=index,
+                init_kwargs=dict(optimize=optimize),
+                result="bot",
+                **kwargs,
+            )
+
+            if queue is not None:
+                queue.put((index, optimize, bot.stats.result))
+            return bot.stats.result
+        except Exception as e:
+            logger.error("Optimize %d", index, exc_info=e)
+            raise e
 
 
 def let_backtest(
@@ -318,8 +357,9 @@ def let_backtest(
     exchange: Type[Exchange] = BackTestExchange,
     account: Type[Account] = BackTestAccount,
     commander: Optional[Type[Commander]] = BackTestCommander,
-    plotter: Optional[Type[Plotter]] = "PlotlyPlotter",
     stats: Optional[Type[Statistic]] = Statistic,
+    plotter: Optional[Type[BotPlotter]] = "PlotlyBotPlotter",
+    optimize_plotter: Optional[Type[OptimizePlotter]] = "PlotlyOptimizePlotter",
     cash: Optional[float] = 1_000,
     commission: Optional[float] = 0.2,
     leverage: Optional[float] = 20,
@@ -335,7 +375,7 @@ def let_backtest(
         exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
         account (Type[Account], optional): _description_. Defaults to BackTestAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
-        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyPlotter.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyBotPlotter.
 
     Raises:
         RuntimeError: The validate parameter error
@@ -357,56 +397,13 @@ def let_backtest(
         exchange=exchange,
         commander=commander,
         account=account,
-        plotter=plotter,
         stats=stats,
+        plotter=plotter,
         bot=bot,
+        # Backtest
+        optimize_plotter_cls=optimize_plotter,
         **kwargs,
     )
-
-
-# Process bar handler
-def _t_process_bar(size):
-    # queue = Queue(maxsize=1_000)
-    manager = Manager()
-    q = manager.Queue(maxsize=1_000)
-    t = threading.Thread(
-        target=_process_bar,
-        kwargs=dict(
-            size=size,
-            q=q,
-            manager=manager,
-        ),
-    )
-    t.start()
-    return q
-
-
-def _process_bar(size: int, q: Queue, manager: SyncManager):
-    from tqdm import tqdm
-
-    pbar = tqdm(total=size)
-    while True:
-        try:
-            index = q.get(timeout=3)
-        except queue.Empty:
-            # TODO: check closed main class then exit
-            continue
-
-        # Done
-        if index is None:
-            break
-
-        pbar.update(1)
-
-        # Done
-        if pbar.n == pbar.total:
-            break
-
-    pbar.close()
-
-    time.sleep(1)  # Wait for return finish
-
-    manager.shutdown()
 
 
 def _batch(seq, workers=None):

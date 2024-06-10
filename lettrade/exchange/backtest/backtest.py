@@ -119,6 +119,7 @@ class LetTradeBackTest(LetTrade):
         self,
         multiprocessing: Literal["auto", "fork"] = "auto",
         workers: Optional[int] = None,
+        process_bar: bool = True,
         **kwargs,
     ):
         """Backtest optimization
@@ -134,7 +135,7 @@ class LetTradeBackTest(LetTrade):
 
         optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
 
-        self._optimize_init(total=len(optimizes))
+        self._optimize_init(total=len(optimizes), process_bar=process_bar)
 
         queue = self._optimize_stats.queue
 
@@ -152,7 +153,7 @@ class LetTradeBackTest(LetTrade):
         except Exception:
             pass
 
-    def _optimize_init(self, total: int):
+    def _optimize_init(self, total: int, process_bar: bool):
         # Disable logging
         logging_filter_optimize()
 
@@ -173,6 +174,7 @@ class LetTradeBackTest(LetTrade):
         if self._optimize_plotter_cls is not None:
             self._plotter = self._optimize_plotter_cls(
                 total=total,
+                process_bar=process_bar,
                 **self._kwargs.get("optimize_plotter_kwargs", {}),
             )
 
@@ -238,8 +240,8 @@ class LetTradeBackTest(LetTrade):
         self,
         params_parser: Callable[[Any], list[set[str, Any]]] = None,
         result_parser: Callable[[BotStatistic], float] = None,
-        fork_data: bool = False,
         total: int = 0,
+        process_bar: bool = False,
     ) -> Callable[[Any], Any]:
         """Optimize function help to integrated with external optimizer
 
@@ -254,12 +256,13 @@ class LetTradeBackTest(LetTrade):
                 "Optimize datas is not clean, don't run() backtest before optimize()"
             )
 
-        self._optimize_init(total)
+        self._optimize_init(total, process_bar=process_bar)
 
         # Optimize parameters
+        self.__class__._opt_main_pid = os.getpid()
         self.__class__._opt_params_parser = params_parser
         self.__class__._opt_result_parser = result_parser
-        self.__class__._kwargs = self._kwargs
+        self.__class__._opt_kwargs = self._kwargs
 
         return self.__class__._optimize_model
 
@@ -276,14 +279,22 @@ class LetTradeBackTest(LetTrade):
         Returns:
             _type_: _description_
         """
+        # If models run in singleprocessing, copy kwargs for bot to not overrite main kwargs
+        if os.getpid() == cls._opt_main_pid:
+            opt_kwargs = cls._opt_kwargs.copy()
+        else:
+            opt_kwargs = cls._opt_kwargs
+
         # Check data didn't reload by multiprocessing
-        if cls.data.l.pointer != 0:
-            print(cls.data.l.pointer, cls.data.l)
+        datas = opt_kwargs.pop("datas")
+        data = datas[0]
+        if data.l.pointer != 0:
+            print(data.l.pointer, data.l)
             raise RuntimeError(
                 "Optimize model data changed, set fork_data=True to reload"
             )
 
-        datas = [d.copy(deep=True) for d in cls.datas]
+        datas = [d.copy(deep=True) for d in datas]
 
         # Load optimize parameters
         if cls._opt_params_parser:
@@ -293,7 +304,7 @@ class LetTradeBackTest(LetTrade):
         result = cls._optimize_run(
             datas=datas,
             optimize=optimize,
-            **cls._opt_kwargs,
+            **opt_kwargs,
         )
         if cls._opt_result_parser:
             result = cls._opt_result_parser(result)

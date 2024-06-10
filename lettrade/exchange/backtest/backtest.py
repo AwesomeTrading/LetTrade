@@ -42,7 +42,7 @@ def logging_filter_optimize():
 
 
 class LetTradeBackTestBot(LetTradeBot):
-    def init(self, optimize=None, **kwargs):
+    def init(self, optimize: dict[str, Any] = None, **kwargs):
         strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
         strategy_kwargs.update(is_optimize=optimize is not None)
 
@@ -53,9 +53,8 @@ class LetTradeBackTestBot(LetTradeBot):
             return
 
         # Set optimize params
-        for param in optimize:
-            attr, val = param
-            setattr(self.strategy, attr, val)
+        for attr, value in optimize.items():
+            setattr(self.strategy, attr, value)
 
         # Plotter
         self._plotter_cls = None
@@ -133,7 +132,10 @@ class LetTradeBackTest(LetTrade):
                 "Optimize datas is not clean, don't run() backtest before optimize()"
             )
 
-        optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
+        # optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
+        optimizes = list(
+            dict(zip(kwargs.keys(), values)) for values in product(*kwargs.values())
+        )
 
         self._optimize_init(total=len(optimizes), process_bar=process_bar)
 
@@ -147,7 +149,7 @@ class LetTradeBackTest(LetTrade):
             workers=workers,
         )
 
-        # Process bar queue None mean Done
+        # queue None mean Done
         try:
             queue.put(None)
         except Exception:
@@ -267,7 +269,7 @@ class LetTradeBackTest(LetTrade):
         return self.__class__._optimize_model
 
     @classmethod
-    def _optimize_model(cls, optimize: list[set[str, Any]], **kwargs):
+    def _optimize_model(cls, optimize: dict[str, Any], **kwargs):
         """Model to run bot in singleprocessing or multiprocessing
 
         Args:
@@ -315,7 +317,7 @@ class LetTradeBackTest(LetTrade):
     def _optimizes_run(
         cls,
         datas: list[DataFeed],
-        optimizes: list[dict],
+        optimizes: list[dict[str, Any]],
         index: int = 0,
         **kwargs,
     ):
@@ -345,7 +347,7 @@ class LetTradeBackTest(LetTrade):
     def _optimize_run(
         cls,
         datas: list[DataFeed],
-        optimize: dict[str, object],
+        optimize: dict[str, Any],
         bot_cls: Type[LetTradeBot],
         index: int = 0,
         queue: Optional[Queue] = None,

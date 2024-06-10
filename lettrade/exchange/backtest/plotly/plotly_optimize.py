@@ -47,3 +47,6 @@ class PlotlyOptimizePlotter(OptimizePlotter):
 
     def stop(self):
         raise NotImplementedError
+
+    def heatmap(self, x: str, y: str, z: str):
+        pass

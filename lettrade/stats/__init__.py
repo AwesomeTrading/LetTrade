@@ -1,1 +1,1 @@
-from .stats import Statistic
+from .stats import BotStatistic

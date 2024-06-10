@@ -8,7 +8,7 @@ from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
 from lettrade.plot import Plotter
-from lettrade.stats import Statistic
+from lettrade.stats import BotStatistic
 from lettrade.strategy import Strategy
 
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class LetTrade:
 
     _plotter: Plotter = None
     """Plot graphic results"""
-    _stats: Statistic = None
+    _stats: BotStatistic = None
     _bot: LetTradeBot = None
 
     _kwargs: dict
@@ -33,7 +33,7 @@ class LetTrade:
         account: Type[Account],
         commander: Optional[Type[Commander]] = None,
         plotter: Optional[Type[Plotter]] = None,
-        stats: Optional[Type[Statistic]] = None,
+        stats: Optional[Type[BotStatistic]] = None,
         name: Optional[str] = None,
         bot: Optional[Type[LetTradeBot]] = LetTradeBot,
         **kwargs,
@@ -168,7 +168,7 @@ class LetTrade:
             return self._bot.stop()
 
     @property
-    def stats(self) -> Statistic:
+    def stats(self) -> BotStatistic:
         if self._stats:
             return self._stats
         if self._bot is not None:
@@ -223,7 +223,7 @@ class LetTrade:
         self._kwargs["commander_cls"] = value
 
     @property
-    def _stats_cls(self) -> Type[Statistic]:
+    def _stats_cls(self) -> Type[BotStatistic]:
         return self._kwargs.get("stats_cls", None)
 
     # @_stats_cls.setter

@@ -35,7 +35,7 @@ from telegram.ext import (
 )
 from telegram.helpers import escape_markdown
 
-from lettrade.stats import Statistic
+from lettrade.stats import BotStatistic
 
 from .commander import Commander
 
@@ -541,6 +541,6 @@ class TelegramCommander(Commander):
                 time.sleep(5)
 
     def _on_action_stats(self):
-        stats: Statistic = self.lettrade.stats
+        stats: BotStatistic = self.lettrade.stats
         stats.compute()
         self._api.on_stats(stats=stats.result.to_string(), pname=self._name)

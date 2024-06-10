@@ -1,7 +1,7 @@
 # import logging
 from typing import Optional, Type
 
-from lettrade import Commander, Plotter, Statistic
+from lettrade import BotStatistic, Commander, Plotter
 from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -100,7 +100,7 @@ def let_ccxt(
     account: Type[CCXTAccount] = CCXTAccount,
     commander: Optional[Type[Commander]] = None,
     plotter: Optional[Type[Plotter]] = None,
-    stats: Optional[Type[Statistic]] = Statistic,
+    stats: Optional[Type[BotStatistic]] = BotStatistic,
     lettrade: Optional[Type[LetTradeCCXT]] = LetTradeCCXT,
     bot: Optional[Type[LetTradeCCXTBot]] = LetTradeCCXTBot,
     api: Optional[Type[CCXTAPI]] = CCXTAPI,
@@ -119,7 +119,7 @@ def let_ccxt(
         account (Type[CCXTAccount], optional): _description_. Defaults to CCXTAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
         plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
-        stats (Optional[Type[Statistic]], optional): _description_. Defaults to Statistic.
+        stats (Optional[Type[BotStatistic]], optional): _description_. Defaults to BotStatistic.
         lettrade (Optional[Type[LetTradeCCXT]], optional): _description_. Defaults to LetTradeCCXT.
         bot (Optional[Type[LetTradeCCXTBot]], optional): _description_. Defaults to LetTradeCCXTBot.
         api (Optional[Type[CCXTAPI]], optional): _description_. Defaults to CCXTAPI.

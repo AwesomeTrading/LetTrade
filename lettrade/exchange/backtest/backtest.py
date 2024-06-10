@@ -11,13 +11,13 @@ import pandas as pd
 from lettrade import (
     Account,
     BotPlotter,
+    BotStatistic,
     Commander,
     DataFeed,
     DataFeeder,
     Exchange,
     LetTrade,
     LetTradeBot,
-    Statistic,
     Strategy,
 )
 
@@ -224,7 +224,7 @@ class LetTradeBackTest(LetTrade):
     def optimize_model(
         self,
         params_parser: Callable[[Any], list[set[str, Any]]] = None,
-        result_parser: Callable[[Statistic], float] = None,
+        result_parser: Callable[[BotStatistic], float] = None,
         fork_data: bool = False,
         total: int = 0,
     ) -> Callable[[Any], Any]:
@@ -357,7 +357,7 @@ def let_backtest(
     exchange: Type[Exchange] = BackTestExchange,
     account: Type[Account] = BackTestAccount,
     commander: Optional[Type[Commander]] = BackTestCommander,
-    stats: Optional[Type[Statistic]] = Statistic,
+    stats: Optional[Type[BotStatistic]] = BotStatistic,
     plotter: Optional[Type[BotPlotter]] = "PlotlyBotPlotter",
     optimize_plotter: Optional[Type[OptimizePlotter]] = "PlotlyOptimizePlotter",
     cash: Optional[float] = 1_000,

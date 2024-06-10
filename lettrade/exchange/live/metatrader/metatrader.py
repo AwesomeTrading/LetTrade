@@ -1,7 +1,7 @@
 # import logging
 from typing import Optional, Type
 
-from lettrade import Commander, Plotter, Statistic
+from lettrade import BotStatistic, Commander, Plotter
 from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -130,7 +130,7 @@ def let_metatrader(
     account: Type[MetaTraderAccount] = MetaTraderAccount,
     commander: Optional[Type[Commander]] = None,
     plotter: Optional[Type[Plotter]] = None,
-    stats: Optional[Type[Statistic]] = Statistic,
+    stats: Optional[Type[BotStatistic]] = BotStatistic,
     bot: Optional[Type[LetTradeMetaTraderBot]] = LetTradeMetaTraderBot,
     lettrade: Optional[Type[LetTradeMetaTrader]] = LetTradeMetaTrader,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
@@ -150,7 +150,7 @@ def let_metatrader(
         account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
         plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
-        stats (Optional[Type[Statistic]], optional): _description_. Defaults to Statistic.
+        stats (Optional[Type[BotStatistic]], optional): _description_. Defaults to BotStatistic.
         bot (Optional[Type[LetTradeMetaTraderBot]], optional): _description_. Defaults to LetTradeMetaTraderBot.
         lettrade (Optional[Type[LetTradeMetaTrader]], optional): _description_. Defaults to LetTradeMetaTrader.
         api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.

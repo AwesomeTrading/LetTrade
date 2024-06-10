@@ -11,7 +11,7 @@ from lettrade.strategy import Strategy
 logger = logging.getLogger(__name__)
 
 
-class Statistic:
+class BotStatistic:
     """
     Compute strategy result
     """

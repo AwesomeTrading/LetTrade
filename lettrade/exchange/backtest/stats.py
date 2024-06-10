@@ -1,6 +1,7 @@
 import logging
 import queue
 import threading
+import time
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import SyncManager
 
@@ -70,6 +71,8 @@ class OptimizeStatistic:
     def done(self):
         if self.plotter:
             self.plotter.on_done(self.results)
+
+        time.sleep(1)  # Wait for return finish
         self._manager.shutdown()
 
         print("Stats done", self.results)

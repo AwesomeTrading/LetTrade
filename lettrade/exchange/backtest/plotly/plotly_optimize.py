@@ -1,5 +1,3 @@
-import time
-
 import pandas as pd
 import plotly.graph_objects as go
 from plotly import express as px
@@ -29,7 +27,6 @@ class PlotlyOptimizePlotter(OptimizePlotter):
     def on_done(self, results):
         self._results = results
 
-        time.sleep(1)  # Wait for return finish
         if self._process_bar is not None:
             self._process_bar.close()
 

@@ -7,7 +7,7 @@ from multiprocessing.managers import SyncManager
 
 import pandas as pd
 
-from .plot import OptimizePlotter
+from lettrade.plot import OptimizePlotter
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +29,9 @@ class OptimizeStatistic:
         self.plotter = plotter
         self.results = []
         self._total = total
+
+        if self.plotter is not None:
+            self.plotter.init(self.results)
 
         self._t_wait_done()
 
@@ -70,12 +73,10 @@ class OptimizeStatistic:
 
     def done(self):
         if self.plotter:
-            self.plotter.on_done(self.results)
+            self.plotter.on_done()
 
         time.sleep(1)  # Wait for return finish
         self._manager.shutdown()
-
-        print("Stats done", self.results)
 
     def compute(self):
         """
@@ -84,50 +85,5 @@ class OptimizeStatistic:
 
         return self.result
 
-    def __repr__(self) -> str:
-        self.result = self.result.rename(
-            {
-                "strategy": "# Strategy",
-                "start": "Start",
-                "end": "End",
-                "duration": "Duration",
-                "start_balance": "Start Balance",
-                "equity": "Equity [$]",
-                "pl": "PL [$]",
-                "pl_percent": "PL [%]",
-                "buy_hold_pl_percent": "Buy & Hold PL [%]",
-                "max_drawdown_percent": "Max. Drawdown [%]",
-                "avg_drawdown_percent": "Avg. Drawdown [%]",
-                "max_drawdown_duration": "Max. Drawdown Duration",
-                "avg_drawdown_duration": "Avg. Drawdown Duration",
-                "trades": "# Trades",
-                "win_rate": "Win Rate [%]",
-                "fee": "Fee [$]",
-                "best_trade_percent": "Best Trade [%]",
-                "worst_trade_percent": "Worst Trade [%]",
-                "profit_factor": "Profit Factor",
-                "sqn": "SQN",
-            }
-        )
-        return str(self.result.to_string())
-
-    def show(self):
-        """
-        Show statistic report
-        """
-        if "Start" not in self.result:
-            logger.warning("call compute() before show()")
-            self.compute()
-
-        # Show result inside docs session
-        if __debug__:
-            from lettrade.utils.docs import is_docs_session
-
-            if is_docs_session():
-                print(str(self))
-                return
-
-        logger.info(
-            "\n============= Statistic result =============\n%s\n",
-            str(self),
-        )
+    def stop(self):
+        self.done()

@@ -29,6 +29,9 @@ class BotStatistic:
         self.strategy: Strategy = strategy
         self.account: Account = strategy.account
 
+    def stop(self):
+        pass
+
     def compute(self):
         """
         Calculate strategy report

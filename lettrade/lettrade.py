@@ -7,7 +7,7 @@ from lettrade.bot import LetTradeBot
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
-from lettrade.plot import Plotter
+from lettrade.plot import BotPlotter, OptimizePlotter, Plotter
 from lettrade.stats import BotStatistic
 from lettrade.strategy import Strategy
 
@@ -166,6 +166,8 @@ class LetTrade:
         """Stop strategy"""
         if self._bot is not None:
             return self._bot.stop()
+        if self.stats:
+            self.stats.stop()
 
     @property
     def stats(self) -> BotStatistic:
@@ -176,7 +178,7 @@ class LetTrade:
 
     # Plotter
     @property
-    def plotter(self) -> Plotter:
+    def plotter(self) -> BotPlotter | OptimizePlotter:
         if self._plotter is not None:
             return self._plotter
         if self._bot is not None:

@@ -248,10 +248,16 @@ class LetTradeBackTest(LetTrade):
         """Optimize function help to integrated with external optimizer
 
         Args:
-            fork_data (bool, optional): Flag to reset data everytime rerun optimize function. Defaults to False.
+            params_parser (Callable[[Any], list[set[str, Any]]], optional): _description_. Defaults to None.
+            result_parser (Callable[[BotStatistic], float], optional): _description_. Defaults to None.
+            total (int, optional): _description_. Defaults to 0.
+            process_bar (bool, optional): _description_. Defaults to False.
+
+        Raises:
+            RuntimeError: _description_
 
         Returns:
-            float | Any: Return score and more for external optimizer
+            Callable[[Any], Any]: Optimize model function
         """
         if self.data.l.pointer != 0:
             raise RuntimeError(

@@ -8,10 +8,6 @@
 
 A lightweight trading framework compatible with Stock, Forex, Crypto... markets
 
-Inspired by `freqtrade`, `backtrader`, `backtesting.py`...
-
-Let make algo trading simple :)
-
 Find more at [**Documentation**](https://awesometrading.github.io/lettrade/)
 
 ## Installation
@@ -102,6 +98,7 @@ python -m example.data.yfinance
 ```bash
 python -m example.strategy.backtest_sma_cross
 ```
+
 ```text
 # Strategy                <class '__main__.SmaCross'>
 Start                       2023-01-02 00:00:00+00:00
@@ -140,6 +137,5 @@ Set up conda environment
 ```sh
 conda create -y -n LetTrade python=3.12
 conda activate LetTrade
-conda install -c conda-forge ta-lib
 pip install -r requirements-dev.txt
 ```

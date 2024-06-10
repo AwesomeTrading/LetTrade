@@ -27,6 +27,7 @@ from .data import BackTestDataFeed, CSVBackTestDataFeed
 from .exchange import BackTestExchange
 from .feeder import BackTestDataFeeder
 from .plot import OptimizePlotter
+from .stats import OptimizeStatistic
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +62,12 @@ class LetTradeBackTestBot(LetTradeBot):
 
 
 class LetTradeBackTest(LetTrade):
+
+    _optimize_stats: OptimizeStatistic = None
+
+    @property
+    def _optimize_stats_cls(self) -> Type["OptimizeStatistic"]:
+        return self._kwargs.get("optimize_stats_cls", None)
 
     @property
     def _optimize_plotter_cls(self) -> Type["OptimizePlotter"]:
@@ -129,8 +136,7 @@ class LetTradeBackTest(LetTrade):
 
         self._optimize_init(total=len(optimizes))
 
-        # Queue to update process bar
-        queue = self._plotter.queue if self._plotter else None
+        queue = self._optimize_stats.queue
 
         # Run optimize in multiprocessing
         self._optimizes_multiproccess(
@@ -160,7 +166,7 @@ class LetTradeBackTest(LetTrade):
 
         # Enable Optimize plotter
         if self._optimize_plotter_cls == "PlotlyOptimizePlotter":
-            from .plot.plotly import PlotlyOptimizePlotter
+            from .plotly import PlotlyOptimizePlotter
 
             self._optimize_plotter_cls = PlotlyOptimizePlotter
 
@@ -169,6 +175,13 @@ class LetTradeBackTest(LetTrade):
                 total=total,
                 **self._kwargs.get("optimize_plotter_kwargs", {}),
             )
+
+        # Enable Optimize stats
+        self._optimize_stats = self._optimize_stats_cls(
+            plotter=self._plotter,
+            total=total,
+            **self._kwargs.get("optimize_plotter_kwargs", {}),
+        )
 
     def _optimizes_multiproccess(
         self,
@@ -241,16 +254,17 @@ class LetTradeBackTest(LetTrade):
                 "Optimize datas is not clean, don't run() backtest before optimize()"
             )
 
-        # Optimize parameters
-        self._opt_params_parser = params_parser
-        self._opt_result_parser = result_parser
-        self._opt_fork_data = fork_data
-
         self._optimize_init(total)
 
-        return self._optimize_model
+        # Optimize parameters
+        self.__class__._opt_params_parser = params_parser
+        self.__class__._opt_result_parser = result_parser
+        self.__class__._kwargs = self._kwargs
 
-    def _optimize_model(self, optimize: list[set[str, Any]], **kwargs):
+        return self.__class__._optimize_model
+
+    @classmethod
+    def _optimize_model(cls, optimize: list[set[str, Any]], **kwargs):
         """Model to run bot in singleprocessing or multiprocessing
 
         Args:
@@ -263,30 +277,26 @@ class LetTradeBackTest(LetTrade):
             _type_: _description_
         """
         # Check data didn't reload by multiprocessing
-        if self.data.l.pointer != 0:
-            print(self.data.l.pointer, self.data.l)
+        if cls.data.l.pointer != 0:
+            print(cls.data.l.pointer, cls.data.l)
             raise RuntimeError(
                 "Optimize model data changed, set fork_data=True to reload"
             )
 
-        if self._opt_fork_data:
-            datas = [d.copy(deep=True) for d in self.datas]
-        else:
-            datas = None
+        datas = [d.copy(deep=True) for d in cls.datas]
 
         # Load optimize parameters
-        if self._opt_params_parser:
-            optimize = self._opt_params_parser(optimize)
+        if cls._opt_params_parser:
+            optimize = cls._opt_params_parser(optimize)
 
         # Run
-        result = self.__class__._optimize_run(
+        result = cls._optimize_run(
             datas=datas,
             optimize=optimize,
-            bot_cls=self._bot_cls,
-            **self._kwargs,
+            **cls._opt_kwargs,
         )
-        if self._opt_result_parser:
-            result = self._opt_result_parser(result)
+        if cls._opt_result_parser:
+            result = cls._opt_result_parser(result)
 
         return result
 
@@ -358,6 +368,7 @@ def let_backtest(
     account: Type[Account] = BackTestAccount,
     commander: Optional[Type[Commander]] = BackTestCommander,
     stats: Optional[Type[BotStatistic]] = BotStatistic,
+    optimize_stats: Optional[Type[OptimizeStatistic]] = OptimizeStatistic,
     plotter: Optional[Type[BotPlotter]] = "PlotlyBotPlotter",
     optimize_plotter: Optional[Type[OptimizePlotter]] = "PlotlyOptimizePlotter",
     cash: Optional[float] = 1_000,
@@ -401,6 +412,7 @@ def let_backtest(
         plotter=plotter,
         bot=bot,
         # Backtest
+        optimize_stats_cls=optimize_stats,
         optimize_plotter_cls=optimize_plotter,
         **kwargs,
     )

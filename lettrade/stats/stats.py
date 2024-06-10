@@ -89,7 +89,7 @@ class BotStatistic:
         return self.result
 
     def __repr__(self) -> str:
-        self.result = self.result.rename(
+        result = self.result.rename(
             {
                 "strategy": "# Strategy",
                 "start": "Start",
@@ -113,7 +113,7 @@ class BotStatistic:
                 "sqn": "SQN",
             }
         )
-        return str(self.result.to_string())
+        return str(result.to_string())
 
     def show(self):
         """
@@ -125,21 +125,13 @@ class BotStatistic:
 
         # Show result inside docs session
         if __debug__:
-            show = self._docs_show()
-            if show:
-                print(show)
-                return show
+            from lettrade.utils.docs import is_docs_session
+
+            if is_docs_session():
+                print(str(self))
+                return
 
         logger.info(
             "\n============= Statistic result =============\n%s\n",
             str(self),
         )
-
-    def _docs_show(self):
-        if __debug__:
-            from ..utils.docs import is_docs_session
-
-            if not is_docs_session():
-                return False
-
-            return str(self)

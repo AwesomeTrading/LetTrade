@@ -135,6 +135,13 @@ class LetTradeBot:
             **self._kwargs.get("stats_kwargs", {}),
         )
 
+        # Plotter
+        if self._plotter_cls:
+            self.plotter = self._plotter_cls(
+                self,
+                **self._kwargs.get("plotter_kwargs", {}),
+            )
+
         if __debug__:
             logger.info("Bot %s inited with %d datas", self._name, len(self.datas))
 
@@ -158,12 +165,6 @@ class LetTradeBot:
 
         if self._stats_cls:
             self.stats.compute()
-
-        if self._plotter_cls is not None:
-            self.plotter = self._plotter_cls(
-                self,
-                **self._kwargs.get("plotter_kwargs", {}),
-            )
 
     def plot(self, *args, **kwargs):
         """Plot strategy result"""

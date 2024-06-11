@@ -130,9 +130,6 @@ class LetTradeBackTestBot(LetTradeBot):
         for attr, value in optimize.items():
             setattr(self.strategy, attr, value)
 
-        # Plotter
-        self._plotter_cls = None
-
 
 class LetTradeBackTest(LetTrade):
 

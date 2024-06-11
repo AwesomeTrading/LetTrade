@@ -58,9 +58,7 @@ class BotPlotter(Plotter):
 
         # Reset
         if since is None:
-            self.datas = list(self._datas_stored.values())
-            self._jump_start_dt = None
-            self._jump_stop_dt = None
+            self.jump_reset()
         else:  # Jump to range
             if isinstance(since, str):
                 since = pd.to_datetime(since, utc=True)
@@ -91,3 +89,11 @@ class BotPlotter(Plotter):
                     )
 
         self.load()
+
+    def jump_reset(self):
+        if self._jump_start_dt is None:
+            return
+
+        self.datas = list(self._datas_stored.values())
+        self._jump_start_dt = None
+        self._jump_stop_dt = None

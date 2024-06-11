@@ -193,6 +193,7 @@ class PlotlyBotPlotter(BotPlotter):
         if jump is not None:
             self.jump(**jump)
         elif self.figure is None:
+            self.jump_reset()
             self.load()
 
         self._plot_equity()

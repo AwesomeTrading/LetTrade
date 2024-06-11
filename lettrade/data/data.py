@@ -75,12 +75,13 @@ class DataFeed(pd.DataFrame):
 
     # External
     def copy(self, deep: bool = False, **kwargs) -> "DataFeed":
-        df = super().copy(deep=deep, **kwargs)
+        df = super().copy(deep=deep)
         df = self.__class__(
             data=df,
             name=self.name,
             timeframe=self.timeframe,
             meta=self.meta.copy(),
+            **kwargs,
         )
         return df
 

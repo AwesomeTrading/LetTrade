@@ -33,6 +33,7 @@ class LiveDataFeed(DataFeed):
         if api is not None:
             self._api = api
 
+    # Properties
     @property
     def symbol(self) -> str:
         return self.meta["symbol"]
@@ -44,6 +45,10 @@ class LiveDataFeed(DataFeed):
     @_api.setter
     def _api(self, value) -> LiveAPI:
         object.__setattr__(self, "__api", value)
+
+    # Functions
+    def copy(self, deep: bool = False, **kwargs) -> DataFeed:
+        return super().copy(deep, symbol=self.symbol, **kwargs)
 
     def next(self, size=1, tick=0) -> bool:
         self.bars_load(since=0, to=size + 1)

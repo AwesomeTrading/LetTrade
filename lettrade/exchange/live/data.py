@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Optional, Type
 
 import pandas as pd
-
 from lettrade.data import DataFeed
 
 from .api import LiveAPI
@@ -112,13 +111,7 @@ class LiveDataFeed(DataFeed):
             if isinstance(to, str):
                 to = pd.to_datetime(to).to_pydatetime()
 
-            rates = self._api.bars(
-                symbol=self.symbol,
-                timeframe=self.timeframe.string,
-                since=since,
-                to=to,
-            )
-            self.on_rates(rates)
+            self.bars_load(since=since, to=to)
 
         if path is None:
             path = f"data/{self.name}-{since}_{to}.csv"

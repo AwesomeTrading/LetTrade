@@ -14,7 +14,24 @@ class BackTestOrder(Order):
 
     trade: "BackTestTrade"
 
+    def update(self, limit_price=None, stop_price=None, sl=None, tp=None, **kwargs):
+        # TODO: validate parameters
+        if limit_price is not None:
+            self.limit_price = limit_price
+        if stop_price is not None:
+            self.stop_price = stop_price
+
+        if sl is not None:
+            self.sl_price = sl
+        if tp is not None:
+            self.tp_price = tp
+
+        self.exchange.on_order(self)
+
     def cancel(self):
+        self._on_cancel()
+
+    def _on_cancel(self):
         """Cancel the Order and notify Exchange"""
         if self.state is not OrderState.Placed:
             return
@@ -28,7 +45,7 @@ class BackTestOrder(Order):
 
         self.exchange.on_order(self)
 
-    def execute(self, price: float, at: object) -> BackTestExecute:
+    def _on_execute(self, price: float, at: object) -> BackTestExecute:
         """Execute order and notify for Exchange
 
         Args:
@@ -45,27 +62,24 @@ class BackTestOrder(Order):
             raise RuntimeError(f"Execute a {self.state} order")
 
         # Order
-        super().execute(price=price, at=at)
+        super()._on_execute(price=price, at=at)
 
         # Execute
-        execute: BackTestExecute = self.build_execute(price=price, at=at)
-        execute.execute()
+        execute = self._build_execute(price=price, at=at)
+        execute._on_execute()
 
         # Trade hit SL/TP
         if self.trade:
-            self.trade.exit(price=price, at=at, caller=self)
+            self.trade._on_exit(price=price, at=at, caller=self)
         else:
             # Trade: Place and create new trade
-            trade = self.build_trade()
-            if self.sl_price:
-                trade._new_sl_order()
-            if self.tp_price:
-                trade._new_tp_order()
-            trade.entry(price=price, at=at)
+            trade = self._build_trade()
+
+            trade._on_entry(price=price, at=at)
 
         return execute
 
-    def build_execute(
+    def _build_execute(
         self,
         price: float,
         at: object,
@@ -91,7 +105,7 @@ class BackTestOrder(Order):
             order=self,
         )
 
-    def build_trade(
+    def _build_trade(
         self,
         size: Optional[float] = None,
         state: TradeState = TradeState.Open,
@@ -113,6 +127,10 @@ class BackTestOrder(Order):
             state=state,
             parent=self,
         )
+        if self.sl_price:
+            trade._new_sl_order(stop_price=self.sl_price)
+        if self.tp_price:
+            trade._new_tp_order(limit_price=self.tp_price)
         self.trade = trade
         return trade
 
@@ -120,12 +138,39 @@ class BackTestOrder(Order):
 class BackTestTrade(Trade):
     """Trade for backtesting"""
 
-    def entry(self, price: float, at: object) -> bool:
+    def update(self, sl=None, tp=None, **kwargs):
+        if sl is not None:
+            if self.sl_order:
+                self.sl_order.update(stop_price=sl)
+            else:
+                self._new_sl_order(stop_price=sl)
+
+        if tp is not None:
+            if self.tp_order:
+                self.tp_order.update(limit_price=tp)
+            else:
+                self._new_tp_order(limit_price=tp)
+
+        # Refresh trade
+        self.exchange.on_trade(self)
+
+    def exit(self):
+        self._on_exit(
+            price=self.data.l.open[0],
+            at=self.data.bar(),
+        )
+
+    def _on_entry(self, price: float, at: object) -> bool:
         # Fee
         fee = self._account.fee(size=self.size)
-        return super().entry(price, at, fee)
+        return super()._on_entry(price, at, fee)
 
-    def exit(self, price: float, at: object, caller: Optional[Order | Trade] = None):
+    def _on_exit(
+        self,
+        price: float,
+        at: object,
+        caller: Optional[Order | Trade] = None,
+    ):
         """Exit trade
 
         Args:
@@ -147,50 +192,52 @@ class BackTestTrade(Trade):
         fee = self._account.fee(size=self.size)
 
         # State
-        super().exit(price=price, at=at, pl=pl, fee=fee)
+        super()._on_exit(price=price, at=at, pl=pl, fee=fee)
 
         # Caller is trade close by tp/sl order
         if caller is None or (self.sl_order and self.sl_order is not caller):
-            self.sl_order.cancel()
+            self.sl_order._on_cancel()
         if caller is None or (self.tp_order and self.tp_order is not caller):
-            self.tp_order.cancel()
+            self.tp_order._on_cancel()
 
-    def _new_sl_order(self) -> BackTestOrder:
+    def _new_sl_order(self, stop_price: float) -> BackTestOrder:
+        # Validate
         if self.sl_order:
             raise RuntimeError(f"Trade {self.id} SL Order {self.sl_order} existed")
 
         sl_order = BackTestOrder(
             id=f"{self.id}-sl",
             exchange=self.exchange,
-            data=self.parent.data,
+            data=self.data,
             size=-self.size,
             type=OrderType.Stop,
-            stop_price=self.parent.sl_price,
-            tag=self.parent.tag,
+            stop_price=stop_price,
+            tag=self.tag,
             open_at=self.data.bar(),
-            open_price=self.parent.sl_price,
+            open_price=stop_price,
             trade=self,
         )
         self.sl_order = sl_order
-        sl_order.place()
+        sl_order._on_place()
         return sl_order
 
-    def _new_tp_order(self) -> BackTestOrder:
+    def _new_tp_order(self, limit_price: float) -> BackTestOrder:
+        # TODO: validate price
         if self.tp_order:
             raise RuntimeError(f"Trade {self.id} TP Order {self.tp_order} existed")
 
         tp_order = BackTestOrder(
             id=f"{self.id}-tp",
             exchange=self.exchange,
-            data=self.parent.data,
+            data=self.data,
             size=-self.size,
             type=OrderType.Limit,
-            limit_price=self.parent.tp_price,
-            tag=self.parent.tag,
+            limit_price=limit_price,
+            tag=self.tag,
             open_at=self.data.bar(),
-            open_price=self.parent.tp_price,
+            open_price=limit_price,
             trade=self,
         )
         self.tp_order = tp_order
-        tp_order.place()
+        tp_order._on_place()
         return tp_order

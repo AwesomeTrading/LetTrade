@@ -1,5 +1,6 @@
-from .base import BaseTransaction
 from typing import Optional
+
+from .base import BaseTransaction
 
 
 class Execute(BaseTransaction):
@@ -47,7 +48,7 @@ class Execute(BaseTransaction):
     def __repr__(self):
         return f"<Execute id={self.id} size={self.size}>"
 
-    def execute(self):
+    def _on_execute(self):
         self.exchange.on_execute(self)
 
     def merge(self, other: "Execute"):

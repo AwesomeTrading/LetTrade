@@ -84,7 +84,7 @@ class LiveExchange(Exchange):
             open_price=self.data.l.open[0],
             open_at=self.data.bar(),
         )
-        ok = order.place()
+        ok = order._place()
 
         if __debug__:
             logger.info("New order %s at %s", order, self.data.now)

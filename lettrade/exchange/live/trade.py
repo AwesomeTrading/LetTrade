@@ -118,7 +118,13 @@ class LiveOrder(Order):
 
         self.raw: dict = None
 
-    def place(self):
+    def update(self, sl=None, tp=None, **kwargs):
+        self._api.order_update(order=self, sl=sl, tp=tp, **kwargs)
+
+    def cancel(self, **kwargs):
+        self._api.order_close(order=self, **kwargs)
+
+    def _place(self):
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
@@ -136,7 +142,7 @@ class LiveOrder(Order):
             return error
 
         self.id = result.order
-        ok = super().place()
+        ok = super()._on_place()
         ok.raw = result
         return ok
 

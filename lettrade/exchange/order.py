@@ -103,7 +103,7 @@ class Order(BaseTransaction):
         else:
             raise LetTradeOrderValidateException(f"Order side {self.size} is invalid")
 
-    def place(self) -> "OrderResult":
+    def _on_place(self) -> "OrderResult":
         """Place `Order`
         Set `status` to `OrderState.Placed`.
         Send event to `Exchange`
@@ -124,7 +124,7 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def execute(self, price: float, at: pd.Timestamp) -> "OrderResult":
+    def _on_execute(self, price: float, at: pd.Timestamp) -> "OrderResult":
         """Execute `Order`.
         Set `status` to `OrderState.Executed`.
         Send event to `Exchange`
@@ -148,7 +148,7 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def cancel(self) -> "OrderResult":
+    def _on_cancel(self) -> "OrderResult":
         """Cancel `Order`
         Set `status` to `OrderState.Canceled`.
         Send event to `Exchange`
@@ -165,6 +165,14 @@ class Order(BaseTransaction):
         self.state = OrderState.Canceled
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
+
+    def update(self, sl=None, tp=None, **kwargs):
+        """"""
+        raise NotImplementedError
+
+    def cancel(self):
+        """"""
+        raise NotImplementedError
 
     def merge(self, other: "Order"):
         """Update current `Order` variables by other `Order`

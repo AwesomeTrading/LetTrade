@@ -60,11 +60,11 @@ class LiveAPI(ABC):
         """"""
 
     @abstractmethod
-    def order_update(self, **kwargs):
+    def order_update(self, order: "LiveOrder", sl=None, tp=None, **kwargs):
         """"""
 
     @abstractmethod
-    def order_close(self, **kwargs):
+    def order_close(self, order: "LiveOrder", **kwargs):
         """"""
 
     @abstractmethod
@@ -82,4 +82,8 @@ class LiveAPI(ABC):
 
     @abstractmethod
     def trades_get(self, **kwargs):
+        """"""
+
+    @abstractmethod
+    def trade_update(self, trade: "LiveTrade", sl=None, tp=None, **kwargs):
         """"""

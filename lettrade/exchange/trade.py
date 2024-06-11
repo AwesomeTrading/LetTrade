@@ -52,14 +52,18 @@ class Trade(BaseTransaction):
         self.tp_order: Optional[Order] = tp_order
 
     def __repr__(self):
-        return f"<Trade id={self.id} state={self.state} size={self.size}>"
-        # return (
-        #     f'<Trade id={self.id} size={self.size} time={self.entry_at}-{self.exit_at or ""} '
-        #     f'price={self.entry_price}-{self.exit_price or ""} pl={self.pl:.0f}'
-        #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
-        # )
+        return (
+            f"<Trade id={self.id} state={self.state} size={self.size} "
+            f"sl={self.sl} tp={self.tp}, pl={self.pl} tag='{self.tag}' >"
+        )
 
-    def entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:
+    # return (
+    #     f'<Trade id={self.id} size={self.size} time={self.entry_at}-{self.exit_at or ""} '
+    #     f'price={self.entry_price}-{self.exit_price or ""} pl={self.pl:.0f}'
+    #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
+    # )
+
+    def _on_entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:
         self.entry_price = price
         self.entry_at = at
         self.entry_fee = fee
@@ -67,7 +71,7 @@ class Trade(BaseTransaction):
         self.exchange.on_trade(self)
         return True
 
-    def exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
+    def _on_exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
         if self.state != TradeState.Open:
             return False
 
@@ -78,6 +82,14 @@ class Trade(BaseTransaction):
         self.state = TradeState.Exit
         self.exchange.on_trade(self)
         return True
+
+    def update(self, sl=None, tp=None, **kwargs):
+        """"""
+        raise NotImplementedError
+
+    def exit(self):
+        """"""
+        raise NotImplementedError
 
     def merge(self, other: "Trade"):
         if other is self:
@@ -105,6 +117,18 @@ class Trade(BaseTransaction):
             self.parent = other.parent
 
     # Extra properties
+    @property
+    def sl(self) -> float | None:
+        if self.sl_order:
+            return self.sl_order.stop_price
+        return None
+
+    @property
+    def tp(self) -> float | None:
+        if self.tp_order:
+            return self.tp_order.limit_price
+        return None
+
     @property
     def is_exited(self) -> bool:
         """Flag to check Trade state.

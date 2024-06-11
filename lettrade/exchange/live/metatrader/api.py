@@ -5,7 +5,7 @@ from typing import Optional
 
 from mt5linux import MetaTrader5 as MT5
 
-from lettrade.exchange.live import LiveAPI, LiveOrder
+from lettrade.exchange.live import LiveAPI, LiveOrder, LiveTrade
 
 logger = logging.getLogger(__name__)
 
@@ -211,11 +211,11 @@ class MetaTraderAPI(LiveAPI):
         }
         return request
 
-    def order_update(self, order: LiveOrder):
-        pass
+    def order_update(self, order: LiveOrder, sl=None, tp=None, **kwargs):
+        raise NotImplementedError
 
-    def order_close(self, order: LiveOrder):
-        pass
+    def order_close(self, order: LiveOrder, **kwargs):
+        raise NotImplementedError
 
     def _parse_order_response(self, raw):
         raw.code = raw.retcode
@@ -235,6 +235,9 @@ class MetaTraderAPI(LiveAPI):
 
     def trades_get(self, **kwargs):
         return self._mt5.positions_get(**kwargs)
+
+    def trade_update(self, trade: "LiveTrade", sl=None, tp=None, **kwargs):
+        raise NotImplementedError
 
     # Transaction
     def _check_transactions(self):

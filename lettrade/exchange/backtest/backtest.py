@@ -371,6 +371,28 @@ class LetTradeBackTest(LetTrade):
         Returns:
             _type_: _description_
         """
+        # Load optimize parameters
+        if cls._opt_params_parser:
+            optimize = cls._opt_params_parser(optimize)
+
+        # Load cache
+        cache = cls._opt_kwargs.get("cache", None)
+        if cache is not None:
+            cached = _optimize_cache_get(dir=cache, optimize=optimize)
+            if cached is not None:
+                result = cached["result"]
+
+                # Put result to stats
+                queue = cls._opt_kwargs.get("queue", None)
+                if queue is not None:
+                    queue.put((None, optimize, result))
+
+                if cls._opt_result_parser:
+                    result = cls._opt_result_parser(result)
+
+                logger.info("Optimize load cache: %s", cached["path"])
+                return result
+
         # If models run in singleprocessing, copy kwargs for bot to not overrite main kwargs
         if os.getpid() == cls._opt_main_pid:
             opt_kwargs = cls._opt_kwargs.copy()
@@ -387,10 +409,6 @@ class LetTradeBackTest(LetTrade):
             )
 
         datas = [d.copy(deep=True) for d in datas]
-
-        # Load optimize parameters
-        if cls._opt_params_parser:
-            optimize = cls._opt_params_parser(optimize)
 
         # Run
         result = cls._optimize_run(
@@ -447,6 +465,7 @@ class LetTradeBackTest(LetTrade):
 
         try:
             # Load cache
+            # TODO: load cache at beginning of caller
             if cache is not None:
                 cached = _optimize_cache_get(dir=cache, optimize=optimize)
                 if cached is not None:

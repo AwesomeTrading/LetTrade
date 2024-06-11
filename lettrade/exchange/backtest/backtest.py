@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 
 def logging_filter_optimize():
-    logging.getLogger("lettrade.exchange.backtest.backtest").setLevel(logging.WARNING)
+    # logging.getLogger("lettrade.exchange.backtest.backtest").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.backtest.commander").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.backtest.exchange").setLevel(logging.WARNING)
     logging.getLogger("lettrade.exchange.order").setLevel(logging.WARNING)
@@ -55,14 +55,24 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
     from importlib.metadata import version
     from pathlib import Path
 
-    strategy_file = inspect.getfile(strategy_cls)
-
     info = dict(
         lettrade=version("lettrade"),
         strategy=str(strategy_cls),
-        strategy_file=strategy_file,
-        strategy_hash=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
     )
+
+    try:
+        strategy_file = inspect.getsource(strategy_cls)
+        info.update(
+            strategy_file=strategy_file,
+            strategy_hash=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
+        )
+    except OSError:
+        import pickle
+
+        info.update(
+            strategy_hash=hashlib.md5(pickle.dumps(strategy_cls)).hexdigest(),
+        )
+
     cache_dir = f"{dir}/{_md5_dict(info)}"
 
     Path(cache_dir).mkdir(parents=True, exist_ok=True)
@@ -71,6 +81,7 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
     with open(f"{cache_dir}/info.json", "w", encoding="utf-8") as f:
         json.dump(info, f)
 
+    logger.info("Optimize cache directory: %s %s", cache_dir, info)
     return cache_dir
 
 
@@ -82,6 +93,7 @@ def _optimize_cache_get(dir: str, optimize: dict) -> str | None:
         path = f"{dir}/{hash}.json"
 
         data = json.load(open(path, "r", encoding="utf-8"))
+        data["path"] = path
         data["result"] = pd.Series(data["result"])
         return data
     except FileNotFoundError:
@@ -444,6 +456,7 @@ class LetTradeBackTest(LetTrade):
                     if queue is not None:
                         queue.put((index, optimize, result))
 
+                    logger.info("Optimize load cache: %s", cached["path"])
                     return result
 
             # Load bot

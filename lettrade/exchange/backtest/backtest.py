@@ -51,6 +51,7 @@ def _md5_dict(d: dict):
 def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
     import hashlib
     import inspect
+    import json
     from importlib.metadata import version
     from pathlib import Path
 
@@ -58,11 +59,17 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
 
     info = dict(
         lettrade=version("lettrade"),
-        strategy=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
+        strategy=str(strategy_cls),
+        strategy_file=strategy_file,
+        strategy_hash=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
     )
     cache_dir = f"{dir}/{_md5_dict(info)}"
 
     Path(cache_dir).mkdir(parents=True, exist_ok=True)
+
+    # Strategy information
+    with open(f"{cache_dir}/info.json", "w", encoding="utf-8") as f:
+        json.dump(info, f)
 
     return cache_dir
 

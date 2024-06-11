@@ -65,6 +65,8 @@ class Brain:
                 self.exchange.next()
 
                 self.strategy._next()
+
+                self.exchange.next_next()
             except LetTradeNoMoreDataFeed:
                 break
             except Exception as e:

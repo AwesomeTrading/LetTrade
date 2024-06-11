@@ -99,7 +99,10 @@ class Exchange(metaclass=ABCMeta):
         self._state = ExchangeState.Run
 
     def next(self):
-        "Call when new data feeded"
+        "Call after data feeded and before strategy.next()"
+
+    def next_next(self):
+        "Call after strategy.next()"
         self._account._snapshot_equity()
 
     def stop(self) -> None:

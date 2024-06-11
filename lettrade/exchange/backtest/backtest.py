@@ -61,7 +61,7 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
     )
 
     try:
-        strategy_file = inspect.getsource(strategy_cls)
+        strategy_file = inspect.getfile(strategy_cls)
         info.update(
             strategy_file=strategy_file,
             strategy_hash=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),

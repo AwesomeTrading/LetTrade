@@ -77,8 +77,8 @@ class PlotlyOptimizePlotter(OptimizePlotter):
             x=x,
             y=y,
             z=z,
-            # nbinsx=int(df[x].max() - df[x].min()),
-            # nbinsy=int(df[y].max() - df[y].min()),
+            nbinsx=int(df[x].max() - df[x].min()),
+            nbinsy=int(df[y].max() - df[y].min()),
             histfunc=histfunc,
             **kwargs,
         )

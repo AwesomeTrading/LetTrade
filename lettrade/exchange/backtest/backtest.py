@@ -41,6 +41,61 @@ def logging_filter_optimize():
     logging.getLogger("lettrade.bot").setLevel(logging.WARNING)
 
 
+def _md5_dict(d: dict):
+    import hashlib
+    import json
+
+    return hashlib.md5(json.dumps(d, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
+    import hashlib
+    import inspect
+    from importlib.metadata import version
+    from pathlib import Path
+
+    strategy_file = inspect.getfile(strategy_cls)
+
+    info = dict(
+        lettrade=version("lettrade"),
+        strategy=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
+    )
+    cache_dir = f"{dir}/{_md5_dict(info)}"
+
+    Path(cache_dir).mkdir(parents=True, exist_ok=True)
+
+    return cache_dir
+
+
+def _optimize_cache_get(dir: str, optimize: dict) -> str | None:
+    import json
+
+    try:
+        hash = _md5_dict(optimize)
+        path = f"{dir}/{hash}.json"
+
+        data = json.load(open(path, "r", encoding="utf-8"))
+        data["result"] = pd.Series(data["result"])
+        return data
+    except FileNotFoundError:
+        return None
+
+
+def _optimize_cache_set(dir: str, optimize: dict, result: pd.Series):
+    import json
+
+    hash = _md5_dict(optimize)
+    path = f"{dir}/{hash}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(
+            dict(
+                optimize=optimize,
+                result=json.loads(result.to_json()),
+            ),
+            f,
+        )
+
+
 class LetTradeBackTestBot(LetTradeBot):
     def init(self, optimize: dict[str, Any] = None, **kwargs):
         strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
@@ -75,6 +130,10 @@ class LetTradeBackTest(LetTrade):
     @_optimize_plotter_cls.setter
     def _optimize_plotter_cls(self, value):
         self._kwargs["optimize_plotter_cls"] = value
+
+    @property
+    def _strategy_cls(self) -> Type[Strategy]:
+        return self._kwargs.get("strategy_cls", None)
 
     def _datafeed(
         self,
@@ -119,6 +178,7 @@ class LetTradeBackTest(LetTrade):
         multiprocessing: Literal["auto", "fork"] = "auto",
         workers: Optional[int] = None,
         process_bar: bool = True,
+        cache: str = "data/optimize",
         **kwargs,
     ):
         """Backtest optimization
@@ -137,25 +197,23 @@ class LetTradeBackTest(LetTrade):
             dict(zip(kwargs.keys(), values)) for values in product(*kwargs.values())
         )
 
-        self._optimize_init(total=len(optimizes), process_bar=process_bar)
-
-        queue = self._optimize_stats.queue
+        self._optimize_init(cache=cache, total=len(optimizes), process_bar=process_bar)
 
         # Run optimize in multiprocessing
         self._optimizes_multiproccess(
             optimizes=optimizes,
             multiprocessing=multiprocessing,
-            queue=queue,
             workers=workers,
         )
 
         # queue None mean Done
         try:
+            queue = self._kwargs["queue"]
             queue.put(None)
         except Exception:
             pass
 
-    def _optimize_init(self, total: int, process_bar: bool):
+    def _optimize_init(self, cache: str, total: int, process_bar: bool):
         # Disable logging
         logging_filter_optimize()
 
@@ -187,11 +245,19 @@ class LetTradeBackTest(LetTrade):
             **self._kwargs.get("optimize_plotter_kwargs", {}),
         )
 
+        # Optimize stats queue
+        queue = self._optimize_stats.queue
+        self._kwargs["queue"] = queue
+
+        # Optimize cache dir
+        if cache is not None:
+            cache = _optimize_cache_dir(cache, self._strategy_cls)
+            self._kwargs["cache"] = cache
+
     def _optimizes_multiproccess(
         self,
         optimizes: list[set],
         multiprocessing: Literal["auto", "fork"],
-        queue: Queue,
         workers: Optional[int] = None,
     ):
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
@@ -215,7 +281,6 @@ class LetTradeBackTest(LetTrade):
                         self.__class__._optimizes_run,
                         optimizes=optimizes,
                         index=index,
-                        queue=queue,
                         **self._kwargs,
                     )
                     futures.append(future)
@@ -232,7 +297,6 @@ class LetTradeBackTest(LetTrade):
 
             self.__class__._optimizes_run(
                 optimizes=optimizes,
-                queue=queue,
                 **self._kwargs,
             )
 
@@ -243,6 +307,7 @@ class LetTradeBackTest(LetTrade):
         params_parser: Callable[[Any], list[set[str, Any]]] = None,
         result_parser: Callable[[BotStatistic], float] = None,
         total: int = 0,
+        cache: str = "data/optimize",
         process_bar: bool = False,
     ) -> Callable[[Any], Any]:
         """Optimize function help to integrated with external optimizer
@@ -264,10 +329,7 @@ class LetTradeBackTest(LetTrade):
                 "Optimize datas is not clean, don't run() backtest before optimize()"
             )
 
-        self._optimize_init(total, process_bar=process_bar)
-
-        queue = self._optimize_stats.queue
-        self._kwargs["queue"] = queue
+        self._optimize_init(cache=cache, total=total, process_bar=process_bar)
 
         # Optimize parameters
         self.__class__._opt_main_pid = os.getpid()
@@ -360,9 +422,24 @@ class LetTradeBackTest(LetTrade):
         bot_cls: Type[LetTradeBot],
         index: int = 0,
         queue: Optional[Queue] = None,
+        cache: str = None,
         **kwargs,
     ):
+
         try:
+            # Load cache
+            if cache is not None:
+                cached = _optimize_cache_get(dir=cache, optimize=optimize)
+                if cached is not None:
+                    result = cached["result"]
+
+                    # Put result to stats
+                    if queue is not None:
+                        queue.put((index, optimize, result))
+
+                    return result
+
+            # Load bot
             if datas:
                 kwargs["datas"] = datas
 
@@ -373,10 +450,15 @@ class LetTradeBackTest(LetTrade):
                 result="bot",
                 **kwargs,
             )
+            result = bot.stats.result
+
+            if cache is not None:
+                _optimize_cache_set(dir=cache, optimize=optimize, result=result)
 
             if queue is not None:
-                queue.put((index, optimize, bot.stats.result))
-            return bot.stats.result
+                queue.put((index, optimize, result))
+
+            return result
         except Exception as e:
             logger.error("Optimize %d", index, exc_info=e)
             raise e

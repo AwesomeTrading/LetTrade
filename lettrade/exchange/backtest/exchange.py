@@ -81,8 +81,9 @@ class BackTestExchange(Exchange):
         if __debug__:
             logger.info("New order %s at %s", order, self.data.now)
 
-        # Simulate market order will send event before return order result
-        self._simulate_orders()
+        if type == OrderType.Market:
+            # Simulate market order will send event before return order result
+            self._simulate_orders()
 
         return ok
 

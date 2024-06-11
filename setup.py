@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     setup(
         name="lettrade",
-        version="0.0.2",
+        version="0.0.3",
         author="Santatic",
         # author_email = "author@example.com",
         description="Lightweight trading framwork",
@@ -37,7 +37,7 @@ if __name__ == "__main__":
             "commander": ["python-telegram-bot"],
             "dev": ["yfinance", "pytz"],
             "exchange-metatrader": [
-                "mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master"
+                # "mt5linux @ git+https://github.com/AwesomeTrading//mt5linux.git@master"
             ],
             "exchange-ccxt": ["ccxt"],
         },

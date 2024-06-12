@@ -122,7 +122,11 @@ class PlotlyBotPlotter(BotPlotter):
         # Layout
         layout_params = dict(
             xaxis=dict(
-                rangeselector=dict(buttons=buttons),
+                rangeselector=dict(
+                    bgcolor="#282a36",
+                    activecolor="#5b5b66",
+                    buttons=buttons,
+                ),
             ),
             yaxis=dict(
                 autorange=True,
@@ -260,7 +264,8 @@ class PlotlyBotPlotter(BotPlotter):
             y = [order.open_price or order.limit or order.stop]
 
             hovertemplate = (
-                f"Order id: {order.id}<br>"
+                "<br>"
+                # f"Order id: {order.id}<br>"
                 "Index: %{x}<br>"
                 f"At: {order.open_at}<br>"
                 "Price: %{y}<br>"

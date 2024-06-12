@@ -59,7 +59,7 @@ class LetTradeBackTestBot(LetTradeBot):
 
 class LetTradeBackTest(LetTrade):
 
-    _optimize_stats: OptimizeStatistic = None
+    _stats: OptimizeStatistic = None
 
     @property
     def _optimize_stats_cls(self) -> Type["OptimizeStatistic"]:
@@ -181,14 +181,14 @@ class LetTradeBackTest(LetTrade):
             )
 
         # Enable Optimize stats
-        self._optimize_stats = self._optimize_stats_cls(
+        self._stats = self._optimize_stats_cls(
             plotter=self._plotter,
             total=total,
             **self._kwargs.get("optimize_plotter_kwargs", {}),
         )
 
         # Optimize stats queue
-        queue = self._optimize_stats.queue
+        queue = self._stats.queue
         self._kwargs["queue"] = queue
 
         # Optimize cache dir
@@ -343,6 +343,35 @@ class LetTradeBackTest(LetTrade):
             result = cls._opt_result_parser(result)
 
         return result
+
+    def optimize_cache(self, cache: str = "data/optimize"):
+        import json
+
+        self._optimize_init(cache=cache, total=0, process_bar=False)
+        cache_dir = self._kwargs["cache"]
+        queue = self._kwargs["queue"]
+
+        logger.warning("Load caches from: %s", cache)
+
+        for cache_file in os.listdir(cache_dir):
+            if cache_file == "info.json":
+                continue
+
+            try:
+                cache_path = f"{cache_dir}/{cache_file}"
+                data = json.load(open(cache_path, mode="r", encoding="utf-8"))
+
+                queue.put(
+                    dict(
+                        index=cache_file,
+                        optimize=data["optimize"],
+                        result=data["result"],
+                    )
+                )
+            except Exception as e:
+                logger.warning("Loading cache %s error %s", cache_path, e)
+
+        logger.warning("Loaded %s caches", len(self._stats.results))
 
     @classmethod
     def _optimizes_run(

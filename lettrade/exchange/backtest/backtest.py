@@ -41,80 +41,6 @@ def logging_filter_optimize():
     logging.getLogger("lettrade.bot").setLevel(logging.WARNING)
 
 
-def _md5_dict(d: dict):
-    import hashlib
-    import json
-
-    return hashlib.md5(json.dumps(d, sort_keys=True).encode("utf-8")).hexdigest()
-
-
-def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
-    import hashlib
-    import inspect
-    import json
-    from importlib.metadata import version
-    from pathlib import Path
-
-    info = dict(
-        lettrade=version("lettrade"),
-        strategy=str(strategy_cls),
-    )
-
-    try:
-        strategy_file = inspect.getfile(strategy_cls)
-        info.update(
-            strategy_file=strategy_file,
-            strategy_hash=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
-        )
-    except OSError:
-        import pickle
-
-        info.update(
-            strategy_hash=hashlib.md5(pickle.dumps(strategy_cls)).hexdigest(),
-        )
-
-    cache_dir = f"{dir}/{_md5_dict(info)}"
-
-    Path(cache_dir).mkdir(parents=True, exist_ok=True)
-
-    # Strategy information
-    with open(f"{cache_dir}/info.json", "w", encoding="utf-8") as f:
-        json.dump(info, f)
-
-    logger.info("Optimize cache directory: %s %s", cache_dir, info)
-    return cache_dir
-
-
-def _optimize_cache_get(dir: str, optimize: dict) -> str | None:
-    import json
-
-    try:
-        hash = _md5_dict(optimize)
-        path = f"{dir}/{hash}.json"
-
-        data = json.load(open(path, "r", encoding="utf-8"))
-        data["path"] = path
-        data["result"] = pd.Series(data["result"])
-        return data
-    except FileNotFoundError:
-        return None
-
-
-def _optimize_cache_set(dir: str, optimize: dict, result: pd.Series):
-    import json
-
-    hash = _md5_dict(optimize)
-    path = f"{dir}/{hash}.json"
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(
-            dict(
-                optimize=optimize,
-                result=json.loads(result.to_json()),
-            ),
-            f,
-        )
-
-
 class LetTradeBackTestBot(LetTradeBot):
     def init(self, optimize: dict[str, Any] = None, **kwargs):
         strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
@@ -317,7 +243,6 @@ class LetTradeBackTest(LetTrade):
             )
 
     # Create optimize model environment
-    # TODO: Move to classmethod to skip copy Self across multiprocessing
     def optimize_model(
         self,
         params_parser: Callable[[Any], list[set[str, Any]]] = None,
@@ -326,7 +251,7 @@ class LetTradeBackTest(LetTrade):
         cache: str = "data/optimize",
         process_bar: bool = False,
     ) -> Callable[[Any], Any]:
-        """Optimize function help to integrated with external optimizer
+        """Optimize function help to integrated with external optimize trainer
 
         Args:
             params_parser (Callable[[Any], list[set[str, Any]]], optional): _description_. Defaults to None.
@@ -372,7 +297,7 @@ class LetTradeBackTest(LetTrade):
         if cls._opt_params_parser:
             optimize = cls._opt_params_parser(optimize)
 
-        # Load cache
+        # Load cache here to skip copy kwargs and data data
         cache = cls._opt_kwargs.get("cache", None)
         if cache is not None:
             cached = _optimize_cache_get(dir=cache, optimize=optimize)
@@ -382,8 +307,9 @@ class LetTradeBackTest(LetTrade):
                 # Put result to stats
                 queue = cls._opt_kwargs.get("queue", None)
                 if queue is not None:
-                    queue.put((None, optimize, result))
+                    queue.put(dict(index=None, optimize=optimize, result=result))
 
+                # Prepare model result
                 if cls._opt_result_parser:
                     result = cls._opt_result_parser(result)
 
@@ -470,9 +396,9 @@ class LetTradeBackTest(LetTrade):
 
                     # Put result to stats
                     if queue is not None:
-                        queue.put((index, optimize, result))
+                        queue.put(dict(index=index, optimize=optimize, result=result))
 
-                    logger.info("Optimize load cache: %s", cached["path"])
+                    # logger.info("Optimize load cache: %s", cached["path"])
                     return result
 
             # Load bot
@@ -492,7 +418,7 @@ class LetTradeBackTest(LetTrade):
                 _optimize_cache_set(dir=cache, optimize=optimize, result=result)
 
             if queue is not None:
-                queue.put((index, optimize, result))
+                queue.put(dict(index=index, optimize=optimize, result=result))
 
             return result
         except Exception as e:
@@ -562,3 +488,77 @@ def _batch(seq, workers=None):
     n = np.clip(int(len(seq) // (workers or os.cpu_count() or 1)), 1, 300)
     for i in range(0, len(seq), n):
         yield seq[i : i + n]
+
+
+def _md5_dict(d: dict):
+    import hashlib
+    import json
+
+    return hashlib.md5(json.dumps(d, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
+    import hashlib
+    import inspect
+    import json
+    from importlib.metadata import version
+    from pathlib import Path
+
+    info = dict(
+        lettrade=version("lettrade"),
+        strategy=str(strategy_cls),
+    )
+
+    try:
+        strategy_file = inspect.getfile(strategy_cls)
+        info.update(
+            strategy_file=strategy_file,
+            strategy_hash=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
+        )
+    except OSError:
+        import pickle
+
+        info.update(
+            strategy_hash=hashlib.md5(pickle.dumps(strategy_cls)).hexdigest(),
+        )
+
+    cache_dir = f"{dir}/{_md5_dict(info)}"
+
+    Path(cache_dir).mkdir(parents=True, exist_ok=True)
+
+    # Strategy information
+    with open(f"{cache_dir}/info.json", "w", encoding="utf-8") as f:
+        json.dump(info, f)
+
+    logger.info("Optimize cache directory: %s %s", cache_dir, info)
+    return cache_dir
+
+
+def _optimize_cache_get(dir: str, optimize: dict) -> str | None:
+    import json
+
+    try:
+        hash = _md5_dict(optimize)
+        path = f"{dir}/{hash}.json"
+
+        data = json.load(open(path, "r", encoding="utf-8"))
+        data["path"] = path
+        data["result"] = pd.Series(data["result"])
+        return data
+    except FileNotFoundError:
+        return None
+
+
+def _optimize_cache_set(dir: str, optimize: dict, result: pd.Series):
+    import json
+
+    hash = _md5_dict(optimize)
+    path = f"{dir}/{hash}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(
+            dict(
+                optimize=optimize,
+                result=json.loads(result.to_json()),
+            ),
+            f,
+        )

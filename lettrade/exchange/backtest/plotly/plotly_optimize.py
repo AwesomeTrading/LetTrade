@@ -49,13 +49,35 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         ys = []
         zs = []
         for r in self.results:
-            xs.append(r[1][x])
-            ys.append(r[1][y])
-            zs.append(r[2][z])
+            xs.append(r["optimize"][x])
+            ys.append(r["optimize"][y])
+            zs.append(r["result"][z])
 
         return {x: xs, y: ys, z: zs}
 
-    def heatmap(self, x: str, y: str, z: str = "equity", histfunc="max", **kwargs):
+    def _xyz_default(self, x, y, z):
+        if x is None or y is None:
+            if len(self.results) == 0:
+                raise RuntimeError("Result is empty")
+
+            optimize_keys = list(self.results[0]["optimize"].keys())
+            if x is None:
+                x = optimize_keys[0]
+            if y is None:
+                y = optimize_keys[1]
+        if z is None:
+            z = "equity"
+        return x, y, z
+
+    def heatmap(
+        self,
+        x: str = None,
+        y: str = None,
+        z: str = "equity",
+        histfunc="max",
+        **kwargs,
+    ):
+        x, y, z = self._xyz_default(x, y, z)
         df = pd.DataFrame(self._xyzs(x=x, y=y, z=z))
         fig = px.density_heatmap(
             df,
@@ -70,7 +92,15 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         )
         fig.show()
 
-    def contour(self, x: str, y: str, z: str = "equity", histfunc="max", **kwargs):
+    def contour(
+        self,
+        x: str = None,
+        y: str = None,
+        z: str = "equity",
+        histfunc="max",
+        **kwargs,
+    ):
+        x, y, z = self._xyz_default(x, y, z)
         df = pd.DataFrame(self._xyzs(x=x, y=y, z=z))
         fig = px.density_contour(
             df,

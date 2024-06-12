@@ -2,6 +2,7 @@ import logging
 
 import numpy as np
 import pandas as pd
+
 from lettrade.account import Account
 from lettrade.data import DataFeeder
 from lettrade.exchange import Exchange
@@ -41,20 +42,18 @@ class BotStatistic:
         trades = list(self.exchange.history_trades.values()) + list(
             self.exchange.trades.values()
         )
-        trades_df = pd.DataFrame()
+        trades_columns = (
+            "size",
+            "entry_at",
+            "exit_at",
+            "entry_price",
+            "exit_price",
+            "pl",
+            "fee",
+        )
+        trades_df = pd.DataFrame(columns=trades_columns)
         for trade in trades:
-            trades_df.loc[
-                trade.id,
-                [
-                    "size",
-                    "entry_at",
-                    "exit_at",
-                    "entry_price",
-                    "exit_price",
-                    "pl",
-                    "fee",
-                ],
-            ] = [
+            trades_df.at[trade.id, trades_columns] = (
                 trade.size,
                 trade.entry_at,
                 trade.exit_at,
@@ -62,55 +61,54 @@ class BotStatistic:
                 trade.exit_price,
                 trade.pl,
                 trade.fee,
-            ]
-        if not trades_df.empty:
-            trades_df["duration"] = trades_df["entry_at"] - trades_df["exit_at"]
+            )
+        trades_df["duration"] = trades_df["entry_at"] - trades_df["exit_at"]
 
-        self.result = pd.Series(dtype=object)
+        self.result = result = pd.Series(dtype=object)
 
-        self.result.loc["strategy"] = str(self.strategy.__class__)
-        self.result.loc["start"] = data.index[0]
-        self.result.loc["end"] = data.index[-1]
-        self.result.loc["duration"] = self.result.end - self.result.start
+        result.loc["strategy"] = str(self.strategy.__class__)
+        result.loc["start"] = data.index[0]
+        result.loc["end"] = data.index[-1]
+        result.loc["duration"] = result.end - result.start
 
         # Equity
-        self.result.loc["start_balance"] = round(equities[0], 2)
-        self.result.loc["equity"] = round(equities[-1], 2)
+        result.loc["start_balance"] = round(equities[0], 2)
+        result.loc["equity"] = round(equities[-1], 2)
 
         pl = equities[-1] - equities[0]
-        self.result.loc["pl"] = round(pl, 2)
-        self.result.loc["pl_percent"] = round(pl / equities[0] * 100, 2)
+        result.loc["pl"] = round(pl, 2)
+        result.loc["pl_percent"] = round(pl / equities[0] * 100, 2)
 
         # TODO
-        # self.result.loc["buy_hold_pl_percent"] = 2.0
-        # self.result.loc["max_drawdown_percent"] = -33.08
-        # self.result.loc["avg_drawdown_percent"] = -5.58
-        # self.result.loc["max_drawdown_duration"] = "688 days 00:00:00"
-        # self.result.loc["avg_drawdown_duration"] = "41 days 00:00:00"
+        # result.loc["buy_hold_pl_percent"] = 2.0
+        # result.loc["max_drawdown_percent"] = -33.08
+        # result.loc["avg_drawdown_percent"] = -5.58
+        # result.loc["max_drawdown_duration"] = "688 days 00:00:00"
+        # result.loc["avg_drawdown_duration"] = "41 days 00:00:00"
 
         # Separator
-        self.result.loc[""] = ""
+        result.loc[""] = ""
 
         # Trades
         trades_total = len(trades)
         pl = trades_df["pl"]
 
-        self.result.loc["trades"] = trades_total
+        result.loc["trades"] = trades_total
 
         win_rate = np.nan if not trades_total else (pl > 0).mean()
-        self.result.loc["win_rate"] = round(win_rate, 2)
-        self.result.loc["fee"] = trades_df.fee.sum()
-        self.result.loc["best_trade_percent"] = pl.max()
-        self.result.loc["worst_trade_percent"] = pl.min()
-        self.result.loc["sqn"] = round(
+        result.loc["win_rate"] = round(win_rate, 2)
+        result.loc["fee"] = trades_df.fee.sum()
+        result.loc["best_trade_percent"] = pl.max()
+        result.loc["worst_trade_percent"] = pl.min()
+        result.loc["sqn"] = round(
             np.sqrt(trades_total) * pl.mean() / (pl.std() or np.nan),
             2,
         )
-        self.result.loc["kelly_criterion"] = win_rate - (1 - win_rate) / (
+        result.loc["kelly_criterion"] = win_rate - (1 - win_rate) / (
             pl[pl > 0].mean() / -pl[pl < 0].mean()
         )
         # TODO
-        self.result.loc["profit_factor"] = pl[pl > 0].sum() / (
+        result.loc["profit_factor"] = pl[pl > 0].sum() / (
             abs(pl[pl < 0].sum()) or np.nan
         )
 

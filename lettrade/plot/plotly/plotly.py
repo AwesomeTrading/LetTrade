@@ -326,7 +326,7 @@ class PlotlyBotPlotter(BotPlotter):
                     "Status: %{customdata[0]}<br>"
                     "Size: %{customdata[1]}<br>"
                     "PL: %{customdata[2]:.2f}$<br>"
-                    "Fee: %{customdata[3]:.2f}$"
+                    "Fee: %{customdata[3]:.2f}$<br>"
                 ),
                 mode="lines+markers",
                 name=f"Trade-{trade.id}",

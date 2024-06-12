@@ -1,15 +1,10 @@
-from abc import ABC, abstractmethod
-from typing import Optional
-
-
-class Account(ABC):
+class Account:
     """
     Manage account balance, leverage, commission. Risk calculate and control
     """
 
     _risk: float
     _cash: float
-    _commission: float
     _margin: float
     _leverage: float
     _equities: dict[str, float]
@@ -21,23 +16,20 @@ class Account(ABC):
         self,
         risk: float = 0.02,
         cash: float = 10_000,
-        commission: float = 0.2,
         margin: float = 1.0,
         leverage: float = 1.0,
-        **kwargs,
+        # **kwargs,
     ) -> None:
         """_summary_
 
         Args:
-            risk (Optional[float], optional): _description_. Defaults to 0.02.
-            cash (Optional[float], optional): _description_. Defaults to 10_000.
-            commission (Optional[float], optional): _description_. Defaults to 0.2.
-            margin (Optional[float], optional): _description_. Defaults to None.
-            leverage (Optional[float], optional): _description_. Defaults to 1.0.
+            risk (float, optional): _description_. Defaults to 0.02.
+            cash (float, optional): _description_. Defaults to 10_000.
+            margin (float, optional): _description_. Defaults to 1.0.
+            leverage (float, optional): _description_. Defaults to 1.0.
         """
         self._risk = risk
         self._cash = cash
-        self._commission = commission
         self._margin = margin
         self._leverage = leverage
 

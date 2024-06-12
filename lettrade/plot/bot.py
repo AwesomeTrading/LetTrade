@@ -12,7 +12,7 @@ from .plot import Plotter
 
 class BotPlotter(Plotter):
     """
-    Base class help to plot strategy
+    Class help to plot bot result
     """
 
     bot: "LetTradeBot"
@@ -27,10 +27,7 @@ class BotPlotter(Plotter):
     _jump_start_dt: Optional[pd.Timestamp] = None
     _jump_stop_dt: Optional[pd.Timestamp] = None
 
-    def __init__(
-        self,
-        bot: "LetTradeBot",
-    ) -> None:
+    def __init__(self, bot: "LetTradeBot") -> None:
         self.bot = bot
         self.feeder = bot.feeder
         self.exchange = bot.exchange
@@ -59,34 +56,36 @@ class BotPlotter(Plotter):
         # Reset
         if since is None:
             self.jump_reset()
-        else:  # Jump to range
-            if isinstance(since, str):
-                since = pd.to_datetime(since, utc=True)
-                since = self.data.index.get_loc(since)
-            elif isinstance(since, pd.Timestamp):
-                since = self.data.index.get_loc(since)
+            return
 
-            if name is None:
-                name = self.data.name
+        # Jump to range
+        if isinstance(since, str):
+            since = pd.to_datetime(since, utc=True)
+            since = self.data.index.get_loc(since)
+        elif isinstance(since, pd.Timestamp):
+            since = self.data.index.get_loc(since)
 
-            for i, data in enumerate(self._datas_stored.values()):
-                if i == 0:
-                    self.datas[i] = data.__class__(
-                        data=data.l[since : since + range],
-                        name=data.name,
-                        timeframe=data.timeframe,
-                    )
-                    self._jump_start_dt = self.data.index[0]
-                    self._jump_stop_dt = self.data.index[-1]
-                else:
-                    self.datas[i] = data.__class__(
-                        data=data.loc[
-                            (data.index >= self._jump_start_dt)
-                            & (data.index <= self._jump_stop_dt)
-                        ],
-                        name=data.name,
-                        timeframe=data.timeframe,
-                    )
+        if name is None:
+            name = self.data.name
+
+        for i, data in enumerate(self._datas_stored.values()):
+            if i == 0:
+                self.datas[i] = data.__class__(
+                    data=data.l[since : since + range],
+                    name=data.name,
+                    timeframe=data.timeframe,
+                )
+                self._jump_start_dt = self.data.index[0]
+                self._jump_stop_dt = self.data.index[-1]
+            else:
+                self.datas[i] = data.__class__(
+                    data=data.loc[
+                        (data.index >= self._jump_start_dt)
+                        & (data.index <= self._jump_stop_dt)
+                    ],
+                    name=data.name,
+                    timeframe=data.timeframe,
+                )
 
         self.load()
 

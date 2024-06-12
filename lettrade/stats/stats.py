@@ -42,6 +42,29 @@ class BotStatistic:
         trades = list(self.exchange.history_trades.values()) + list(
             self.exchange.trades.values()
         )
+        trades_df = pd.DataFrame()
+        for trade in trades:
+            trades_df.loc[
+                trade.id,
+                [
+                    "size",
+                    "entry_at",
+                    "exit_at",
+                    "entry_price",
+                    "exit_price",
+                    "pl",
+                    "fee",
+                ],
+            ] = [
+                trade.size,
+                trade.entry_at,
+                trade.exit_at,
+                trade.entry_price,
+                trade.exit_price,
+                trade.pl,
+                trade.fee,
+            ]
+        trades_df["duration"] = trades_df["entry_at"] - trades_df["exit_at"]
 
         self.result = pd.Series(dtype=object)
 
@@ -59,35 +82,37 @@ class BotStatistic:
         self.result.loc["pl_percent"] = round(pl / equities[0] * 100, 2)
 
         # TODO
-        self.result.loc["buy_hold_pl_percent"] = 2.0
-        self.result.loc["max_drawdown_percent"] = -33.08
-        self.result.loc["avg_drawdown_percent"] = -5.58
-        self.result.loc["max_drawdown_duration"] = "688 days 00:00:00"
-        self.result.loc["avg_drawdown_duration"] = "41 days 00:00:00"
+        # self.result.loc["buy_hold_pl_percent"] = 2.0
+        # self.result.loc["max_drawdown_percent"] = -33.08
+        # self.result.loc["avg_drawdown_percent"] = -5.58
+        # self.result.loc["max_drawdown_duration"] = "688 days 00:00:00"
+        # self.result.loc["avg_drawdown_duration"] = "41 days 00:00:00"
 
         # Separator
         self.result.loc[""] = ""
 
         # Trades
-        self.result.loc["trades"] = len(trades)
-        if trades:
-            win_count = sum(1 for t in trades if t.pl > 0)
-            win_rate = win_count / len(trades) * 100
-        else:
-            win_rate = 0
+        trades_count = len(trades)
+        pl = trades_df["pl"]
 
+        self.result.loc["trades"] = trades_count
+
+        win_rate = np.nan if not trades_count else (pl > 0).mean()
         self.result.loc["win_rate"] = round(win_rate, 2)
-        self.result.loc["fee"] = sum(t.fee for t in trades) if trades else 0
-        self.result.loc["best_trade_percent"] = (
-            max(t.pl for t in trades) if trades else 0
+        self.result.loc["fee"] = trades_df.fee.sum()
+        self.result.loc["best_trade_percent"] = pl.max()
+        self.result.loc["worst_trade_percent"] = pl.min()
+        self.result.loc["sqn"] = round(
+            np.sqrt(len(trades)) * pl.mean() / (pl.std() or np.nan),
+            2,
         )
-        self.result.loc["worst_trade_percent"] = (
-            min(t.pl for t in trades) if trades else 0
+        self.result.loc["kelly_criterion"] = win_rate - (1 - win_rate) / (
+            pl[pl > 0].mean() / -pl[pl < 0].mean()
         )
-
         # TODO
-        self.result.loc["profit_factor"] = 2.13
-        self.result.loc["sqn"] = 1.78
+        self.result.loc["profit_factor"] = pl[pl > 0].sum() / (
+            abs(pl[pl < 0].sum()) or np.nan
+        )
 
         return self.result
 
@@ -102,17 +127,18 @@ class BotStatistic:
                 "equity": "Equity [$]",
                 "pl": "PL [$]",
                 "pl_percent": "PL [%]",
-                "buy_hold_pl_percent": "Buy & Hold PL [%]",
-                "max_drawdown_percent": "Max. Drawdown [%]",
-                "avg_drawdown_percent": "Avg. Drawdown [%]",
-                "max_drawdown_duration": "Max. Drawdown Duration",
-                "avg_drawdown_duration": "Avg. Drawdown Duration",
+                # "buy_hold_pl_percent": "Buy & Hold PL [%]",
+                # "max_drawdown_percent": "Max. Drawdown [%]",
+                # "avg_drawdown_percent": "Avg. Drawdown [%]",
+                # "max_drawdown_duration": "Max. Drawdown Duration",
+                # "avg_drawdown_duration": "Avg. Drawdown Duration",
                 "trades": "# Trades",
                 "win_rate": "Win Rate [%]",
                 "fee": "Fee [$]",
                 "best_trade_percent": "Best Trade [%]",
                 "worst_trade_percent": "Worst Trade [%]",
                 "profit_factor": "Profit Factor",
+                "kelly_criterion": "Kelly Criterion",
                 "sqn": "SQN",
             }
         )

@@ -33,8 +33,8 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         ids = []
         equities = []
         for result in self.results:
-            ids.append(result[0])
-            equities.append(result[2]["equity"])
+            ids.append(result["index"])
+            equities.append(result["result"]["equity"])
 
         df = pd.DataFrame({"id": ids, "equity": equities})
 
@@ -48,10 +48,10 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         xs = []
         ys = []
         zs = []
-        for r in self.results:
-            xs.append(r["optimize"][x])
-            ys.append(r["optimize"][y])
-            zs.append(r["result"][z])
+        for result in self.results:
+            xs.append(result["optimize"][x])
+            ys.append(result["optimize"][y])
+            zs.append(result["result"][z])
 
         return {x: xs, y: ys, z: zs}
 

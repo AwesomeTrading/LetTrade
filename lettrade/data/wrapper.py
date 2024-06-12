@@ -112,6 +112,7 @@ class LetSeriesWapper:
         return self._owner._pointer
 
 
+# @pd.api.extensions.register_dataframe_accessor("l")
 class LetDataFeedWrapper:
     _data: pd.DataFrame
     _pointer: int
@@ -200,14 +201,3 @@ class LetDataFeedWrapper:
     @property
     def pointer_stop(self):
         return len(self._data) - self._pointer
-
-
-# @property
-# def _lettrade_wrapper(self) -> LetDataFeedWrapper:
-#     if not hasattr(self, __LET_WRAPPER_KEY__):
-#         object.__setattr__(self, __LET_WRAPPER_KEY__, LetDataFeedWrapper(self))
-#     return getattr(self, __LET_WRAPPER_KEY__)
-
-
-# from pandas.core.base import PandasObject
-# PandasObject.l = _lettrade_wrapper

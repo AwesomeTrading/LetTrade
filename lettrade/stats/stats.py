@@ -2,7 +2,6 @@ import logging
 
 import numpy as np
 import pandas as pd
-
 from lettrade.account import Account
 from lettrade.data import DataFeeder
 from lettrade.exchange import Exchange
@@ -64,7 +63,8 @@ class BotStatistic:
                 trade.pl,
                 trade.fee,
             ]
-        trades_df["duration"] = trades_df["entry_at"] - trades_df["exit_at"]
+        if not trades_df.empty:
+            trades_df["duration"] = trades_df["entry_at"] - trades_df["exit_at"]
 
         self.result = pd.Series(dtype=object)
 
@@ -92,18 +92,18 @@ class BotStatistic:
         self.result.loc[""] = ""
 
         # Trades
-        trades_count = len(trades)
+        trades_total = len(trades)
         pl = trades_df["pl"]
 
-        self.result.loc["trades"] = trades_count
+        self.result.loc["trades"] = trades_total
 
-        win_rate = np.nan if not trades_count else (pl > 0).mean()
+        win_rate = np.nan if not trades_total else (pl > 0).mean()
         self.result.loc["win_rate"] = round(win_rate, 2)
         self.result.loc["fee"] = trades_df.fee.sum()
         self.result.loc["best_trade_percent"] = pl.max()
         self.result.loc["worst_trade_percent"] = pl.min()
         self.result.loc["sqn"] = round(
-            np.sqrt(len(trades)) * pl.mean() / (pl.std() or np.nan),
+            np.sqrt(trades_total) * pl.mean() / (pl.std() or np.nan),
             2,
         )
         self.result.loc["kelly_criterion"] = win_rate - (1 - win_rate) / (

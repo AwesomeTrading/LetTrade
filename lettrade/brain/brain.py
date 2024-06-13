@@ -17,7 +17,7 @@ class Brain:
     feeder: DataFeeder
     commander: Commander
 
-    datas: list[DataFeed]
+    # datas: list[DataFeed]
     data: DataFeed
 
     def __init__(
@@ -26,7 +26,6 @@ class Brain:
         exchange: Exchange,
         feeder: DataFeeder,
         commander: Commander,
-        *args,
         **kwargs,
     ) -> None:
         """_summary_
@@ -42,7 +41,7 @@ class Brain:
         self.feeder = feeder
         self.commander = commander
 
-        self.datas = self.feeder.datas
+        # self.datas = self.feeder.datas
         self.data = self.feeder.data
 
     def start(self):
@@ -63,9 +62,7 @@ class Brain:
             try:
                 self.feeder.next()
                 self.exchange.next()
-
                 self.strategy._next()
-
                 self.exchange.next_next()
             except LetTradeNoMoreDataFeed:
                 break

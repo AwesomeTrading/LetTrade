@@ -72,6 +72,10 @@ class LetIndexWapper:
             )
         return self._data._values[item]
 
+    def get_loc(self, dt: pd.Timestamp) -> int:
+        loc = self._data.get_loc(dt)
+        return loc - self._owner._pointer
+
     # Property
     @property
     def pointer(self):

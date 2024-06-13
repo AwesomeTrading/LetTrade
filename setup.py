@@ -31,7 +31,7 @@ if __name__ == "__main__":
         python_requires=">=3.8.0,<3.13",
         install_requires=["pandas", "numpy"],
         extras_require={
-            "extra": ["pandas_ta", "plotly", "nbformat"],
+            "extra": ["plotly", "nbformat"],
             "backtest": ["tqdm", "plotly"],
             "backtest-extra": ["yfinance"],
             "commander": ["python-telegram-bot"],

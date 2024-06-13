@@ -170,7 +170,7 @@ class LetTrade:
             self.stats.stop()
 
     @property
-    def stats(self) -> BotStatistic:
+    def stats(self) -> BotStatistic | None:
         if self._stats:
             return self._stats
         if self._bot is not None:

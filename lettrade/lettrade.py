@@ -186,7 +186,21 @@ class LetTrade:
         raise RuntimeError("Plotter is not defined")
 
     def plot(self, *args, jump: Optional[dict] = None, **kwargs):
-        """Plot strategy result"""
+        """Plot strategy/optimize result
+
+        Example:
+            - `BotPlotter`: Jump to trade_id.
+                ```python
+                lt.plot(
+                    jump=dict(trade_id=1, range=300),
+                    layout=dict(height=2000),
+                )
+                ```
+            - `OptimizePlotter`:
+                ```python
+                lt.plot(layout=dict(height=2000))
+                ```
+        """
         if __debug__:
             from .utils.docs import is_docs_session
 

@@ -14,6 +14,7 @@ def keltner_channel(
     atr: int = 20,
     shift: float = 1.6,
     suffix="",
+    set_name: bool = False,
 ) -> list[pd.Series]:
     ma_fn = ta.SMA if ma_mode == "sma" else ta.EMA
     i_basis = ma_fn(df, timeperiod=ma_period)
@@ -21,9 +22,10 @@ def keltner_channel(
     i_upper = i_basis + shift * i_atr
     i_lower = i_basis - shift * i_atr
 
-    suffix = f"_{suffix}" if suffix else ""
-    i_lower.name = f"kc_lower{suffix}"
-    i_basis.name = f"kc_basis{suffix}"
-    i_upper.name = f"kc_upper{suffix}"
+    if set_name:
+        suffix = f"_{suffix}" if suffix else ""
+        i_lower.name = f"kc_lower{suffix}"
+        i_basis.name = f"kc_basis{suffix}"
+        i_upper.name = f"kc_upper{suffix}"
 
     return i_lower, i_basis, i_upper

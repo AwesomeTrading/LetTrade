@@ -23,7 +23,7 @@ class BotPlotter(Plotter):
 
     datas: list[DataFeed]
 
-    _datas_stored: Optional[dict[str, DataFeed]] = None
+    _datas_stored: Optional[list[DataFeed]] = None
     _jump_start_dt: Optional[pd.Timestamp] = None
     _jump_stop_dt: Optional[pd.Timestamp] = None
 
@@ -44,31 +44,84 @@ class BotPlotter(Plotter):
     def data(self, value: DataFeed) -> None:
         self.datas[0] = value
 
+    @property
+    def _data_stored(self) -> DataFeed:
+        return self._datas_stored[0]
+
     def jump(
         self,
-        since: int | str | pd.Timestamp | None = 0,
+        since: int | str | pd.Timestamp | None = None,
+        order_id: Optional[str] = None,
+        trade_id: Optional[str] = None,
         range: int = 300,
         name: Optional[str] = None,
     ):
+        """Jump to place on datefeed
+
+        Args:
+            since (int | str | pd.Timestamp | None, optional): Jump to index/datetime. Defaults to None.
+            order_id (Optional[str], optional): Jump to order id. Defaults to None.
+            trade_id (Optional[str], optional): Jump to trade id. Defaults to None.
+            range (int, optional): number of candle plot. Defaults to 300.
+            name (Optional[str], optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+            RuntimeError: _description_
+        """
         if self._datas_stored is None:
-            self._datas_stored = {d.name: d for d in self.datas}
+            self._datas_stored = self.datas.copy()
 
-        # Reset
         if since is None:
-            self.jump_reset()
-            return
+            if order_id is not None:  # Jump to order id
+                if not isinstance(order_id, str):
+                    order_id = str(order_id)
 
-        # Jump to range
-        if isinstance(since, str):
+                if order_id in self.exchange.orders:
+                    order = self.exchange.orders[order_id]
+                elif order_id in self.exchange.history_orders:
+                    order = self.exchange.history_orders[order_id]
+                else:
+                    raise RuntimeError(f"Order id {order_id} not found")
+
+                loc = self._data_stored.l.index.get_loc(order.open_at)
+                since = loc - int(range / 2)
+
+            elif trade_id is not None:  # Jump to trade id
+                if not isinstance(trade_id, str):
+                    trade_id = str(trade_id)
+
+                if trade_id in self.exchange.trades:
+                    trade = self.exchange.trades[trade_id]
+                elif trade_id in self.exchange.history_trades:
+                    trade = self.exchange.history_trades[trade_id]
+                else:
+                    raise RuntimeError(f"Trade id {trade_id} not found")
+
+                loc = self._data_stored.l.index.get_loc(trade.entry_at)
+                since = loc - int(range / 2)
+            else:  # Reset
+                self.jump_reset()
+                return
+
+        elif isinstance(since, str):  # Parse string to pd.Timestamp, then since=index
             since = pd.to_datetime(since, utc=True)
-            since = self.data.index.get_loc(since)
-        elif isinstance(since, pd.Timestamp):
-            since = self.data.index.get_loc(since)
+            since = self._data_stored.l.index.get_loc(since)
+        elif isinstance(since, pd.Timestamp):  # Get index of Timestamp
+            since = self._data_stored.l.index.get_loc(since)
 
         if name is None:
-            name = self.data.name
+            name = self._data_stored.name
 
-        for i, data in enumerate(self._datas_stored.values()):
+        # Since min at pointer_start
+        if since < self._data_stored.l.pointer_start:
+            since = self._data_stored.l.pointer_start
+        # Since max at pointer_stop
+        if since > self._data_stored.l.pointer_stop - range:
+            since = self._data_stored.l.pointer_stop - range
+
+        # Jump
+        for i, data in enumerate(self._datas_stored):
             if i == 0:
                 self.datas[i] = data.__class__(
                     data=data.l[since : since + range],
@@ -87,12 +140,13 @@ class BotPlotter(Plotter):
                     timeframe=data.timeframe,
                 )
 
+        # Reload data
         self.load()
 
     def jump_reset(self):
         if self._jump_start_dt is None:
             return
 
-        self.datas = list(self._datas_stored.values())
+        self.datas = self._datas_stored.copy()
         self._jump_start_dt = None
         self._jump_stop_dt = None

@@ -3,6 +3,7 @@ from enum import Enum
 
 class PlotColor(str, Enum):
     RED = "#ff1947"
+    LIGHT_RED = "#e6695b"
     PINK = "#f50056"
     LIGHT_PINK = "#f06292"
     PURPLE = "#df41fb"

@@ -1,5 +1,8 @@
 import pandas as pd
+
 import plotly.graph_objects as go
+
+from .helper import plot_merge
 
 
 def plot_ichimoku(
@@ -83,6 +86,30 @@ def plot_line(
             )
         ]
     )
+
+
+def plot_lines(
+    *serieses: list[pd.Series],
+    color: str = "#ffee58",
+    width: int = 1,
+    name=None,
+    mode="lines",
+    **kwargs,
+):
+    result = {}
+    for series in serieses:
+        plot_merge(
+            result,
+            plot_line(
+                series=series,
+                color=color,
+                width=width,
+                name=name,
+                mode=mode,
+                **kwargs,
+            ),
+        )
+    return result
 
 
 def plot_mark(

@@ -73,12 +73,12 @@ class Strategy(ABC):
                 fn = getattr(self, fn_name)
             else:
                 fn = self.indicators
-            object.__setattr__(data, "indicator_loader", fn)
+            object.__setattr__(data, "indicator_load", fn)
 
     @final
     def _indicators_load(self):
         for data in self.datas:
-            data.indicator_loader(data)
+            data.indicator_load(data)
 
     @final
     def _start(self):
@@ -127,6 +127,7 @@ class Strategy(ABC):
         """
         return dict()
 
+    @final
     def buy(
         self,
         size: Optional[float] = None,
@@ -164,6 +165,7 @@ class Strategy(ABC):
 
         return self.__exchange.new_order(**params)
 
+    @final
     def sell(
         self,
         size: Optional[float] = None,
@@ -201,6 +203,7 @@ class Strategy(ABC):
 
         return self.__exchange.new_order(**params)
 
+    @final
     @property
     def feeder(self) -> DataFeeder:
         """Getter of `DataFeeder`
@@ -210,6 +213,7 @@ class Strategy(ABC):
         """
         return self.__feeder
 
+    @final
     @property
     def exchange(self) -> Exchange:
         """Getter of `Exchange`
@@ -219,6 +223,7 @@ class Strategy(ABC):
         """
         return self.__exchange
 
+    @final
     @property
     def now(self) -> datetime:
         """Getter of current datetime
@@ -228,6 +233,7 @@ class Strategy(ABC):
         """
         return self.data.now
 
+    @final
     @property
     def account(self) -> Account:
         """Getter of `Account`
@@ -237,6 +243,7 @@ class Strategy(ABC):
         """
         return self.__account
 
+    @final
     @property
     def commander(self) -> Commander:
         """Getter of `Commander`
@@ -246,6 +253,7 @@ class Strategy(ABC):
         """
         return self.__commander
 
+    @final
     @property
     def data(self) -> DataFeed:
         """Getter of main DataFeed
@@ -255,6 +263,7 @@ class Strategy(ABC):
         """
         return self.__data
 
+    @final
     @property
     def datas(self) -> Sequence[DataFeed]:
         """Getter of all DataFeed
@@ -264,6 +273,7 @@ class Strategy(ABC):
         """
         return self.__datas
 
+    @final
     @property
     def orders(self) -> dict[str, Order]:
         """Getter of `Order` dict
@@ -273,6 +283,7 @@ class Strategy(ABC):
         """
         return self.__exchange.orders
 
+    @final
     @property
     def history_orders(self) -> dict[str, Order]:
         """Getter of history `Order` dict
@@ -282,6 +293,7 @@ class Strategy(ABC):
         """
         return self.__exchange.history_orders
 
+    @final
     @property
     def trades(self) -> dict[str, Trade]:
         """Getter of `Trade` dict
@@ -291,6 +303,7 @@ class Strategy(ABC):
         """
         return self.__exchange.trades
 
+    @final
     @property
     def history_trades(self) -> dict[str, Trade]:
         """Getter of history `Trade` dict
@@ -300,11 +313,13 @@ class Strategy(ABC):
         """
         return self.__exchange.history_trades
 
+    @final
     @property
     def positions(self) -> dict[str, Position]:
         """Getter of `Position` dict"""
         return self.__exchange.positions
 
+    @final
     @property
     def is_live(self) -> bool:
         """Flag to check strategy is running in live DataFeeder
@@ -314,6 +329,7 @@ class Strategy(ABC):
         """
         return self.__feeder.is_continous
 
+    @final
     @property
     def is_backtest(self) -> bool:
         """Flag to check strategy is running in backtest DataFeeder
@@ -323,6 +339,7 @@ class Strategy(ABC):
         """
         return not self.is_live
 
+    @final
     @property
     def is_optimize(self) -> bool:
         """Flag to check strategy is running in optimize session
@@ -333,6 +350,7 @@ class Strategy(ABC):
         return self.__is_optimize
 
     # Events
+    @final
     def on_transaction(self, trans: Execute | Order | Trade):
         """Listen for transaction events
 
@@ -340,6 +358,7 @@ class Strategy(ABC):
             trans (Execute | Order | Trade): _description_
         """
 
+    @final
     def on_execute(self, execute: Execute):
         """Listen for `Execute` event
 
@@ -347,6 +366,7 @@ class Strategy(ABC):
             execute (Execute): _description_
         """
 
+    @final
     def on_order(self, order: Order):
         """Listen for `Order` event
 
@@ -354,6 +374,7 @@ class Strategy(ABC):
             order (Order): _description_
         """
 
+    @final
     def on_trade(self, trade: Trade):
         """Listen for `Trade` event
 
@@ -361,6 +382,7 @@ class Strategy(ABC):
             trade (Trade): _description_
         """
 
+    @final
     def on_position(self, position: Position):
         """Listen for `Position` event
 
@@ -368,6 +390,7 @@ class Strategy(ABC):
             position (Position): _description_
         """
 
+    @final
     def on_notify(self, *args, **kwargs) -> None:
         """Listen for `notify` event
 
@@ -376,6 +399,7 @@ class Strategy(ABC):
         """
 
     # Commander
+    @final
     def send(self, msg: str, **kwargs) -> Any:
         """Send message to commander
 

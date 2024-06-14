@@ -89,8 +89,9 @@ plugins:
       allow_errors: false
 
 extra_css:
-  - css/mkdocstrings.css
+  - css/material.css
   - css/jupyter.css
+  # - css/mkdocstrings.css
 
 draft_docs: |
   draft/

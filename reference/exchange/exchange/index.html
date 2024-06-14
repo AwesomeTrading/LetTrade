@@ -54,7 +54,7 @@
     
       <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../css/mkdocstrings.css">
+      <link rel="stylesheet" href="../../../css/material.css">
     
       <link rel="stylesheet" href="../../../css/jupyter.css">
     
@@ -4778,8 +4778,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
-<span class="normal">260</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">260</span>
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
@@ -4803,7 +4802,8 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">281</span>
 <span class="normal">282</span>
 <span class="normal">283</span>
-<span class="normal">284</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">284</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">new_order</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -5116,8 +5116,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
-<span class="normal">223</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
@@ -5148,7 +5147,8 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">251</span>
 <span class="normal">252</span>
 <span class="normal">253</span>
-<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_position</span><span class="p">(</span>
+<span class="normal">254</span>
+<span class="normal">255</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_position</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">position</span><span class="p">:</span> <span class="n">Position</span><span class="p">,</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -5285,7 +5285,8 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
-<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_trade</span><span class="p">(</span>
+<span class="normal">220</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_trade</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">trade</span><span class="p">:</span> <span class="n">Trade</span><span class="p">,</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -5321,6 +5322,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
             <span class="n">trade</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trades</span><span class="p">[</span><span class="n">trade</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">trades</span><span class="p">[</span><span class="n">trade</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">trade</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">_on_trade_entry</span><span class="p">(</span><span class="n">trade</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">!=</span> <span class="n">ExchangeState</span><span class="o">.</span><span class="n">Run</span><span class="p">:</span>
         <span class="k">return</span>

@@ -54,7 +54,7 @@
     
       <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../css/mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../css/material.css">
     
       <link rel="stylesheet" href="../../../../css/jupyter.css">
     
@@ -2271,6 +2271,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> account
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2280,6 +2291,67 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;LiveAccount
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" LiveAccount">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount.pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;pl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount.risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount.stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;stop
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3883,6 +3955,56 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;LiveAccount
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" LiveAccount">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount.pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;pl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount.risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.live.account.LiveAccount.stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;stop
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3921,6 +4043,183 @@
 
 
 
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="lettrade.exchange.live.account.LiveAccount" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">LiveAccount</span>
+
+
+<a href="#lettrade.exchange.live.account.LiveAccount" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">LiveAccount</span><span class="p">(</span><span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="lettrade.account.Account" href="../../../account/account/#lettrade.account.account.Account">Account</a></code></p>
+
+
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>api</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>**kwargs</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Mirror of <a href="/LetTrade/reference/account/account/#lettrade.account.account.Account">lettrade.account.Account()</a>.</p>
+          </div>
+        </li>
+    </ul>
+
+                  <details class="quote">
+                    <summary>Source code in <code>lettrade/exchange/live/account.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Account for live trading</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        api (LiveAPI): _description_</span>
+<span class="sd">        **kwargs (dict, optional): Mirror of [lettrade.account.Account()](site:/reference/account/account/#lettrade.account.account.Account).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.exchange.live.account.LiveAccount.pl" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">pl</span>
+
+
+<a href="#lettrade.exchange.live.account.LiveAccount.pl" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">pl</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span> <span class="n">exit_price</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Estimate temporary profit and loss</p>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/account/account.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">entry_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">exit_price</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate temporary profit and loss&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">exit_price</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exit_price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exchange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">open</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">size</span> <span class="o">*</span> <span class="p">(</span><span class="n">exit_price</span> <span class="o">-</span> <span class="n">entry_price</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.exchange.live.account.LiveAccount.risk" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">risk</span>
+
+
+<a href="#lettrade.exchange.live.account.LiveAccount.risk" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">risk</span><span class="p">(</span><span class="n">side</span><span class="p">:</span> <span class="n"><span title="lettrade.exchange.OrderSide">OrderSide</span></span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Risk calculation</p>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/account/account.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="s2">&quot;OrderSide&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Risk calculation&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">side</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_risk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">side</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.exchange.live.account.LiveAccount.stop" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">stop</span>
+
+
+<a href="#lettrade.exchange.live.account.LiveAccount.stop" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">stop</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Stop account</p>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/account/account.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop account&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_equity_snapshot</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 

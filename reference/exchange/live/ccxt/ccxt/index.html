@@ -54,7 +54,7 @@
     
       <link rel="stylesheet" href="../../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../../css/mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../../css/material.css">
     
       <link rel="stylesheet" href="../../../../../css/jupyter.css">
     
@@ -4331,22 +4331,58 @@
 
 
 <a href="#lettrade.exchange.live.ccxt.ccxt.CCXTAccount" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">CCXTAccount</span><span class="p">(</span><span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../../api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">CCXTAccount</span><span class="p">(</span><span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../../api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="lettrade.exchange.live.LiveAccount">LiveAccount</span></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LiveAccount" href="../../account/#lettrade.exchange.live.account.LiveAccount">LiveAccount</a></code></p>
 
 
       <p>Account for CCXT</p>
+
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>api</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../../api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>**kwargs</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Mirror of <a href="/LetTrade/reference/account/account/#lettrade.account.account.Account">lettrade.account.Account()</a>.</p>
+          </div>
+        </li>
+    </ul>
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/live/account.py</code></summary>
                     <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
 <span class="normal">15</span>
-<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Account for live trading</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        api (LiveAPI): _description_</span>
+<span class="sd">        **kwargs (dict, optional): Mirror of [lettrade.account.Account()](site:/reference/account/account/#lettrade.account.account.Account).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_api</span> <span class="o">=</span> <span class="n">api</span>
 </code></pre></div></td></tr></table></div>
                   </details>

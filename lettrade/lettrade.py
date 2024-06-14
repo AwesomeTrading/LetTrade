@@ -189,14 +189,14 @@ class LetTrade:
         """Plot strategy/optimize result
 
         BotPlotter:
-            Miror of [BotPlotter.plot()](./plot/bot.md#lettrade.plot.bot.BotPlotter.plot).
-            Plotly implement [Plotly.plot()](plot/plotly/plotly.md#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).
+            Miror of [BotPlotter.plot()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.plot).
+            Plotly implement [Plotly.plot()](site:/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).
 
             Args:
-                `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](./plot/bot.md#lettrade.plot.bot.BotPlotter.jump)
+                `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)
 
             Example:
-                - Jump to trade_id:
+                - Jump to trade_id
                     ```python
                     lt.plot(
                         jump=dict(trade_id=1, range=300),
@@ -205,7 +205,7 @@ class LetTrade:
                     ```
 
         OptimizePlotter:
-            Miror of [OptimizePlotter.plot()](./plot/optimize.md#lettrade.plot.optimize.OptimizePlotter.plot).
+            Miror of [OptimizePlotter.plot()](site:/reference/plot/optimize/#lettrade.plot.optimize.OptimizePlotter.plot).
 
             Example:
                 -

@@ -13,6 +13,7 @@ mkdocs-techdocs-redirects
 mkdocs-gen-files
 mkdocs-literate-nav
 mkdocs-jupyter
+mkdocs-site-urls
 mkdocstrings[python]
 mkdocstrings-crystal
 mkdocstrings-python

@@ -1,6 +1,6 @@
 # LetTrade
 
-[![Documentation](https://img.shields.io/badge/docs-lettrade-708FCC.svg?style=for-the-badge)](https://AwesomeTrading.github.io/lettrade/)
+[![Documentation](https://img.shields.io/badge/docs-lettrade-708FCC.svg?style=for-the-badge)](https://AwesomeTrading.github.io/LetTrade/)
 [![Code Coverage](https://img.shields.io/codecov/c/gh/AwesomeTrading/lettrade.svg?style=for-the-badge)](https://codecov.io/gh/AwesomeTrading/lettrade)
 [![PyPI](https://img.shields.io/pypi/v/lettrade.svg?color=blue&style=for-the-badge)](https://pypi.org/project/lettrade)
 [![PyPI Python Version](https://img.shields.io/pypi/pyversions/lettrade.svg?color=skyblue&style=for-the-badge)](https://pypi.org/project/lettrade)
@@ -8,7 +8,7 @@
 
 A lightweight trading framework compatible with Stock, Forex, Crypto... markets
 
-Find more at [**Documentation**](https://awesometrading.github.io/lettrade/)
+Find more at [**Documentation**](https://AwesomeTrading.github.io/LetTrade/)
 
 ## Installation
 

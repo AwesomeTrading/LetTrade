@@ -1,7 +1,7 @@
 site_name: LetTrade
 site_url:
-  !ENV [READTHEDOCS_CANONICAL_URL, "https://AwesomeTrading.github.io/lettrade/"]
-repo_url: https://github.com/AwesomeTrading/lettrade
+  !ENV [READTHEDOCS_CANONICAL_URL, "https://AwesomeTrading.github.io/LetTrade/"]
+repo_url: https://github.com/AwesomeTrading/LetTrade
 edit_uri: edit/develop/docs/
 watch: [mkdocs.yml, README.md, lettrade, example]
 use_directory_urls: True
@@ -119,6 +119,6 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/AwesomeTrading/lettrade
+      link: https://github.com/AwesomeTrading/LetTrade
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/lettrade/

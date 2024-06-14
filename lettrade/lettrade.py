@@ -188,18 +188,30 @@ class LetTrade:
     def plot(self, *args, jump: Optional[dict] = None, **kwargs):
         """Plot strategy/optimize result
 
-        Example:
-            - `BotPlotter`: Jump to trade_id.
-                ```python
-                lt.plot(
-                    jump=dict(trade_id=1, range=300),
-                    layout=dict(height=2000),
-                )
-                ```
-            - `OptimizePlotter`:
-                ```python
-                lt.plot(layout=dict(height=2000))
-                ```
+        BotPlotter:
+            Miror of [BotPlotter.plot()](./plot/bot.md#lettrade.plot.bot.BotPlotter.plot).
+            Plotly implement [Plotly.plot()](plot/plotly/plotly.md#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).
+
+            Args:
+                `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](./plot/bot.md#lettrade.plot.bot.BotPlotter.jump)
+
+            Example:
+                - Jump to trade_id:
+                    ```python
+                    lt.plot(
+                        jump=dict(trade_id=1, range=300),
+                        layout=dict(height=2000),
+                    )
+                    ```
+
+        OptimizePlotter:
+            Miror of [OptimizePlotter.plot()](./plot/optimize.md#lettrade.plot.optimize.OptimizePlotter.plot).
+
+            Example:
+                -
+                    ```python
+                    lt.plot(layout=dict(height=2000))
+                    ```
         """
         if __debug__:
             from .utils.docs import is_docs_session

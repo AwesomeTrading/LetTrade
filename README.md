@@ -72,7 +72,7 @@ Max. Drawdown [%]                            -33.08
 Avg. Drawdown [%]                             -5.58
 Max. Drawdown Duration            688 days 00:00:00
 Avg. Drawdown Duration             41 days 00:00:00
-                                                   
+
 # Trades                                         34
 Best Trade [%]                               0.0007
 Worst Trade [%]                           -0.000732
@@ -84,20 +84,19 @@ SQN                                            1.78
 
 ### Start a strategy
 
-All example in [`example/`](https://github.com/AwesomeTrading/lettrade/tree/main/example) directory
-
-#### Download data
-
-```bash
-python -m example.data.yfinance
-```
-
-#### Backtest strategy
-
-<!-- ```bash exec="true" source="above" result="ansi" -->
-```bash
-python -m example.strategy.backtest_sma_cross
-```
+> [!NOTE]
+> More examples can be found in [`example/`](https://github.com/AwesomeTrading/lettrade/tree/main/example)
+>
+> #### Download data
+> ```bash
+> python -m example.data.yfinance
+> ```
+>
+> #### Backtest strategy
+> <!-- ```bash exec="true" source="above" result="ansi" -->
+> ```bash
+> python -m example.strategy.backtest_sma_cross
+> ```
 
 ```text
 # Strategy                <class '__main__.SmaCross'>

@@ -254,10 +254,11 @@ class LetTradeBackTest(LetTrade):
         """Optimize function help to integrated with external optimize trainer
 
         Args:
-            params_parser (Callable[[Any], list[set[str, Any]]], optional): _description_. Defaults to None.
-            result_parser (Callable[[BotStatistic], float], optional): _description_. Defaults to None.
-            total (int, optional): _description_. Defaults to 0.
-            process_bar (bool, optional): _description_. Defaults to False.
+            params_parser (Callable[[Any], list[set[str, Any]]], optional): Parse external parameters to bot parameters dict. Defaults to None.
+            result_parser (Callable[[BotStatistic], float], optional): Parse bot result to external score. Defaults to None.
+            total (int, optional): Total number of optimize if possible. Defaults to 0.
+            cache (str, optional): Cache directory to store optimize result. Defaults to "data/optimize".
+            process_bar (bool, optional): Enable/Disable process bar. Defaults to False.
 
         Raises:
             RuntimeError: _description_
@@ -345,6 +346,11 @@ class LetTradeBackTest(LetTrade):
         return result
 
     def optimize_cache(self, cache: str = "data/optimize"):
+        """Load optimize results from cache
+
+        Args:
+            cache (str, optional): Cache directory. Defaults to "data/optimize".
+        """
         import json
 
         self._optimize_init(cache=cache, total=0, process_bar=False)
@@ -455,64 +461,6 @@ class LetTradeBackTest(LetTrade):
             raise e
 
 
-def let_backtest(
-    strategy: Type[Strategy],
-    datas: DataFeed | list[DataFeed] | str | list[str],
-    feeder: Type[DataFeeder] = BackTestDataFeeder,
-    exchange: Type[Exchange] = BackTestExchange,
-    account: Type[Account] = BackTestAccount,
-    commander: Optional[Type[Commander]] = BackTestCommander,
-    stats: Optional[Type[BotStatistic]] = BotStatistic,
-    optimize_stats: Optional[Type[OptimizeStatistic]] = OptimizeStatistic,
-    plotter: Optional[Type[BotPlotter]] = "PlotlyBotPlotter",
-    optimize_plotter: Optional[Type[OptimizePlotter]] = "PlotlyOptimizePlotter",
-    cash: Optional[float] = 1_000,
-    commission: Optional[float] = 0.2,
-    leverage: Optional[float] = 20,
-    bot: Optional[Type[LetTradeBackTestBot]] = LetTradeBackTestBot,
-    **kwargs,
-) -> "LetTradeBackTest":
-    """Complete `lettrade` backtest depenencies
-
-    Args:
-        strategy (Type[Strategy]): The Strategy implement class
-        datas (DataFeed | list[DataFeed] | str | list[str]): _description_
-        feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
-        exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
-        account (Type[Account], optional): _description_. Defaults to BackTestAccount.
-        commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
-        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyBotPlotter.
-
-    Raises:
-        RuntimeError: The validate parameter error
-
-    Returns:
-        LetTradeBackTest: The LetTrade backtesting object
-    """
-    account_kwargs: dict = kwargs.setdefault("account_kwargs", {})
-    account_kwargs.update(
-        cash=cash,
-        commission=commission,
-        leverage=leverage,
-    )
-
-    return LetTradeBackTest(
-        strategy=strategy,
-        datas=datas,
-        feeder=feeder,
-        exchange=exchange,
-        commander=commander,
-        account=account,
-        stats=stats,
-        plotter=plotter,
-        bot=bot,
-        # Backtest
-        optimize_stats_cls=optimize_stats,
-        optimize_plotter_cls=optimize_plotter,
-        **kwargs,
-    )
-
-
 def _batch(seq, workers=None):
     n = np.clip(int(len(seq) // (workers or os.cpu_count() or 1)), 1, 300)
     for i in range(0, len(seq), n):
@@ -591,3 +539,61 @@ def _optimize_cache_set(dir: str, optimize: dict, result: pd.Series):
             ),
             f,
         )
+
+
+def let_backtest(
+    strategy: Type[Strategy],
+    datas: DataFeed | list[DataFeed] | str | list[str],
+    feeder: Type[DataFeeder] = BackTestDataFeeder,
+    exchange: Type[Exchange] = BackTestExchange,
+    account: Type[Account] = BackTestAccount,
+    commander: Optional[Type[Commander]] = BackTestCommander,
+    stats: Optional[Type[BotStatistic]] = BotStatistic,
+    optimize_stats: Optional[Type[OptimizeStatistic]] = OptimizeStatistic,
+    plotter: Optional[Type[BotPlotter]] = "PlotlyBotPlotter",
+    optimize_plotter: Optional[Type[OptimizePlotter]] = "PlotlyOptimizePlotter",
+    cash: Optional[float] = 1_000,
+    commission: Optional[float] = 0.2,
+    leverage: Optional[float] = 20,
+    bot: Optional[Type[LetTradeBackTestBot]] = LetTradeBackTestBot,
+    **kwargs,
+) -> "LetTradeBackTest":
+    """Complete `lettrade` backtest depenencies
+
+    Args:
+        strategy (Type[Strategy]): The Strategy implement class
+        datas (DataFeed | list[DataFeed] | str | list[str]): _description_
+        feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
+        exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
+        account (Type[Account], optional): _description_. Defaults to BackTestAccount.
+        commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
+        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyBotPlotter.
+
+    Raises:
+        RuntimeError: The validate parameter error
+
+    Returns:
+        LetTradeBackTest: The LetTrade backtesting object
+    """
+    account_kwargs: dict = kwargs.setdefault("account_kwargs", {})
+    account_kwargs.update(
+        cash=cash,
+        commission=commission,
+        leverage=leverage,
+    )
+
+    return LetTradeBackTest(
+        strategy=strategy,
+        datas=datas,
+        feeder=feeder,
+        exchange=exchange,
+        commander=commander,
+        account=account,
+        stats=stats,
+        plotter=plotter,
+        bot=bot,
+        # Backtest
+        optimize_stats_cls=optimize_stats,
+        optimize_plotter_cls=optimize_plotter,
+        **kwargs,
+    )

@@ -44,6 +44,8 @@ class Exchange(metaclass=ABCMeta):
     positions: dict[str, Position]
     """Available Position dict by `Position.id` key"""
 
+    _config: dict
+
     _brain: "Brain"
     _feeder: DataFeeder
     _account: Account
@@ -51,7 +53,9 @@ class Exchange(metaclass=ABCMeta):
 
     _state: ExchangeState
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        self._config = kwargs
+
         self.executes = dict()
         self.orders = dict()
         self.history_orders = dict()
@@ -103,7 +107,7 @@ class Exchange(metaclass=ABCMeta):
 
     def next_next(self):
         "Call after strategy.next()"
-        self._account._snapshot_equity()
+        self._account._equity_snapshot()
 
     def stop(self) -> None:
         """Stop Exchange"""

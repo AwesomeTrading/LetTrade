@@ -3,6 +3,8 @@ class Account:
     Manage account balance, leverage, commission. Risk calculate and control
     """
 
+    _config: dict
+
     _risk: float
     _cash: float
     _margin: float
@@ -10,7 +12,7 @@ class Account:
     _equities: dict[str, float]
 
     _exchange: "Exchange"
-    _do_snapshot_equity: bool
+    _do_equity_snapshot: bool
 
     def __init__(
         self,
@@ -18,7 +20,7 @@ class Account:
         cash: float = 10_000,
         margin: float = 1.0,
         leverage: float = 1.0,
-        # **kwargs,
+        **kwargs,
     ) -> None:
         """_summary_
 
@@ -32,21 +34,22 @@ class Account:
         self._cash = cash
         self._margin = margin
         self._leverage = leverage
+        self._config = kwargs
 
         self._equities = dict()
-        self._do_snapshot_equity = True  # Snapshot balance
-
-    def __repr__(self):
-        return "<Account " + str(self) + ">"
+        self._do_equity_snapshot = True  # Snapshot balance
 
     def init(self, exchange: "Exchange"):
         self._exchange = exchange
+
+    def __repr__(self):
+        return "<Account " + str(self) + ">"
 
     def start(self):
         pass
 
     def stop(self):
-        pass
+        self._equity_snapshot()
 
     def risk(self, side: "OrderSide", size: float, **kwargs) -> float:
         """
@@ -70,14 +73,15 @@ class Account:
             equity += sum(trade.pl for trade in self._exchange.trades.values())
         return equity
 
-    def _snapshot_equity(self):
-        if self._do_snapshot_equity or len(self._exchange.trades) > 0:
+    def _equity_snapshot(self):
+        if self._do_equity_snapshot or len(self._exchange.trades) > 0:
             bar = self._exchange.data.bar()
             self._equities[bar] = self.equity
 
-            self._do_snapshot_equity = False
+            if self._do_equity_snapshot:
+                self._do_equity_snapshot = False
 
     def _on_trade_exit(self, trade: "Trade"):
         self._cash += trade.pl - trade.fee
 
-        self._do_snapshot_equity = True
+        self._do_equity_snapshot = True

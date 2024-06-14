@@ -188,8 +188,7 @@ class LetTradeBackTest(LetTrade):
         )
 
         # Optimize stats queue
-        queue = self._stats.queue
-        self._kwargs["queue"] = queue
+        self._kwargs["queue"] = self._stats.queue
 
         # Optimize cache dir
         if cache is not None:
@@ -250,6 +249,7 @@ class LetTradeBackTest(LetTrade):
         total: int = 0,
         cache: str = "data/optimize",
         process_bar: bool = False,
+        dumper: Optional[Callable[[dict, "LetTradeBackTest"], None]] = None,
     ) -> Callable[[Any], Any]:
         """Optimize function help to integrated with external optimize trainer
 
@@ -274,15 +274,27 @@ class LetTradeBackTest(LetTrade):
         self._optimize_init(cache=cache, total=total, process_bar=process_bar)
 
         # Optimize parameters
-        self.__class__._opt_main_pid = os.getpid()
-        self.__class__._opt_params_parser = params_parser
-        self.__class__._opt_result_parser = result_parser
-        self.__class__._opt_kwargs = self._kwargs
+        optimizer_kwargs = dict(
+            main_pid=os.getpid(),
+            params_parser=params_parser,
+            result_parser=result_parser,
+            kwargs=self._kwargs,
+        )
+
+        if dumper is not None:
+            dumper(optimizer_kwargs, self)
+        else:
+            self.__class__._optimize_model_kwargs(optimizer_kwargs)
 
         return self.__class__._optimize_model
 
     @classmethod
-    def _optimize_model(cls, optimize: dict[str, Any], **kwargs):
+    def _optimize_model_kwargs(cls, kwargs: dict):
+        for key, value in kwargs.items():
+            setattr(cls, f"_opt_{key}", value)
+
+    @classmethod
+    def _optimize_model(cls, optimize: dict[str, Any], optimizer_kwargs=None, **kwargs):
         """Model to run bot in singleprocessing or multiprocessing
 
         Args:
@@ -294,6 +306,10 @@ class LetTradeBackTest(LetTrade):
         Returns:
             _type_: _description_
         """
+        # Optimizer loader
+        if optimizer_kwargs is not None:
+            cls._optimize_model_kwargs(optimizer_kwargs)
+
         # Load optimize parameters
         if cls._opt_params_parser:
             optimize = cls._opt_params_parser(optimize)
@@ -499,16 +515,15 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
             strategy_hash=hashlib.md5(pickle.dumps(strategy_cls)).hexdigest(),
         )
 
-    cache_dir = f"{dir}/{_md5_dict(info)}"
-
-    Path(cache_dir).mkdir(parents=True, exist_ok=True)
+    cache_dir = Path(f"{dir}/{_md5_dict(info)}")
+    cache_dir.mkdir(parents=True, exist_ok=True)
 
     # Strategy information
     with open(f"{cache_dir}/info.json", "w", encoding="utf-8") as f:
         json.dump(info, f)
 
     logger.info("Optimize cache directory: %s %s", cache_dir, info)
-    return cache_dir
+    return cache_dir.absolute()
 
 
 def _optimize_cache_get(dir: str, optimize: dict) -> str | None:
@@ -531,7 +546,7 @@ def _optimize_cache_set(dir: str, optimize: dict, result: pd.Series):
 
     hash = _md5_dict(optimize)
     path = f"{dir}/{hash}.json"
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w+", encoding="utf-8") as f:
         json.dump(
             dict(
                 optimize=optimize,

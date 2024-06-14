@@ -45,13 +45,18 @@ class OptimizeStatistic:
         t = threading.Thread(target=self._wait_done)
         t.start()
 
-    def _wait_done(self):
+    def _wait_done(self, retry=10):
         done = 0
         while True:
             try:
-                result = self._q.get(timeout=3)
-            except queue.Empty:
+                result = self._q.get(timeout=10)
+            except Exception as e:
+                # except queue.Empty:
                 # TODO: check closed main class then exit
+                retry -= 1
+                if retry <= 0:
+                    logger.warning("queue", exc_info=e)
+                    break
                 continue
 
             # Done

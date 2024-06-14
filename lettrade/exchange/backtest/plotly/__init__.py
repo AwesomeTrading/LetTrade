@@ -1,6 +1,6 @@
 import plotly.io as pio
 
-from .plotly_optimize import PlotlyOptimizePlotter
+from .optimize import PlotlyOptimizePlotter
 
 pio.templates.default = "plotly_dark"
 

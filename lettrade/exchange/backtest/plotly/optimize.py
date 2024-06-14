@@ -30,6 +30,7 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         raise NotImplementedError
 
     def plot(self, **kwargs):
+        """Plot optimize result"""
         ids = []
         equities = []
         for result in self.results:
@@ -77,6 +78,14 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         histfunc="max",
         **kwargs,
     ):
+        """Plot optimize heatmap
+
+        Args:
+            x (str, optional): _description_. Defaults to None.
+            y (str, optional): _description_. Defaults to None.
+            z (str, optional): _description_. Defaults to "equity".
+            histfunc (str, optional): _description_. Defaults to "max".
+        """
         x, y, z = self._xyz_default(x, y, z)
         df = pd.DataFrame(self._xyzs(x=x, y=y, z=z))
         fig = px.density_heatmap(
@@ -100,6 +109,14 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         histfunc="max",
         **kwargs,
     ):
+        """Plot optimize contour
+
+        Args:
+            x (str, optional): _description_. Defaults to None.
+            y (str, optional): _description_. Defaults to None.
+            z (str, optional): _description_. Defaults to "equity".
+            histfunc (str, optional): _description_. Defaults to "max".
+        """
         x, y, z = self._xyz_default(x, y, z)
         df = pd.DataFrame(self._xyzs(x=x, y=y, z=z))
         fig = px.density_contour(

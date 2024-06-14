@@ -190,7 +190,7 @@ class LetTrade:
 
         BotPlotter:
             Miror of [BotPlotter.plot()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.plot).
-            Plotly implement [Plotly.plot()](site:/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).
+            Plotly implement [PlotlyBotPlotter.plot()](site:/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).
 
             Args:
                 `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)
@@ -206,6 +206,7 @@ class LetTrade:
 
         OptimizePlotter:
             Miror of [OptimizePlotter.plot()](site:/reference/plot/optimize/#lettrade.plot.optimize.OptimizePlotter.plot).
+            Plotly implement [PlotlyOptimizePlotter.plot()](site:/reference/exchange/backtest/plotly/optimize/#lettrade.exchange.backtest.plotly.optimize.PlotlyOptimizePlotter.plot).
 
             Example:
                 -

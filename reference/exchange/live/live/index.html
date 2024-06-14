@@ -2041,11 +2041,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../backtest/plotly/plotly_optimize/" class="md-nav__link">
+      <a href="../../backtest/plotly/optimize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly_optimize
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> optimize
   </span>
   
 
@@ -4180,7 +4180,7 @@
 <details class="botplotter" open>
   <summary>BotPlotter</summary>
   <p>Miror of <a href="/LetTrade/reference/plot/bot/#lettrade.plot.bot.BotPlotter.plot">BotPlotter.plot()</a>.
-Plotly implement <a href="/LetTrade/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot">Plotly.plot()</a>.</p>
+Plotly implement <a href="/LetTrade/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot">PlotlyBotPlotter.plot()</a>.</p>
 <p>Args:
     <code>jump</code> (Optional[dict], optional): Miror of <a href="/LetTrade/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump">BotPlotter.jump()</a></p>
 <p>Example:
@@ -4194,7 +4194,8 @@ Plotly implement <a href="/LetTrade/reference/plot/plotly/plotly/#lettrade.plot.
 
 <details class="optimizeplotter" open>
   <summary>OptimizePlotter</summary>
-  <p>Miror of <a href="/LetTrade/reference/plot/optimize/#lettrade.plot.optimize.OptimizePlotter.plot">OptimizePlotter.plot()</a>.</p>
+  <p>Miror of <a href="/LetTrade/reference/plot/optimize/#lettrade.plot.optimize.OptimizePlotter.plot">OptimizePlotter.plot()</a>.
+Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/#lettrade.exchange.backtest.plotly.optimize.PlotlyOptimizePlotter.plot">PlotlyOptimizePlotter.plot()</a>.</p>
 <p>Example:
     -
         <div class="highlight"><pre><span></span><code><span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">2000</span><span class="p">))</span>
@@ -4236,12 +4237,13 @@ Plotly implement <a href="/LetTrade/reference/plot/plotly/plotly/#lettrade.plot.
 <span class="normal">219</span>
 <span class="normal">220</span>
 <span class="normal">221</span>
-<span class="normal">222</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">222</span>
+<span class="normal">223</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot strategy/optimize result</span>
 
 <span class="sd">    BotPlotter:</span>
 <span class="sd">        Miror of [BotPlotter.plot()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.plot).</span>
-<span class="sd">        Plotly implement [Plotly.plot()](site:/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).</span>
+<span class="sd">        Plotly implement [PlotlyBotPlotter.plot()](site:/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)</span>
@@ -4257,6 +4259,7 @@ Plotly implement <a href="/LetTrade/reference/plot/plotly/plotly/#lettrade.plot.
 
 <span class="sd">    OptimizePlotter:</span>
 <span class="sd">        Miror of [OptimizePlotter.plot()](site:/reference/plot/optimize/#lettrade.plot.optimize.OptimizePlotter.plot).</span>
+<span class="sd">        Plotly implement [PlotlyOptimizePlotter.plot()](site:/reference/exchange/backtest/plotly/optimize/#lettrade.exchange.backtest.plotly.optimize.PlotlyOptimizePlotter.plot).</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            -</span>

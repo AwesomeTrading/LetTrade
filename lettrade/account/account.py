@@ -12,6 +12,9 @@ class Account:
     _equities: dict[str, float]
 
     _exchange: "Exchange"
+
+    _is_equity_snapshot: bool
+    _is_equity_snapshot_everytick: bool
     _do_equity_snapshot: bool
 
     def __init__(
@@ -37,6 +40,11 @@ class Account:
         self._config = kwargs
 
         self._equities = dict()
+
+        self._is_equity_snapshot = self._config.get("equity_snapshot", True)
+        self._is_equity_snapshot_everytick = self._config.get(
+            "equity_snapshot_everytick", True
+        )
         self._do_equity_snapshot = True  # Snapshot balance
 
     def init(self, exchange: "Exchange"):
@@ -46,15 +54,14 @@ class Account:
         return "<Account " + str(self) + ">"
 
     def start(self):
-        pass
+        """Start account"""
 
     def stop(self):
+        """Stop account"""
         self._equity_snapshot()
 
     def risk(self, side: "OrderSide", size: float, **kwargs) -> float:
-        """
-        Risk calculation
-        """
+        """Risk calculation"""
         if size is None:
             return side * abs(self._risk)
         return side * abs(size)
@@ -74,14 +81,24 @@ class Account:
         return equity
 
     def _equity_snapshot(self):
-        if self._do_equity_snapshot or len(self._exchange.trades) > 0:
+        if not self._is_equity_snapshot:
+            return
+
+        if self._do_equity_snapshot or (
+            self._is_equity_snapshot_everytick and len(self._exchange.trades) > 0
+        ):
             bar = self._exchange.data.bar()
             self._equities[bar] = self.equity
 
             if self._do_equity_snapshot:
                 self._do_equity_snapshot = False
 
+    def _on_trade_entry(self, trade: "Trade"):
+        if not self._do_equity_snapshot:
+            self._do_equity_snapshot = True
+
     def _on_trade_exit(self, trade: "Trade"):
         self._cash += trade.pl - trade.fee
 
-        self._do_equity_snapshot = True
+        if not self._do_equity_snapshot:
+            self._do_equity_snapshot = True

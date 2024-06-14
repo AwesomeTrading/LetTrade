@@ -212,6 +212,7 @@ class Exchange(metaclass=ABCMeta):
                 trade = self.trades[trade.id]
             else:
                 self.trades[trade.id] = trade
+                self._account._on_trade_entry(trade)
 
         if self._state != ExchangeState.Run:
             return

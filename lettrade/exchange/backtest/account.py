@@ -9,16 +9,28 @@ class BackTestAccount(Account):
     def __init__(
         self,
         risk: float = 0.02,
-        cash: float = 10000,
+        cash: float = 10_000,
         commission: float = 0.2,
         margin: float = 1,
         leverage: float = 1,
+        **kwargs,
     ) -> None:
+        """Account for backtest
+
+        Args:
+            risk (float, optional): _description_. Defaults to 0.02.
+            cash (float, optional): _description_. Defaults to 10_000.
+            commission (float, optional): Commission fee is percent of size. Defaults to 0.2.
+            margin (float, optional): _description_. Defaults to 1.
+            leverage (float, optional): _description_. Defaults to 1.
+            **kwargs (dict, optional): Mirror of [lettrade.account.Account()](site:/reference/account/account/#lettrade.account.account.Account).
+        """
         super().__init__(
             risk=risk,
             cash=cash,
             margin=margin,
             leverage=leverage,
+            **kwargs,
         )
         self._commission = commission
 
@@ -38,6 +50,8 @@ class BackTestAccount(Account):
 
 
 class ForexBackTestAccount(BackTestAccount):
+    """Forex backtest account helps to handle lot size"""
+
     def __repr__(self):
         return "<ForexBackTestAccount " + str(self) + ">"
 

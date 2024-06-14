@@ -501,12 +501,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/2.blackbox/</loc>
+         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/2.optuna/</loc>
          <lastmod>2024-06-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/3.hyperactive/</loc>
+         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/3.blackbox/</loc>
+         <lastmod>2024-06-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/4.hyperactive/</loc>
          <lastmod>2024-06-14</lastmod>
          <changefreq>daily</changefreq>
     </url>

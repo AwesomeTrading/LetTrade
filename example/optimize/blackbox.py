@@ -1,10 +1,8 @@
-import black_box as bb
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+import blackbox as bb
 import talib.abstract as ta
 
-from lettrade import DataFeed, Strategy, crossover, crossunder
+from lettrade import DataFeed, Strategy
+from lettrade import indicator as i
 from lettrade.exchange.backtest import ForexBackTestAccount, let_backtest
 
 
@@ -16,8 +14,8 @@ class SmaCross(Strategy):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
         df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
 
-        df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
-        df["signal_ema_crossunder"] = crossunder(df.ema1, df.ema2)
+        df["signal_ema_crossover"] = i.crossover(df.ema1, df.ema2)
+        df["signal_ema_crossunder"] = i.crossunder(df.ema1, df.ema2)
 
     def next(self, df: DataFeed):
         if len(self.orders) > 0 or len(self.trades) > 0:
@@ -25,10 +23,10 @@ class SmaCross(Strategy):
 
         if df.l.signal_ema_crossover[-1]:
             price = self.data.l.close[-1]
-            self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
+            self.buy(size=0.1, sl=price - 0.001, tp=price + 0.001)
         elif df.l.signal_ema_crossunder[-1]:
             price = self.data.l.close[-1]
-            self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
+            self.sell(size=0.1, sl=price + 0.001, tp=price - 0.001)
 
 
 lt = let_backtest(
@@ -39,66 +37,22 @@ lt = let_backtest(
 
 
 def params_parser(args):
-    return [
-        ("ema1_period", int(args[0])),
-        ("ema2_period", int(args[1])),
-    ]
+    return {"ema1_period": int(args[0]), "ema2_period": int(args[1])}
 
 
 def result_parser(result):
-    return result["Equity [$]"]
+    return -result["equity"]
 
 
-best_params = bb.search_min(
+result = bb.minimize(
     f=lt.optimize_model(
         params_parser=params_parser,
         result_parser=result_parser,
-    ),  # given function
-    domain=[[5, 25], [10, 50]],  # ranges of each parameter
-    budget=200,  # total number of function calls available
+    ),
+    domain=[[5, 25, 1], [10, 50, 1]],  # ranges of each parameter
+    budget=300,  # total number of function calls available
     batch=12,  # number of calls that will be evaluated in parallel
-    resfile="output.csv",
-)  # text file where results will be saved
-
-df = pd.read_csv("output.csv")
-
-df.columns = ["x", "y", "z"]
-df.x = df.x.astype(int)
-df.y = df.y.astype(int)
-
-print(df.tail())
-
-# fig = px.density_heatmap(
-#     df,
-#     x="x",
-#     y="y",
-#     z="z",
-#     nbinsx=20,
-#     nbinsy=40,
-#     histfunc="max",
-#     color_continuous_scale="Viridis",
-# )
-# fig.show()
-
-fig = px.density_contour(
-    df,
-    x="x",
-    y="y",
-    z="z",
-    histfunc="max",
 )
-fig.update_traces(contours_coloring="fill", contours_showlabels=True)
-fig.show()
+lt.optimize_done()
 
-# fig = go.Figure(
-#     go.Histogram2d(
-#         x=df[df.columns[0]],
-#         y=df[df.columns[1]],
-#         # z=df[df.columns[2]],
-#         nbinsx=20,
-#         nbinsy=40,
-#         # color_continuous_scale="Viridis",
-#     )
-# )
-
-# fig.show()
+lt.plotter.heatmap(x="ema1_period", y="ema2_period")

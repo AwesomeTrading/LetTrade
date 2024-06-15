@@ -52,7 +52,7 @@ class OptimizeStatistic:
                 result = self._q.get(timeout=3)
             except queue.Empty:
                 continue
-            except AttributeError:
+            except (AttributeError, BrokenPipeError):
                 break
             except Exception as e:
                 # TODO: check closed main class then exit

@@ -29,7 +29,7 @@ pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ```python
 import talib.abstract as ta
 
-from lettrade.all import DataFeed, Strategy, let_backtest, crossover, crossunder
+from lettrade.all import DataFeed, Strategy, let_backtest, indicator as i
 
 
 class SmaCross(Strategy):
@@ -40,8 +40,8 @@ class SmaCross(Strategy):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
         df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
 
-        df["crossover"] = crossover(df.ema1, df.ema2)
-        df["crossunder"] = crossunder(df.ema1, df.ema2)
+        df["crossover"] = i.crossover(df.ema1, df.ema2)
+        df["crossunder"] = i.crossunder(df.ema1, df.ema2)
 
     def next(self, df: DataFeed):
         if df.l.crossover[-1]:

@@ -1,7 +1,8 @@
 import talib.abstract as ta
 
 import example.logger
-from lettrade import DataFeed, Strategy, crossover, crossunder
+from lettrade import DataFeed, Strategy
+from lettrade import indicator as i
 from lettrade.exchange.backtest import ForexBackTestAccount, let_backtest
 
 
@@ -13,8 +14,8 @@ class SmaCross(Strategy):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
         df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
 
-        df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
-        df["signal_ema_crossunder"] = crossunder(df.ema1, df.ema2)
+        df["signal_ema_crossover"] = i.crossover(df.ema1, df.ema2)
+        df["signal_ema_crossunder"] = i.crossunder(df.ema1, df.ema2)
 
     def next(self, df: DataFeed):
         if len(self.orders) > 0 or len(self.trades) > 0:

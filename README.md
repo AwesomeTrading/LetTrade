@@ -84,19 +84,19 @@ SQN                                            1.78
 
 ### Start a strategy
 
-> [!NOTE]
-> More examples can be found in [`example/`](https://github.com/AwesomeTrading/lettrade/tree/main/example)
->
-> #### Download data
-> ```bash
-> python -m example.data.yfinance
-> ```
->
-> #### Backtest strategy
-> <!-- ```bash exec="true" source="above" result="ansi" -->
-> ```bash
-> python -m example.strategy.backtest_sma_cross
-> ```
+More examples can be found in [`example/`](https://github.com/AwesomeTrading/lettrade/tree/main/example)
+
+#### Download data
+
+```bash
+python -m example.data.yfinance
+```
+
+#### Backtest strategy
+<!-- ```bash exec="true" source="above" result="ansi" -->
+```bash
+python -m example.strategy.backtest_sma_cross
+```
 
 ```text
 # Strategy                <class '__main__.SmaCross'>

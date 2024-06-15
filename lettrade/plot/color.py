@@ -2,6 +2,8 @@ from enum import Enum
 
 
 class PlotColor(str, Enum):
+    """Enum plot color"""
+
     RED = "#ff1947"
     LIGHT_RED = "#e6695b"
     PINK = "#f50056"

@@ -1,4 +1,3 @@
-from abc import ABC
 from datetime import datetime
 from typing import Any, Optional, Sequence, final
 
@@ -16,7 +15,7 @@ from lettrade.exchange import (
 )
 
 
-class Strategy(ABC):
+class Strategy:
     """
     Base class to implement a strategy
     """

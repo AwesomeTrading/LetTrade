@@ -14,7 +14,7 @@ def keltner_channel(
     atr: int = 20,
     shift: float = 1.6,
     suffix: str = "",
-) -> list[pd.Series]:
+) -> tuple[pd.Series]:
     """_summary_
 
     Args:
@@ -26,7 +26,7 @@ def keltner_channel(
         suffix (str, optional): _description_. Defaults to "".
 
     Returns:
-        list[pd.Series]: upper, middle, lower
+        tuple[pd.Series]: upper, middle, lower
     """
     ma_fn = ta.SMA if ma_mode == "sma" else ta.EMA
 

@@ -22,6 +22,7 @@ class BotPlotter(Plotter):
     strategy: Strategy
 
     datas: list[DataFeed]
+    """All plotting datafeeds"""
 
     _datas_stored: Optional[list[DataFeed]] = None
     _jump_start_dt: Optional[pd.Timestamp] = None
@@ -38,6 +39,11 @@ class BotPlotter(Plotter):
 
     @property
     def data(self) -> DataFeed:
+        """Get plotting main datafeed
+
+        Returns:
+            DataFeed: _description_
+        """
         return self.datas[0]
 
     @data.setter
@@ -66,7 +72,6 @@ class BotPlotter(Plotter):
             name (Optional[str], optional): _description_. Defaults to None.
 
         Raises:
-            RuntimeError: _description_
             RuntimeError: _description_
         """
         if self._datas_stored is None:
@@ -144,6 +149,7 @@ class BotPlotter(Plotter):
         self.load()
 
     def jump_reset(self):
+        """Reset jump datafeeds back to bot datafeeds"""
         if self._jump_start_dt is None:
             return
 

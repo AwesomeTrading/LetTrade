@@ -1,4 +1,13 @@
-def plot_merge(source: dict, *updates: list[dict]):
+def plot_merge(source: dict, *updates: list[dict]) -> dict:
+    """Merge multiple update plot config to source config
+
+    Args:
+        source (dict): _description_
+        *updates (list[dict]): _description_
+
+    Returns:
+        dict: Merged config
+    """
     for update in updates:
         for k, v in update.items():
             if k not in source:

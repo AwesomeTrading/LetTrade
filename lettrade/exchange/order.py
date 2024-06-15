@@ -54,23 +54,25 @@ class Order(BaseTransaction):
         self.validate()
 
     def __repr__(self):
-        return "<Order {}>".format(
-            ", ".join(
-                f"{param}={value if isinstance(value, str) else round(value, 5)}"
-                for param, value in (
-                    ("id", self.id),
-                    ("type", self.type),
-                    ("state", self.state),
-                    ("size", self.size),
-                    ("limit", self.limit_price),
-                    ("stop", self.stop_price),
-                    ("sl", self.sl_price),
-                    ("tp", self.tp_price),
-                    ("tag", self.tag),
-                )
-                if value is not None
-            )
+        data = (
+            f"id='{self.id}'"
+            f", open_at={self.open_at}"
+            f", open_price={round(self.open_price, 5)}"
+            f", type='{self.type}'"
+            f", state='{self.state}'"
+            f", size={round(self.size, 5)}"
         )
+        if self.limit:
+            data += f", limit={round(self.limit, 5)}"
+        if self.stop:
+            data += f", stop={round(self.stop, 5)}"
+        if self.sl:
+            data += f", sl={round(self.sl, 5)}"
+        if self.tp:
+            data += f", tp={round(self.tp, 5)}"
+        data += f", tag='{self.tag}'"
+
+        return f"<Order {data}>"
 
     def validate(self):
         # Validate

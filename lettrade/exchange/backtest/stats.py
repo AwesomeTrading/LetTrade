@@ -49,13 +49,16 @@ class OptimizeStatistic:
         done = 0
         while True:
             try:
-                result = self._q.get(timeout=10)
+                result = self._q.get(timeout=3)
+            except queue.Empty:
+                continue
+            except AttributeError:
+                break
             except Exception as e:
-                # except queue.Empty:
                 # TODO: check closed main class then exit
                 retry -= 1
                 if retry <= 0:
-                    logger.warning("queue", exc_info=e)
+                    logger.warning("queue %s", e, exc_info=e)
                     break
                 continue
 
@@ -77,11 +80,23 @@ class OptimizeStatistic:
         self.done()
 
     def done(self):
+        time.sleep(1)  # Wait for return finish
+
+        if self._manager is not None:
+            self._manager.shutdown()
+            del self._manager
+            self._manager = None
+
+        if self._q is not None:
+            try:
+                self._q.close()
+                del self._q
+            except Exception:
+                pass
+            self._q = None
+
         if self.plotter:
             self.plotter.on_done()
-
-        time.sleep(1)  # Wait for return finish
-        self._manager.shutdown()
 
     def compute(self):
         """

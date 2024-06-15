@@ -395,6 +395,10 @@ class LetTradeBackTest(LetTrade):
 
         logger.warning("Loaded %s caches", len(self._stats.results))
 
+    def optimize_done(self):
+        """Clean and close optimize handlers"""
+        self._stats.done()
+
     @classmethod
     def _optimizes_run(
         cls,

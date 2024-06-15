@@ -3,7 +3,7 @@ from typing import Optional
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from lettrade.plot import BotPlotter
+from lettrade.plot import BotPlotter, PlotColor
 
 
 class PlotlyBotPlotter(BotPlotter):
@@ -285,7 +285,7 @@ class PlotlyBotPlotter(BotPlotter):
                 marker=dict(
                     symbol="line-ew-open",
                     size=10,
-                    color="green" if order.is_long else "red",
+                    color=(PlotColor.GREEN if order.is_long else PlotColor.RED),
                 ),
                 showlegend=False,
             )
@@ -319,7 +319,7 @@ class PlotlyBotPlotter(BotPlotter):
                 y.append(trade.exit_price)
                 customdata.append(["Exit", trade.size, trade.pl, trade.fee])
 
-            color = "green" if trade.is_long else "red"
+            color = PlotColor.GREEN if trade.is_long else PlotColor.RED
             self.figure.add_scatter(
                 x=x,
                 y=y,

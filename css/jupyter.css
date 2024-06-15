@@ -21,6 +21,10 @@
     font-size: 14px !important;
 }
 
+.jupyter-wrapper .jp-OutputArea-child {
+    max-height: 60rem;
+}
+
 .jp-InputPrompt,
 .jp-OutputPrompt {
     display: none !important;

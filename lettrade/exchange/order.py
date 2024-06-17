@@ -4,7 +4,7 @@ from typing import Optional, Type
 import pandas as pd
 
 from .base import BaseTransaction, OrderState, OrderType
-from .error import LetTradeOrderValidateException
+from .error import LetOrderValidateException
 
 logger = logging.getLogger(__name__)
 
@@ -79,28 +79,28 @@ class Order(BaseTransaction):
         if self.size > 0:
             if self.sl_price is not None:
                 if self.sl_price >= price:
-                    raise LetTradeOrderValidateException(
+                    raise LetOrderValidateException(
                         f"Order buy sl {self.sl_price} >= price {price}"
                     )
             if self.tp_price is not None:
                 if self.tp_price <= price:
-                    raise LetTradeOrderValidateException(
+                    raise LetOrderValidateException(
                         f"Order buy tp {self.tp_price} >= price {price}"
                     )
         # Sell side
         elif self.size < 0:
             if self.sl_price is not None:
                 if self.sl_price <= price:
-                    raise LetTradeOrderValidateException(
+                    raise LetOrderValidateException(
                         f"Order sell sl {self.sl_price} <= price {price}"
                     )
             if self.tp_price is not None:
                 if self.tp_price >= price:
-                    raise LetTradeOrderValidateException(
+                    raise LetOrderValidateException(
                         f"Order sell tp {self.tp_price} >= price {price}"
                     )
         else:
-            raise LetTradeOrderValidateException(f"Order side {self.size} is invalid")
+            raise LetOrderValidateException(f"Order side {self.size} is invalid")
 
     def _on_place(self) -> "OrderResult":
         """Place `Order`

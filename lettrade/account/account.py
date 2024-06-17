@@ -1,3 +1,6 @@
+from .error import LetAccountInsufficientException
+
+
 class Account:
     """
     Manage account balance, leverage, commission. Risk calculate and control
@@ -13,8 +16,6 @@ class Account:
 
     _exchange: "Exchange"
 
-    _is_equity_snapshot: bool
-    _is_equity_snapshot_everytick: bool
     _do_equity_snapshot: bool
 
     def __init__(
@@ -41,10 +42,6 @@ class Account:
 
         self._equities = dict()
 
-        self._is_equity_snapshot = self._config.get("equity_snapshot", True)
-        self._is_equity_snapshot_everytick = self._config.get(
-            "equity_snapshot_everytick", True
-        )
         self._do_equity_snapshot = True  # Snapshot balance
 
     def init(self, exchange: "Exchange"):
@@ -58,7 +55,10 @@ class Account:
 
     def stop(self):
         """Stop account"""
-        self._equity_snapshot()
+        try:
+            self._equity_snapshot()
+        except LetAccountInsufficientException:
+            pass
 
     def risk(self, side: "TradeSide", size: float, **kwargs) -> float:
         """Risk calculation"""
@@ -81,14 +81,14 @@ class Account:
         return equity
 
     def _equity_snapshot(self):
-        if not self._is_equity_snapshot:
-            return
+        if self._do_equity_snapshot or len(self._exchange.positions) > 0:
+            equity = self.equity
 
-        if self._do_equity_snapshot or (
-            self._is_equity_snapshot_everytick and len(self._exchange.positions) > 0
-        ):
             bar = self._exchange.data.bar()
-            self._equities[bar] = self.equity
+            self._equities[bar] = equity
+
+            if equity <= 0:
+                raise LetAccountInsufficientException()
 
             if self._do_equity_snapshot:
                 self._do_equity_snapshot = False

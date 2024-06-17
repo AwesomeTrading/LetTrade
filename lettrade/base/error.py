@@ -1,6 +1,6 @@
-class LetTradeException(Exception):
+class LetException(Exception):
     pass
 
 
-class LetTradeNoMoreDataFeed(LetTradeException):
+class LetTradeNoMoreDataFeed(LetException):
     pass

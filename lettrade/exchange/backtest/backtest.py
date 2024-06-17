@@ -576,8 +576,6 @@ def let_backtest(
     cash: Optional[float] = 1_000,
     commission: Optional[float] = 0.2,
     leverage: Optional[float] = 20,
-    equity_snapshot: bool = True,
-    equity_snapshot_everytick: bool = False,
     **kwargs,
 ) -> "LetTradeBackTest":
     """Complete `lettrade` backtest depenencies
@@ -602,8 +600,6 @@ def let_backtest(
         cash=cash,
         commission=commission,
         leverage=leverage,
-        equity_snapshot=equity_snapshot,
-        equity_snapshot_everytick=equity_snapshot_everytick,
     )
 
     return LetTradeBackTest(

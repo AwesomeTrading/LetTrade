@@ -1,5 +1,6 @@
 import logging
 
+from lettrade.account import LetAccountInsufficientException
 from lettrade.base.error import LetTradeNoMoreDataFeed
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
@@ -64,6 +65,9 @@ class Brain:
                 self.exchange.next()
                 self.strategy._next()
                 self.exchange.next_next()
+            except LetAccountInsufficientException as e:
+                logger.error("Account equity is insufficient", exc_info=e)
+                break
             except LetTradeNoMoreDataFeed:
                 break
             except Exception as e:

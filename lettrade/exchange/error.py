@@ -1,9 +1,9 @@
-from lettrade.base.error import LetTradeException
+from lettrade.base.error import LetException
 
 
-class LetTradeOrderException(LetTradeException):
+class LetOrderException(LetException):
     pass
 
 
-class LetTradeOrderValidateException(LetTradeException):
+class LetOrderValidateException(LetException):
     pass

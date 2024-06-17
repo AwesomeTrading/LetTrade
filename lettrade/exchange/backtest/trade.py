@@ -73,7 +73,7 @@ class BackTestOrder(Order):
 
         self.exchange.on_order(self)
 
-    def _on_execute(self, price: float, at: object) -> BackTestExecution:
+    def _on_fill(self, price: float, at: object) -> BackTestExecution:
         """Execution order and notify for Exchange
 
         Args:
@@ -90,7 +90,7 @@ class BackTestOrder(Order):
             raise RuntimeError(f"Execution a {self.state} order")
 
         # Order
-        ok = super()._on_execute(price=price, at=at)
+        ok = super()._on_fill(price=price, at=at)
 
         # Execution is enable
         if self.exchange.executions is not None:
@@ -126,8 +126,6 @@ class BackTestOrder(Order):
             limit_price=limit_price,
             stop_price=stop_price,
             tag=position.tag,
-            open_at=position.data.bar(),
-            open_price=limit_price or stop_price,
             parent=position,
         )
         return order
@@ -137,6 +135,9 @@ class BackTestPosition(Position):
     """Position for backtesting"""
 
     def update(self, sl=None, tp=None, **kwargs):
+        if not sl and not tp:
+            raise RuntimeError("Update sl=None and tp=None")
+
         if sl is not None:
             if self.sl_order:
                 self.sl_order.update(stop_price=sl)
@@ -209,7 +210,7 @@ class BackTestPosition(Position):
             stop_price=stop_price,
         )
         self.sl_order = sl_order
-        sl_order._on_place()
+        sl_order._on_place(at=self.data.bar())
         return sl_order
 
     def _new_tp_order(self, limit_price: float) -> BackTestOrder:
@@ -224,7 +225,7 @@ class BackTestPosition(Position):
         )
 
         self.tp_order = tp_order
-        tp_order._on_place()
+        tp_order._on_place(at=self.data.bar())
         return tp_order
 
     @classmethod

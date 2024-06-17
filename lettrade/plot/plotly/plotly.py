@@ -256,19 +256,19 @@ class PlotlyBotPlotter(BotPlotter):
             orders = [
                 o
                 for o in orders
-                if o.open_at > self._jump_start_dt and o.open_at < self._jump_stop_dt
+                if o.place_at > self._jump_start_dt and o.place_at < self._jump_stop_dt
             ]
 
         # TODO: test using order/sl/tp line for performance
         for order in orders:
-            x = [order.open_at]
-            y = [order.open_price or order.limit or order.stop]
+            x = [order.place_at]
+            y = [order.place_price]
 
             hovertemplate = (
                 "<br>"
                 # f"Order id: {order.id}<br>"
                 "Index: %{x}<br>"
-                f"At: {order.open_at}<br>"
+                f"At: {order.place_at}<br>"
                 "Price: %{y}<br>"
                 f"Size: {order.size}<br>"
             )

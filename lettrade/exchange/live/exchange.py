@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, Type
 
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType
@@ -13,9 +13,9 @@ logger = logging.getLogger(__name__)
 class LiveExchange(Exchange):
     """MetaTrade 5 exchange module for `lettrade`"""
 
-    _execution_cls: LiveExecution = LiveExecution
-    _order_cls: LiveOrder = LiveOrder
-    _position_cls: LivePosition = LivePosition
+    _execution_cls: Type[LiveExecution] = LiveExecution
+    _order_cls: Type[LiveOrder] = LiveOrder
+    _position_cls: Type[LivePosition] = LivePosition
 
     _api: LiveAPI
 
@@ -85,8 +85,6 @@ class LiveExchange(Exchange):
             sl_price=sl,
             tp_price=tp,
             tag=tag,
-            open_price=self.data.l.open[0],
-            open_at=self.data.bar(),
         )
         ok = order._place()
 

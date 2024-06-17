@@ -14,7 +14,7 @@ class OrderState(str, Enum):
     Pending = "pending"
     Placed = "place"
     Partial = "partial"
-    Executed = "executed"
+    Filled = "filled"
     Canceled = "canceled"
 
 

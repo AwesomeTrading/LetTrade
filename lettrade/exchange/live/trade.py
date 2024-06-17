@@ -95,8 +95,6 @@ class LiveOrder(Order):
         tp_price: Optional[float] = None,
         parent: Optional["Position"] = None,
         tag: Optional[str] = "",
-        open_at: Optional[int] = None,
-        open_price: Optional[int] = None,
     ):
         super().__init__(
             id=id,
@@ -111,8 +109,6 @@ class LiveOrder(Order):
             tp_price=tp_price,
             parent=parent,
             tag=tag,
-            open_at=open_at,
-            open_price=open_price,
         )
         self._api: LiveAPI = exchange._api
 
@@ -142,7 +138,8 @@ class LiveOrder(Order):
             return error
 
         self.id = result.order
-        ok = super()._on_place()
+        # TODO: test
+        ok = super()._on_place(at=result.at)
         ok.raw = result
         return ok
 
@@ -162,8 +159,6 @@ class LiveOrder(Order):
             sl_price=raw.sl,
             tp_price=raw.tp,
             tag=raw.comment,
-            open_price=raw.price_open,
-            open_at=raw.price_open,
         )
 
 

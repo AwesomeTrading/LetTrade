@@ -24,8 +24,6 @@ class Order(BaseTransaction):
         tp_price: Optional[float] = None,
         parent: Optional["Position"] = None,
         tag: Optional[object] = None,
-        open_at: Optional[pd.Timestamp] = None,
-        open_price: Optional[float] = None,
     ):
         super().__init__(
             id=id,
@@ -43,19 +41,18 @@ class Order(BaseTransaction):
         self.parent: Optional["Position"] = parent
         self.tag: Optional[object] = tag
 
-        self.open_at: Optional[pd.Timestamp] = open_at
-        self.open_price: Optional[float] = open_price
-        self.entry_at: Optional[pd.Timestamp] = None
-        self.entry_price: Optional[float] = None
+        self.place_at: Optional[pd.Timestamp] = None
+        self.filled_at: Optional[pd.Timestamp] = None
+        self.filled_price: Optional[float] = None
 
         self.validate()
 
     def __repr__(self):
         data = (
             f"id='{self.id}'"
-            f", open_at={self.open_at}"
-            f", open_price={round(self.open_price, 5)}"
             f", type='{self.type}'"
+            f", place_at={self.place_at}"
+            # f", place_price={round(self.place_price, 5)}"
             f", state='{self.state}'"
             f", size={round(self.size, 5)}"
         )
@@ -102,7 +99,7 @@ class Order(BaseTransaction):
         else:
             raise LetOrderValidateException(f"Order side {self.size} is invalid")
 
-    def _on_place(self) -> "OrderResult":
+    def _on_place(self, at: pd.Timestamp) -> "OrderResult":
         """Place `Order`
         Set `status` to `OrderState.Placed`.
         Send event to `Exchange`
@@ -117,14 +114,15 @@ class Order(BaseTransaction):
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
         self.state = OrderState.Placed
+        self.place_at = at
 
         logger.info("Placing new order: %s", self)
 
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def _on_execute(self, price: float, at: pd.Timestamp) -> "OrderResult":
-        """Execute `Order`.
+    def _on_fill(self, price: float, at: pd.Timestamp) -> "OrderResult":
+        """Fill `Order`.
         Set `status` to `OrderState.Executed`.
         Send event to `Exchange`
 
@@ -141,9 +139,9 @@ class Order(BaseTransaction):
         if self.state != OrderState.Placed:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Placed")
 
-        self.entry_at = at
-        self.entry_price = price
-        self.state = OrderState.Executed
+        self.filled_at = at
+        self.filled_price = price
+        self.state = OrderState.Filled
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
@@ -192,18 +190,34 @@ class Order(BaseTransaction):
         self.sl_price = other.sl_price
         self.tp_price = other.tp_price
 
-        if other.open_price:
-            self.open_price = other.open_price
-        if other.open_at:
-            self.open_at = other.open_at
-        if other.entry_price:
-            self.entry_price = other.entry_price
-        if other.entry_at:
-            self.entry_at = other.entry_at
+        if other.limit_price:
+            self.limit_price = other.limit_price
+        if other.stop_price:
+            self.stop_price = other.stop_price
+        if other.place_at:
+            self.place_at = other.place_at
+
+        if other.filled_price:
+            self.filled_price = other.filled_price
+        if other.filled_at:
+            self.filled_at = other.filled_at
+
         if other.parent:
             self.parent = other.parent
 
     # Fields getters
+    @property
+    def place_price(self) -> Optional[float]:
+        """Getter of place_price
+
+        Returns:
+            Optional[float]: `float` or `None`
+        """
+        if self.type == OrderType.Limit:
+            return self.limit_price
+        if self.type == OrderType.Stop:
+            return self.stop_price
+
     @property
     def limit(self) -> Optional[float]:
         """Getter of limit_price

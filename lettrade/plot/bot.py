@@ -89,7 +89,7 @@ class BotPlotter(Plotter):
                 else:
                     raise RuntimeError(f"Order id {order_id} not found")
 
-                loc = self._data_stored.l.index.get_loc(order.open_at)
+                loc = self._data_stored.l.index.get_loc(order.place_at)
                 since = loc - int(range / 2)
 
             elif position_id is not None:  # Jump to position id

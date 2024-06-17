@@ -161,7 +161,7 @@ class Exchange(metaclass=ABCMeta):
         if not isinstance(order, Order):
             raise RuntimeError(f"{order} is not instance of type Order")
 
-        if order.state in [OrderState.Executed, OrderState.Canceled]:
+        if order.state in [OrderState.Filled, OrderState.Canceled]:
             self.history_orders[order.id] = order
             if order.id in self.orders:
                 del self.orders[order.id]

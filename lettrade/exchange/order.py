@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class Order(BaseTransaction):
-    _trade_cls: Type["Trade"] = None
+    _trade_cls: Type["Position"] = None
     _execute_cls: Type["Execute"] = None
 
     def __init__(
@@ -25,7 +25,7 @@ class Order(BaseTransaction):
         stop_price: Optional[float] = None,
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
-        trade: Optional["Trade"] = None,
+        position: Optional["Position"] = None,
         tag: Optional[object] = None,
         open_at: Optional[pd.Timestamp] = None,
         open_price: Optional[float] = None,
@@ -43,7 +43,7 @@ class Order(BaseTransaction):
         self.stop_price: Optional[float] = stop_price
         self.sl_price: Optional[float] = sl_price
         self.tp_price: Optional[float] = tp_price
-        self.trade: Optional["Trade"] = trade
+        self.position: Optional["Position"] = position
         self.tag: Optional[object] = tag
 
         self.open_at: Optional[pd.Timestamp] = open_at
@@ -203,8 +203,8 @@ class Order(BaseTransaction):
             self.entry_price = other.entry_price
         if other.entry_at:
             self.entry_at = other.entry_at
-        if other.trade:
-            self.trade = other.trade
+        if other.position:
+            self.position = other.position
 
     # Fields getters
     @property
@@ -246,21 +246,21 @@ class Order(BaseTransaction):
     # Extra properties
     @property
     def is_sl_order(self) -> bool:
-        """`Order` is stop-loss order of a `Trade`
+        """`Order` is stop-loss order of a `Position`
 
         Returns:
             bool: _description_
         """
-        return self.trade and self is self.trade.sl_order
+        return self.position and self is self.position.sl_order
 
     @property
     def is_tp_order(self) -> bool:
-        """`Order` is take-profit order of a `Trade`
+        """`Order` is take-profit order of a `Position`
 
         Returns:
             bool: _description_
         """
-        return self.trade and self is self.trade.tp_order
+        return self.position and self is self.position.tp_order
 
     @property
     def is_alive(self) -> bool:

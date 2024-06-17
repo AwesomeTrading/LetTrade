@@ -5,7 +5,7 @@ from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType
 
 from .api import LiveAPI
-from .trade import LiveExecute, LiveOrder, LiveTrade
+from .trade import LiveExecute, LiveOrder, LivePosition
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class LiveExchange(Exchange):
         self._api = api
 
     def start(self) -> None:
-        """Start Live exchange by: Sync orders from server, Sync trades from server"""
+        """Start Live exchange by: Sync positions from server"""
         self._api.start(callbacker=self)
         return super().start()
 
@@ -113,16 +113,16 @@ class LiveExchange(Exchange):
             order = LiveOrder.from_raw(raw, exchange=self)
             self.on_order(order)
 
-    def on_new_trades(self, raws):
+    def on_new_positions(self, raws):
         if __debug__:
-            logger.info("Raw new trades: %s", raws)
+            logger.info("Raw new positions: %s", raws)
         for raw in raws:
-            trade = LiveTrade.from_raw(raw, exchange=self)
-            self.on_trade(trade)
+            position = LivePosition.from_raw(raw, exchange=self)
+            self.on_position(position)
 
-    def on_old_trades(self, raws):
+    def on_old_positions(self, raws):
         if __debug__:
-            logger.info("Raw old trades: %s", raws)
+            logger.info("Raw old positions: %s", raws)
         for raw in raws:
-            trade = LiveTrade.from_raw(raw, exchange=self)
-            self.on_trade(trade)
+            position = LivePosition.from_raw(raw, exchange=self)
+            self.on_position(position)

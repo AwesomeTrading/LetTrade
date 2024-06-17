@@ -38,7 +38,7 @@ class SmaCross(Strategy):
                 return
             self._now = df.now
 
-        if len(self.orders) > 0 or len(self.trades) > 0:
+        if len(self.orders) > 0 or len(self.positions) > 0:
             return
 
         if df.l["signal_ema_crossover"][-1]:

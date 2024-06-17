@@ -76,8 +76,8 @@ class Account:
     @property
     def equity(self) -> float:
         equity = self._cash
-        if len(self._exchange.trades) > 0:
-            equity += sum(trade.pl for trade in self._exchange.trades.values())
+        if len(self._exchange.positions) > 0:
+            equity += sum(position.pl for position in self._exchange.positions.values())
         return equity
 
     def _equity_snapshot(self):
@@ -85,7 +85,7 @@ class Account:
             return
 
         if self._do_equity_snapshot or (
-            self._is_equity_snapshot_everytick and len(self._exchange.trades) > 0
+            self._is_equity_snapshot_everytick and len(self._exchange.positions) > 0
         ):
             bar = self._exchange.data.bar()
             self._equities[bar] = self.equity
@@ -93,12 +93,12 @@ class Account:
             if self._do_equity_snapshot:
                 self._do_equity_snapshot = False
 
-    def _on_trade_entry(self, trade: "Trade"):
+    def _on_position_entry(self, position: "Position"):
         if not self._do_equity_snapshot:
             self._do_equity_snapshot = True
 
-    def _on_trade_exit(self, trade: "Trade"):
-        self._cash += trade.pl - trade.fee
+    def _on_position_exit(self, position: "Position"):
+        self._cash += position.pl - position.fee
 
         if not self._do_equity_snapshot:
             self._do_equity_snapshot = True

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from .. import Execute, Order, OrderState, OrderType, Trade, TradeState
+from .. import Execute, Order, OrderState, OrderType, Position, PositionState
 
 
 class BackTestExecute(Execute):
@@ -12,7 +12,7 @@ class BackTestExecute(Execute):
 class BackTestOrder(Order):
     """Order for backtesting"""
 
-    trade: "BackTestTrade"
+    position: "BackTestPosition"
 
     def update(self, limit_price=None, stop_price=None, sl=None, tp=None, **kwargs):
         # TODO: validate parameters
@@ -37,11 +37,11 @@ class BackTestOrder(Order):
             return
 
         self.state = OrderState.Canceled
-        if self.trade:
-            if self is self.trade.sl_order:
-                self.trade.sl_order = None
-            elif self is self.trade.tp_order:
-                self.trade.tp_order = None
+        if self.position:
+            if self is self.position.sl_order:
+                self.position.sl_order = None
+            elif self is self.position.tp_order:
+                self.position.tp_order = None
 
         self.exchange.on_order(self)
 
@@ -69,11 +69,11 @@ class BackTestOrder(Order):
         execute._on_execute()
 
         # Trade hit SL/TP
-        if self.trade:
-            self.trade._on_exit(price=price, at=at, caller=self)
+        if self.position:
+            self.position._on_exit(price=price, at=at, caller=self)
         else:
             # Trade: Place and create new trade
-            trade = self._build_trade()
+            trade = self._build_position()
 
             trade._on_entry(price=price, at=at)
 
@@ -105,21 +105,21 @@ class BackTestOrder(Order):
             order=self,
         )
 
-    def _build_trade(
+    def _build_position(
         self,
         size: Optional[float] = None,
-        state: TradeState = TradeState.Open,
-    ) -> "BackTestTrade":
-        """Build Trade object from Order object
+        state: PositionState = PositionState.Open,
+    ) -> "BackTestPosition":
+        """Build Position object from Order object
 
         Args:
-            size (float, optional): Size of Trade object. Defaults to None.
-            state (TradeState, optional): State of Trade object. Defaults to TradeState.Open.
+            size (float, optional): Size of Position object. Defaults to None.
+            state (PositionState, optional): State of Position object. Defaults to PositionState.Open.
 
         Returns:
-            BackTestTrade: Trade object
+            BackTestPosition: Position object
         """
-        trade = BackTestTrade(
+        position = BackTestPosition(
             id=self.id,
             size=size or self.size,
             exchange=self.exchange,
@@ -128,15 +128,15 @@ class BackTestOrder(Order):
             parent=self,
         )
         if self.sl_price:
-            trade._new_sl_order(stop_price=self.sl_price)
+            position._new_sl_order(stop_price=self.sl_price)
         if self.tp_price:
-            trade._new_tp_order(limit_price=self.tp_price)
-        self.trade = trade
-        return trade
+            position._new_tp_order(limit_price=self.tp_price)
+        self.position = position
+        return position
 
 
-class BackTestTrade(Trade):
-    """Trade for backtesting"""
+class BackTestPosition(Position):
+    """Position for backtesting"""
 
     def update(self, sl=None, tp=None, **kwargs):
         if sl is not None:
@@ -169,16 +169,16 @@ class BackTestTrade(Trade):
         self,
         price: float,
         at: object,
-        caller: Optional[Order | Trade] = None,
+        caller: Optional[Order | Position] = None,
     ):
-        """Exit trade
+        """Exit Position
 
         Args:
             price (float): Exit price
             at (object): Exit bar
-            caller (Order | Trade, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
+            caller (Order | Position, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
         """
-        if self.state != TradeState.Open:
+        if self.state != PositionState.Open:
             return
 
         # PnL
@@ -203,7 +203,7 @@ class BackTestTrade(Trade):
     def _new_sl_order(self, stop_price: float) -> BackTestOrder:
         # Validate
         if self.sl_order:
-            raise RuntimeError(f"Trade {self.id} SL Order {self.sl_order} existed")
+            raise RuntimeError(f"Position {self.id} SL Order {self.sl_order} existed")
 
         sl_order = BackTestOrder(
             id=f"{self.id}-sl",
@@ -215,7 +215,7 @@ class BackTestTrade(Trade):
             tag=self.tag,
             open_at=self.data.bar(),
             open_price=stop_price,
-            trade=self,
+            position=self,
         )
         self.sl_order = sl_order
         sl_order._on_place()
@@ -224,7 +224,7 @@ class BackTestTrade(Trade):
     def _new_tp_order(self, limit_price: float) -> BackTestOrder:
         # TODO: validate price
         if self.tp_order:
-            raise RuntimeError(f"Trade {self.id} TP Order {self.tp_order} existed")
+            raise RuntimeError(f"Position {self.id} TP Order {self.tp_order} existed")
 
         tp_order = BackTestOrder(
             id=f"{self.id}-tp",
@@ -236,7 +236,7 @@ class BackTestTrade(Trade):
             tag=self.tag,
             open_at=self.data.bar(),
             open_price=limit_price,
-            trade=self,
+            position=self,
         )
         self.tp_order = tp_order
         tp_order._on_place()

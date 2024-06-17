@@ -7,10 +7,10 @@ from lettrade.account import Account
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 
-from .base import OrderState, TradeState
+from .base import OrderState, PositionState
 from .execute import Execute
 from .order import Order, OrderResult
-from .trade import Trade
+from .position import Position
 
 # from lettrade.brain import Brain
 
@@ -36,10 +36,10 @@ class Exchange(metaclass=ABCMeta):
     """Available Order dict by `Order.id` key"""
     history_orders: dict[str, Order]
     """History Order dict by `Order.id` key"""
-    trades: dict[str, Trade]
-    """Available Trade dict by `Trade.id` key"""
-    history_trades: dict[str, Trade]
-    """History Order dict by `Order.id` key"""
+    positions: dict[str, Position]
+    """Available Position dict by `Position.id` key"""
+    history_positions: dict[str, Position]
+    """History Position dict by `Position.id` key"""
 
     _config: dict
 
@@ -56,8 +56,8 @@ class Exchange(metaclass=ABCMeta):
         self.executes = dict()
         self.orders = dict()
         self.history_orders = dict()
-        self.trades = dict()
-        self.history_trades = dict()
+        self.positions = dict()
+        self.history_positions = dict()
 
         self._state = ExchangeState.Init
 
@@ -172,49 +172,49 @@ class Exchange(metaclass=ABCMeta):
         if broadcast:
             self._brain.on_order(order)
 
-    def on_trade(
+    def on_position(
         self,
-        trade: Trade,
+        position: Position,
         broadcast: Optional[bool] = True,
         *args,
         **kwargs,
     ) -> None:
-        """Receive Trade event from exchange then store and notify Brain
+        """Receive Position event from exchange then store and notify Brain
 
         Args:
-            trade (Trade): new comming `Trade`
+            position (Position): new comming `Position`
             broadcast (Optional[bool], optional): Flag notify for Brain. Defaults to True.
 
         Raises:
-            RuntimeError: validat `Trade` instance
+            RuntimeError: validat `Position` instance
         """
-        if not isinstance(trade, Trade):
-            raise RuntimeError(f"{trade} is not instance of type Trade")
+        if not isinstance(position, Position):
+            raise RuntimeError(f"{position} is not instance of type Position")
 
-        if trade.state == TradeState.Exit:
-            self.history_trades[trade.id] = trade
-            if trade.id in self.trades:
-                del self.trades[trade.id]
+        if position.state == PositionState.Exit:
+            self.history_positions[position.id] = position
+            if position.id in self.positions:
+                del self.positions[position.id]
 
-            self._account._on_trade_exit(trade)
+            self._account._on_position_exit(position)
         else:
-            if trade.id in self.history_trades:
-                raise RuntimeError(f"Order {trade.id} closed")
-            if trade.id in self.trades:
-                # Merge to keep Trade handler for strategy using
-                # when strategy want to store Trade object
+            if position.id in self.history_positions:
+                raise RuntimeError(f"Order {position.id} closed")
+            if position.id in self.positions:
+                # Merge to keep Position handler for strategy using
+                # when strategy want to store Position object
                 # and object will be automatic update directly
-                self.trades[trade.id].merge(trade)
-                trade = self.trades[trade.id]
+                self.positions[position.id].merge(position)
+                position = self.positions[position.id]
             else:
-                self.trades[trade.id] = trade
-                self._account._on_trade_entry(trade)
+                self.positions[position.id] = position
+                self._account._on_position_entry(position)
 
         if self._state != ExchangeState.Run:
             return
 
         if broadcast:
-            self._brain.on_trade(trade)
+            self._brain.on_position(position)
 
     def on_notify(self, *args, **kwargs):
         return self._brain.on_notify(*args, **kwargs)

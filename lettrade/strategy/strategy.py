@@ -4,7 +4,7 @@ from typing import Any, Optional, Sequence, final
 from lettrade.account import Account
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange, Execute, Order, OrderResult, OrderSide, Trade
+from lettrade.exchange import Exchange, Execute, Order, OrderResult, OrderSide, Position
 
 
 class Strategy:
@@ -286,23 +286,23 @@ class Strategy:
 
     @final
     @property
-    def trades(self) -> dict[str, Trade]:
+    def positions(self) -> dict[str, Position]:
         """Getter of `Trade` dict
 
         Returns:
             dict[str, Trade]: _description_
         """
-        return self.__exchange.trades
+        return self.__exchange.positions
 
     @final
     @property
-    def history_trades(self) -> dict[str, Trade]:
+    def history_positions(self) -> dict[str, Position]:
         """Getter of history `Trade` dict
 
         Returns:
             dict[str, Trade]: _description_
         """
-        return self.__exchange.history_trades
+        return self.__exchange.history_positions
 
     @final
     @property
@@ -336,7 +336,7 @@ class Strategy:
 
     # Events
     @final
-    def on_transaction(self, trans: Execute | Order | Trade):
+    def on_transaction(self, trans: Execute | Order | Position):
         """Listen for transaction events
 
         Args:
@@ -360,7 +360,7 @@ class Strategy:
         """
 
     @final
-    def on_trade(self, trade: Trade):
+    def on_position(self, position: Position):
         """Listen for `Trade` event
 
         Args:

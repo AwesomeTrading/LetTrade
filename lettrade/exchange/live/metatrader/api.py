@@ -5,7 +5,7 @@ from typing import Optional
 
 from mt5linux import MetaTrader5 as MT5
 
-from lettrade.exchange.live import LiveAPI, LiveOrder, LiveTrade
+from lettrade.exchange.live import LiveAPI, LiveOrder, LivePosition
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ class MetaTraderAPI(LiveAPI):
 
     __deal_time_checked = datetime.now() - timedelta(days=1)
     __orders_stored: dict[int, object] = {}
-    __trades_stored: dict[int, object] = {}
+    __positions_stored: dict[int, object] = {}
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
@@ -230,13 +230,13 @@ class MetaTraderAPI(LiveAPI):
         return self._mt5.orders_get(**kwargs)
 
     # Trade
-    def trades_total(self):
+    def positions_total(self):
         return self._mt5.positions_total()
 
-    def trades_get(self, **kwargs):
+    def positions_get(self, **kwargs):
         return self._mt5.positions_get(**kwargs)
 
-    def trade_update(self, trade: "LiveTrade", sl=None, tp=None, **kwargs):
+    def position_update(self, trade: "LivePosition", sl=None, tp=None, **kwargs):
         raise NotImplementedError
 
     # Transaction
@@ -256,12 +256,12 @@ class MetaTraderAPI(LiveAPI):
         if removed_orders:
             self._callbacker.on_old_orders(removed_orders)
 
-        # Trades
-        trades, removed_trades = self._check_trades()
-        if trades:
-            self._callbacker.on_new_trades(trades)
-        if removed_trades:
-            self._callbacker.on_old_trades(removed_trades)
+        # Positions
+        positions, removed_positions = self._check_positions()
+        if positions:
+            self._callbacker.on_new_positions(positions)
+        if removed_positions:
+            self._callbacker.on_old_positions(removed_positions)
 
     # Deal
     def _check_deals(self):
@@ -313,24 +313,24 @@ class MetaTraderAPI(LiveAPI):
         return added_orders, removed_orders
 
     # Trade
-    def _check_trades(self):
-        trade_total = self._mt5.positions_total()
+    def _check_positions(self):
+        positions_total = self._mt5.positions_total()
 
         # No thing new in trade
-        if trade_total <= 0 and len(self.__trades_stored) == 0:
+        if positions_total <= 0 and len(self.__positions_stored) == 0:
             return None, None
 
         raws = self._mt5.positions_get()
         tickets = [raw.ticket for raw in raws]
 
-        removed_trades = [
-            raw for raw in self.__trades_stored.values() if raw.ticket not in tickets
+        removed_positions = [
+            raw for raw in self.__positions_stored.values() if raw.ticket not in tickets
         ]
 
-        added_trades = []
+        added_positions = []
         for raw in raws:
-            if raw.ticket in self.__trades_stored:
-                stored = self.__trades_stored[raw.ticket]
+            if raw.ticket in self.__positions_stored:
+                stored = self.__positions_stored[raw.ticket]
                 if (
                     raw.time_update == stored.time_update
                     and raw.sl == stored.sl
@@ -340,10 +340,10 @@ class MetaTraderAPI(LiveAPI):
                 ):
                     continue
 
-            added_trades.append(raw)
+            added_positions.append(raw)
 
-        self.__trades_stored = {raw.ticket: raw for raw in raws}
-        return added_trades, removed_trades
+        self.__positions_stored = {raw.ticket: raw for raw in raws}
+        return added_positions, removed_positions
 
     # Bypass pickle
     def __copy__(self):

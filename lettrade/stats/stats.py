@@ -39,10 +39,10 @@ class BotStatistic:
         data = self.feeder.data
 
         equities = list(self.account._equities.values())
-        trades = list(self.exchange.history_trades.values()) + list(
-            self.exchange.trades.values()
+        positions = list(self.exchange.history_positions.values()) + list(
+            self.exchange.positions.values()
         )
-        trades_columns = (
+        positions_columns = (
             "size",
             "entry_at",
             "exit_at",
@@ -51,18 +51,18 @@ class BotStatistic:
             "pl",
             "fee",
         )
-        trades_df = pd.DataFrame(columns=trades_columns)
-        for trade in trades:
-            trades_df.at[trade.id, trades_columns] = (
-                trade.size,
-                trade.entry_at,
-                trade.exit_at,
-                trade.entry_price,
-                trade.exit_price,
-                trade.pl,
-                trade.fee,
+        positions_df = pd.DataFrame(columns=positions_columns)
+        for position in positions:
+            positions_df.at[position.id, positions_columns] = (
+                position.size,
+                position.entry_at,
+                position.exit_at,
+                position.entry_price,
+                position.exit_price,
+                position.pl,
+                position.fee,
             )
-        trades_df["duration"] = trades_df["entry_at"] - trades_df["exit_at"]
+        positions_df["duration"] = positions_df["entry_at"] - positions_df["exit_at"]
 
         self.result = result = pd.Series(dtype=object)
 
@@ -90,18 +90,18 @@ class BotStatistic:
         result.loc[""] = ""
 
         # Trades
-        trades_total = len(trades)
-        pl = trades_df["pl"]
+        positions_total = len(positions)
+        pl = positions_df["pl"]
 
-        result.loc["trades"] = trades_total
+        result.loc["positions"] = positions_total
 
-        win_rate = np.nan if not trades_total else (pl > 0).mean()
+        win_rate = np.nan if not positions_total else (pl > 0).mean()
         result.loc["win_rate"] = round(win_rate, 2)
-        result.loc["fee"] = trades_df.fee.sum()
+        result.loc["fee"] = positions_df.fee.sum()
         result.loc["best_trade_percent"] = pl.max()
         result.loc["worst_trade_percent"] = pl.min()
         result.loc["sqn"] = round(
-            np.sqrt(trades_total) * pl.mean() / (pl.std() or np.nan),
+            np.sqrt(positions_total) * pl.mean() / (pl.std() or np.nan),
             2,
         )
         result.loc["kelly_criterion"] = win_rate - (1 - win_rate) / (
@@ -130,7 +130,7 @@ class BotStatistic:
                 # "avg_drawdown_percent": "Avg. Drawdown [%]",
                 # "max_drawdown_duration": "Max. Drawdown Duration",
                 # "avg_drawdown_duration": "Avg. Drawdown Duration",
-                "trades": "# Trades",
+                "positions": "# Trades",
                 "win_rate": "Win Rate [%]",
                 "fee": "Fee [$]",
                 "best_trade_percent": "Best Trade [%]",

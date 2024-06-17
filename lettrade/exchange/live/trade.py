@@ -10,8 +10,8 @@ from lettrade.exchange import (
     OrderSide,
     OrderState,
     OrderType,
-    Trade,
-    TradeState,
+    Position,
+    PositionState,
 )
 
 from .api import LiveAPI
@@ -34,8 +34,8 @@ class LiveExecute(Execute):
         at: float,
         order_id: Optional[str] = None,
         order: Optional["Order"] = None,
-        trade_id: Optional[str] = None,
-        trade: Optional["Trade"] = None,
+        position_id: Optional[str] = None,
+        position: Optional["Position"] = None,
         tag: Optional[str] = "",
         raw: Optional[object] = None,
     ):
@@ -48,8 +48,8 @@ class LiveExecute(Execute):
             at=at,
             order_id=order_id,
             order=order,
-            trade_id=trade_id,
-            trade=trade,
+            position_id=position_id,
+            position=position,
         )
         self.tag: str = tag
         self.raw: object = raw
@@ -74,7 +74,7 @@ class LiveExecute(Execute):
             # TODO: set bar time
             at=None,
             order_id=raw.order,
-            trade_id=raw.position_id,
+            position_id=raw.position_id,
             tag=raw.comment,
             raw=raw,
         )
@@ -93,7 +93,7 @@ class LiveOrder(Order):
         stop_price: Optional[float] = None,
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
-        trade: Optional["Trade"] = None,
+        position: Optional["Position"] = None,
         tag: Optional[str] = "",
         open_at: Optional[int] = None,
         open_price: Optional[int] = None,
@@ -109,7 +109,7 @@ class LiveOrder(Order):
             stop_price=stop_price,
             sl_price=sl_price,
             tp_price=tp_price,
-            trade=trade,
+            position=position,
             tag=tag,
             open_at=open_at,
             open_price=open_price,
@@ -167,7 +167,7 @@ class LiveOrder(Order):
         )
 
 
-class LiveTrade(Trade):
+class LivePosition(Position):
     def __init__(
         self,
         id: str,
@@ -176,7 +176,7 @@ class LiveTrade(Trade):
         size: float,
         parent: Order,
         tag: str = "",
-        state: TradeState = TradeState.Open,
+        state: PositionState = PositionState.Open,
         entry_price: Optional[float] = None,
         entry_at: Optional[int] = None,
         sl_order: Optional[Order] = None,
@@ -198,11 +198,11 @@ class LiveTrade(Trade):
         self._api: LiveAPI = exchange._api
 
     @classmethod
-    def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveTrade":
-        return LiveTrade(
+    def from_raw(cls, raw, exchange: "LiveExchange") -> "LivePosition":
+        return LivePosition(
             exchange=exchange,
             id=raw.ticket,
-            state=TradeState.Open,
+            state=PositionState.Open,
             # TODO: Fix by get data from symbol
             data=exchange.data,
             # TODO: size and type from raw.type

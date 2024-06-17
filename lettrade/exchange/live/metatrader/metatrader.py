@@ -11,7 +11,7 @@ from lettrade.exchange.live import (
     LiveExchange,
     LiveExecute,
     LiveOrder,
-    LiveTrade,
+    LivePosition,
     let_live,
 )
 from lettrade.strategy.strategy import Strategy
@@ -76,8 +76,8 @@ class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
 
 
-class MetaTraderTrade(LiveTrade):
-    """Trade for MetaTrader"""
+class MetaTraderPosition(LivePosition):
+    """Position for MetaTrader"""
 
 
 class MetaTraderAccount(LiveAccount):

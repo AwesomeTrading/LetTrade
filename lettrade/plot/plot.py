@@ -12,7 +12,7 @@ class Plotter(ABC):
 
     @abstractmethod
     def plot(self, **kwargs):
-        """Plot `equity`, `orders`, and `trades` then show"""
+        """Plot `equity`, `orders`, and `positions` then show"""
 
     @abstractmethod
     def stop(self):

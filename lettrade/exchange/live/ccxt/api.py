@@ -225,9 +225,9 @@ class CCXTAPI(LiveAPI):
     def orders_get(self, **kwargs):
         """"""
 
-    # Trade
-    def trades_total(self):
+    # Positions
+    def positions_total(self):
         """"""
 
-    def trades_get(self, **kwargs):
+    def positions_get(self, **kwargs):
         """"""

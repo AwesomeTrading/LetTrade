@@ -193,7 +193,7 @@ class PlotlyBotPlotter(BotPlotter):
                     self.figure.add_trace(trace, **data_shape)
 
     def plot(self, jump: Optional[dict] = None, **kwargs):
-        """Plot `equity`, `orders`, and `trades` then show"""
+        """Plot `equity`, `orders`, and `positions` then show"""
         if jump is not None:
             self.jump(**jump)
         elif self.figure is None:
@@ -202,7 +202,7 @@ class PlotlyBotPlotter(BotPlotter):
 
         self._plot_equity()
         self._plot_orders()
-        self._plot_trades()
+        self._plot_positions()
 
         params = dict(layout_xaxis_rangeslider_visible=False)
         params.update(**kwargs)
@@ -290,36 +290,36 @@ class PlotlyBotPlotter(BotPlotter):
                 showlegend=False,
             )
 
-    def _plot_trades(self):
-        trades = list(self.exchange.history_trades.values()) + list(
-            self.exchange.trades.values()
+    def _plot_positions(self):
+        positions = list(self.exchange.history_positions.values()) + list(
+            self.exchange.positions.values()
         )
 
         # Filter jump range only
         if self._jump_stop_dt is not None:
-            _trades = []
-            for t in trades:
-                if t.entry_at < self._jump_start_dt or t.entry_at > self._jump_stop_dt:
+            _positions = []
+            for p in positions:
+                if p.entry_at < self._jump_start_dt or p.entry_at > self._jump_stop_dt:
                     continue
-                if t.exit_at:
+                if p.exit_at:
                     if (
-                        t.exit_at < self._jump_start_dt
-                        or t.exit_at > self._jump_stop_dt
+                        p.exit_at < self._jump_start_dt
+                        or p.exit_at > self._jump_stop_dt
                     ):
                         continue
-                _trades.append(t)
-            trades = _trades
+                _positions.append(p)
+            positions = _positions
 
-        for trade in trades:
-            x = [trade.entry_at]
-            y = [trade.entry_price]
-            customdata = [["Entry", trade.size, trade.pl, trade.fee]]
-            if trade.exit_at:
-                x.append(trade.exit_at)
-                y.append(trade.exit_price)
-                customdata.append(["Exit", trade.size, trade.pl, trade.fee])
+        for position in positions:
+            x = [position.entry_at]
+            y = [position.entry_price]
+            customdata = [["Entry", position.size, position.pl, position.fee]]
+            if position.exit_at:
+                x.append(position.exit_at)
+                y.append(position.exit_price)
+                customdata.append(["Exit", position.size, position.pl, position.fee])
 
-            color = PlotColor.GREEN if trade.is_long else PlotColor.RED
+            color = PlotColor.GREEN if position.is_long else PlotColor.RED
             self.figure.add_scatter(
                 x=x,
                 y=y,
@@ -334,7 +334,7 @@ class PlotlyBotPlotter(BotPlotter):
                     "Fee: %{customdata[3]:.2f}$<br>"
                 ),
                 mode="lines+markers",
-                name=f"Trade-{trade.id}",
+                name=f"Position-{position.id}",
                 marker=dict(
                     symbol="circle-dot",
                     size=10,

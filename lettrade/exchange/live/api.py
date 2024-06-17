@@ -77,13 +77,13 @@ class LiveAPI(ABC):
 
     # Trade
     @abstractmethod
-    def trades_total(self):
+    def positions_total(self):
         """"""
 
     @abstractmethod
-    def trades_get(self, **kwargs):
+    def positions_get(self, **kwargs):
         """"""
 
     @abstractmethod
-    def trade_update(self, trade: "LiveTrade", sl=None, tp=None, **kwargs):
+    def position_update(self, position: "LivePosition", sl=None, tp=None, **kwargs):
         """"""

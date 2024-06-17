@@ -2,14 +2,14 @@ from typing import Optional
 
 import pandas as pd
 
-from .base import BaseTransaction, TradeState
+from .base import BaseTransaction, PositionState
 from .order import Order
 
 
-class Trade(BaseTransaction):
+class Position(BaseTransaction):
     """
-    When an `Order` is filled, it results in an active `Trade`.
-    Find active trades in `Strategy.trades` and closed, settled trades in `Strategy.closed_trades`.
+    When an `Order` is filled, it results in an active `Position`.
+    Find active positions in `Strategy.positions` and closed, settled positions in `Strategy.closed_positions`.
     """
 
     def __init__(
@@ -20,7 +20,7 @@ class Trade(BaseTransaction):
         size: float,
         parent: "Order",
         tag: object = "",
-        state: TradeState = TradeState.Open,
+        state: PositionState = PositionState.Open,
         entry_price: Optional[float] = None,
         entry_fee: float = 0.0,
         entry_at: Optional[pd.Timestamp] = None,
@@ -35,7 +35,7 @@ class Trade(BaseTransaction):
         )
         self._account: "Account" = self.exchange._account
 
-        self.state: TradeState = state
+        self.state: PositionState = state
         self.tag: object = tag
         self.parent: "Order" = parent
 
@@ -53,34 +53,28 @@ class Trade(BaseTransaction):
 
     def __repr__(self):
         return (
-            f"<Trade id={self.id} state={self.state} size={self.size} "
+            f"<Position id={self.id} state={self.state} size={self.size} "
             f"sl={self.sl} tp={self.tp}, pl={self.pl} tag='{self.tag}' >"
         )
-
-    # return (
-    #     f'<Trade id={self.id} size={self.size} time={self.entry_at}-{self.exit_at or ""} '
-    #     f'price={self.entry_price}-{self.exit_price or ""} pl={self.pl:.0f}'
-    #     f'{" tag="+str(self.tag) if self.tag is not None else ""}>'
-    # )
 
     def _on_entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:
         self.entry_price = price
         self.entry_at = at
         self.entry_fee = fee
-        self.state = TradeState.Open
-        self.exchange.on_trade(self)
+        self.state = PositionState.Open
+        self.exchange.on_position(self)
         return True
 
     def _on_exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
-        if self.state != TradeState.Open:
+        if self.state != PositionState.Open:
             return False
 
         self.exit_price = price
         self.exit_at = at
         self.exit_pl = pl
         self.exit_fee = fee
-        self.state = TradeState.Exit
-        self.exchange.on_trade(self)
+        self.state = PositionState.Exit
+        self.exchange.on_position(self)
         return True
 
     def update(self, sl=None, tp=None, **kwargs):
@@ -91,7 +85,7 @@ class Trade(BaseTransaction):
         """"""
         raise NotImplementedError
 
-    def merge(self, other: "Trade"):
+    def merge(self, other: "Position"):
         if other is self:
             return
 
@@ -131,21 +125,21 @@ class Trade(BaseTransaction):
 
     @property
     def is_exited(self) -> bool:
-        """Flag to check Trade state.
+        """Flag to check Position state.
 
         Returns:
             bool: True if the trade exited
         """
-        return self.state == TradeState.Exit
+        return self.state == PositionState.Exit
 
     @property
     def pl(self) -> float:
-        """Estimate Profit or Loss of Trade
+        """Estimate Profit or Loss of Position
 
         Returns:
             float: PnL
         """
-        if self.state == TradeState.Exit:
+        if self.state == PositionState.Exit:
             pl = self.exit_pl
         else:
             pl = self._account.pl(size=self.size, entry_price=self.entry_price)

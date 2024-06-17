@@ -29,8 +29,8 @@ class Execute(BaseTransaction):
         at: float,
         order_id: Optional[str] = None,
         order: Optional["Order"] = None,
-        trade_id: Optional[str] = None,
-        trade: Optional["Trade"] = None,
+        position_id: Optional[str] = None,
+        position: Optional["Position"] = None,
     ):
         super().__init__(
             id=id,
@@ -40,8 +40,8 @@ class Execute(BaseTransaction):
         )
         self.order_id = order_id
         self.order: "Order" = order
-        self.trade_id = trade_id
-        self.trade: "Trade" = trade
+        self.position_id = position_id
+        self.position: "Position" = position
         self.price = price
         self.at = at
 
@@ -70,7 +70,7 @@ class Execute(BaseTransaction):
             self.order_id = other.order_id
         if other.order:
             self.order = other.order
-        if other.trade_id:
-            self.trade_id = other.trade_id
-        if other.trade:
-            self.trade = other.trade
+        if other.position_id:
+            self.position_id = other.position_id
+        if other.position:
+            self.position = other.position

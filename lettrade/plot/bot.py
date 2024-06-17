@@ -96,10 +96,10 @@ class BotPlotter(Plotter):
                 if not isinstance(trade_id, str):
                     trade_id = str(trade_id)
 
-                if trade_id in self.exchange.trades:
-                    trade = self.exchange.trades[trade_id]
-                elif trade_id in self.exchange.history_trades:
-                    trade = self.exchange.history_trades[trade_id]
+                if trade_id in self.exchange.positions:
+                    trade = self.exchange.positions[trade_id]
+                elif trade_id in self.exchange.history_positions:
+                    trade = self.exchange.history_positions[trade_id]
                 else:
                     raise RuntimeError(f"Trade id {trade_id} not found")
 

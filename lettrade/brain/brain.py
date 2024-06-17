@@ -3,7 +3,7 @@ import logging
 from lettrade.base.error import LetTradeNoMoreDataFeed
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange, Execute, Order, Trade
+from lettrade.exchange import Exchange, Execute, Order, Position
 from lettrade.strategy import Strategy
 
 logger = logging.getLogger(__name__)
@@ -88,10 +88,10 @@ class Brain:
         self.on_transaction(order)
         self.strategy.on_order(order)
 
-    def on_trade(self, trade: Trade):
-        """Receive new `Trade` event and send to `Strategy`"""
-        self.on_transaction(trade)
-        self.strategy.on_trade(trade)
+    def on_position(self, position: Position):
+        """Receive new `Position` event and send to `Strategy`"""
+        self.on_transaction(position)
+        self.strategy.on_position(position)
 
     def on_notify(self, *args, **kwargs):
         """Receive new notify and send to Strategy"""

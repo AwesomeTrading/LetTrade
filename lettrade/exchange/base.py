@@ -17,7 +17,7 @@ class OrderState(str, Enum):
     Canceled = "canceled"
 
 
-class TradeState(str, Enum):
+class PositionState(str, Enum):
     Open = "open"
     Exit = "exit"
 

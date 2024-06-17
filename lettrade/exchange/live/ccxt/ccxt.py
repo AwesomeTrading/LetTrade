@@ -11,7 +11,7 @@ from lettrade.exchange.live import (
     LiveExchange,
     LiveExecute,
     LiveOrder,
-    LiveTrade,
+    LivePosition,
     let_live,
 )
 from lettrade.strategy.strategy import Strategy
@@ -46,7 +46,7 @@ class CCXTOrder(LiveOrder):
     """Order for CCXT"""
 
 
-class CCXTTrade(LiveTrade):
+class CCXTTrade(LivePosition):
     """Trade for CCXT"""
 
 

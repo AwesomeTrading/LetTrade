@@ -65,7 +65,7 @@ class BackTestExchange(Exchange):
             tp_price=tp,
             tag=tag,
         )
-        ok = order._on_place(at=self.data.bar())
+        ok = order.place(at=self.data.bar())
 
         if type == OrderType.Market:
             # Simulate market order will send event before return order result
@@ -82,7 +82,7 @@ class BackTestExchange(Exchange):
             return
 
         if order.type == OrderType.Market:
-            order._on_fill(
+            order.fill(
                 price=self.data.l.open[0],
                 at=self.data.bar(),
             )
@@ -93,24 +93,24 @@ class BackTestExchange(Exchange):
                 # Buy Limit
                 price = self.data.l.low[-1]
                 if order.limit_price > price:
-                    order._on_fill(price=order.limit_price, at=self.data.bar(-1))
+                    order.fill(price=order.limit_price, at=self.data.bar(-1))
                     return
             else:
                 # Sell Limit
                 price = self.data.l.high[-1]
                 if order.limit_price < price:
-                    order._on_fill(price=order.limit_price, at=self.data.bar(-1))
+                    order.fill(price=order.limit_price, at=self.data.bar(-1))
                     return
         elif order.type == OrderType.Stop:
             if order.is_long:
                 # Buy Stop
                 price = self.data.l.high[-1]
                 if order.stop_price < price:
-                    order._on_fill(price=order.stop_price, at=self.data.bar(-1))
+                    order.fill(price=order.stop_price, at=self.data.bar(-1))
                     return
             else:
                 # Sell Stop
                 price = self.data.l.low[-1]
                 if order.stop_price > price:
-                    order._on_fill(price=order.stop_price, at=self.data.bar(-1))
+                    order.fill(price=order.stop_price, at=self.data.bar(-1))
                     return

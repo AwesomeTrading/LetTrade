@@ -99,7 +99,7 @@ class Order(BaseTransaction):
         else:
             raise LetOrderValidateException(f"Order side {self.size} is invalid")
 
-    def _on_place(self, at: pd.Timestamp) -> "OrderResult":
+    def place(self, at: pd.Timestamp) -> "OrderResult":
         """Place `Order`
         Set `status` to `OrderState.Placed`.
         Send event to `Exchange`
@@ -121,7 +121,42 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def _on_fill(self, price: float, at: pd.Timestamp) -> "OrderResult":
+    def update(
+        self,
+        limit_price: float = None,
+        stop_price: float = None,
+        sl: float = None,
+        tp: float = None,
+        **kwargs,
+    ):
+        """Update Order
+
+        Args:
+            limit_price (float, optional): _description_. Defaults to None.
+            stop_price (float, optional): _description_. Defaults to None.
+            sl (float, optional): _description_. Defaults to None.
+            tp (float, optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+        """
+        if self.is_closed:
+            raise RuntimeError(f"Update a closed order {self}")
+
+        # TODO: validate parameters
+        if limit_price is not None:
+            self.limit_price = limit_price
+        if stop_price is not None:
+            self.stop_price = stop_price
+
+        if sl is not None:
+            self.sl_price = sl
+        if tp is not None:
+            self.tp_price = tp
+
+        self.exchange.on_order(self)
+
+    def fill(self, price: float, at: pd.Timestamp) -> "OrderResult":
         """Fill `Order`.
         Set `status` to `OrderState.Executed`.
         Send event to `Exchange`
@@ -145,7 +180,7 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
 
-    def _on_cancel(self) -> "OrderResult":
+    def cancel(self) -> "OrderResult":
         """Cancel `Order`
         Set `status` to `OrderState.Canceled`.
         Send event to `Exchange`
@@ -162,14 +197,6 @@ class Order(BaseTransaction):
         self.state = OrderState.Canceled
         self.exchange.on_order(self)
         return OrderResultOk(order=self)
-
-    def update(self, sl=None, tp=None, **kwargs):
-        """"""
-        raise NotImplementedError
-
-    def cancel(self):
-        """"""
-        raise NotImplementedError
 
     def merge(self, other: "Order"):
         """Update current `Order` variables by other `Order`
@@ -278,9 +305,18 @@ class Order(BaseTransaction):
         """Flag to check `Order` still alive
 
         Returns:
-            bool: True if `state` in [OrderState.Pending, OrderState.Placed]
+            bool: True if `state` in [OrderState.Pending, OrderState.Placed, OrderState.Partial]
         """
         return self.state in [OrderState.Pending, OrderState.Placed, OrderState.Partial]
+
+    @property
+    def is_closed(self) -> bool:
+        """Flag to check `Order` closed
+
+        Returns:
+            bool: True if `state` in [OrderState.Filled, OrderState.Canceled]
+        """
+        return self.state in [OrderState.Filled, OrderState.Canceled]
 
 
 class OrderResult:

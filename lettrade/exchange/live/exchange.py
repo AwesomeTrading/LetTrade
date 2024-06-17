@@ -86,7 +86,7 @@ class LiveExchange(Exchange):
             tp_price=tp,
             tag=tag,
         )
-        ok = order._place()
+        ok = order.place()
 
         if __debug__:
             logger.info("New order %s at %s", order, self.data.now)

@@ -57,7 +57,7 @@ class Position(BaseTransaction):
             f"sl={self.sl} tp={self.tp}, pl={self.pl} tag='{self.tag}' >"
         )
 
-    def _on_entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:
+    def entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:
         self.entry_price = price
         self.entry_at = at
         self.entry_fee = fee
@@ -65,7 +65,27 @@ class Position(BaseTransaction):
         self.exchange.on_position(self)
         return True
 
-    def _on_exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
+    def update(self, sl: float = None, tp: float = None, **kwargs):
+        if not sl and not tp:
+            raise RuntimeError("Update sl=None and tp=None")
+
+        if sl is not None:
+            if self.sl_order:
+                self.sl_order.update(stop_price=sl)
+            else:
+                raise NotImplementedError
+                # self._new_sl_order(stop_price=sl)
+
+        if tp is not None:
+            if self.tp_order:
+                self.tp_order.update(limit_price=tp)
+            else:
+                raise NotImplementedError
+                # self._new_tp_order(limit_price=tp)
+
+        self.exchange.on_position(self)
+
+    def exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
         if self.state != PositionState.Open:
             return False
 
@@ -76,14 +96,6 @@ class Position(BaseTransaction):
         self.state = PositionState.Exit
         self.exchange.on_position(self)
         return True
-
-    def update(self, sl=None, tp=None, **kwargs):
-        """"""
-        raise NotImplementedError
-
-    def exit(self):
-        """"""
-        raise NotImplementedError
 
     def merge(self, other: "Position"):
         if other is self:

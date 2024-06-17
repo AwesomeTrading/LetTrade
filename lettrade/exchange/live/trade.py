@@ -114,13 +114,7 @@ class LiveOrder(Order):
 
         self.raw: dict = None
 
-    def update(self, sl=None, tp=None, **kwargs):
-        self._api.order_update(order=self, sl=sl, tp=tp, **kwargs)
-
-    def cancel(self, **kwargs):
-        self._api.order_close(order=self, **kwargs)
-
-    def _place(self):
+    def place(self) -> "OrderResult":
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
@@ -139,9 +133,38 @@ class LiveOrder(Order):
 
         self.id = result.order
         # TODO: test
-        ok = super()._on_place(at=result.at)
+        ok = super().place(at=result.at)
         ok.raw = result
         return ok
+
+    def update(
+        self,
+        limit_price: float = None,
+        stop_price: float = None,
+        sl: float = None,
+        tp: float = None,
+        **kwargs,
+    ) -> "OrderResult":
+        result = self._api.order_update(
+            order=self,
+            limit_price=limit_price,
+            stop_price=stop_price,
+            sl=sl,
+            tp=tp,
+            **kwargs,
+        )
+        # TODO: test
+        return super().update(
+            limit_price=result.limit_price,
+            stop_price=result.stop_price,
+            sl=result.sl,
+            tp=result.tp,
+        )
+
+    def cancel(self, **kwargs) -> "OrderResult":
+        self._api.order_close(order=self, **kwargs)
+        # TODO: test
+        return super().cancel()
 
     @classmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveOrder":

@@ -13,6 +13,7 @@ class TradeSide(int, Enum):
 class OrderState(str, Enum):
     Pending = "pending"
     Placed = "place"
+    Partial = "partial"
     Executed = "executed"
     Canceled = "canceled"
 
@@ -26,6 +27,7 @@ class OrderType(str, Enum):
     Market = "market"
     Limit = "limit"
     Stop = "stop"
+    StopLimit = "stoplimit"
 
 
 class BaseTransaction:

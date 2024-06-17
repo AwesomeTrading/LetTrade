@@ -15,7 +15,8 @@ def cdl_direction(df: pd.DataFrame, suffix: str = "") -> pd.Series:
             - `0` for None
     """
     i = df.apply(
-        lambda r: 100 if r.open < r.close else -100 if r.open > r.close else 0
+        lambda r: 100 if r.open < r.close else -100 if r.open > r.close else 0,
+        axis=1,
     ).astype(int)
     # i = pd.Series(0, index=df.index, name=f"cdl_direction{suffix}")
     # i.loc[(df.open < df.close)] = 100

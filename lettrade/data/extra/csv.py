@@ -10,6 +10,7 @@ def csv_export(
     dataframe: pd.DataFrame,
     path: str | Path = "data/data.csv",
     tz=None,
+    round: int = 5,
     **kwargs,
 ):
     dataframe = dataframe.astype(
@@ -27,6 +28,9 @@ def csv_export(
 
     if tz is not None:
         dataframe.index = dataframe.index.tz_convert(tz)
+
+    if round > 0:
+        dataframe = dataframe.round(round)
 
     if not isinstance(path, Path):
         path = Path(path)

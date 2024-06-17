@@ -104,6 +104,7 @@ class LiveDataFeed(DataFeed):
         path: Optional[str] = None,
         since: Optional[int | str | datetime] = 0,
         to: Optional[int | str | datetime] = 1_000,
+        **kwargs,
     ):
         if self.empty:
             if isinstance(since, str):
@@ -118,7 +119,7 @@ class LiveDataFeed(DataFeed):
 
         from lettrade.data.extra.csv import csv_export
 
-        csv_export(dataframe=self, path=path)
+        csv_export(dataframe=self, path=path, **kwargs)
 
     @classmethod
     def instance(

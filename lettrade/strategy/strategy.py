@@ -149,7 +149,8 @@ class Strategy:
         Returns:
             OrderResult: order result information
         """
-        params = dict(
+        return self.order_place(
+            side=TradeSide.Buy,
             size=size,
             limit=limit,
             stop=stop,
@@ -158,9 +159,6 @@ class Strategy:
             tag=tag,
             **kwargs,
         )
-        params["size"] = abs(self.__account.risk(side=TradeSide.Buy, **params))
-
-        return self.__exchange.new_order(**params)
 
     @final
     def sell(
@@ -187,6 +185,30 @@ class Strategy:
         Returns:
             OrderResult: order result information
         """
+        return self.order_place(
+            side=TradeSide.Sell,
+            size=size,
+            limit=limit,
+            stop=stop,
+            sl=sl,
+            tp=tp,
+            tag=tag,
+            **kwargs,
+        )
+
+    @final
+    def order_place(
+        self,
+        side: TradeSide,
+        size: Optional[float] = None,
+        limit: Optional[float] = None,
+        stop: Optional[float] = None,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        tag: Optional[object] = None,
+        **kwargs,
+    ) -> OrderResult:
+
         params = dict(
             size=size,
             limit=limit,
@@ -196,8 +218,7 @@ class Strategy:
             tag=tag,
             **kwargs,
         )
-        params["size"] = -abs(self.__account.risk(side=TradeSide.Sell, **params))
-
+        params["size"] = side * abs(self.__account.risk(side=side, **params))
         return self.__exchange.new_order(**params)
 
     @final

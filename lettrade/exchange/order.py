@@ -69,7 +69,7 @@ class Order(BaseTransaction):
             data += f", tp={round(self.tp, 5)}"
         data += f", tag='{self.tag}'"
 
-        return f"<Order {data}>"
+        return f"<{self.__class__.__name__} {data}>"
 
     def validate(self):
         # Validate

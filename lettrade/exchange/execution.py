@@ -42,7 +42,7 @@ class Execution(BaseTransaction):
         self.at = at
 
     def __repr__(self):
-        return f"<Execution id={self.id} size={self.size}>"
+        return f"<{self.__class__.__name__} id={self.id} size={self.size}>"
 
     def _on_execution(self):
         self.exchange.on_execution(self)

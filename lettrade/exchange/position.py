@@ -53,7 +53,7 @@ class Position(BaseTransaction):
 
     def __repr__(self):
         return (
-            f"<Position id={self.id} state={self.state} size={self.size} "
+            f"<{self.__class__.__name__} id={self.id} state={self.state} size={self.size} "
             f"sl={self.sl} tp={self.tp}, pl={self.pl} tag='{self.tag}' >"
         )
 

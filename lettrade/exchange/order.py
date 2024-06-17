@@ -10,9 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 class Order(BaseTransaction):
-    _position_cls: Type["Position"] = None
-    _execution_cls: Type["Execution"] = None
-
     def __init__(
         self,
         id: str,
@@ -25,7 +22,7 @@ class Order(BaseTransaction):
         stop_price: Optional[float] = None,
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
-        position: Optional["Position"] = None,
+        parent: Optional["Position"] = None,
         tag: Optional[object] = None,
         open_at: Optional[pd.Timestamp] = None,
         open_price: Optional[float] = None,
@@ -43,7 +40,7 @@ class Order(BaseTransaction):
         self.stop_price: Optional[float] = stop_price
         self.sl_price: Optional[float] = sl_price
         self.tp_price: Optional[float] = tp_price
-        self.position: Optional["Position"] = position
+        self.parent: Optional["Position"] = parent
         self.tag: Optional[object] = tag
 
         self.open_at: Optional[pd.Timestamp] = open_at
@@ -203,8 +200,8 @@ class Order(BaseTransaction):
             self.entry_price = other.entry_price
         if other.entry_at:
             self.entry_at = other.entry_at
-        if other.position:
-            self.position = other.position
+        if other.parent:
+            self.parent = other.parent
 
     # Fields getters
     @property
@@ -251,7 +248,7 @@ class Order(BaseTransaction):
         Returns:
             bool: _description_
         """
-        return self.position and self is self.position.sl_order
+        return self.parent and self is self.parent.sl_order
 
     @property
     def is_tp_order(self) -> bool:
@@ -260,7 +257,7 @@ class Order(BaseTransaction):
         Returns:
             bool: _description_
         """
-        return self.position and self is self.position.tp_order
+        return self.parent and self is self.parent.tp_order
 
     @property
     def is_alive(self) -> bool:

@@ -12,7 +12,7 @@ class BackTestExecution(Execution):
 class BackTestOrder(Order):
     """Order for backtesting"""
 
-    position: "BackTestPosition"
+    parent: "BackTestPosition"
 
     def update(self, limit_price=None, stop_price=None, sl=None, tp=None, **kwargs):
         # TODO: validate parameters
@@ -37,11 +37,11 @@ class BackTestOrder(Order):
             return
 
         self.state = OrderState.Canceled
-        if self.position:
-            if self is self.position.sl_order:
-                self.position.sl_order = None
-            elif self is self.position.tp_order:
-                self.position.tp_order = None
+        if self.parent:
+            if self is self.parent.sl_order:
+                self.parent.sl_order = None
+            elif self is self.parent.tp_order:
+                self.parent.tp_order = None
 
         self.exchange.on_order(self)
 
@@ -70,8 +70,8 @@ class BackTestOrder(Order):
             execution._on_execution()
 
         # Position hit SL/TP
-        if self.position:
-            self.position._on_exit(price=price, at=at, caller=self)
+        if self.parent:
+            self.parent._on_exit(price=price, at=at, caller=self)
         else:
             # Position: Place and create new position
             position = self._build_position()
@@ -132,7 +132,7 @@ class BackTestOrder(Order):
             position._new_sl_order(stop_price=self.sl_price)
         if self.tp_price:
             position._new_tp_order(limit_price=self.tp_price)
-        self.position = position
+        self.parent = position
         return position
 
 
@@ -216,7 +216,7 @@ class BackTestPosition(Position):
             tag=self.tag,
             open_at=self.data.bar(),
             open_price=stop_price,
-            position=self,
+            parent=self,
         )
         self.sl_order = sl_order
         sl_order._on_place()
@@ -237,7 +237,7 @@ class BackTestPosition(Position):
             tag=self.tag,
             open_at=self.data.bar(),
             open_price=limit_price,
-            position=self,
+            parent=self,
         )
         self.tp_order = tp_order
         tp_order._on_place()

@@ -274,13 +274,13 @@ class Order(BaseTransaction):
         return self.parent and self is self.parent.tp_order
 
     @property
-    def is_alive(self) -> bool:
+    def is_opening(self) -> bool:
         """Flag to check `Order` still alive
 
         Returns:
             bool: True if `state` in [OrderState.Pending, OrderState.Placed]
         """
-        return self.state in [OrderState.Pending, OrderState.Placed]
+        return self.state in [OrderState.Pending, OrderState.Placed, OrderState.Partial]
 
 
 class OrderResult:

@@ -78,7 +78,7 @@ class BackTestExchange(Exchange):
             self._simulate_order(order)
 
     def _simulate_order(self, order: BackTestOrder):
-        if not order.is_alive:
+        if not order.is_opening:
             return
 
         if order.type == OrderType.Market:

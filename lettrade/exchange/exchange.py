@@ -10,7 +10,6 @@ from lettrade.data import DataFeed, DataFeeder
 from .base import OrderState, TradeState
 from .execute import Execute
 from .order import Order, OrderResult
-from .position import Position
 from .trade import Trade
 
 # from lettrade.brain import Brain
@@ -41,8 +40,6 @@ class Exchange(metaclass=ABCMeta):
     """Available Trade dict by `Trade.id` key"""
     history_trades: dict[str, Trade]
     """History Order dict by `Order.id` key"""
-    positions: dict[str, Position]
-    """Available Position dict by `Position.id` key"""
 
     _config: dict
 
@@ -61,7 +58,6 @@ class Exchange(metaclass=ABCMeta):
         self.history_orders = dict()
         self.trades = dict()
         self.history_trades = dict()
-        self.positions = dict()
 
         self._state = ExchangeState.Init
 
@@ -219,40 +215,6 @@ class Exchange(metaclass=ABCMeta):
 
         if broadcast:
             self._brain.on_trade(trade)
-
-    def on_position(
-        self,
-        position: Position,
-        broadcast: Optional[bool] = True,
-        *args,
-        **kwargs,
-    ) -> None:
-        """Receive Position event from exchange then store and notify Brain
-
-
-        Args:
-            position (Position): _description_
-            broadcast (Optional[bool], optional): _description_. Defaults to True.
-
-        Raises:
-            RuntimeError: check `Position` instance
-        """
-        if not isinstance(position, Position):
-            raise RuntimeError(f"{position} is not instance of type Position")
-
-        if position.id in self.positions:
-            # Merge to keep Position handler for strategy using
-            # when strategy want to store Position object
-            # and object will be automatic update directly
-            self.positions[position.id].merge(position)
-        else:
-            self.positions[position.id] = position
-
-        if self._state != ExchangeState.Run:
-            return
-
-        if broadcast:
-            self._brain.on_position(position)
 
     def on_notify(self, *args, **kwargs):
         return self._brain.on_notify(*args, **kwargs)

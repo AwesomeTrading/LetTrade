@@ -4,15 +4,7 @@ from typing import Any, Optional, Sequence, final
 from lettrade.account import Account
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import (
-    Exchange,
-    Execute,
-    Order,
-    OrderResult,
-    OrderSide,
-    Position,
-    Trade,
-)
+from lettrade.exchange import Exchange, Execute, Order, OrderResult, OrderSide, Trade
 
 
 class Strategy:
@@ -314,12 +306,6 @@ class Strategy:
 
     @final
     @property
-    def positions(self) -> dict[str, Position]:
-        """Getter of `Position` dict"""
-        return self.__exchange.positions
-
-    @final
-    @property
     def is_live(self) -> bool:
         """Flag to check strategy is running in live DataFeeder
 
@@ -379,14 +365,6 @@ class Strategy:
 
         Args:
             trade (Trade): _description_
-        """
-
-    @final
-    def on_position(self, position: Position):
-        """Listen for `Position` event
-
-        Args:
-            position (Position): _description_
         """
 
     @final

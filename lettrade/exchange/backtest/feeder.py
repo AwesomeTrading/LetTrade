@@ -53,10 +53,6 @@ class BackTestDataFeeder(DataFeeder):
     #         data.reset_index(inplace=True)
 
     def next(self):
-        # End of main data
-        if self.data.l.pointer_stop <= 0:
-            return False
-
         next = self.data.l.index[1]
 
         no_next = 0

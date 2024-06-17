@@ -287,20 +287,20 @@ class Strategy:
     @final
     @property
     def positions(self) -> dict[str, Position]:
-        """Getter of `Trade` dict
+        """Getter of `Position` dict
 
         Returns:
-            dict[str, Trade]: _description_
+            dict[str, Position]: _description_
         """
         return self.__exchange.positions
 
     @final
     @property
     def history_positions(self) -> dict[str, Position]:
-        """Getter of history `Trade` dict
+        """Getter of history `Position` dict
 
         Returns:
-            dict[str, Trade]: _description_
+            dict[str, Position]: _description_
         """
         return self.__exchange.history_positions
 
@@ -340,7 +340,7 @@ class Strategy:
         """Listen for transaction events
 
         Args:
-            trans (Execute | Order | Trade): _description_
+            trans (Execute | Order | Position): _description_
         """
 
     @final
@@ -361,10 +361,10 @@ class Strategy:
 
     @final
     def on_position(self, position: Position):
-        """Listen for `Trade` event
+        """Listen for `Position` event
 
         Args:
-            trade (Trade): _description_
+            position (Position): _description_
         """
 
     @final

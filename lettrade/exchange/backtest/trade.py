@@ -8,6 +8,34 @@ class BackTestExecution(Execution):
     Execution for backtesting
     """
 
+    @classmethod
+    def from_order(
+        cls,
+        order: "BackTestOrder",
+        price: float,
+        at: object,
+        size: Optional[float] = None,
+    ) -> "BackTestExecution":
+        """Method help to build Execution object from Order object
+
+        Args:
+            price (float): Executed price
+            at (object): Executed bar
+            size (Optional[float], optional): Executed size. Defaults to None.
+
+        Returns:
+            BackTestExecution: Execution object
+        """
+        return cls(
+            id=order.id,
+            size=size or order.size,
+            exchange=order.exchange,
+            data=order.data,
+            price=price,
+            at=at,
+            order=order,
+        )
+
 
 class BackTestOrder(Order):
     """Order for backtesting"""
@@ -66,7 +94,7 @@ class BackTestOrder(Order):
 
         # Execution is enable
         if self.exchange.executions is not None:
-            execution = self._build_execution(price=price, at=at)
+            execution = BackTestExecution.from_order(order=self, price=price, at=at)
             execution._on_execution()
 
         # Position hit SL/TP
@@ -74,66 +102,35 @@ class BackTestOrder(Order):
             self.parent._on_exit(price=price, at=at, caller=self)
         else:
             # Position: Place and create new position
-            position = self._build_position()
+            position = BackTestPosition.from_order(order=self)
 
             position._on_entry(price=price, at=at)
 
         return ok
 
-    def _build_execution(
-        self,
-        price: float,
-        at: object,
-        size: Optional[float] = None,
-    ) -> BackTestExecution:
-        """Method help to build Execution object from Order object
-
-        Args:
-            price (float): Executed price
-            at (object): Executed bar
-            size (Optional[float], optional): Executed size. Defaults to None.
-
-        Returns:
-            BackTestExecution: Execution object
-        """
-        return BackTestExecution(
-            id=self.id,
-            size=size or self.size,
-            exchange=self.exchange,
-            data=self.data,
-            price=price,
-            at=at,
-            order=self,
+    @classmethod
+    def from_position(
+        cls,
+        position: "BackTestPosition",
+        id: str,
+        type: OrderType,
+        limit_price: float = None,
+        stop_price: float = None,
+    ) -> "BackTestOrder":
+        order = cls(
+            id=id,
+            exchange=position.exchange,
+            data=position.data,
+            size=-position.size,
+            type=type,
+            limit_price=limit_price,
+            stop_price=stop_price,
+            tag=position.tag,
+            open_at=position.data.bar(),
+            open_price=limit_price or stop_price,
+            parent=position,
         )
-
-    def _build_position(
-        self,
-        size: Optional[float] = None,
-        state: PositionState = PositionState.Open,
-    ) -> "BackTestPosition":
-        """Build Position object from Order object
-
-        Args:
-            size (float, optional): Size of Position object. Defaults to None.
-            state (PositionState, optional): State of Position object. Defaults to PositionState.Open.
-
-        Returns:
-            BackTestPosition: Position object
-        """
-        position = BackTestPosition(
-            id=self.id,
-            size=size or self.size,
-            exchange=self.exchange,
-            data=self.data,
-            state=state,
-            parent=self,
-        )
-        if self.sl_price:
-            position._new_sl_order(stop_price=self.sl_price)
-        if self.tp_price:
-            position._new_tp_order(limit_price=self.tp_price)
-        self.parent = position
-        return position
+        return order
 
 
 class BackTestPosition(Position):
@@ -202,43 +199,61 @@ class BackTestPosition(Position):
             self.tp_order._on_cancel()
 
     def _new_sl_order(self, stop_price: float) -> BackTestOrder:
-        # Validate
         if self.sl_order:
             raise RuntimeError(f"Position {self.id} SL Order {self.sl_order} existed")
 
-        sl_order = BackTestOrder(
+        sl_order = BackTestOrder.from_position(
+            position=self,
             id=f"{self.id}-sl",
-            exchange=self.exchange,
-            data=self.data,
-            size=-self.size,
             type=OrderType.Stop,
             stop_price=stop_price,
-            tag=self.tag,
-            open_at=self.data.bar(),
-            open_price=stop_price,
-            parent=self,
         )
         self.sl_order = sl_order
         sl_order._on_place()
         return sl_order
 
     def _new_tp_order(self, limit_price: float) -> BackTestOrder:
-        # TODO: validate price
         if self.tp_order:
             raise RuntimeError(f"Position {self.id} TP Order {self.tp_order} existed")
 
-        tp_order = BackTestOrder(
+        tp_order = BackTestOrder.from_position(
+            position=self,
             id=f"{self.id}-tp",
-            exchange=self.exchange,
-            data=self.data,
-            size=-self.size,
             type=OrderType.Limit,
             limit_price=limit_price,
-            tag=self.tag,
-            open_at=self.data.bar(),
-            open_price=limit_price,
-            parent=self,
         )
+
         self.tp_order = tp_order
         tp_order._on_place()
         return tp_order
+
+    @classmethod
+    def from_order(
+        cls,
+        order: "BackTestOrder",
+        size: Optional[float] = None,
+        state: PositionState = PositionState.Open,
+    ) -> "BackTestPosition":
+        """Build Position object from Order object
+
+        Args:
+            size (float, optional): Size of Position object. Defaults to None.
+            state (PositionState, optional): State of Position object. Defaults to PositionState.Open.
+
+        Returns:
+            BackTestPosition: Position object
+        """
+        position = cls(
+            id=order.id,
+            size=size or order.size,
+            exchange=order.exchange,
+            data=order.data,
+            state=state,
+            parent=order,
+        )
+        if order.sl_price:
+            position._new_sl_order(stop_price=order.sl_price)
+        if order.tp_price:
+            position._new_tp_order(limit_price=order.tp_price)
+        order.parent = position
+        return position

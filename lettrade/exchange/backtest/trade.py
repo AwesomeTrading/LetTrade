@@ -68,14 +68,14 @@ class BackTestOrder(Order):
         execute = self._build_execute(price=price, at=at)
         execute._on_execute()
 
-        # Trade hit SL/TP
+        # Position hit SL/TP
         if self.position:
             self.position._on_exit(price=price, at=at, caller=self)
         else:
-            # Trade: Place and create new trade
-            trade = self._build_position()
+            # Position: Place and create new position
+            position = self._build_position()
 
-            trade._on_entry(price=price, at=at)
+            position._on_entry(price=price, at=at)
 
         return execute
 
@@ -151,8 +151,8 @@ class BackTestPosition(Position):
             else:
                 self._new_tp_order(limit_price=tp)
 
-        # Refresh trade
-        self.exchange.on_trade(self)
+        # Refresh position
+        self.exchange.on_position(self)
 
     def exit(self):
         self._on_exit(
@@ -194,7 +194,7 @@ class BackTestPosition(Position):
         # State
         super()._on_exit(price=price, at=at, pl=pl, fee=fee)
 
-        # Caller is trade close by tp/sl order
+        # Caller is position close by tp/sl order
         if caller is None or (self.sl_order and self.sl_order is not caller):
             self.sl_order._on_cancel()
         if caller is None or (self.tp_order and self.tp_order is not caller):

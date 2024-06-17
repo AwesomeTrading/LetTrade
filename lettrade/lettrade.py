@@ -196,10 +196,10 @@ class LetTrade:
                 `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)
 
             Example:
-                - Jump to trade_id
+                - Jump to position_id
                     ```python
                     lt.plot(
-                        jump=dict(trade_id=1, range=300),
+                        jump=dict(position_id=1, range=300),
                         layout=dict(height=2000),
                     )
                     ```

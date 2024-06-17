@@ -58,7 +58,7 @@ class BotPlotter(Plotter):
         self,
         since: int | str | pd.Timestamp | None = None,
         order_id: Optional[str] = None,
-        trade_id: Optional[str] = None,
+        position_id: Optional[str] = None,
         range: int = 300,
         name: Optional[str] = None,
     ):
@@ -67,7 +67,7 @@ class BotPlotter(Plotter):
         Args:
             since (int | str | pd.Timestamp | None, optional): Jump to index/datetime. Defaults to None.
             order_id (Optional[str], optional): Jump to order id. Defaults to None.
-            trade_id (Optional[str], optional): Jump to trade id. Defaults to None.
+            position_id (Optional[str], optional): Jump to position id. Defaults to None.
             range (int, optional): number of candle plot. Defaults to 300.
             name (Optional[str], optional): _description_. Defaults to None.
 
@@ -92,18 +92,18 @@ class BotPlotter(Plotter):
                 loc = self._data_stored.l.index.get_loc(order.open_at)
                 since = loc - int(range / 2)
 
-            elif trade_id is not None:  # Jump to trade id
-                if not isinstance(trade_id, str):
-                    trade_id = str(trade_id)
+            elif position_id is not None:  # Jump to position id
+                if not isinstance(position_id, str):
+                    position_id = str(position_id)
 
-                if trade_id in self.exchange.positions:
-                    trade = self.exchange.positions[trade_id]
-                elif trade_id in self.exchange.history_positions:
-                    trade = self.exchange.history_positions[trade_id]
+                if position_id in self.exchange.positions:
+                    position = self.exchange.positions[position_id]
+                elif position_id in self.exchange.history_positions:
+                    position = self.exchange.history_positions[position_id]
                 else:
-                    raise RuntimeError(f"Trade id {trade_id} not found")
+                    raise RuntimeError(f"Position id {position_id} not found")
 
-                loc = self._data_stored.l.index.get_loc(trade.entry_at)
+                loc = self._data_stored.l.index.get_loc(position.entry_at)
                 since = loc - int(range / 2)
             else:  # Reset
                 self.jump_reset()

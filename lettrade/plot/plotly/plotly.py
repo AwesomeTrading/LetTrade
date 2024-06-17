@@ -259,6 +259,7 @@ class PlotlyBotPlotter(BotPlotter):
                 if o.open_at > self._jump_start_dt and o.open_at < self._jump_stop_dt
             ]
 
+        # TODO: test using order/sl/tp line for performance
         for order in orders:
             x = [order.open_at]
             y = [order.open_price or order.limit or order.stop]
@@ -319,7 +320,7 @@ class PlotlyBotPlotter(BotPlotter):
                 y.append(position.exit_price)
                 customdata.append(["Exit", position.size, position.pl, position.fee])
 
-            color = PlotColor.GREEN if position.is_long else PlotColor.RED
+            color = PlotColor.CYAN if position.is_long else PlotColor.LIGHT_PINK
             self.figure.add_scatter(
                 x=x,
                 y=y,

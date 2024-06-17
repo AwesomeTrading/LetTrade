@@ -60,7 +60,7 @@ class Account:
         """Stop account"""
         self._equity_snapshot()
 
-    def risk(self, side: "OrderSide", size: float, **kwargs) -> float:
+    def risk(self, side: "TradeSide", size: float, **kwargs) -> float:
         """Risk calculation"""
         if size is None:
             return side * abs(self._risk)

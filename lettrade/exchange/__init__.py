@@ -6,7 +6,7 @@
 * [CCXT](./live/ccxt/index.md): CCXT CryptoCurrency live data and trading
 """
 
-from .base import OrderSide, OrderState, OrderType, PositionState
+from .base import OrderState, OrderType, PositionState, TradeSide
 from .exchange import Exchange
 from .execution import Execution
 from .order import Order, OrderResult, OrderResultError, OrderResultOk

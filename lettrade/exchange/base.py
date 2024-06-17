@@ -5,7 +5,7 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 
-class OrderSide(int, Enum):
+class TradeSide(int, Enum):
     Buy = 1
     Sell = -1
 
@@ -58,6 +58,15 @@ class BaseTransaction:
             bool: _description_
         """
         return self.size < 0
+
+    @property
+    def side(self) -> TradeSide:
+        """True if side is short (size is negative).
+
+        Returns:
+            bool: _description_
+        """
+        return TradeSide.Sell if self.size < 0 else TradeSide.Buy
 
 
 if __debug__:

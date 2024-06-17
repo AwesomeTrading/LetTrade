@@ -7,11 +7,11 @@ from lettrade.exchange import (
     OrderResult,
     OrderResultError,
     OrderResultOk,
-    OrderSide,
     OrderState,
     OrderType,
     Position,
     PositionState,
+    TradeSide,
 )
 
 from .api import LiveAPI

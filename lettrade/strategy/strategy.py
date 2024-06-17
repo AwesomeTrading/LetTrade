@@ -9,8 +9,8 @@ from lettrade.exchange import (
     Execution,
     Order,
     OrderResult,
-    OrderSide,
     Position,
+    TradeSide,
 )
 
 
@@ -158,7 +158,7 @@ class Strategy:
             tag=tag,
             **kwargs,
         )
-        params["size"] = abs(self.__account.risk(side=OrderSide.Buy, **params))
+        params["size"] = abs(self.__account.risk(side=TradeSide.Buy, **params))
 
         return self.__exchange.new_order(**params)
 
@@ -196,7 +196,7 @@ class Strategy:
             tag=tag,
             **kwargs,
         )
-        params["size"] = -abs(self.__account.risk(side=OrderSide.Sell, **params))
+        params["size"] = -abs(self.__account.risk(side=TradeSide.Sell, **params))
 
         return self.__exchange.new_order(**params)
 

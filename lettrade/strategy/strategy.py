@@ -44,7 +44,6 @@ class Strategy:
             raise RuntimeError("Optimize a live datafeeder")
         self.__is_optimize: bool = is_optimize
 
-    @final
     def init(self) -> None:
         """Init strategy variables"""
 
@@ -64,12 +63,12 @@ class Strategy:
                 fn = getattr(self, fn_name)
             else:
                 fn = self.indicators
-            object.__setattr__(data, "indicator_load", fn)
+            object.__setattr__(data, "indicators_load", fn)
 
     @final
     def _indicators_load(self):
         for data in self.datas:
-            data.indicator_load(data)
+            data.indicators_load(data)
 
     @final
     def _start(self):
@@ -335,7 +334,6 @@ class Strategy:
         return self.__is_optimize
 
     # Events
-    @final
     def on_transaction(self, trans: Execute | Order | Position):
         """Listen for transaction events
 
@@ -343,7 +341,6 @@ class Strategy:
             trans (Execute | Order | Position): _description_
         """
 
-    @final
     def on_execute(self, execute: Execute):
         """Listen for `Execute` event
 
@@ -351,7 +348,6 @@ class Strategy:
             execute (Execute): _description_
         """
 
-    @final
     def on_order(self, order: Order):
         """Listen for `Order` event
 
@@ -359,7 +355,6 @@ class Strategy:
             order (Order): _description_
         """
 
-    @final
     def on_position(self, position: Position):
         """Listen for `Position` event
 
@@ -367,7 +362,6 @@ class Strategy:
             position (Position): _description_
         """
 
-    @final
     def on_notify(self, *args, **kwargs) -> None:
         """Listen for `notify` event
 

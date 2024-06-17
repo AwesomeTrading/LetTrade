@@ -9,7 +9,7 @@ from lettrade.exchange.live import (
     LiveDataFeed,
     LiveDataFeeder,
     LiveExchange,
-    LiveExecute,
+    LiveExecution,
     LiveOrder,
     LivePosition,
     let_live,
@@ -38,15 +38,15 @@ class CCXTDataFeeder(LiveDataFeeder):
     """DataFeed for CCXT"""
 
 
-class CCXTExecute(LiveExecute):
-    """Execute for CCXT"""
+class CCXTExecution(LiveExecution):
+    """Execution for CCXT"""
 
 
 class CCXTOrder(LiveOrder):
     """Order for CCXT"""
 
 
-class CCXTTrade(LivePosition):
+class CCXTPosition(LivePosition):
     """Trade for CCXT"""
 
 
@@ -56,6 +56,10 @@ class CCXTAccount(LiveAccount):
 
 class CCXTExchange(LiveExchange):
     """MetaTrade 5 exchange module for `lettrade`"""
+
+    _execution_cls: CCXTExecution = CCXTExecution
+    _order_cls: CCXTExecution = CCXTExecution
+    _position_cls: CCXTExecution = CCXTExecution
 
 
 class LetTradeCCXTBot(LetTradeLiveBot):

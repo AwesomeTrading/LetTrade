@@ -5,13 +5,17 @@ from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType
 
 from .api import LiveAPI
-from .trade import LiveExecute, LiveOrder, LivePosition
+from .trade import LiveExecution, LiveOrder, LivePosition
 
 logger = logging.getLogger(__name__)
 
 
 class LiveExchange(Exchange):
     """MetaTrade 5 exchange module for `lettrade`"""
+
+    _execution_cls: LiveExecution = LiveExecution
+    _order_cls: LiveOrder = LiveOrder
+    _position_cls: LivePosition = LivePosition
 
     _api: LiveAPI
 
@@ -70,7 +74,7 @@ class LiveExchange(Exchange):
             limit = 0
             stop = 0
 
-        order = LiveOrder(
+        order = self._order_cls(
             id=-1,
             exchange=self,
             data=data,
@@ -96,33 +100,33 @@ class LiveExchange(Exchange):
         if __debug__:
             logger.info("Raw new deals: %s", raws)
         for raw in raws:
-            execute = LiveExecute.from_raw(raw, exchange=self)
-            self.on_execute(execute)
+            execution = self._execution_cls.from_raw(raw, exchange=self)
+            self.on_execution(execution)
 
     def on_new_orders(self, raws):
         if __debug__:
             logger.info("Raw new orders: %s", raws)
         for raw in raws:
-            order = LiveOrder.from_raw(raw, exchange=self)
+            order = self._order_cls.from_raw(raw, exchange=self)
             self.on_order(order)
 
     def on_old_orders(self, raws):
         if __debug__:
             logger.info("Raw old orders: %s", raws)
         for raw in raws:
-            order = LiveOrder.from_raw(raw, exchange=self)
+            order = self._order_cls.from_raw(raw, exchange=self)
             self.on_order(order)
 
     def on_new_positions(self, raws):
         if __debug__:
             logger.info("Raw new positions: %s", raws)
         for raw in raws:
-            position = LivePosition.from_raw(raw, exchange=self)
+            position = self._position_cls.from_raw(raw, exchange=self)
             self.on_position(position)
 
     def on_old_positions(self, raws):
         if __debug__:
             logger.info("Raw old positions: %s", raws)
         for raw in raws:
-            position = LivePosition.from_raw(raw, exchange=self)
+            position = self._position_cls.from_raw(raw, exchange=self)
             self.on_position(position)

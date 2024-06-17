@@ -4,7 +4,14 @@ from typing import Any, Optional, Sequence, final
 from lettrade.account import Account
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange, Execute, Order, OrderResult, OrderSide, Position
+from lettrade.exchange import (
+    Exchange,
+    Execution,
+    Order,
+    OrderResult,
+    OrderSide,
+    Position,
+)
 
 
 class Strategy:
@@ -334,18 +341,18 @@ class Strategy:
         return self.__is_optimize
 
     # Events
-    def on_transaction(self, trans: Execute | Order | Position):
+    def on_transaction(self, trans: Execution | Order | Position):
         """Listen for transaction events
 
         Args:
-            trans (Execute | Order | Position): _description_
+            trans (Execution | Order | Position): _description_
         """
 
-    def on_execute(self, execute: Execute):
-        """Listen for `Execute` event
+    def on_execution(self, execution: Execution):
+        """Listen for `Execution` event
 
         Args:
-            execute (Execute): _description_
+            execution (Execution): _description_
         """
 
     def on_order(self, order: Order):

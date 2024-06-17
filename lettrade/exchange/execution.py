@@ -1,23 +1,13 @@
+import logging
 from typing import Optional
 
 from .base import BaseTransaction
 
+logger = logging.getLogger(__name__)
 
-class Execute(BaseTransaction):
-    """
-    Place new orders through `Strategy.buy()` and `Strategy.sell()`.
-    Query existing orders through `Strategy.orders`.
 
-    When an order is executed or [filled], it results in a `Trade`.
-
-    If you wish to modify aspects of a placed but not yet filled order,
-    cancel it and place a new one instead.
-
-    All placed orders are [Good 'Til Canceled].
-
-    [filled]: https://www.investopedia.com/terms/f/fill.asp
-    [Good 'Til Canceled]: https://www.investopedia.com/terms/g/gtc.asp
-    """
+class Execution(BaseTransaction):
+    """Execution"""
 
     def __init__(
         self,
@@ -32,6 +22,12 @@ class Execute(BaseTransaction):
         position_id: Optional[str] = None,
         position: Optional["Position"] = None,
     ):
+        if exchange.executions is None:
+            logger.warning(
+                "Execution transaction is disable, enable by flag: show_execution=True"
+            )
+            return
+
         super().__init__(
             id=id,
             exchange=exchange,
@@ -46,12 +42,12 @@ class Execute(BaseTransaction):
         self.at = at
 
     def __repr__(self):
-        return f"<Execute id={self.id} size={self.size}>"
+        return f"<Execution id={self.id} size={self.size}>"
 
-    def _on_execute(self):
-        self.exchange.on_execute(self)
+    def _on_execution(self):
+        self.exchange.on_execution(self)
 
-    def merge(self, other: "Execute"):
+    def merge(self, other: "Execution"):
         """
         Merge to keep object handler but not overwrite for Strategy using when Strategy want to store object and object will be automatic update directly
         """
@@ -59,7 +55,7 @@ class Execute(BaseTransaction):
             return
 
         if self.id != other.id:
-            raise RuntimeError(f"Merge difference id {self.id} != {other.id} execute")
+            raise RuntimeError(f"Merge difference id {self.id} != {other.id} execution")
 
         self.price = other.price
         self.size = other.size

@@ -17,7 +17,7 @@ class BackTestExchange(Exchange):
         return str(self.__id)
 
     def next(self):
-        """Execute when new data feeded"""
+        """Execution when new data feeded"""
         self._simulate_orders()
         super().next()
 

@@ -1,11 +1,11 @@
 from typing import Optional
 
-from .. import Execute, Order, OrderState, OrderType, Position, PositionState
+from .. import Execution, Order, OrderState, OrderType, Position, PositionState
 
 
-class BackTestExecute(Execute):
+class BackTestExecution(Execution):
     """
-    Execute for backtesting
+    Execution for backtesting
     """
 
 
@@ -45,8 +45,8 @@ class BackTestOrder(Order):
 
         self.exchange.on_order(self)
 
-    def _on_execute(self, price: float, at: object) -> BackTestExecute:
-        """Execute order and notify for Exchange
+    def _on_execute(self, price: float, at: object) -> BackTestExecution:
+        """Execution order and notify for Exchange
 
         Args:
             price (float): Executed price
@@ -56,17 +56,18 @@ class BackTestOrder(Order):
             RuntimeError: _description_
 
         Returns:
-            BackTestExecute: Execute object
+            BackTestExecution: Execution object
         """
         if self.state != OrderState.Placed:
-            raise RuntimeError(f"Execute a {self.state} order")
+            raise RuntimeError(f"Execution a {self.state} order")
 
         # Order
-        super()._on_execute(price=price, at=at)
+        ok = super()._on_execute(price=price, at=at)
 
-        # Execute
-        execute = self._build_execute(price=price, at=at)
-        execute._on_execute()
+        # Execution is enable
+        if self.exchange.executions is not None:
+            execution = self._build_execution(price=price, at=at)
+            execution._on_execution()
 
         # Position hit SL/TP
         if self.position:
@@ -77,15 +78,15 @@ class BackTestOrder(Order):
 
             position._on_entry(price=price, at=at)
 
-        return execute
+        return ok
 
-    def _build_execute(
+    def _build_execution(
         self,
         price: float,
         at: object,
         size: Optional[float] = None,
-    ) -> BackTestExecute:
-        """Method help to build Execute object from Order object
+    ) -> BackTestExecution:
+        """Method help to build Execution object from Order object
 
         Args:
             price (float): Executed price
@@ -93,9 +94,9 @@ class BackTestOrder(Order):
             size (Optional[float], optional): Executed size. Defaults to None.
 
         Returns:
-            BackTestExecute: Execute object
+            BackTestExecution: Execution object
         """
-        return BackTestExecute(
+        return BackTestExecution(
             id=self.id,
             size=size or self.size,
             exchange=self.exchange,

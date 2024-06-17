@@ -124,6 +124,15 @@ class Position(BaseTransaction):
         return None
 
     @property
+    def is_opening(self) -> bool:
+        """Flag to check Position state.
+
+        Returns:
+            bool: True if the trade opening
+        """
+        return self.state == PositionState.Open
+
+    @property
     def is_exited(self) -> bool:
         """Flag to check Position state.
 

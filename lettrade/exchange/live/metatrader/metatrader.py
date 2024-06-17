@@ -9,7 +9,7 @@ from lettrade.exchange.live import (
     LiveDataFeed,
     LiveDataFeeder,
     LiveExchange,
-    LiveExecute,
+    LiveExecution,
     LiveOrder,
     LivePosition,
     let_live,
@@ -68,8 +68,8 @@ class MetaTraderDataFeeder(LiveDataFeeder):
     """DataFeed for MetaTrader"""
 
 
-class MetaTraderExecute(LiveExecute):
-    """Execute for MetaTrader"""
+class MetaTraderExecution(LiveExecution):
+    """Execution for MetaTrader"""
 
 
 class MetaTraderOrder(LiveOrder):
@@ -86,6 +86,10 @@ class MetaTraderAccount(LiveAccount):
 
 class MetaTraderExchange(LiveExchange):
     """MetaTrade 5 exchange module for `lettrade`"""
+
+    _execution_cls: MetaTraderExecution = MetaTraderExecution
+    _order_cls: MetaTraderExecution = MetaTraderExecution
+    _position_cls: MetaTraderExecution = MetaTraderExecution
 
 
 class LetTradeMetaTraderBot(LetTradeLiveBot):

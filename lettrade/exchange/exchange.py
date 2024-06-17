@@ -1,3 +1,4 @@
+import logging
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from enum import Enum
@@ -8,11 +9,11 @@ from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 
 from .base import OrderState, PositionState
-from .execute import Execute
+from .execution import Execution
 from .order import Order, OrderResult
 from .position import Position
 
-# from lettrade.brain import Brain
+logger = logging.getLogger(__name__)
 
 
 class ExchangeState(int, Enum):
@@ -30,8 +31,8 @@ class Exchange(metaclass=ABCMeta):
     data: DataFeed
     """main DataFeed"""
 
-    executes: dict[str, Execute]
-    """Execute dict by `Execute.id` key"""
+    executions: dict[str, Execution]
+    """Execution dict by `Execution.id` key"""
     orders: dict[str, Order]
     """Available Order dict by `Order.id` key"""
     history_orders: dict[str, Order]
@@ -53,11 +54,16 @@ class Exchange(metaclass=ABCMeta):
     def __init__(self, **kwargs):
         self._config = kwargs
 
-        self.executes = dict()
         self.orders = dict()
         self.history_orders = dict()
         self.positions = dict()
         self.history_positions = dict()
+
+        # Disable Execution by defaul
+        if self._config.setdefault("use_execution", False):
+            self.executions = dict()
+        else:
+            self.executions = None
 
         self._state = ExchangeState.Init
 
@@ -110,32 +116,38 @@ class Exchange(metaclass=ABCMeta):
         self._state = ExchangeState.Stop
         self._account.stop()
 
-    def on_execute(
+    def on_execution(
         self,
-        execute: Execute,
+        execution: Execution,
         broadcast: Optional[bool] = True,
         **kwargs,
     ) -> None:
         """
-        Receive Execute event from exchange then store and notify Brain
+        Receive Execution event from exchange then store and notify Brain
         """
-        if not isinstance(execute, Execute):
-            raise RuntimeError(f"{execute} is not instance of type Execute")
+        if self.executions is None:
+            logger.warning(
+                "Execution transaction is disable, enable by flag: show_execution=True"
+            )
+            return
 
-        if execute.id in self.executes:
-            # Merge to keep Execute handler for strategy using
-            # when strategy want to store Execute object
+        if not isinstance(execution, Execution):
+            raise RuntimeError(f"{execution} is not instance of type Execution")
+
+        if execution.id in self.executions:
+            # Merge to keep Execution handler for strategy using
+            # when strategy want to store Execution object
             # and object will be automatic update directly
-            self.executes[execute.id].merge(execute)
-            execute = self.executes[execute.id]
+            self.executions[execution.id].merge(execution)
+            execution = self.executions[execution.id]
         else:
-            self.executes[execute.id] = execute
+            self.executions[execution.id] = execution
 
         if self._state != ExchangeState.Run:
             return
 
         if broadcast:
-            self._brain.on_execute(execute)
+            self._brain.on_execution(execution)
 
     def on_order(
         self,

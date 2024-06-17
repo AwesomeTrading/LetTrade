@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 
 from lettrade.exchange import (
-    Execute,
+    Execution,
     Order,
     OrderResult,
     OrderResultError,
@@ -19,9 +19,9 @@ from .api import LiveAPI
 logger = logging.getLogger(__name__)
 
 
-class LiveExecute(Execute):
+class LiveExecution(Execution):
     """
-    Execute for Live
+    Execution for Live
     """
 
     def __init__(
@@ -56,14 +56,14 @@ class LiveExecute(Execute):
         self._api: LiveAPI = exchange._api
 
     @classmethod
-    def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveExecute":
+    def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveExecution":
         """
-        Building new LiveExecute from live api deal object
+        Building new LiveExecution from live api deal object
 
             Raw deal: TradeDeal(ticket=33889131, order=41290404, time=1715837856, time_msc=1715837856798, type=0, entry=0, magic=0, position_id=41290404, reason=0, volume=0.01, price=0.85795, commission=0.0, swap=0.0, profit=0.0, fee=0.0, symbol='EURGBP', comment='', external_id='')
         """
 
-        return LiveExecute(
+        return cls(
             exchange=exchange,
             id=raw.ticket,
             # TODO: Fix by get data from symbol
@@ -148,7 +148,7 @@ class LiveOrder(Order):
 
     @classmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveOrder":
-        return LiveOrder(
+        return cls(
             exchange=exchange,
             id=raw.ticket,
             state=OrderState.Placed,
@@ -199,7 +199,7 @@ class LivePosition(Position):
 
     @classmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LivePosition":
-        return LivePosition(
+        return cls(
             exchange=exchange,
             id=raw.ticket,
             state=PositionState.Open,

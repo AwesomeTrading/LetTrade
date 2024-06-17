@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 class Order(BaseTransaction):
-    _trade_cls: Type["Position"] = None
-    _execute_cls: Type["Execute"] = None
+    _position_cls: Type["Position"] = None
+    _execution_cls: Type["Execution"] = None
 
     def __init__(
         self,

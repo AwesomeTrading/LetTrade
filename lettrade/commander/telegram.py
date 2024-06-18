@@ -134,6 +134,7 @@ class TelegramAPI:
             _type_: `None`
         """
         msg = f"*[Process: {pname}]*\n\n{msg}"
+        msg = escape_markdown(msg)
         asyncio.run_coroutine_threadsafe(self._send_msg(msg, **kwargs), self._loop)
 
     async def _cleanup_telegram(self) -> None:

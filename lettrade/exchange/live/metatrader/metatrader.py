@@ -86,6 +86,15 @@ class MetaTraderOrder(LiveOrder):
     def from_raw(
         cls, raw, exchange: "MetaTraderExchange"
     ) -> Optional["MetaTraderOrder"]:
+        """_summary_
+
+        Raises:
+            NotImplementedError: _description_
+            NotImplementedError: _description_
+
+        Returns:
+            _type_: _description_
+        """
         # DataFeed
         data = None
         for d in exchange.datas:
@@ -179,13 +188,26 @@ class MetaTraderOrder(LiveOrder):
             sl_price=raw.sl,
             tp_price=raw.tp,
             tag=raw.comment,
-            api=exchange._api,
+            raw=raw,
         )
         order.place_at = pd.to_datetime(raw.time_setup_msc, unit="ms")
         return order
 
     @classmethod
     def from_position(cls, position: "MetaTraderPosition", sl=None, tp=None):
+        """_summary_
+
+        Args:
+            position (MetaTraderPosition): _description_
+            sl (_type_, optional): _description_. Defaults to None.
+            tp (_type_, optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            _type_: _description_
+        """
         if not sl and not tp:
             raise RuntimeError("not sl and not tp")
         return cls(
@@ -206,6 +228,18 @@ class MetaTraderPosition(LivePosition):
 
     @classmethod
     def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderPosition":
+        """_summary_
+
+        Args:
+            raw (_type_): _description_
+            exchange (MetaTraderExchange): _description_
+
+        Raises:
+            NotImplementedError: _description_
+
+        Returns:
+            MetaTraderPosition: _description_
+        """
         # DataFeed
         data = None
         for d in exchange.datas:
@@ -237,6 +271,7 @@ class MetaTraderPosition(LivePosition):
             entry_price=raw.price_open,
             parent=None,
             tag=raw.comment,
+            raw=raw,
         )
         position.entry_at = pd.to_datetime(raw.time_msc, unit="ms")
 

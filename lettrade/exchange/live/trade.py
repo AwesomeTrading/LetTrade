@@ -12,7 +12,6 @@ from lettrade.exchange import (
     OrderType,
     Position,
     PositionState,
-    TradeSide,
 )
 
 from .api import LiveAPI
@@ -38,6 +37,7 @@ class LiveExecution(Execution):
         position_id: Optional[str] = None,
         position: Optional["Position"] = None,
         tag: Optional[str] = "",
+        api: Optional[LiveAPI] = None,
         raw: Optional[object] = None,
     ):
         super().__init__(
@@ -54,7 +54,7 @@ class LiveExecution(Execution):
         )
         self.tag: str = tag
         self.raw: object = raw
-        self._api: LiveAPI = exchange._api
+        self._api: LiveAPI = api or exchange._api
 
     @classmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveExecution":
@@ -97,6 +97,7 @@ class LiveOrder(Order, metaclass=ABCMeta):
         parent: Optional["Position"] = None,
         tag: Optional[str] = "",
         api: Optional[LiveAPI] = None,
+        raw: Optional[object] = None,
     ):
         super().__init__(
             id=id,
@@ -112,9 +113,8 @@ class LiveOrder(Order, metaclass=ABCMeta):
             parent=parent,
             tag=tag,
         )
+        self.raw: dict = raw
         self._api: LiveAPI = api or exchange._api
-
-        self.raw: dict = None
 
     def place(self) -> "OrderResult":
         if self.state != OrderState.Pending:
@@ -198,6 +198,7 @@ class LivePosition(Position, metaclass=ABCMeta):
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
         api: Optional[LiveAPI] = None,
+        raw: Optional[object] = None,
     ):
         super().__init__(
             id=id,
@@ -212,6 +213,7 @@ class LivePosition(Position, metaclass=ABCMeta):
             sl_order=sl_order,
             tp_order=tp_order,
         )
+        self.raw: dict = raw
         self._api: LiveAPI = api or exchange._api
 
     @classmethod

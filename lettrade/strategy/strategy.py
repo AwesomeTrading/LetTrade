@@ -125,7 +125,7 @@ class Strategy:
         return dict()
 
     @final
-    def buy(
+    def order_buy(
         self,
         size: Optional[float] = None,
         limit: Optional[float] = None,
@@ -160,8 +160,10 @@ class Strategy:
             **kwargs,
         )
 
+    buy = order_buy
+
     @final
-    def sell(
+    def order_sell(
         self,
         size: Optional[float] = None,
         limit: Optional[float] = None,
@@ -195,6 +197,8 @@ class Strategy:
             tag=tag,
             **kwargs,
         )
+
+    sell = order_sell
 
     @final
     def order_place(

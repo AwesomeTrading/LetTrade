@@ -38,8 +38,9 @@ TIMEFRAME_L2M = {
 
 class MetaTraderAPI(LiveAPI):
     _mt5: MT5
-    _callbacker: "MetaTraderExchange"
+    _exchange: "MetaTraderExchange"
     _magic: int
+    _use_execution: bool
 
     __deal_time_checked = datetime.now() - timedelta(days=1)
     __orders_stored: dict[int, object] = {}
@@ -82,7 +83,9 @@ class MetaTraderAPI(LiveAPI):
         magic: int = 88888888,
         **kwargs,
     ):
+        # Parameters
         self._magic = magic
+        self._use_execution = False
 
         # Start wine server if not inited
         if wine:
@@ -139,8 +142,10 @@ class MetaTraderAPI(LiveAPI):
             self._mt5.version(),
         )
 
-    def start(self, callbacker=None):
-        self._callbacker = callbacker
+    def start(self, exchange: "MetaTraderExchange" = None):
+        self._exchange = exchange
+        self._use_execution = exchange.executions is not None
+
         self._check_transactions()
 
     def stop(self):
@@ -263,27 +268,28 @@ class MetaTraderAPI(LiveAPI):
 
     # Transaction
     def _check_transactions(self):
-        if not self._callbacker:
+        if not self._exchange:
             return
 
         # Deals
-        deals = self._check_deals()
-        if deals:
-            self._callbacker.on_new_deals(deals)
+        if self._use_execution:
+            deals = self._check_deals()
+            if deals:
+                self._exchange.on_new_deals(deals)
 
         # Orders
         orders, removed_orders = self._check_orders()
         if orders:
-            self._callbacker.on_new_orders(orders)
+            self._exchange.on_new_orders(orders)
         if removed_orders:
-            self._callbacker.on_old_orders(removed_orders)
+            self._exchange.on_old_orders(removed_orders)
 
         # Positions
         positions, removed_positions = self._check_positions()
         if positions:
-            self._callbacker.on_new_positions(positions)
+            self._exchange.on_new_positions(positions)
         if removed_positions:
-            self._callbacker.on_old_positions(removed_positions)
+            self._exchange.on_old_positions(removed_positions)
 
     # Deal
     def _check_deals(self):

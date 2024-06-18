@@ -32,7 +32,7 @@ class LiveExchange(Exchange):
 
     def start(self) -> None:
         """Start Live exchange by: Sync positions from server"""
-        self._api.start(callbacker=self)
+        self._api.start(exchange=self)
         return super().start()
 
     def next(self) -> None:

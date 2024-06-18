@@ -137,7 +137,7 @@ class CCXTAPIExchange:
 
 class CCXTAPI(LiveAPI):
     _ccxt: CCXTAPIExchange
-    _callbacker: "CCXTExchange"
+    _exchange: "CCXTExchange"
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
@@ -150,13 +150,6 @@ class CCXTAPI(LiveAPI):
         manager = BaseManager()
         manager.start()
         kwargs["ccxt"] = manager.CCXTAPIExchange(**kwargs)
-
-    # Bypass pickle
-    def __copy__(self):
-        return self.__class__._singleton
-
-    def __deepcopy__(self, memo):
-        return self.__class__._singleton
 
     def __init__(
         self,
@@ -171,8 +164,15 @@ class CCXTAPI(LiveAPI):
             ccxt = CCXTAPIExchange(exchange=exchange, key=key, secret=secret, **kwargs)
         self._ccxt = ccxt
 
-    def start(self, callbacker: Optional["CCXTExchange"] = None):
-        self._callbacker = callbacker
+    # Bypass pickle
+    def __copy__(self):
+        return self.__class__._singleton
+
+    def __deepcopy__(self, memo):
+        return self.__class__._singleton
+
+    def start(self, exchange: Optional["CCXTExchange"] = None):
+        self._exchange = exchange
         self._ccxt.start()
 
     def stop(self):

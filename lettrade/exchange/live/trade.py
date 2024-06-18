@@ -171,10 +171,19 @@ class LiveOrder(Order, metaclass=ABCMeta):
     @classmethod
     @abstractmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveOrder":
+        """_summary_
+
+        Args:
+            raw (_type_): _description_
+            exchange (LiveExchange): _description_
+
+        Returns:
+            LiveOrder: _description_
+        """
         raise NotImplementedError
 
 
-class LivePosition(Position):
+class LivePosition(Position, metaclass=ABCMeta):
     def __init__(
         self,
         id: str,
@@ -188,6 +197,7 @@ class LivePosition(Position):
         entry_at: Optional[int] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
+        api: Optional[LiveAPI] = None,
     ):
         super().__init__(
             id=id,
@@ -202,19 +212,18 @@ class LivePosition(Position):
             sl_order=sl_order,
             tp_order=tp_order,
         )
-        self._api: LiveAPI = exchange._api
+        self._api: LiveAPI = api or exchange._api
 
     @classmethod
+    @abstractmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LivePosition":
-        return cls(
-            exchange=exchange,
-            id=raw.ticket,
-            state=PositionState.Open,
-            # TODO: Fix by get data from symbol
-            data=exchange.data,
-            # TODO: size and type from raw.type
-            size=raw.volume,
-            entry_price=raw.price_open,
-            parent=None,
-            tag=raw.comment,
-        )
+        """_summary_
+
+        Args:
+            raw (_type_): _description_
+            exchange (LiveExchange): _description_
+
+        Returns:
+            LivePosition: _description_
+        """
+        raise NotImplementedError

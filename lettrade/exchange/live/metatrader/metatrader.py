@@ -4,7 +4,15 @@ from typing import Optional, Type
 import pandas as pd
 from mt5linux import MetaTrader5 as MT5
 
-from lettrade import BotStatistic, Commander, OrderState, OrderType, Plotter, TradeSide
+from lettrade import (
+    BotStatistic,
+    Commander,
+    OrderState,
+    OrderType,
+    Plotter,
+    PositionState,
+    TradeSide,
+)
 from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -171,13 +179,82 @@ class MetaTraderOrder(LiveOrder):
             sl_price=raw.sl,
             tp_price=raw.tp,
             tag=raw.comment,
+            api=exchange._api,
         )
         order.place_at = pd.to_datetime(raw.time_setup_msc, unit="ms")
         return order
 
+    @classmethod
+    def from_position(cls, position: "MetaTraderPosition", sl=None, tp=None):
+        if not sl and not tp:
+            raise RuntimeError("not sl and not tp")
+        return cls(
+            id=f"{position.id}-{'sl' if sl else 'tp'}",
+            exchange=position.exchange,
+            data=position.data,
+            state=OrderState.Placed,
+            type=OrderType.Stop if sl else OrderType.Limit,
+            size=-position.size,
+            limit_price=tp,
+            stop_price=sl,
+            parent=position,
+        )
+
 
 class MetaTraderPosition(LivePosition):
     """Position for MetaTrader"""
+
+    @classmethod
+    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderPosition":
+        # DataFeed
+        data = None
+        for d in exchange.datas:
+            if d.symbol == raw.symbol:
+                data = d
+                break
+        if data is None:
+            logger.warning("Raw order %s is not handling %s", raw.symbol, raw)
+            return
+
+        # Side
+        match raw.type:
+            case MT5.POSITION_TYPE_BUY:
+                side = TradeSide.Buy
+            case MT5.POSITION_TYPE_SELL:
+                side = TradeSide.Sell
+            case _:
+                raise NotImplementedError(
+                    f"Position type {raw.type} is not implement",
+                    raw,
+                )
+
+        position = cls(
+            exchange=exchange,
+            id=raw.ticket,
+            data=data,
+            state=PositionState.Open,
+            size=side * raw.volume,
+            entry_price=raw.price_open,
+            parent=None,
+            tag=raw.comment,
+        )
+        position.entry_at = pd.to_datetime(raw.time_msc, unit="ms")
+
+        # SL
+        if raw.sl > 0.0:
+            position.sl_order = exchange._order_cls.from_position(
+                position=position, sl=raw.sl
+            )
+            exchange.on_order(position.sl_order)
+
+        # TP
+        if raw.tp > 0.0:
+            position.tp_order = exchange._order_cls.from_position(
+                position=position, tp=raw.tp
+            )
+            exchange.on_order(position.tp_order)
+
+        return position
 
 
 class MetaTraderAccount(LiveAccount):

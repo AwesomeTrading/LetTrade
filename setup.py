@@ -29,7 +29,7 @@ if __name__ == "__main__":
         ],
         packages=find_packages(),
         python_requires=">=3.8.0,<3.13",
-        install_requires=["pandas", "numpy"],
+        install_requires=["pandas", "numpy", "numexpr"],
         extras_require={
             "extra": ["plotly", "nbformat"],
             "backtest": ["tqdm", "plotly"],

@@ -3,6 +3,7 @@ import re
 from datetime import datetime
 
 import pandas as pd
+from typing_extensions import Self
 
 logger = logging.getLogger(__name__)
 
@@ -45,12 +46,23 @@ _pattern_timeframe_str = re.compile(r"^([0-9]+)([a-z]+)$")
 
 
 class TimeFrame:
+    """DataFeed TimeFrame"""
+
     delta: pd.Timedelta
     unit: str
     unit_pandas: str
     value: int
 
-    def __init__(self, tf: str | pd.Timedelta) -> None:
+    def __init__(self, tf: int | str | list | pd.Timedelta | Self) -> None:
+        """_summary_
+
+        Args:
+            tf (int | str | list | pd.Timedelta | TimeFrame):
+                - `int`: TimeFrame in minutes. Example: TimeFrame(5) == TimeFrame("5m")
+                - `str`: string format of TimeFrame in `s`, `m`, `h`, `d`, `w`.
+        Raises:
+            RuntimeError: _description_
+        """
         if isinstance(tf, TimeFrame):
             self.value = tf.value
             self.unit = tf.unit

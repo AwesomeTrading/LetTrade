@@ -70,7 +70,7 @@ class LiveDataFeed(DataFeed):
         """
         bars = self.bars(since=since, to=to)
 
-        if len(bars) == 0:
+        if bars is None or len(bars) == 0:
             logger.warning("No bars data for %s", self.name)
             return False
 

@@ -13,3 +13,9 @@ numba
 TA-Lib
 pandas-ta
 technical
+
+# pytest
+python-box
+pytest
+pytest-mock
+pytest-cov

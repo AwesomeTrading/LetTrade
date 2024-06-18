@@ -88,8 +88,8 @@ class MetaTraderExchange(LiveExchange):
     """MetaTrade 5 exchange module for `lettrade`"""
 
     _execution_cls: Type[MetaTraderExecution] = MetaTraderExecution
-    _order_cls: Type[MetaTraderExecution] = MetaTraderExecution
-    _position_cls: Type[MetaTraderExecution] = MetaTraderExecution
+    _order_cls: Type[MetaTraderOrder] = MetaTraderOrder
+    _position_cls: Type[MetaTraderPosition] = MetaTraderPosition
 
 
 class LetTradeMetaTraderBot(LetTradeLiveBot):

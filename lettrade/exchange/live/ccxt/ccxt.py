@@ -58,8 +58,8 @@ class CCXTExchange(LiveExchange):
     """MetaTrade 5 exchange module for `lettrade`"""
 
     _execution_cls: Type[CCXTExecution] = CCXTExecution
-    _order_cls: Type[CCXTExecution] = CCXTExecution
-    _position_cls: Type[CCXTExecution] = CCXTExecution
+    _order_cls: Type[CCXTOrder] = CCXTOrder
+    _position_cls: Type[CCXTPosition] = CCXTPosition
 
 
 class LetTradeCCXTBot(LetTradeLiveBot):

@@ -54,7 +54,7 @@ class Position(BaseTransaction):
     def __repr__(self):
         return (
             f"<{self.__class__.__name__} id={self.id} state={self.state} size={self.size} "
-            f"sl={self.sl} tp={self.tp}, pl={self.pl} tag='{self.tag}' >"
+            f"sl={self.sl} tp={self.tp}, pl={round(self.pl, 5)} tag='{self.tag}' >"
         )
 
     def entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:

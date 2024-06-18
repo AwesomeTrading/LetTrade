@@ -1,4 +1,5 @@
 import logging
+from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 from lettrade.exchange import (
@@ -80,7 +81,7 @@ class LiveExecution(Execution):
         )
 
 
-class LiveOrder(Order):
+class LiveOrder(Order, metaclass=ABCMeta):
     def __init__(
         self,
         id: str,
@@ -133,7 +134,7 @@ class LiveOrder(Order):
             return error
 
         self.id = result.order
-        # TODO: test
+        # TODO: get current order time
         ok = super().place(at=self.data.l.index[0])
         ok.raw = result
         return ok
@@ -168,22 +169,9 @@ class LiveOrder(Order):
         return super().cancel()
 
     @classmethod
+    @abstractmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveOrder":
-        return cls(
-            exchange=exchange,
-            id=raw.ticket,
-            state=OrderState.Placed,
-            # TODO: Fix by get data from symbol
-            data=exchange.data,
-            # TODO: size and type from raw.type
-            size=raw.volume_current,
-            type=OrderType.Market,
-            limit_price=raw.price_open,
-            stop_price=raw.price_open,
-            sl_price=raw.sl,
-            tp_price=raw.tp,
-            tag=raw.comment,
-        )
+        raise NotImplementedError
 
 
 class LivePosition(Position):

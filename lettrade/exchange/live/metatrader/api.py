@@ -210,7 +210,6 @@ class MetaTraderAPI(LiveAPI):
             "price": price,
             "deviation": deviation,
             "magic": self._magic,
-            "comment": order.tag,
             "type_time": MT5.ORDER_TIME_GTC,
             "type_filling": MT5.ORDER_FILLING_IOC,
         }
@@ -218,6 +217,8 @@ class MetaTraderAPI(LiveAPI):
             request["sl"] = order.sl
         if order.tp:
             request["tp"] = order.tp
+        if order.tag:
+            request["comment"] = order.tag
 
         if __debug__:
             logger.info("New order request: %s", request)
@@ -240,7 +241,7 @@ class MetaTraderAPI(LiveAPI):
             raw.code = 0
 
         if __debug__:
-            logger.info("New Order response: %s", raw)
+            logger.info("New order response: %s", raw)
 
         return raw
 

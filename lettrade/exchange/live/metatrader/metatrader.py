@@ -1,7 +1,10 @@
-# import logging
+import logging
 from typing import Optional, Type
 
-from lettrade import BotStatistic, Commander, Plotter
+import pandas as pd
+from mt5linux import MetaTrader5 as MT5
+
+from lettrade import BotStatistic, Commander, OrderState, OrderType, Plotter, TradeSide
 from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -18,11 +21,7 @@ from lettrade.strategy.strategy import Strategy
 
 from .api import MetaTraderAPI
 
-# import numpy as np
-# import pandas as pd
-
-
-# logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class MetaTraderDataFeed(LiveDataFeed):
@@ -74,6 +73,107 @@ class MetaTraderExecution(LiveExecution):
 
 class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
+
+    @classmethod
+    def from_raw(
+        cls, raw, exchange: "MetaTraderExchange"
+    ) -> Optional["MetaTraderOrder"]:
+        # DataFeed
+        data = None
+        for d in exchange.datas:
+            if d.symbol == raw.symbol:
+                data = d
+                break
+        if data is None:
+            logger.warning("Raw order %s is not handling %s", raw.symbol, raw)
+            return
+
+        # Prices & Side & Type
+        limit_price = None
+        stop_price = None
+        match raw.type:
+            case MT5.ORDER_TYPE_BUY:
+                side = TradeSide.Buy
+                type = OrderType.Market
+            case MT5.ORDER_TYPE_SELL:
+                side = TradeSide.Sell
+                type = OrderType.Market
+            case MT5.ORDER_TYPE_BUY_LIMIT:
+                side = TradeSide.Buy
+                type = OrderType.Limit
+                limit_price = raw.price_open
+            case MT5.ORDER_TYPE_SELL_LIMIT:
+                side = TradeSide.Sell
+                type = OrderType.Limit
+                limit_price = raw.price_open
+            case MT5.ORDER_TYPE_BUY_STOP:
+                side = TradeSide.Buy
+                type = OrderType.Stop
+                stop_price = raw.price_open
+            case MT5.ORDER_TYPE_SELL_STOP:
+                side = TradeSide.Sell
+                type = OrderType.Stop
+                stop_price = raw.price_open
+            # case MT5.ORDER_TYPE_BUY_STOP_LIMIT:
+            #     side = TradeSide.Buy
+            #     type = OrderType.StopLimit
+            #     # TODO
+            #     limit_price = raw.price_open
+            #     stop_price = raw.price_open
+            # case MT5.ORDER_TYPE_SELL_STOP_LIMIT:
+            #     side = TradeSide.Sell
+            #     type = OrderType.StopLimit
+            #     # TODO
+            #     limit_price = raw.price_open
+            #     stop_price = raw.price_open
+            # case MT5.ORDER_TYPE_CLOSE_BY:
+            case _:
+                raise NotImplementedError(
+                    f"Order type {raw.type} is not implement",
+                    raw,
+                )
+        # State
+        match raw.state:
+            case MT5.ORDER_STATE_STARTED:
+                state = OrderState.Pending
+            case MT5.ORDER_STATE_PLACED:
+                state = OrderState.Placed
+            case MT5.ORDER_STATE_CANCELED:
+                state = OrderState.Canceled
+            case MT5.ORDER_STATE_PARTIAL:
+                state = OrderState.Partial
+            case MT5.ORDER_STATE_FILLED:
+                state = OrderState.Filled
+            case MT5.ORDER_STATE_REJECTED:
+                state = OrderState.Canceled
+            case MT5.ORDER_STATE_EXPIRED:
+                state = OrderState.Canceled
+            case MT5.ORDER_STATE_REQUEST_ADD:
+                state = OrderState.Placed
+            case MT5.ORDER_STATE_REQUEST_MODIFY:
+                state = OrderState.Placed
+            case MT5.ORDER_STATE_REQUEST_CANCEL:
+                state = OrderState.Canceled
+            case _:
+                raise NotImplementedError(
+                    f"Raw order state {raw.state} is not implement"
+                )
+
+        order = cls(
+            exchange=exchange,
+            id=raw.ticket,
+            state=state,
+            data=data,
+            size=side * raw.volume_current,
+            type=type,
+            limit_price=limit_price,
+            stop_price=stop_price,
+            sl_price=raw.sl,
+            tp_price=raw.tp,
+            tag=raw.comment,
+        )
+        order.place_at = pd.to_datetime(raw.time_setup_msc, unit="ms")
+        return order
 
 
 class MetaTraderPosition(LivePosition):

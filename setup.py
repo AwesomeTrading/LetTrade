@@ -37,6 +37,8 @@ if __name__ == "__main__":
             "commander": ["python-telegram-bot"],
             "dev": ["yfinance", "pytz"],
             "exchange-metatrader": [
+                "python-box",
+                "mt5linux",
                 # "mt5linux @ git+https://github.com/AwesomeTrading//mt5linux.git@master"
             ],
             "exchange-ccxt": ["ccxt"],

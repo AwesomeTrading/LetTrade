@@ -70,7 +70,7 @@ class Order(BaseTransaction):
 
     def validate(self):
         # Validate
-        price = self.limit_price or self.stop_price or self.data.l.close[-1]
+        price = self.place_price or self.data.l.open[0]
 
         # Buy side
         if self.size > 0:

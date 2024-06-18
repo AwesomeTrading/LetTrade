@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Optional, Type
 
 import pandas as pd
+
 from lettrade.data import DataFeed
 
 from .api import LiveAPI
@@ -27,7 +28,7 @@ class LiveDataFeed(DataFeed):
             columns=["open", "high", "low", "close", "volume"],
             **kwargs,
         )
-        self.meta.update(dict(symbol=symbol))
+        self.meta.update(symbol=symbol)
 
         if api is not None:
             self._api = api
@@ -46,6 +47,9 @@ class LiveDataFeed(DataFeed):
         object.__setattr__(self, "__api", value)
 
     # Functions
+    def symbol_info(self):
+        return self._api.market(symbol=self.symbol)
+
     def copy(self, deep: bool = False, **kwargs) -> DataFeed:
         return super().copy(deep, symbol=self.symbol, **kwargs)
 

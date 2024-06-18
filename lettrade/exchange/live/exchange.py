@@ -88,8 +88,8 @@ class LiveExchange(Exchange):
         )
         ok = order.place()
 
-        if __debug__:
-            logger.info("New order %s at %s", order, self.data.now)
+        # if __debug__:
+        #     logger.info("New order %s at %s", order, self.data.now)
 
         return ok
 

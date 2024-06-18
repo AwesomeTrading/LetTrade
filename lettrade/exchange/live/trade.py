@@ -95,6 +95,7 @@ class LiveOrder(Order):
         tp_price: Optional[float] = None,
         parent: Optional["Position"] = None,
         tag: Optional[str] = "",
+        api: Optional[LiveAPI] = None,
     ):
         super().__init__(
             id=id,
@@ -110,7 +111,7 @@ class LiveOrder(Order):
             parent=parent,
             tag=tag,
         )
-        self._api: LiveAPI = exchange._api
+        self._api: LiveAPI = api or exchange._api
 
         self.raw: dict = None
 
@@ -133,7 +134,7 @@ class LiveOrder(Order):
 
         self.id = result.order
         # TODO: test
-        ok = super().place(at=result.at)
+        ok = super().place(at=self.data.l.index[0])
         ok.raw = result
         return ok
 

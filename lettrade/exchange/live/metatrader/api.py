@@ -3,6 +3,7 @@ import time
 from datetime import datetime, timedelta
 from typing import Optional
 
+from box import Box
 from mt5linux import MetaTrader5 as MT5
 
 from lettrade.exchange.live import LiveAPI, LiveOrder, LivePosition
@@ -38,6 +39,7 @@ TIMEFRAME_L2M = {
 class MetaTraderAPI(LiveAPI):
     _mt5: MT5
     _callbacker: "MetaTraderExchange"
+    _magic: int
 
     __deal_time_checked = datetime.now() - timedelta(days=1)
     __orders_stored: dict[int, object] = {}
@@ -77,8 +79,11 @@ class MetaTraderAPI(LiveAPI):
         host: str = "localhost",
         port: int = 18812,
         wine: Optional[str] = None,
+        magic: int = 88888888,
         **kwargs,
     ):
+        self._magic = magic
+
         # Start wine server if not inited
         if wine:
             self.__class__._wine_process(wine)
@@ -92,6 +97,13 @@ class MetaTraderAPI(LiveAPI):
         except TimeoutError as e:
             raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e
 
+        # Terminal
+        terminal = self._mt5.terminal_info()
+        logger.info("Terminal information: %s", str(terminal))
+        if not terminal.trade_allowed:
+            logger.warning("Terminal trading mode is not allowed")
+
+        # Login account
         account = self.account()
         if not account or account.login != login:
             while retry > 0:
@@ -113,24 +125,19 @@ class MetaTraderAPI(LiveAPI):
             if retry == 0:
                 raise RuntimeError(f"Cannot login {account}")
 
+            # Preload trading data
+            now = datetime.now()
+            self._mt5.history_deals_get(now - timedelta(weeks=4), now)
+            self._mt5.orders_get()
+            self._mt5.positions_get()
+            time.sleep(5)
+
         logger.info(
             "Login success account=%s, server=%s, version=%s",
             account,
             server,
             self._mt5.version(),
         )
-
-        terminal = self._mt5.terminal_info()
-        logger.info("Terminal information: %s", str(terminal))
-        if not terminal.trade_allowed:
-            logger.warning("Terminal trading mode is not allowed")
-
-        # Preload trading data
-        now = datetime.now()
-        self._mt5.history_deals_get(now - timedelta(weeks=4), now)
-        self._mt5.orders_get()
-        self._mt5.positions_get()
-        time.sleep(5)
 
     def start(self, callbacker=None):
         self._callbacker = callbacker
@@ -190,25 +197,31 @@ class MetaTraderAPI(LiveAPI):
         raw = self._mt5.order_send(request)
         return self._parse_order_response(raw)
 
-    def _parse_order_request(self, order: LiveOrder):
+    def _parse_order_request(self, order: LiveOrder, deviation=10):
         tick = self.tick_get(order.data.symbol)
         price = tick.ask if order.is_long else tick.bid
         type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
-        deviation = 20
+
         request = {
             "action": MT5.TRADE_ACTION_DEAL,
             "symbol": order.data.symbol,
-            "volume": order.size,
+            "volume": abs(order.size),
             "type": type,
             "price": price,
-            "sl": order.sl,
-            "tp": order.tp,
             "deviation": deviation,
-            "magic": 234000,
+            "magic": self._magic,
             "comment": order.tag,
             "type_time": MT5.ORDER_TIME_GTC,
             "type_filling": MT5.ORDER_FILLING_IOC,
         }
+        if order.sl:
+            request["sl"] = order.sl
+        if order.tp:
+            request["tp"] = order.tp
+
+        if __debug__:
+            logger.info("New order request: %s", request)
+
         return request
 
     def order_update(self, order: LiveOrder, sl=None, tp=None, **kwargs):
@@ -218,9 +231,17 @@ class MetaTraderAPI(LiveAPI):
         raise NotImplementedError
 
     def _parse_order_response(self, raw):
+        # raw = raw._asdict()
+        # raw["request"] = raw["request"]._asdict()
+
+        raw = Box(dict(raw._asdict()))
         raw.code = raw.retcode
         if raw.code == MT5.TRADE_RETCODE_DONE:
             raw.code = 0
+
+        if __debug__:
+            logger.info("New Order response: %s", raw)
+
         return raw
 
     def orders_total(self):

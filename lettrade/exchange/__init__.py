@@ -7,6 +7,7 @@
 """
 
 from .base import OrderState, OrderType, PositionState, TradeSide
+from .error import *
 from .exchange import Exchange
 from .execution import Execution
 from .order import Order, OrderResult, OrderResultError, OrderResultOk

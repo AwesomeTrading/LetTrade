@@ -4,7 +4,13 @@ from lettrade.account import LetAccountInsufficientException
 from lettrade.base.error import LetTradeNoMoreDataFeed
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange, Execution, Order, Position
+from lettrade.exchange import (
+    Exchange,
+    Execution,
+    LetOrderValidateException,
+    Order,
+    Position,
+)
 from lettrade.strategy import Strategy
 
 logger = logging.getLogger(__name__)
@@ -65,6 +71,13 @@ class Brain:
                 self.exchange.next()
                 self.strategy._next()
                 self.exchange.next_next()
+            except LetOrderValidateException as e:
+                logger.error(
+                    "[%s] Order validates exception",
+                    self.data.now,
+                    exc_info=e,
+                )
+                continue
             except LetAccountInsufficientException as e:
                 logger.error("Account equity is insufficient", exc_info=e)
                 break

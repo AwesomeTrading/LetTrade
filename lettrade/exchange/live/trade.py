@@ -128,7 +128,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         # self.raw: dict = raw
         # self._api: LiveAPI = api or exchange._api
 
-    def place(self) -> "OrderResult":
+    def place(self) -> OrderResult:
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
@@ -137,7 +137,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         if result.code != 0:
             logger.error("Place order %s", str(result))
             error = OrderResultError(
-                error=result.comment,
+                error=result.error,
                 code=result.code,
                 order=self,
                 raw=result,
@@ -153,12 +153,16 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
 
     def update(
         self,
-        limit_price: float = None,
-        stop_price: float = None,
-        sl: float = None,
-        tp: float = None,
+        limit_price: Optional[float] = None,
+        stop_price: Optional[float] = None,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        caller: Optional[float] = None,
         **kwargs,
-    ) -> "OrderResult":
+    ) -> OrderResult:
+        if caller is self:
+            raise RuntimeError(f"Order recusive update {self}")
+
         result = self._api.order_update(
             order=self,
             limit_price=limit_price,
@@ -167,7 +171,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
             tp=tp,
             **kwargs,
         )
-        # TODO: test
+
         return super().update(
             limit_price=result.limit_price,
             stop_price=result.stop_price,
@@ -175,7 +179,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
             tp=result.tp,
         )
 
-    def cancel(self, **kwargs) -> "OrderResult":
+    def cancel(self, **kwargs) -> OrderResult:
         self._api.order_close(order=self, **kwargs)
         # TODO: test
         return super().cancel()
@@ -247,15 +251,23 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         # self.raw: dict = raw
         # self._api: LiveAPI = api or exchange._api
 
-    def update(self, sl: float = None, tp: float = None, **kwargs):
+    def update(
+        self,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        caller: Optional[float] = None,
+        **kwargs,
+    ):
         if not sl and not tp:
             raise RuntimeError("Update sl=None and tp=None")
+        if caller is self:
+            raise RuntimeError(f"Position recusive update {self}")
 
         result = self._api.position_update(position=self, sl=sl, tp=tp)
         if result.code != 0:
             logger.error("Update position %s", str(result))
             error = PositionResultError(
-                error=result.comment,
+                error=result.error,
                 code=result.code,
                 position=self,
                 raw=result,
@@ -265,7 +277,8 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
 
         if sl is not None:
             if self.sl_order:
-                self.sl_order.update(stop_price=sl)
+                if caller is not self.sl_order:
+                    self.sl_order.update(stop_price=sl, caller=self)
             else:
                 self.sl_order = self.exchange._order_cls.from_position(
                     position=self, sl=sl
@@ -273,7 +286,8 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
 
         if tp is not None:
             if self.tp_order:
-                self.tp_order.update(limit_price=tp)
+                if caller is not self.tp_order:
+                    self.tp_order.update(limit_price=tp, caller=self)
             else:
                 self.tp_order = self.exchange._order_cls.from_position(
                     position=self, tp=tp

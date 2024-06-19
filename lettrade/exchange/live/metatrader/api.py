@@ -249,6 +249,9 @@ class MetaTraderAPI(LiveAPI):
             logger.warning("Trade response nothing changes code %s %s", raw.code, raw)
             raw.code = 0
 
+        if raw.code != 0:
+            raw.error = raw.comment
+
         if __debug__:
             logger.info("New order response: %s", raw)
 
@@ -283,30 +286,44 @@ class MetaTraderAPI(LiveAPI):
         tp: Optional[float] = None,
         **kwargs,
     ):
-        return self.do_position_update(id=int(position.id), sl=sl, tp=tp, **kwargs)
+        return self.do_position_update(
+            id=int(position.id),
+            symbol=position.data.symbol,
+            sl=sl,
+            tp=tp,
+            **kwargs,
+        )
 
     def do_position_update(
         self,
         id: int,
+        symbol: str,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         **kwargs,
     ):
 
-        request = self._parse_position_update_request(id=id, sl=sl, tp=tp, **kwargs)
+        request = self._parse_position_update_request(
+            id=id,
+            symbol=symbol,
+            sl=sl,
+            tp=tp,
+            **kwargs,
+        )
         raw = self._mt5.order_send(request)
         return self._parse_trade_send_response(raw)
 
     def _parse_position_update_request(
         self,
         id: int,
+        symbol: str,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         **kwargs,
     ):
         request = {
             "action": MT5.TRADE_ACTION_SLTP,
-            # "symbol": position.data.symbol,
+            "symbol": symbol,
             "magic": self._magic,
             "position": id,
             **kwargs,

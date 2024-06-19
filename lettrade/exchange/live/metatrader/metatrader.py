@@ -7,6 +7,8 @@ from mt5linux import MetaTrader5 as MT5
 from lettrade import (
     BotStatistic,
     Commander,
+    Order,
+    OrderResult,
     OrderState,
     OrderType,
     Plotter,
@@ -115,6 +117,48 @@ class MetaTraderExecution(LiveExecution):
 
 class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
+
+    def update(
+        self,
+        limit_price: Optional[float] = None,
+        stop_price: Optional[float] = None,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        caller: Optional[float] = None,
+        **kwargs,
+    ) -> OrderResult:
+        if caller is self:
+            raise RuntimeError(f"Order recusive update {self}")
+
+        if self.parent is None:
+            result = self._api.order_update(
+                order=self,
+                limit_price=limit_price,
+                stop_price=stop_price,
+                sl=sl,
+                tp=tp,
+                **kwargs,
+            )
+            return super(LiveOrder, self).update(
+                limit_price=result.limit_price,
+                stop_price=result.stop_price,
+                sl=result.sl,
+                tp=result.tp,
+            )
+        else:
+            # SL/Tp Order just a virtual order
+            if caller is not self.parent:
+                if self.is_sl_order:
+                    self.parent.update(sl=stop_price, caller=self)
+                elif self.is_tp_order:
+                    self.parent.update(tp=limit_price, caller=self)
+                else:
+                    raise RuntimeError(f"Abandon order {self}")
+
+            return super(LiveOrder, self).update(
+                limit_price=limit_price,
+                stop_price=stop_price,
+            )
 
     @classmethod
     def from_raw(
@@ -424,9 +468,10 @@ def let_metatrader(
     Args:
         strategy (Type[Strategy]): _description_
         datas (set[set[str]]): _description_
-        login (int): _description_
-        password (str): _description_
-        server (str): _description_
+        mt5_login (int): _description_
+        mt5_password (str): _description_
+        mt5_server (str): _description_
+        mt5_wine (Optional[str], optional): WineHQ execute path. Defaults to None.
         feeder (Type[MetaTraderDataFeeder], optional): _description_. Defaults to MetaTraderDataFeeder.
         exchange (Type[MetaTraderExchange], optional): _description_. Defaults to MetaTraderExchange.
         account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
@@ -436,7 +481,6 @@ def let_metatrader(
         bot (Optional[Type[LetTradeMetaTraderBot]], optional): _description_. Defaults to LetTradeMetaTraderBot.
         lettrade (Optional[Type[LetTradeMetaTrader]], optional): _description_. Defaults to LetTradeMetaTrader.
         api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
-        wine (Optional[str], optional): _description_. Defaults to None.
         **kwargs (dict): All remaining properties are passed to the constructor of `LetTradeLive`
 
     Returns:

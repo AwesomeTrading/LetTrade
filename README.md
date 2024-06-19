@@ -24,6 +24,11 @@ Developing version
 pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ```
 
+> [!WARNING]  
+> LetTrade is under heavy construction, features and functions may be changed.
+>
+> Using Developing version to get latest update.
+
 ## Example
 
 ```python

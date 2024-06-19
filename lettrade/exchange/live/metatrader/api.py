@@ -100,12 +100,6 @@ class MetaTraderAPI(LiveAPI):
         except TimeoutError as e:
             raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e
 
-        # Terminal
-        terminal = self._mt5.terminal_info()
-        logger.info("Terminal information: %s", str(terminal))
-        if not terminal.trade_allowed:
-            logger.warning("Terminal trading mode is not allowed")
-
         # Login account
         account = self.account()
         if not account or account.login != login:
@@ -135,6 +129,13 @@ class MetaTraderAPI(LiveAPI):
             self._mt5.positions_get()
             time.sleep(5)
 
+        # Terminal
+        terminal = self._mt5.terminal_info()
+        logger.info("Terminal information: %s", str(terminal))
+        if not terminal.trade_allowed:
+            logger.warning("Terminal trading mode is not allowed")
+
+        # Account
         logger.info(
             "Login success account=%s, server=%s, version=%s",
             account,
@@ -198,11 +199,11 @@ class MetaTraderAPI(LiveAPI):
 
     # Order
     def order_open(self, order: LiveOrder):
-        request = self._parse_order_request(order)
+        request = self._parse_order_open_request(order)
         raw = self._mt5.order_send(request)
-        return self._parse_order_response(raw)
+        return self._parse_trade_send_response(raw)
 
-    def _parse_order_request(self, order: LiveOrder, deviation=10):
+    def _parse_order_open_request(self, order: LiveOrder, deviation=10):
         tick = self.tick_get(order.data.symbol)
         price = tick.ask if order.is_long else tick.bid
         type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
@@ -236,13 +237,16 @@ class MetaTraderAPI(LiveAPI):
     def order_close(self, order: LiveOrder, **kwargs):
         raise NotImplementedError
 
-    def _parse_order_response(self, raw):
-        # raw = raw._asdict()
-        # raw["request"] = raw["request"]._asdict()
+    def _parse_trade_send_response(self, raw):
+        if raw is None:
+            raise RuntimeError("Trade response is None")
 
         raw = Box(dict(raw._asdict()))
         raw.code = raw.retcode
         if raw.code == MT5.TRADE_RETCODE_DONE:
+            raw.code = 0
+        elif raw.code == MT5.TRADE_RETCODE_NO_CHANGES:
+            logger.warning("Trade response nothing changes code %s %s", raw.code, raw)
             raw.code = 0
 
         if __debug__:
@@ -260,11 +264,62 @@ class MetaTraderAPI(LiveAPI):
     def positions_total(self):
         return self._mt5.positions_total()
 
-    def positions_get(self, **kwargs):
-        return self._mt5.positions_get(**kwargs)
+    def positions_get(self, id: str = None, symbol: str = None, **kwargs):
+        if id is not None:
+            kwargs.update(ticket=int(id))
+        if symbol is not None:
+            kwargs.update(symbol=symbol)
 
-    def position_update(self, trade: "LivePosition", sl=None, tp=None, **kwargs):
-        raise NotImplementedError
+        raws = self._mt5.positions_get(**kwargs)
+        if raws is None:
+            raise RuntimeError(f"Cannot get position by parameters {kwargs}")
+
+        return [Box(dict(raw._asdict())) for raw in raws]
+
+    def position_update(
+        self,
+        position: LivePosition,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        **kwargs,
+    ):
+        return self.do_position_update(id=int(position.id), sl=sl, tp=tp, **kwargs)
+
+    def do_position_update(
+        self,
+        id: int,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        **kwargs,
+    ):
+
+        request = self._parse_position_update_request(id=id, sl=sl, tp=tp, **kwargs)
+        raw = self._mt5.order_send(request)
+        return self._parse_trade_send_response(raw)
+
+    def _parse_position_update_request(
+        self,
+        id: int,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        **kwargs,
+    ):
+        request = {
+            "action": MT5.TRADE_ACTION_SLTP,
+            # "symbol": position.data.symbol,
+            "magic": self._magic,
+            "position": id,
+            **kwargs,
+        }
+        if sl is not None:
+            request["sl"] = sl
+        if tp is not None:
+            request["tp"] = tp
+
+        if __debug__:
+            logger.info("New position request: %s", request)
+
+        return request
 
     # Transaction
     def _check_transactions(self):

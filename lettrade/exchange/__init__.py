@@ -11,4 +11,4 @@ from .error import *
 from .exchange import Exchange
 from .execution import Execution
 from .order import Order, OrderResult, OrderResultError, OrderResultOk
-from .position import Position
+from .position import Position, PositionResult, PositionResultError, PositionResultOk

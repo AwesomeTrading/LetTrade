@@ -99,6 +99,8 @@ class LiveExchange(Exchange):
             logger.info("Raw new deals: %s", raws)
         for raw in raws:
             execution = self._execution_cls.from_raw(raw, exchange=self)
+            if execution is None:
+                continue
             self.on_execution(execution)
 
     def on_new_orders(self, raws):
@@ -106,6 +108,8 @@ class LiveExchange(Exchange):
             logger.info("Raw new orders: %s", raws)
         for raw in raws:
             order = self._order_cls.from_raw(raw, exchange=self)
+            if order is None:
+                continue
             self.on_order(order)
 
     def on_old_orders(self, raws):
@@ -113,6 +117,8 @@ class LiveExchange(Exchange):
             logger.info("Raw old orders: %s", raws)
         for raw in raws:
             order = self._order_cls.from_raw(raw, exchange=self)
+            if order is None:
+                continue
             self.on_order(order)
 
     def on_new_positions(self, raws):
@@ -120,6 +126,8 @@ class LiveExchange(Exchange):
             logger.info("Raw new positions: %s", raws)
         for raw in raws:
             position = self._position_cls.from_raw(raw, exchange=self)
+            if position is None:
+                continue
             self.on_position(position)
 
     def on_old_positions(self, raws):
@@ -127,4 +135,6 @@ class LiveExchange(Exchange):
             logger.info("Raw old positions: %s", raws)
         for raw in raws:
             position = self._position_cls.from_raw(raw, exchange=self)
+            if position is None:
+                continue
             self.on_position(position)

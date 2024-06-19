@@ -78,13 +78,50 @@ class MetaTraderDataFeeder(LiveDataFeeder):
 class MetaTraderExecution(LiveExecution):
     """Execution for MetaTrader"""
 
+    @classmethod
+    def from_raw(
+        cls,
+        raw,
+        exchange: "MetaTraderExchange",
+        api: MetaTraderAPI = None,
+    ) -> "MetaTraderExecution":
+        """Building new MetaTraderExecution from live api raw object
+
+        Args:
+            raw (_type_): _description_
+            exchange (MetaTraderExchange): _description_
+
+        Returns:
+            MetaTraderExecution: _description_
+        """
+
+        return cls(
+            exchange=exchange,
+            id=raw.ticket,
+            # TODO: Fix by get data from symbol
+            data=exchange.data,
+            # TODO: size and type from raw.type
+            size=raw.volume,
+            price=raw.price,
+            # TODO: set bar time
+            at=None,
+            order_id=raw.order,
+            position_id=raw.position_id,
+            tag=raw.comment,
+            api=api,
+            raw=raw,
+        )
+
 
 class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
 
     @classmethod
     def from_raw(
-        cls, raw, exchange: "MetaTraderExchange"
+        cls,
+        raw,
+        exchange: "MetaTraderExchange",
+        api: MetaTraderAPI = None,
     ) -> Optional["MetaTraderOrder"]:
         """_summary_
 
@@ -188,13 +225,16 @@ class MetaTraderOrder(LiveOrder):
             sl_price=raw.sl,
             tp_price=raw.tp,
             tag=raw.comment,
+            api=api,
             raw=raw,
         )
         order.place_at = pd.to_datetime(raw.time_setup_msc, unit="ms")
         return order
 
     @classmethod
-    def from_position(cls, position: "MetaTraderPosition", sl=None, tp=None):
+    def from_position(
+        cls, position: "MetaTraderPosition", sl=None, tp=None
+    ) -> "MetaTraderOrder":
         """_summary_
 
         Args:
@@ -227,7 +267,13 @@ class MetaTraderPosition(LivePosition):
     """Position for MetaTrader"""
 
     @classmethod
-    def from_raw(cls, raw, exchange: "MetaTraderExchange") -> "MetaTraderPosition":
+    def from_raw(
+        cls,
+        raw,
+        exchange: "MetaTraderExchange",
+        data: MetaTraderDataFeed = None,
+        api: MetaTraderAPI = None,
+    ) -> "MetaTraderPosition":
         """_summary_
 
         Args:
@@ -241,14 +287,14 @@ class MetaTraderPosition(LivePosition):
             MetaTraderPosition: _description_
         """
         # DataFeed
-        data = None
-        for d in exchange.datas:
-            if d.symbol == raw.symbol:
-                data = d
-                break
         if data is None:
-            logger.warning("Raw order %s is not handling %s", raw.symbol, raw)
-            return
+            for d in exchange.datas:
+                if d.symbol == raw.symbol:
+                    data = d
+                    break
+            if data is None:
+                logger.warning("Raw position %s is not handling %s", raw.symbol, raw)
+                return
 
         # Side
         match raw.type:
@@ -272,6 +318,7 @@ class MetaTraderPosition(LivePosition):
             parent=None,
             tag=raw.comment,
             raw=raw,
+            api=api,
         )
         position.entry_at = pd.to_datetime(raw.time_msc, unit="ms")
 
@@ -290,6 +337,25 @@ class MetaTraderPosition(LivePosition):
             exchange.on_order(position.tp_order)
 
         return position
+
+    # @classmethod
+    # def from_id(
+    #     cls,
+    #     id: str,
+    #     exchange: "MetaTraderExchange",
+    #     data: MetaTraderDataFeed = None,
+    #     api: MetaTraderAPI = None,
+    # ) -> "MetaTraderPosition":
+    #     if api is None:
+    #         api = exchange._api
+
+    #     raws = api.positions_get(id=id)
+    #     return cls.from_raw(
+    #         raw=raws[0],
+    #         exchange=exchange,
+    #         data=data,
+    #         api=api,
+    #     )
 
 
 class MetaTraderAccount(LiveAccount):

@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 import pandas as pd
@@ -6,7 +7,7 @@ from .base import BaseTransaction, PositionState
 from .order import Order
 
 
-class Position(BaseTransaction):
+class Position(BaseTransaction, metaclass=ABCMeta):
     """
     When an `Order` is filled, it results in an active `Position`.
     Find active positions in `Strategy.positions` and closed, settled positions in `Strategy.closed_positions`.
@@ -26,12 +27,14 @@ class Position(BaseTransaction):
         entry_at: Optional[pd.Timestamp] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
+        **kwargs,
     ):
         super().__init__(
             id=id,
             exchange=exchange,
             data=data,
             size=size,
+            **kwargs,
         )
         self._account: "Account" = self.exchange._account
 
@@ -65,25 +68,9 @@ class Position(BaseTransaction):
         self.exchange.on_position(self)
         return True
 
+    @abstractmethod
     def update(self, sl: float = None, tp: float = None, **kwargs):
-        if not sl and not tp:
-            raise RuntimeError("Update sl=None and tp=None")
-
-        if sl is not None:
-            if self.sl_order:
-                self.sl_order.update(stop_price=sl)
-            else:
-                raise NotImplementedError
-                # self._new_sl_order(stop_price=sl)
-
-        if tp is not None:
-            if self.tp_order:
-                self.tp_order.update(limit_price=tp)
-            else:
-                raise NotImplementedError
-                # self._new_tp_order(limit_price=tp)
-
-        self.exchange.on_position(self)
+        raise NotImplementedError(type(self))
 
     def exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
         if self.state != PositionState.Open:
@@ -174,3 +161,66 @@ class Position(BaseTransaction):
             float: Fee
         """
         return self.entry_fee + self.exit_fee
+
+
+class PositionResult:
+    """Result of `Position`"""
+
+    def __init__(
+        self,
+        ok: bool = True,
+        code: int = 0,
+        position: Optional["Position"] = None,
+        raw: Optional[object] = None,
+    ) -> None:
+        """_summary_
+
+        Args:
+            ok (Optional[bool], optional): Flag to check `Position` is success or not. Defaults to True.
+            position (Optional[Position], optional): Position own the result. Defaults to None.
+            code (Optional[int], optional): Error code of result. Defaults to 0.
+            raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
+        """
+        self.ok: bool = ok
+        self.code: int = code
+        self.position: Optional["Position"] = position
+        self.raw: Optional[object] = raw
+
+
+class PositionResultOk(PositionResult):
+    """Result of a success `Position`"""
+
+    def __init__(
+        self,
+        position: Optional["Position"] = None,
+        raw: Optional[object] = None,
+    ) -> None:
+        """_summary_
+
+        Args:
+            position (Optional[Position], optional): Position own the result. Defaults to None.
+            raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
+        """
+        super().__init__(ok=True, position=position, raw=raw)
+
+
+class PositionResultError(PositionResult):
+    """Result of a error `Position`"""
+
+    def __init__(
+        self,
+        error: str,
+        code: int,
+        position: Optional["Position"] = None,
+        raw: Optional[object] = None,
+    ) -> None:
+        """_summary_
+
+        Args:
+            error (str): Error message
+            code (int): Error code of result
+            position (Optional[Position], optional): Position own the result. Defaults to None.
+            raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
+        """
+        super().__init__(ok=False, position=position, code=code, raw=raw)
+        self.error: str = error

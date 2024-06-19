@@ -24,12 +24,14 @@ class Order(BaseTransaction):
         tp_price: Optional[float] = None,
         parent: Optional["Position"] = None,
         tag: Optional[object] = None,
+        **kwargs,
     ):
         super().__init__(
             id=id,
             exchange=exchange,
             data=data,
             size=size,
+            **kwargs,
         )
 
         self.type: OrderType = type

@@ -21,6 +21,7 @@ class Execution(BaseTransaction):
         order: Optional["Order"] = None,
         position_id: Optional[str] = None,
         position: Optional["Position"] = None,
+        **kwargs,
     ):
         if exchange.executions is None:
             logger.warning(
@@ -33,6 +34,7 @@ class Execution(BaseTransaction):
             exchange=exchange,
             data=data,
             size=size,
+            **kwargs,
         )
         self.order_id = order_id
         self.order: "Order" = order

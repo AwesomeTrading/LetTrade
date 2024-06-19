@@ -11,6 +11,8 @@ from lettrade.exchange import (
     OrderState,
     OrderType,
     Position,
+    PositionResultError,
+    PositionResultOk,
     PositionState,
 )
 
@@ -19,7 +21,20 @@ from .api import LiveAPI
 logger = logging.getLogger(__name__)
 
 
-class LiveExecution(Execution):
+class _LiveTrade:
+    def __init__(
+        self,
+        exchange: "LiveExchange",
+        api: Optional[LiveAPI] = None,
+        raw: Optional[object] = None,
+        **kwargs,
+    ) -> None:
+        super().__init__(exchange=exchange, **kwargs)
+        self.raw: object = raw
+        self._api: LiveAPI = api or exchange._api
+
+
+class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
     """
     Execution for Live
     """
@@ -36,9 +51,10 @@ class LiveExecution(Execution):
         order: Optional["Order"] = None,
         position_id: Optional[str] = None,
         position: Optional["Position"] = None,
-        tag: Optional[str] = "",
+        # tag: Optional[str] = "",
         api: Optional[LiveAPI] = None,
         raw: Optional[object] = None,
+        **kwargs,
     ):
         super().__init__(
             id=id,
@@ -51,37 +67,29 @@ class LiveExecution(Execution):
             order=order,
             position_id=position_id,
             position=position,
+            api=api,
+            raw=raw,
+            **kwargs,
         )
-        self.tag: str = tag
-        self.raw: object = raw
-        self._api: LiveAPI = api or exchange._api
+        # self.tag: str = tag
+        # self.raw: object = raw
+        # self._api: LiveAPI = api or exchange._api
 
     @classmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveExecution":
+        """Building new LiveExecution from live api raw object
+
+        Args:
+            raw (_type_): _description_
+            exchange (LiveExchange): _description_
+
+        Returns:
+            LiveExecution: _description_
         """
-        Building new LiveExecution from live api deal object
-
-            Raw deal: TradeDeal(ticket=33889131, order=41290404, time=1715837856, time_msc=1715837856798, type=0, entry=0, magic=0, position_id=41290404, reason=0, volume=0.01, price=0.85795, commission=0.0, swap=0.0, profit=0.0, fee=0.0, symbol='EURGBP', comment='', external_id='')
-        """
-
-        return cls(
-            exchange=exchange,
-            id=raw.ticket,
-            # TODO: Fix by get data from symbol
-            data=exchange.data,
-            # TODO: size and type from raw.type
-            size=raw.volume,
-            price=raw.price,
-            # TODO: set bar time
-            at=None,
-            order_id=raw.order,
-            position_id=raw.position_id,
-            tag=raw.comment,
-            raw=raw,
-        )
+        raise NotImplementedError
 
 
-class LiveOrder(Order, metaclass=ABCMeta):
+class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
     def __init__(
         self,
         id: str,
@@ -98,6 +106,7 @@ class LiveOrder(Order, metaclass=ABCMeta):
         tag: Optional[str] = "",
         api: Optional[LiveAPI] = None,
         raw: Optional[object] = None,
+        **kwargs,
     ):
         super().__init__(
             id=id,
@@ -112,9 +121,12 @@ class LiveOrder(Order, metaclass=ABCMeta):
             tp_price=tp_price,
             parent=parent,
             tag=tag,
+            api=api,
+            raw=raw,
+            **kwargs,
         )
-        self.raw: dict = raw
-        self._api: LiveAPI = api or exchange._api
+        # self.raw: dict = raw
+        # self._api: LiveAPI = api or exchange._api
 
     def place(self) -> "OrderResult":
         if self.state != OrderState.Pending:
@@ -182,8 +194,23 @@ class LiveOrder(Order, metaclass=ABCMeta):
         """
         raise NotImplementedError
 
+    @classmethod
+    @abstractmethod
+    def from_position(cls, position: "LivePosition", sl=None, tp=None) -> "LiveOrder":
+        """_summary_
 
-class LivePosition(Position, metaclass=ABCMeta):
+        Args:
+            position (LivePosition): _description_
+            sl (_type_, optional): _description_. Defaults to None.
+            tp (_type_, optional): _description_. Defaults to None.
+
+        Returns:
+            LiveOrder: _description_
+        """
+        raise NotImplementedError
+
+
+class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
     def __init__(
         self,
         id: str,
@@ -199,6 +226,7 @@ class LivePosition(Position, metaclass=ABCMeta):
         tp_order: Optional[Order] = None,
         api: Optional[LiveAPI] = None,
         raw: Optional[object] = None,
+        **kwargs,
     ):
         super().__init__(
             id=id,
@@ -212,9 +240,46 @@ class LivePosition(Position, metaclass=ABCMeta):
             entry_at=entry_at,
             sl_order=sl_order,
             tp_order=tp_order,
+            api=api,
+            raw=raw,
+            **kwargs,
         )
-        self.raw: dict = raw
-        self._api: LiveAPI = api or exchange._api
+        # self.raw: dict = raw
+        # self._api: LiveAPI = api or exchange._api
+
+    def update(self, sl: float = None, tp: float = None, **kwargs):
+        if not sl and not tp:
+            raise RuntimeError("Update sl=None and tp=None")
+
+        result = self._api.position_update(position=self, sl=sl, tp=tp)
+        if result.code != 0:
+            logger.error("Update position %s", str(result))
+            error = PositionResultError(
+                error=result.comment,
+                code=result.code,
+                position=self,
+                raw=result,
+            )
+            self.exchange.on_notify(error=error)
+            return error
+
+        if sl is not None:
+            if self.sl_order:
+                self.sl_order.update(stop_price=sl)
+            else:
+                self.sl_order = self.exchange._order_cls.from_position(
+                    position=self, sl=sl
+                )
+
+        if tp is not None:
+            if self.tp_order:
+                self.tp_order.update(limit_price=tp)
+            else:
+                self.tp_order = self.exchange._order_cls.from_position(
+                    position=self, tp=tp
+                )
+
+        self.exchange.on_position(self)
 
     @classmethod
     @abstractmethod
@@ -229,3 +294,17 @@ class LivePosition(Position, metaclass=ABCMeta):
             LivePosition: _description_
         """
         raise NotImplementedError
+
+    # @classmethod
+    # # @abstractmethod
+    # def from_id(cls, id: str, exchange: "LiveExchange") -> "LivePosition":
+    #     """_summary_
+
+    #     Args:
+    #         id (str): _description_
+    #         exchange (LiveExchange): _description_
+
+    #     Returns:
+    #         LivePosition: _description_
+    #     """
+    #     raise NotImplementedError

@@ -485,6 +485,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tutorial/metatrader/trade/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MetaTrader Trade
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1000,6 +1021,27 @@
   
   <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> account
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../account/error/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> error
   </span>
   
 
@@ -2515,11 +2557,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../execute/" class="md-nav__link">
+      <a href="../../execution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execute
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execution
   </span>
   
 
@@ -2994,27 +3036,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../trade/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> trade
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -3126,6 +3147,27 @@
   
   <span class="md-ellipsis">
     Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../indicator/candlestick/candlestick/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> candlestick
   </span>
   
 
@@ -4902,9 +4944,9 @@ Plotly implement <a href="/LetTrade/reference/plot/plotly/plotly/#lettrade.plot.
 <p>Args:
     <code>jump</code> (Optional[dict], optional): Miror of <a href="/LetTrade/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump">BotPlotter.jump()</a></p>
 <p>Example:
-    - Jump to trade_id
+    - Jump to position_id
         <div class="highlight"><pre><span></span><code><span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">jump</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">trade_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+    <span class="n">jump</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">position_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
     <span class="n">layout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">2000</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div></p>
@@ -4967,10 +5009,10 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="sd">            `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            - Jump to trade_id</span>
+<span class="sd">            - Jump to position_id</span>
 <span class="sd">                ```python</span>
 <span class="sd">                lt.plot(</span>
-<span class="sd">                    jump=dict(trade_id=1, range=300),</span>
+<span class="sd">                    jump=dict(position_id=1, range=300),</span>
 <span class="sd">                    layout=dict(height=2000),</span>
 <span class="sd">                )</span>
 <span class="sd">                ```</span>
@@ -5074,8 +5116,6 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
     <span class="n">cash</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="n">commission</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
     <span class="n">leverage</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="n">equity_snapshot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">equity_snapshot_everytick</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.backtest.LetTradeBackTest" href="#lettrade.exchange.backtest.backtest.LetTradeBackTest">LetTradeBackTest</a></span>
 </code></pre></div>
@@ -5237,11 +5277,7 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">616</span>
 <span class="normal">617</span>
 <span class="normal">618</span>
-<span class="normal">619</span>
-<span class="normal">620</span>
-<span class="normal">621</span>
-<span class="normal">622</span>
-<span class="normal">623</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_backtest</span><span class="p">(</span>
+<span class="normal">619</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_backtest</span><span class="p">(</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Strategy</span><span class="p">],</span>
     <span class="n">datas</span><span class="p">:</span> <span class="n">DataFeed</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">DataFeed</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">feeder</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">DataFeeder</span><span class="p">]</span> <span class="o">=</span> <span class="n">BackTestDataFeeder</span><span class="p">,</span>
@@ -5257,8 +5293,6 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
     <span class="n">cash</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1_000</span><span class="p">,</span>
     <span class="n">commission</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
     <span class="n">leverage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="n">equity_snapshot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">equity_snapshot_everytick</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LetTradeBackTest&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Complete `lettrade` backtest depenencies</span>
@@ -5283,8 +5317,6 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
         <span class="n">cash</span><span class="o">=</span><span class="n">cash</span><span class="p">,</span>
         <span class="n">commission</span><span class="o">=</span><span class="n">commission</span><span class="p">,</span>
         <span class="n">leverage</span><span class="o">=</span><span class="n">leverage</span><span class="p">,</span>
-        <span class="n">equity_snapshot</span><span class="o">=</span><span class="n">equity_snapshot</span><span class="p">,</span>
-        <span class="n">equity_snapshot_everytick</span><span class="o">=</span><span class="n">equity_snapshot_everytick</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">LetTradeBackTest</span><span class="p">(</span>

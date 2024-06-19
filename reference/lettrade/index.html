@@ -485,6 +485,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorial/metatrader/trade/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MetaTrader Trade
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1000,6 +1021,27 @@
   
   <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> account
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/error/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> error
   </span>
   
 
@@ -2393,11 +2435,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../exchange/execute/" class="md-nav__link">
+      <a href="../exchange/execution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execute
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execution
   </span>
   
 
@@ -2872,27 +2914,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../exchange/trade/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> trade
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -3004,6 +3025,27 @@
   
   <span class="md-ellipsis">
     Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../indicator/candlestick/candlestick/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> candlestick
   </span>
   
 
@@ -4372,9 +4414,9 @@ Plotly implement <a href="/LetTrade/reference/plot/plotly/plotly/#lettrade.plot.
 <p>Args:
     <code>jump</code> (Optional[dict], optional): Miror of <a href="/LetTrade/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump">BotPlotter.jump()</a></p>
 <p>Example:
-    - Jump to trade_id
+    - Jump to position_id
         <div class="highlight"><pre><span></span><code><span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">jump</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">trade_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+    <span class="n">jump</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">position_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
     <span class="n">layout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">2000</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div></p>
@@ -4437,10 +4479,10 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="sd">            `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            - Jump to trade_id</span>
+<span class="sd">            - Jump to position_id</span>
 <span class="sd">                ```python</span>
 <span class="sd">                lt.plot(</span>
-<span class="sd">                    jump=dict(trade_id=1, range=300),</span>
+<span class="sd">                    jump=dict(position_id=1, range=300),</span>
 <span class="sd">                    layout=dict(height=2000),</span>
 <span class="sd">                )</span>
 <span class="sd">                ```</span>

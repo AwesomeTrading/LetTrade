@@ -485,6 +485,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/metatrader/trade/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MetaTrader Trade
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1000,6 +1021,27 @@
   
   <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> account
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../account/error/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> error
   </span>
   
 
@@ -2405,6 +2447,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.base.BaseTransaction.side" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;side
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2468,11 +2519,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../execute/" class="md-nav__link">
+      <a href="../execution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execute
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execution
   </span>
   
 
@@ -2947,27 +2998,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../trade/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> trade
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -3079,6 +3109,27 @@
   
   <span class="md-ellipsis">
     Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../indicator/candlestick/candlestick/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> candlestick
   </span>
   
 
@@ -4190,6 +4241,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.base.BaseTransaction.side" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;side
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4255,9 +4315,7 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/base.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
@@ -4265,7 +4323,9 @@
 <span class="normal">39</span>
 <span class="normal">40</span>
 <span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;Exchange&quot;</span><span class="p">,</span>
@@ -4349,6 +4409,41 @@
     <ul>
         <li class="doc-section-item field-body">
 <b><code>bool</code></b> (              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+)          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+    </ul>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="lettrade.exchange.base.BaseTransaction.side" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">side</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#lettrade.exchange.base.BaseTransaction.side" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">side</span><span class="p">:</span> <span class="n"><span title="lettrade.exchange.base.TradeSide">TradeSide</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>True if side is short (size is negative).</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>bool</code></b> (              <code><span title="lettrade.exchange.base.TradeSide">TradeSide</span></code>
 )          –
           <div class="doc-md-description">
             <p><em>description</em></p>

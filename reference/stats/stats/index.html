@@ -485,6 +485,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/metatrader/trade/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MetaTrader Trade
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1000,6 +1021,27 @@
   
   <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> account
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../account/error/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> error
   </span>
   
 
@@ -2393,11 +2435,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../exchange/execute/" class="md-nav__link">
+      <a href="../../exchange/execution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execute
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> execution
   </span>
   
 
@@ -2872,27 +2914,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../exchange/trade/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> trade
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -3004,6 +3025,27 @@
   
   <span class="md-ellipsis">
     Index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../indicator/candlestick/candlestick/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> candlestick
   </span>
   
 
@@ -4397,10 +4439,10 @@
     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">data</span>
 
     <span class="n">equities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">_equities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">trades</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">history_trades</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">trades</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">history_positions</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
     <span class="p">)</span>
-    <span class="n">trades_columns</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">positions_columns</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;size&quot;</span><span class="p">,</span>
         <span class="s2">&quot;entry_at&quot;</span><span class="p">,</span>
         <span class="s2">&quot;exit_at&quot;</span><span class="p">,</span>
@@ -4409,18 +4451,18 @@
         <span class="s2">&quot;pl&quot;</span><span class="p">,</span>
         <span class="s2">&quot;fee&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">trades_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">trades_columns</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">trade</span> <span class="ow">in</span> <span class="n">trades</span><span class="p">:</span>
-        <span class="n">trades_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">trade</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">trades_columns</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">trade</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
-            <span class="n">trade</span><span class="o">.</span><span class="n">entry_at</span><span class="p">,</span>
-            <span class="n">trade</span><span class="o">.</span><span class="n">exit_at</span><span class="p">,</span>
-            <span class="n">trade</span><span class="o">.</span><span class="n">entry_price</span><span class="p">,</span>
-            <span class="n">trade</span><span class="o">.</span><span class="n">exit_price</span><span class="p">,</span>
-            <span class="n">trade</span><span class="o">.</span><span class="n">pl</span><span class="p">,</span>
-            <span class="n">trade</span><span class="o">.</span><span class="n">fee</span><span class="p">,</span>
+    <span class="n">positions_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">positions_columns</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">:</span>
+        <span class="n">positions_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">position</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">positions_columns</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">entry_at</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">exit_at</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">entry_price</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">exit_price</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">pl</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">.</span><span class="n">fee</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="n">trades_df</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trades_df</span><span class="p">[</span><span class="s2">&quot;entry_at&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">trades_df</span><span class="p">[</span><span class="s2">&quot;exit_at&quot;</span><span class="p">]</span>
+    <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;entry_at&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;exit_at&quot;</span><span class="p">]</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
 
@@ -4448,18 +4490,18 @@
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
     <span class="c1"># Trades</span>
-    <span class="n">trades_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trades</span><span class="p">)</span>
-    <span class="n">pl</span> <span class="o">=</span> <span class="n">trades_df</span><span class="p">[</span><span class="s2">&quot;pl&quot;</span><span class="p">]</span>
+    <span class="n">positions_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+    <span class="n">pl</span> <span class="o">=</span> <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;pl&quot;</span><span class="p">]</span>
 
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;trades&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trades_total</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">positions_total</span>
 
-    <span class="n">win_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">trades_total</span> <span class="k">else</span> <span class="p">(</span><span class="n">pl</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">win_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">positions_total</span> <span class="k">else</span> <span class="p">(</span><span class="n">pl</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;win_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">win_rate</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;fee&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trades_df</span><span class="o">.</span><span class="n">fee</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;fee&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">positions_df</span><span class="o">.</span><span class="n">fee</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;best_trade_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;worst_trade_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;sqn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">trades_total</span><span class="p">)</span> <span class="o">*</span> <span class="n">pl</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">positions_total</span><span class="p">)</span> <span class="o">*</span> <span class="n">pl</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
         <span class="mi">2</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;kelly_criterion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">win_rate</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">win_rate</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>

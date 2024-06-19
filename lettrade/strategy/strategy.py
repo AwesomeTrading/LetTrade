@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from typing import Any, Optional, Sequence, final
 
@@ -13,6 +14,8 @@ from lettrade.exchange import (
     TradeSide,
 )
 
+logger = logging.getLogger(__name__)
+
 
 class Strategy:
     """
@@ -26,6 +29,7 @@ class Strategy:
         account: Account,
         commander: Commander,
         is_optimize: bool = False,
+        **kwargs,
     ):
         """_summary_
 
@@ -50,6 +54,12 @@ class Strategy:
         if is_optimize and self.is_live:
             raise RuntimeError("Optimize a live datafeeder")
         self.__is_optimize: bool = is_optimize
+
+        # Set parameters
+        if kwargs:
+            logger.info("Update strategy parameters %s", kwargs)
+            for k, v in kwargs.items():
+                setattr(self, k, v)
 
     def init(self) -> None:
         """Init strategy variables"""

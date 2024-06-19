@@ -12,6 +12,11 @@ Find more at [**Documentation**](https://AwesomeTrading.github.io/LetTrade/)
 
 ## Installation
 
+> [!WARNING]  
+> LetTrade is under heavy construction, features and functions may be changed.
+>
+> Using Developing version to get latest update.
+
 Stable version
 
 ```sh
@@ -23,11 +28,6 @@ Developing version
 ```sh
 pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ```
-
-> [!WARNING]  
-> LetTrade is under heavy construction, features and functions may be changed.
->
-> Using Developing version to get latest update.
 
 ## Example
 

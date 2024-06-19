@@ -75,15 +75,15 @@ if __name__ == "__main__":
     lt = let_metatrader(
         strategy=SmaCross,
         datas=[[("EURGBP", "1m")]],
-        login=int(os.environ["MT5_LOGIN"]),
-        password=os.environ["MT5_PASSWORD"],
-        server=os.environ["MT5_SERVER"],
+        mt5_login=int(os.environ["MT5_LOGIN"]),
+        mt5_password=os.environ["MT5_PASSWORD"],
+        mt5_server=os.environ["MT5_SERVER"],
+        mt5_wine=os.getenv("MT5_WINE", None),
         commander=TelegramCommander,
         commander_kwargs=dict(
             token=os.getenv("TELEGRAM_TOKEN"),
             chat_id=os.getenv("TELEGRAM_CHAT_ID"),
         ),
-        wine=os.getenv("MT5_WINE", None),
     )
 
     lt.run()

@@ -338,9 +338,10 @@ class LetTradeMetaTrader(LetTradeLive):
 def let_metatrader(
     strategy: Type[Strategy],
     datas: set[set[str]],
-    login: int,
-    password: str,
-    server: str,
+    mt5_login: int,
+    mt5_password: str,
+    mt5_server: str,
+    mt5_wine: Optional[str] = None,
     feeder: Type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
     exchange: Type[MetaTraderExchange] = MetaTraderExchange,
     account: Type[MetaTraderAccount] = MetaTraderAccount,
@@ -350,7 +351,6 @@ def let_metatrader(
     bot: Optional[Type[LetTradeMetaTraderBot]] = LetTradeMetaTraderBot,
     lettrade: Optional[Type[LetTradeMetaTrader]] = LetTradeMetaTrader,
     api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
-    wine: Optional[str] = None,
     **kwargs,
 ) -> LetTradeMetaTrader:
     """Help to build `LetTradeMetaTrader`
@@ -378,10 +378,10 @@ def let_metatrader(
     """
     api_kwargs: dict = kwargs.setdefault("api_kwargs", {})
     api_kwargs.update(
-        login=int(login),
-        password=password,
-        server=server,
-        wine=wine,
+        login=int(mt5_login),
+        password=mt5_password,
+        server=mt5_server,
+        wine=mt5_wine,
     )
 
     return let_live(

@@ -75,9 +75,9 @@ if __name__ == "__main__":
     lt = let_metatrader(
         strategy=SmaCross,
         datas={("EURGBP", "5m")},
-        login=os.getenv("MT5_LOGIN"),
-        password=os.getenv("MT5_PASSWORD"),
-        server=os.getenv("MT5_SERVER"),
+        mt5_login=os.getenv("MT5_LOGIN"),
+        mt5_password=os.getenv("MT5_PASSWORD"),
+        mt5_server=os.getenv("MT5_SERVER"),
         commander=TelegramCommander(
             token=os.getenv("TELEGRAM_TOKEN"),
             chat_id=os.getenv("TELEGRAM_CHAT_ID"),

@@ -63,10 +63,10 @@ if __name__ == "__main__":
         strategy=SmaCross,
         datas=[("EURUSD", "1m")],
         # datas=[[("EURUSD", "1m")], [("GBPUSD", "1m")]],
-        login=int(os.environ["MT5_LOGIN"]),
-        password=os.environ["MT5_PASSWORD"],
-        server=os.environ["MT5_SERVER"],
-        wine=os.getenv("MT5_WINE", None),
+        mt5_login=int(os.environ["MT5_LOGIN"]),
+        mt5_password=os.environ["MT5_PASSWORD"],
+        mt5_server=os.environ["MT5_SERVER"],
+        mt5_wine=os.getenv("MT5_WINE", None),
     )
 
     lt.run()

@@ -35,7 +35,7 @@ if __name__ == "__main__":
             "backtest": ["tqdm", "plotly"],
             "backtest-extra": ["yfinance"],
             "commander": ["python-telegram-bot"],
-            "dev": ["yfinance", "pytz"],
+            "test": ["pytest"],
             "exchange-metatrader": [
                 "python-box",
                 "mt5linux",

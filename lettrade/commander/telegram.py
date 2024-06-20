@@ -35,6 +35,7 @@ from telegram.ext import (
 )
 from telegram.helpers import escape_markdown
 
+from lettrade.plot import BotPlotter
 from lettrade.stats import BotStatistic
 
 from .commander import Commander
@@ -162,9 +163,9 @@ class TelegramAPI:
         section.
         """
         self._keyboard: List[List[Union[str, KeyboardButton]]] = [
-            ["/stats", "/bots", "/bot"],
-            ["/status", "/status table", "/performance"],
-            ["/count", "/start", "/stop", "/help"],
+            ["/help", "/bots", "/bot"],
+            ["/stats", "/plot", "/status"],
+            ["/count"],
         ]
 
     def _init_telegram_app(self):
@@ -187,10 +188,12 @@ class TelegramAPI:
 
         # Register command handler and start telegram message polling
         handles = [
+            CommandHandler("help", self._cmd_help),
             CommandHandler("bots", self._cmd_bots),
             CommandHandler("bot", self._cmd_bot),
             CommandHandler("status", self._cmd_status),
-            # CommandHandler("profit", self._profit),
+            CommandHandler("stats", self._cmd_stats),
+            CommandHandler("plot", self._cmd_plot),
             # CommandHandler("balance", self._balance),
             # CommandHandler("start", self._start),
             # CommandHandler("stop", self._stop),
@@ -203,7 +206,6 @@ class TelegramAPI:
             # CommandHandler(["buys", "entries"], self._enter_tag_performance),
             # CommandHandler(["sells", "exits"], self._exit_reason_performance),
             # CommandHandler("mix_tags", self._mix_tag_performance),
-            CommandHandler("stats", self._cmd_stats),
             # CommandHandler("daily", self._daily),
             # CommandHandler("weekly", self._weekly),
             # CommandHandler("monthly", self._monthly),
@@ -219,7 +221,6 @@ class TelegramAPI:
             # CommandHandler("logs", self._logs),
             # CommandHandler("edge", self._edge),
             # CommandHandler("health", self._health),
-            CommandHandler("help", self._cmd_help),
             # CommandHandler("version", self._version),
             # CommandHandler("marketdir", self._changemarketdir),
             # CommandHandler("order", self._order),
@@ -244,7 +245,7 @@ class TelegramAPI:
             # ),
             # CallbackQueryHandler(self._count, pattern="update_count"),
             # CallbackQueryHandler(self._force_exit_inline, pattern=r"force_exit__\S+"),
-            # CallbackQueryHandler(self._force_enter_inline, pattern=r"force_enter__\S+"),
+            CallbackQueryHandler(self._run_cmd, pattern=r"cmd:\S+"),
         ]
         for handle in handles:
             self._app.add_handler(handle)
@@ -410,13 +411,13 @@ class TelegramAPI:
             keyboard.append(
                 [
                     InlineKeyboardButton(
-                        text=f"/bot {name}",
-                        callback_data=f"bot_select_{i}",
+                        text=f"/bot {i} {name}",
+                        callback_data=f"cmd:/bot {i}",
                     )
                 ]
             )
 
-        print("Telegram: bots:\n", msg, keyboard)
+        # print("Telegram: bots:\n", msg, keyboard)
         await self._send_msg(msg, parse_mode=ParseMode.MARKDOWN_V2, keyboard=keyboard)
 
     @authorized_only
@@ -470,6 +471,42 @@ class TelegramAPI:
 
     def on_stats(self, stats: str, pname: str):
         self.send_message(stats, pname=pname)
+
+    @authorized_only
+    async def _cmd_plot(self, update: Update, context: CallbackContext) -> None:
+        """Handler for /plot
+        Returns the current Strategy Statistic
+
+        Args:
+            update (Update): message update
+            context (CallbackContext): Telegram context
+        """
+        # plot: Statistic = self.lettrade.plot
+        # plot.compute()
+        # await self._send_msg(plot.result.to_string())
+
+        self._action("plot", pname=self._bot_selected)
+
+    def on_plot(self, plot: str, pname: str):
+        self.send_message(plot, pname=pname)
+
+    @authorized_only
+    async def _run_cmd(self, update: Update, context: CallbackContext) -> None:
+        if not update.callback_query:
+            return
+
+        query = update.callback_query
+        if not query or not query.data or not query.data.startswith("cmd:"):
+            return
+
+        datas = query.data.split("cmd:", 1)[1].split(" ")
+
+        logger.info("Run command: %s", datas)
+
+        context.args = datas[1:]
+        match datas[0]:
+            case "/bot":
+                await self._cmd_bot(update=update, context=context)
 
 
 class TelegramCommander(Commander):
@@ -533,6 +570,8 @@ class TelegramCommander(Commander):
                 match action:
                     case "stats":
                         self._on_action_stats()
+                    case "plot":
+                        self._on_action_plot()
             except (BrokenPipeError, EOFError) as e:
                 logger.error("Action", exc_info=e)
                 self._is_running = False
@@ -545,3 +584,8 @@ class TelegramCommander(Commander):
         stats: BotStatistic = self.lettrade.stats
         stats.compute()
         self._api.on_stats(stats=stats.result.to_string(), pname=self._name)
+
+    def _on_action_plot(self):
+        plot: BotPlotter = self.lettrade.plotter
+        plot.plot()
+        # self._api.on_plot(plot=plot.result.to_string(), pname=self._name)

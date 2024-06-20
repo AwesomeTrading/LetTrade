@@ -12,6 +12,8 @@ _api_class_path = f"{_api_module_path}.MetaTraderAPI"
 
 @pytest.fixture
 def metatrader_api(mocker: MockerFixture):
+    mocker.patch(f"{_api_module_path}.MT5.__init__", return_value=None)
+    mocker.patch(f"{_api_module_path}.MT5.version", return_value=5)
     mocker.patch(f"{_api_module_path}.MT5.account_info", return_value=Box(login=123))
     mocker.patch(f"{_api_module_path}.MT5.initialize", return_value=True)
     mocker.patch(

@@ -131,6 +131,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/error/</loc>
+         <lastmod>2024-06-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/feeder/</loc>
          <lastmod>2024-06-20</lastmod>
          <changefreq>daily</changefreq>

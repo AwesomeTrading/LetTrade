@@ -213,13 +213,10 @@ class PlotlyBotPlotter(BotPlotter):
     def _plot_equity(self):
         equities = self.account._equities
 
-        # Filter jump range only
-        if self._jump_stop_dt is not None:
-            equities = {
-                k: e
-                for k, e in equities.items()
-                if k > self._jump_start_dt and k < self._jump_stop_dt
-            }
+        # Filter equities in data range only
+        start_dt = self.data.index[0]
+        stop_dt = self.data.index[-1]
+        equities = {k: e for k, e in equities.items() if k > start_dt and k < stop_dt}
 
         # Axis
         x = list(equities.keys())
@@ -251,24 +248,21 @@ class PlotlyBotPlotter(BotPlotter):
             self.exchange.orders.values()
         )
 
-        # Filter jump range only
-        if self._jump_stop_dt is not None:
-            orders = [
-                o
-                for o in orders
-                if o.place_at > self._jump_start_dt and o.place_at < self._jump_stop_dt
-            ]
+        # Filter order in data range only
+        start_dt = self.data.index[0]
+        stop_dt = self.data.index[-1]
+        orders = [o for o in orders if o.placed_at > start_dt and o.placed_at < stop_dt]
 
         # TODO: test using order/sl/tp line for performance
         for order in orders:
-            x = [order.place_at]
+            x = [order.placed_at]
             y = [order.place_price]
 
             hovertemplate = (
                 "<br>"
                 # f"Order id: {order.id}<br>"
                 "Index: %{x}<br>"
-                f"At: {order.place_at}<br>"
+                f"At: {order.placed_at}<br>"
                 "Price: %{y}<br>"
                 f"Size: {order.size}<br>"
             )
@@ -296,20 +290,18 @@ class PlotlyBotPlotter(BotPlotter):
             self.exchange.positions.values()
         )
 
-        # Filter jump range only
-        if self._jump_stop_dt is not None:
-            _positions = []
-            for p in positions:
-                if p.entry_at < self._jump_start_dt or p.entry_at > self._jump_stop_dt:
+        # Filter equities in data range only
+        start_dt = self.data.index[0]
+        stop_dt = self.data.index[-1]
+        _positions = []
+        for p in positions:
+            if p.entry_at < start_dt or p.entry_at > stop_dt:
+                continue
+            if p.exit_at:
+                if p.exit_at < start_dt or p.exit_at > stop_dt:
                     continue
-                if p.exit_at:
-                    if (
-                        p.exit_at < self._jump_start_dt
-                        or p.exit_at > self._jump_stop_dt
-                    ):
-                        continue
-                _positions.append(p)
-            positions = _positions
+            _positions.append(p)
+        positions = _positions
 
         for position in positions:
             x = [position.entry_at]

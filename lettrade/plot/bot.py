@@ -25,8 +25,6 @@ class BotPlotter(Plotter):
     """All plotting datafeeds"""
 
     _datas_stored: Optional[list[DataFeed]] = None
-    _jump_start_dt: Optional[pd.Timestamp] = None
-    _jump_stop_dt: Optional[pd.Timestamp] = None
 
     def __init__(self, bot: "LetTradeBot") -> None:
         self.bot = bot
@@ -89,7 +87,7 @@ class BotPlotter(Plotter):
                 else:
                     raise RuntimeError(f"Order id {order_id} not found")
 
-                loc = self._data_stored.l.index.get_loc(order.place_at)
+                loc = self._data_stored.l.index.get_loc(order.placed_at)
                 since = loc - int(range / 2)
 
             elif position_id is not None:  # Jump to position id
@@ -126,6 +124,8 @@ class BotPlotter(Plotter):
             since = self._data_stored.l.pointer_stop - range
 
         # Jump
+        jump_start_dt = None
+        jump_stop_dt = None
         for i, data in enumerate(self._datas_stored):
             if i == 0:
                 self.datas[i] = data.__class__(
@@ -133,13 +133,12 @@ class BotPlotter(Plotter):
                     name=data.name,
                     timeframe=data.timeframe,
                 )
-                self._jump_start_dt = self.data.index[0]
-                self._jump_stop_dt = self.data.index[-1]
+                jump_start_dt = self.data.index[0]
+                jump_stop_dt = self.data.index[-1]
             else:
                 self.datas[i] = data.__class__(
                     data=data.loc[
-                        (data.index >= self._jump_start_dt)
-                        & (data.index <= self._jump_stop_dt)
+                        (data.index >= jump_start_dt) & (data.index <= jump_stop_dt)
                     ],
                     name=data.name,
                     timeframe=data.timeframe,
@@ -150,9 +149,7 @@ class BotPlotter(Plotter):
 
     def jump_reset(self):
         """Reset jump datafeeds back to bot datafeeds"""
-        if self._jump_start_dt is None:
+        if not self._datas_stored or self.data is self._data_stored:
             return
 
         self.datas = self._datas_stored.copy()
-        self._jump_start_dt = None
-        self._jump_stop_dt = None

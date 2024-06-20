@@ -42,7 +42,8 @@ class MetaTraderAPI(LiveAPI):
     _magic: int
     _use_execution: bool
 
-    __deal_time_checked = datetime.now() - timedelta(days=1)
+    __load_history_since: datetime
+    __deal_time_checked: datetime
     __orders_stored: dict[int, object] = {}
     __positions_stored: dict[int, object] = {}
 
@@ -86,6 +87,10 @@ class MetaTraderAPI(LiveAPI):
         # Parameters
         self._magic = magic
         self._use_execution = False
+        self.__load_history_since = datetime.now() - timedelta(days=7)
+        self.__deal_time_checked = datetime.now() - timedelta(days=1)
+        self.__orders_stored = {}
+        self.__positions_stored = {}
 
         # Start wine server if not inited
         if wine:
@@ -124,7 +129,8 @@ class MetaTraderAPI(LiveAPI):
 
             # Preload trading data
             now = datetime.now()
-            self._mt5.history_deals_get(now - timedelta(weeks=4), now)
+            self._mt5.history_deals_get(self.__deal_time_checked, now)
+            self._mt5.history_orders_get(self.__load_history_since, now)
             self._mt5.orders_get()
             self._mt5.positions_get()
             time.sleep(5)
@@ -147,13 +153,14 @@ class MetaTraderAPI(LiveAPI):
         self._exchange = exchange
         self._use_execution = exchange.executions is not None
 
-        self._check_transactions()
+        self._load_history_transactions()
+        self._check_transaction_events()
 
     def stop(self):
         self._mt5.shutdown()
 
     def next(self):
-        self._check_transactions()
+        self._check_transaction_events()
 
     def heartbeat(self):
         return True
@@ -339,7 +346,25 @@ class MetaTraderAPI(LiveAPI):
         return request
 
     # Transaction
-    def _check_transactions(self):
+    def _load_history_transactions(self):
+        to = datetime.now()  # + timedelta(days=1)
+
+        # History orders
+        orders = self._mt5.history_orders_get(self.__load_history_since, to)
+        if orders:
+            self._exchange.on_old_orders(orders)
+
+        # Positions
+        positions = self._mt5.positions_get(self.__load_history_since, to)
+        if positions:
+            self._exchange.on_new_positions(positions)
+
+        # TODO: generate history order from
+        # # History positions
+        # positions = self._mt5.history_()
+        # self._exchange.on_old_positions(positions)
+
+    def _check_transaction_events(self):
         if not self._exchange:
             return
 
@@ -375,8 +400,9 @@ class MetaTraderAPI(LiveAPI):
 
         raws = self._mt5.history_deals_get(self.__deal_time_checked, to)
 
-        # Update last check time +1 second
-        self.__deal_time_checked = datetime.fromtimestamp(raws[-1].time + 1)
+        if raws:
+            # Update last check time +1 second
+            self.__deal_time_checked = datetime.fromtimestamp(raws[-1].time + 1)
 
         return raws
 

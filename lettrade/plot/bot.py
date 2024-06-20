@@ -147,9 +147,10 @@ class BotPlotter(Plotter):
         # Reload data
         self.load()
 
-    def jump_reset(self):
+    def jump_reset(self) -> bool:
         """Reset jump datafeeds back to bot datafeeds"""
         if not self._datas_stored or self.data is self._data_stored:
-            return
+            return False
 
         self.datas = self._datas_stored.copy()
+        return True

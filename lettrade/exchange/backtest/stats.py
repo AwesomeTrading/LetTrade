@@ -80,6 +80,9 @@ class OptimizeStatistic:
         self.done()
 
     def done(self):
+        if self.plotter:
+            self.plotter.on_done()
+
         time.sleep(1)  # Wait for return finish
 
         if self._manager is not None:
@@ -94,9 +97,6 @@ class OptimizeStatistic:
             except Exception:
                 pass
             self._q = None
-
-        if self.plotter:
-            self.plotter.on_done()
 
     def compute(self):
         """

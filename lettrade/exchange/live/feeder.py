@@ -19,9 +19,17 @@ class LiveDataFeeder(DataFeeder):
 
     _api: LiveAPI
     _tick: bool
+    _start_size: int
+    _config: dict
     _wait_timeframe: TimeFrame
 
-    def __init__(self, api: LiveAPI, tick: bool = 5) -> None:
+    def __init__(
+        self,
+        api: LiveAPI,
+        tick: bool = 5,
+        start_size: int = 500,
+        **kwargs,
+    ) -> None:
         """
         tick:
             tick < 0: no tick, just get completed bar
@@ -31,6 +39,8 @@ class LiveDataFeeder(DataFeeder):
         super().__init__()
         self._api = api
         self._tick = tick
+        self._start_size = start_size
+        self._config = kwargs
 
         if isinstance(self._tick, int):
             self._wait_timeframe = TimeFrame(f"{self._tick}s")
@@ -40,9 +50,9 @@ class LiveDataFeeder(DataFeeder):
     def alive(self):
         return self._api.heartbeat()
 
-    def start(self, size=100):
+    def start(self):
         for data in self.datas:
-            data.next(size=size, tick=self._tick)
+            data.next(size=self._start_size, tick=self._tick)
 
     def next(self):
         if self._tick > 0:

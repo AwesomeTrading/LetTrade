@@ -175,7 +175,7 @@ class MetaTraderAPI(LiveAPI):
 
         Search example:
             Get symbols whose names do not contain USD, EUR, JPY and GBP
-            search="*,!*USD*,!*EUR*,!*JPY*,!*GBP*"
+            `search="*,!*USD*,!*EUR*,!*JPY*,!*GBP*"`
         """
         return self._mt5.symbols_get(search)
 

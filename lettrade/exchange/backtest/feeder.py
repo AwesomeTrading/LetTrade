@@ -1,7 +1,6 @@
 import logging
 
-from lettrade.base.error import LetTradeNoMoreDataFeed
-from lettrade.data import DataFeeder
+from lettrade.data import DataFeeder, LetTradeNoMoreDataFeed
 
 from .data import BackTestDataFeed
 

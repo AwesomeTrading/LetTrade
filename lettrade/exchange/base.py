@@ -6,31 +6,54 @@ logger = logging.getLogger(__name__)
 
 
 class TradeSide(int, Enum):
+    """Side of Trade"""
+
     Buy = 1
+    """Buy/Long side"""
     Sell = -1
-
-
-class OrderState(str, Enum):
-    Pending = "pending"
-    Placed = "place"
-    Partial = "partial"
-    Filled = "filled"
-    Canceled = "canceled"
-
-
-class PositionState(str, Enum):
-    Open = "open"
-    Exit = "exit"
+    """Sell/Short side"""
 
 
 class OrderType(str, Enum):
+    """Order type"""
+
     Market = "market"
+    """Market order"""
     Limit = "limit"
+    """Limit order"""
     Stop = "stop"
+    """Stop order"""
     StopLimit = "stoplimit"
+    """Stop-Limit order"""
+
+
+class OrderState(str, Enum):
+    """Order state"""
+
+    Pending = "pending"
+    """Pending order, wait for exchange accept"""
+    Placed = "place"
+    """Placed order on exchange"""
+    Partial = "partial"
+    """Partial filled, still wait for full fill"""
+    Filled = "filled"
+    """Full filled"""
+    Canceled = "canceled"
+    """Canceled"""
+
+
+class PositionState(str, Enum):
+    """Position state"""
+
+    Open = "open"
+    """Opening state"""
+    Exit = "exit"
+    """Exited state"""
 
 
 class BaseTransaction:
+    """Base class of Execution/Order/Position"""
+
     def __init__(
         self,
         id: str,
@@ -38,6 +61,14 @@ class BaseTransaction:
         data: "DataFeed",
         size: float,
     ) -> None:
+        """_summary_
+
+        Args:
+            id (str): _description_
+            exchange (Exchange): _description_
+            data (DataFeed): _description_
+            size (float): _description_
+        """
         self.id: str = id
         self.exchange: "Exchange" = exchange
         self.data: "DataFeed" = data

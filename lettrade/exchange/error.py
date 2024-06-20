@@ -2,8 +2,8 @@ from lettrade.base.error import LetException
 
 
 class LetOrderException(LetException):
-    pass
+    """Base order exception"""
 
 
-class LetOrderValidateException(LetException):
-    pass
+class LetOrderValidateException(LetOrderException):
+    """Order attribute validate exception"""

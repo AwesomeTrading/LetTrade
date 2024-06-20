@@ -1,9 +1,8 @@
 import logging
 
 from lettrade.account import LetAccountInsufficientException
-from lettrade.base.error import LetTradeNoMoreDataFeed
 from lettrade.commander import Commander
-from lettrade.data import DataFeed, DataFeeder
+from lettrade.data import DataFeed, DataFeeder, LetTradeNoMoreDataFeed
 from lettrade.exchange import (
     Exchange,
     Execution,

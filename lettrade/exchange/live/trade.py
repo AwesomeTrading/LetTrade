@@ -2,6 +2,8 @@ import logging
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
+from pandas import Timestamp
+
 from lettrade.exchange import (
     Execution,
     Order,
@@ -225,6 +227,7 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         tag: str = "",
         state: PositionState = PositionState.Open,
         entry_price: Optional[float] = None,
+        entry_fee: float = 0.0,
         entry_at: Optional[int] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
@@ -241,6 +244,7 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
             tag=tag,
             state=state,
             entry_price=entry_price,
+            entry_fee=entry_fee,
             entry_at=entry_at,
             sl_order=sl_order,
             tp_order=tp_order,
@@ -294,6 +298,26 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
                 )
 
         self.exchange.on_position(self)
+
+    def exit(self) -> bool:
+        result = self._api.position_close(position=self)
+        if result.code != 0:
+            logger.error("Update position %s", str(result))
+            error = PositionResultError(
+                error=result.error,
+                code=result.code,
+                position=self,
+                raw=result,
+            )
+            self.exchange.on_notify(error=error)
+            return error
+
+        return super().exit(
+            price=result.price,
+            at=result.at,
+            pl=result.pl,
+            fee=result.fee,
+        )
 
     @classmethod
     @abstractmethod

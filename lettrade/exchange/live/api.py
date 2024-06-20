@@ -87,3 +87,7 @@ class LiveAPI(ABC):
     @abstractmethod
     def position_update(self, position: "LivePosition", sl=None, tp=None, **kwargs):
         """"""
+
+    @abstractmethod
+    def position_close(self, position: "LivePosition", **kwargs):
+        """"""

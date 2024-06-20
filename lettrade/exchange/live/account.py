@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from lettrade.account import Account
 
@@ -25,5 +26,14 @@ class LiveAccount(Account):
     #     return "<LiveAccount " + str(self) + ">"
 
     def start(self):
+        """Start live account by load account info from API"""
         self._account = self._api.account()
         logger.info("Account: %s", str(self._account))
+
+    def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
+        if exit_price is None:
+            exit_price = self._exchange.data.l.open[0]
+
+        pl = size * (exit_price - entry_price)
+
+        return pl * 100_000

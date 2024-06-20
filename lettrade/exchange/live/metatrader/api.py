@@ -6,6 +6,7 @@ from typing import Optional
 from box import Box
 from mt5linux import MetaTrader5 as MT5
 
+from lettrade.exchange import OrderType
 from lettrade.exchange.live import LiveAPI, LiveOrder, LivePosition
 
 logger = logging.getLogger(__name__)
@@ -206,35 +207,97 @@ class MetaTraderAPI(LiveAPI):
 
     # Order
     def order_open(self, order: LiveOrder):
-        request = self._parse_order_open_request(order)
+        match order.type:
+            case OrderType.Limit:
+                price = order.limit_price
+            case OrderType.Stop:
+                price = order.stop_price
+            case OrderType.Market:
+                tick = self.tick_get(order.data.symbol)
+                price = tick.ask if order.is_long else tick.bid
+            case _:
+                raise NotImplementedError(
+                    f"Open order type {order.type} is not implement yet"
+                )
+
+        type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
+
+        return self.do_order_open(
+            symbol=order.data.symbol,
+            type=type,
+            size=order.size,
+            price=price,
+            sl=order.sl,
+            tp=order.tp,
+            tag=order.tag,
+        )
+
+    def do_order_open(
+        self,
+        symbol: str,
+        size: float,
+        type: int,
+        price: float,
+        sl: float = None,
+        tp: float = None,
+        tag: str = "",
+        deviation: int = 10,
+    ):
+        request = self._parse_trade_request(
+            symbol=symbol,
+            size=size,
+            type=type,
+            price=price,
+            sl=sl,
+            tp=tp,
+            tag=tag,
+            deviation=deviation,
+        )
         raw = self._mt5.order_send(request)
         return self._parse_trade_send_response(raw)
 
-    def _parse_order_open_request(self, order: LiveOrder, deviation=10):
-        tick = self.tick_get(order.data.symbol)
-        price = tick.ask if order.is_long else tick.bid
-        type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
-
+    def _parse_trade_request(
+        self,
+        symbol: Optional[str] = None,
+        size: Optional[float] = None,
+        type: Optional[int] = None,
+        price: Optional[float] = None,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        tag: Optional[str] = None,
+        position: Optional[int] = None,
+        deviation: int = 10,
+        action: int = MT5.TRADE_ACTION_DEAL,
+        type_time: int = MT5.ORDER_TIME_GTC,
+        type_filling: int = MT5.ORDER_FILLING_IOC,
+    ):
         request = {
-            "action": MT5.TRADE_ACTION_DEAL,
-            "symbol": order.data.symbol,
-            "volume": abs(order.size),
-            "type": type,
-            "price": price,
-            "deviation": deviation,
             "magic": self._magic,
-            "type_time": MT5.ORDER_TIME_GTC,
-            "type_filling": MT5.ORDER_FILLING_IOC,
+            "action": action,
+            "deviation": deviation,
+            "type_time": type_time,
+            "type_filling": type_filling,
         }
-        if order.sl:
-            request["sl"] = order.sl
-        if order.tp:
-            request["tp"] = order.tp
-        if order.tag:
-            request["comment"] = order.tag
+
+        if symbol is not None:
+            request["symbol"] = symbol
+        if size is not None:
+            request["volume"] = abs(size)
+        if type is not None:
+            request["type"] = type
+        if price is not None:
+            request["price"] = price
+        if sl is not None:
+            request["sl"] = sl
+        if tp is not None:
+            request["tp"] = tp
+        if tag is not None:
+            request["comment"] = tag
+        if position is not None:
+            request["position"] = position
 
         if __debug__:
-            logger.info("New order request: %s", request)
+            logger.info("New trade request: %s", request)
 
         return request
 
@@ -270,7 +333,7 @@ class MetaTraderAPI(LiveAPI):
     def orders_get(self, **kwargs):
         return self._mt5.orders_get(**kwargs)
 
-    # Trade
+    # Position
     def positions_total(self):
         return self._mt5.positions_total()
 
@@ -304,46 +367,54 @@ class MetaTraderAPI(LiveAPI):
     def do_position_update(
         self,
         id: int,
-        symbol: str,
+        # symbol: str,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         **kwargs,
     ):
-
-        request = self._parse_position_update_request(
-            id=id,
-            symbol=symbol,
+        request = self._parse_trade_request(
+            position=id,
+            # symbol=symbol,
             sl=sl,
             tp=tp,
+            action=MT5.TRADE_ACTION_SLTP,
             **kwargs,
         )
         raw = self._mt5.order_send(request)
         return self._parse_trade_send_response(raw)
 
-    def _parse_position_update_request(
+    def position_close(self, position: LivePosition, **kwargs):
+        tick = self.tick_get(position.data.symbol)
+        price = tick.ask if position.is_long else tick.bid
+
+        # Opposite with position side
+        type = MT5.ORDER_TYPE_SELL if position.is_long else MT5.ORDER_TYPE_BUY
+
+        return self.do_position_close(
+            id=int(position.id),
+            symbol=position.data.symbol,
+            type=type,
+            price=price,
+            **kwargs,
+        )
+
+    def do_position_close(
         self,
         id: int,
         symbol: str,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        price: float,
+        size: float,
         **kwargs,
     ):
-        request = {
-            "action": MT5.TRADE_ACTION_SLTP,
-            "symbol": symbol,
-            "magic": self._magic,
-            "position": id,
+        request = self._parse_trade_request(
+            position=id,
+            symbol=symbol,
+            price=price,
+            size=size,
             **kwargs,
-        }
-        if sl is not None:
-            request["sl"] = sl
-        if tp is not None:
-            request["tp"] = tp
-
-        if __debug__:
-            logger.info("New position request: %s", request)
-
-        return request
+        )
+        raw = self._mt5.order_send(request)
+        return self._parse_trade_send_response(raw)
 
     # Transaction
     def _load_history_transactions(self):

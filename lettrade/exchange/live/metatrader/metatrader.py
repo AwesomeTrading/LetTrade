@@ -269,9 +269,9 @@ class MetaTraderOrder(LiveOrder):
             sl_price=raw.sl or None,
             tp_price=raw.tp or None,
             tag=raw.comment,
+            placed_at=pd.to_datetime(raw.time_setup_msc, unit="ms", utc=True),
             api=api,
             raw=raw,
-            placed_at=pd.to_datetime(raw.time_setup_msc, unit="ms", utc=True),
         )
 
         if hasattr(raw, "time_done_msc"):
@@ -365,12 +365,13 @@ class MetaTraderPosition(LivePosition):
             state=PositionState.Open,
             size=side * raw.volume,
             entry_price=raw.price_open,
+            entry_fee=raw.swap,
+            entry_at=pd.to_datetime(raw.time_msc, unit="ms", utc=True),
             parent=None,
             tag=raw.comment,
-            raw=raw,
             api=api,
+            raw=raw,
         )
-        position.entry_at = pd.to_datetime(raw.time_msc, unit="ms", utc=True)
 
         # SL
         if raw.sl > 0.0:

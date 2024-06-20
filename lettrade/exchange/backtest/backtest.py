@@ -242,10 +242,15 @@ class LetTradeBackTest(LetTrade):
             )
 
     # Create optimize model environment
+    _opt_main_pid: int = None
+    _opt_params_parser: Callable[[Any], list[set[str, Any]]] = None
+    _opt_result_parser: Callable[[pd.Series], float] = None
+    _opt_kwargs: dict = None
+
     def optimize_model(
         self,
         params_parser: Callable[[Any], list[set[str, Any]]] = None,
-        result_parser: Callable[[BotStatistic], float] = None,
+        result_parser: Callable[[pd.Series], float] = None,
         total: int = 0,
         cache: str = "data/optimize",
         process_bar: bool = False,
@@ -255,7 +260,7 @@ class LetTradeBackTest(LetTrade):
 
         Args:
             params_parser (Callable[[Any], list[set[str, Any]]], optional): Parse external parameters to bot parameters dict. Defaults to None.
-            result_parser (Callable[[BotStatistic], float], optional): Parse bot result to external score. Defaults to None.
+            result_parser (Callable[[pd.Series], float], optional): Parse bot result to external score. Defaults to None.
             total (int, optional): Total number of optimize if possible. Defaults to 0.
             cache (str, optional): Cache directory to store optimize result. Defaults to "data/optimize".
             process_bar (bool, optional): Enable/Disable process bar. Defaults to False.

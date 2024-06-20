@@ -24,6 +24,7 @@ class Order(BaseTransaction):
         tp_price: Optional[float] = None,
         parent: Optional["Position"] = None,
         tag: Optional[object] = None,
+        placed_at: Optional[pd.Timestamp] = None,
         **kwargs,
     ):
         super().__init__(
@@ -42,8 +43,7 @@ class Order(BaseTransaction):
         self.tp_price: Optional[float] = tp_price
         self.parent: Optional["Position"] = parent
         self.tag: Optional[object] = tag
-
-        self.place_at: Optional[pd.Timestamp] = None
+        self.placed_at: Optional[pd.Timestamp] = placed_at
         self.filled_at: Optional[pd.Timestamp] = None
         self.filled_price: Optional[float] = None
 
@@ -53,9 +53,9 @@ class Order(BaseTransaction):
         data = (
             f"id='{self.id}'"
             f", type='{self.type}'"
-            f", place_at={self.place_at}"
-            # f", place_price={round(self.place_price, 5)}"
             f", state='{self.state}'"
+            f", placed_at={self.placed_at}"
+            # f", place_price={round(self.place_price, 5)}"
             f", size={round(self.size, 5)}"
         )
         if self.limit:
@@ -66,8 +66,13 @@ class Order(BaseTransaction):
             data += f", sl={round(self.sl, 5)}"
         if self.tp:
             data += f", tp={round(self.tp, 5)}"
-        data += f", tag='{self.tag}'"
 
+        if self.filled_at:
+            data += (
+                f", filled_at={self.filled_at}" f", filled_price={self.filled_price}"
+            )
+
+        data += f", tag='{self.tag}'"
         return f"<{self.__class__.__name__} {data}>"
 
     def validate(self):
@@ -84,7 +89,7 @@ class Order(BaseTransaction):
             if self.tp_price is not None:
                 if self.tp_price <= price:
                     raise LetOrderValidateException(
-                        f"Order buy tp {self.tp_price} >= price {price}"
+                        f"Order buy tp {self.tp_price} <= price {price}"
                     )
         # Sell side
         elif self.size < 0:
@@ -116,7 +121,7 @@ class Order(BaseTransaction):
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
         self.state = OrderState.Placed
-        self.place_at = at
+        self.placed_at = at
 
         logger.info("Placing new order: %s", self)
 
@@ -223,8 +228,8 @@ class Order(BaseTransaction):
             self.limit_price = other.limit_price
         if other.stop_price:
             self.stop_price = other.stop_price
-        if other.place_at:
-            self.place_at = other.place_at
+        if other.placed_at:
+            self.placed_at = other.placed_at
 
         if other.filled_price:
             self.filled_price = other.filled_price

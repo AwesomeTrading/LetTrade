@@ -262,17 +262,22 @@ class MetaTraderOrder(LiveOrder):
             id=raw.ticket,
             state=state,
             data=data,
-            size=side * raw.volume_current,
+            size=side * (raw.volume_current or raw.volume_initial),
             type=type,
             limit_price=limit_price,
             stop_price=stop_price,
-            sl_price=raw.sl,
-            tp_price=raw.tp,
+            sl_price=raw.sl or None,
+            tp_price=raw.tp or None,
             tag=raw.comment,
             api=api,
             raw=raw,
+            placed_at=pd.to_datetime(raw.time_setup_msc, unit="ms", utc=True),
         )
-        order.place_at = pd.to_datetime(raw.time_setup_msc, unit="ms")
+
+        if hasattr(raw, "time_done_msc"):
+            order.filled_price = raw.price_current
+            order.filled_at = pd.to_datetime(raw.time_done_msc, unit="ms", utc=True)
+
         return order
 
     @classmethod
@@ -304,6 +309,7 @@ class MetaTraderOrder(LiveOrder):
             limit_price=tp,
             stop_price=sl,
             parent=position,
+            placed_at=position.entry_at,
         )
 
 
@@ -364,7 +370,7 @@ class MetaTraderPosition(LivePosition):
             raw=raw,
             api=api,
         )
-        position.entry_at = pd.to_datetime(raw.time_msc, unit="ms")
+        position.entry_at = pd.to_datetime(raw.time_msc, unit="ms", utc=True)
 
         # SL
         if raw.sl > 0.0:

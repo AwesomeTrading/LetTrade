@@ -586,6 +586,7 @@ class TelegramCommander(Commander):
         self._api.on_stats(stats=stats.result.to_string(), pname=self._name)
 
     def _on_action_plot(self):
-        plot: BotPlotter = self.lettrade.plotter
-        plot.plot()
+        plotter: BotPlotter = self.lettrade.plotter
+        plotter.load()
+        plotter.plot()
         # self._api.on_plot(plot=plot.result.to_string(), pname=self._name)

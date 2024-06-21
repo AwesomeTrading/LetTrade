@@ -1,9 +1,7 @@
 import logging
-from typing import Optional
+from typing import Any, Optional
 
 import pandas as pd
-from mt5linux import MetaTrader5 as MT5
-
 from lettrade import (
     OrderResult,
     OrderResultError,
@@ -14,7 +12,14 @@ from lettrade import (
     TradeSide,
 )
 from lettrade.exchange import PositionResult
-from lettrade.exchange.live import LiveExecution, LiveOrder, LivePosition
+from lettrade.exchange.live import (
+    LiveDataFeed,
+    LiveExchange,
+    LiveExecution,
+    LiveOrder,
+    LivePosition,
+)
+from mt5linux import MetaTrader5 as MT5
 
 from .api import MetaTraderAPI
 
@@ -28,14 +33,14 @@ class MetaTraderExecution(LiveExecution):
     def from_raw(
         cls,
         raw,
-        exchange: "MetaTraderExchange",
+        exchange: "LiveExchange",
         api: MetaTraderAPI = None,
     ) -> "MetaTraderExecution":
         """Building new MetaTraderExecution from live api raw object
 
         Args:
             raw (_type_): _description_
-            exchange (MetaTraderExchange): _description_
+            exchange (LiveExchange): _description_
 
         Returns:
             MetaTraderExecution: _description_
@@ -62,9 +67,17 @@ class MetaTraderExecution(LiveExecution):
 class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
 
-    exchange: "MetaTraderExchange"
+    exchange: "LiveExchange"
 
     def place(self) -> OrderResult:
+        """_summary_
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            OrderResult: _description_
+        """
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
@@ -94,6 +107,21 @@ class MetaTraderOrder(LiveOrder):
         caller: Optional[float] = None,
         **kwargs,
     ) -> OrderResult:
+        """_summary_
+
+        Args:
+            limit_price (Optional[float], optional): _description_. Defaults to None.
+            stop_price (Optional[float], optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            caller (Optional[float], optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            OrderResult: _description_
+        """
         if caller is self:
             raise RuntimeError(f"Order recusive update {self}")
 
@@ -130,18 +158,22 @@ class MetaTraderOrder(LiveOrder):
     @classmethod
     def from_raw(
         cls,
-        raw,
-        exchange: "MetaTraderExchange",
-        api: MetaTraderAPI = None,
+        raw: Any,
+        exchange: "LiveExchange",
+        api: Optional[MetaTraderAPI] = None,
     ) -> Optional["MetaTraderOrder"]:
         """_summary_
 
+        Args:
+            raw (Any): _description_.
+            exchange (LiveExchange): _description_.
+            api (Optional[MetaTraderAPI], optional): _description_. Defaults to None.
+
         Raises:
-            NotImplementedError: _description_
             NotImplementedError: _description_
 
         Returns:
-            _type_: _description_
+            MetaTraderOrder: _description_
         """
         # DataFeed
         data = None
@@ -249,20 +281,23 @@ class MetaTraderOrder(LiveOrder):
 
     @classmethod
     def from_position(
-        cls, position: "MetaTraderPosition", sl=None, tp=None
+        cls,
+        position: "MetaTraderPosition",
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
     ) -> "MetaTraderOrder":
         """_summary_
 
         Args:
             position (MetaTraderPosition): _description_
-            sl (_type_, optional): _description_. Defaults to None.
-            tp (_type_, optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_
 
         Returns:
-            _type_: _description_
+            MetaTraderOrder: _description_
         """
         if not sl and not tp:
             raise RuntimeError("not sl and not tp")
@@ -283,7 +318,7 @@ class MetaTraderOrder(LiveOrder):
 class MetaTraderPosition(LivePosition):
     """Position for MetaTrader"""
 
-    exchange: "MetaTraderExchange"
+    exchange: "LiveExchange"
 
     def update(
         self,
@@ -292,6 +327,19 @@ class MetaTraderPosition(LivePosition):
         caller: Optional[float] = None,
         **kwargs,
     ):
+        """_summary_
+
+        Args:
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            caller (Optional[float], optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            _type_: _description_
+        """
         if not sl and not tp:
             raise RuntimeError("Update sl=None and tp=None")
         if caller is self:
@@ -359,15 +407,17 @@ class MetaTraderPosition(LivePosition):
     def from_raw(
         cls,
         raw,
-        exchange: "MetaTraderExchange",
-        data: MetaTraderDataFeed = None,
+        exchange: "LiveExchange",
+        data: "LiveDataFeed" = None,
         api: MetaTraderAPI = None,
     ) -> "MetaTraderPosition":
         """_summary_
 
         Args:
             raw (_type_): _description_
-            exchange (MetaTraderExchange): _description_
+            exchange (LiveExchange): _description_
+            data (LiveDataFeed, optional): _description_. Defaults to None.
+            api (MetaTraderAPI, optional): _description_. Defaults to None.
 
         Raises:
             NotImplementedError: _description_
@@ -432,8 +482,8 @@ class MetaTraderPosition(LivePosition):
     # def from_id(
     #     cls,
     #     id: str,
-    #     exchange: "MetaTraderExchange",
-    #     data: MetaTraderDataFeed = None,
+    #     exchange: "LiveExchange",
+    #     data: LiveDataFeed = None,
     #     api: MetaTraderAPI = None,
     # ) -> "MetaTraderPosition":
     #     if api is None:

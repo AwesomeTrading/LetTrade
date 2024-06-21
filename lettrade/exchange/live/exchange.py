@@ -94,7 +94,7 @@ class LiveExchange(Exchange):
         return ok
 
     # Events
-    def on_new_deals(self, raws):
+    def on_deals_new(self, raws):
         if __debug__:
             logger.info("Raw new deals: %s", raws)
         for raw in raws:
@@ -103,7 +103,7 @@ class LiveExchange(Exchange):
                 continue
             self.on_execution(execution)
 
-    def on_new_orders(self, raws):
+    def on_orders_new(self, raws):
         if __debug__:
             logger.info("Raw new orders: %s", raws)
         for raw in raws:
@@ -112,7 +112,7 @@ class LiveExchange(Exchange):
                 continue
             self.on_order(order)
 
-    def on_old_orders(self, raws):
+    def on_orders_old(self, raws):
         if __debug__:
             logger.info("Raw old orders: %s", raws)
         for raw in raws:
@@ -121,7 +121,7 @@ class LiveExchange(Exchange):
                 continue
             self.on_order(order)
 
-    def on_new_positions(self, raws):
+    def on_positions_new(self, raws):
         if __debug__:
             logger.info("Raw new positions: %s", raws)
         for raw in raws:
@@ -130,7 +130,7 @@ class LiveExchange(Exchange):
                 continue
             self.on_position(position)
 
-    def on_old_positions(self, raws):
+    def on_positions_old(self, raws):
         if __debug__:
             logger.info("Raw old positions: %s", raws)
         for raw in raws:

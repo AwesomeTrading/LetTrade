@@ -562,17 +562,17 @@ class MetaTraderAPI(LiveAPI):
         # History orders
         orders = self._mt5.history_orders_get(self.__load_history_since, to)
         if orders:
-            self._exchange.on_old_orders(orders)
+            self._exchange.on_orders_old(orders)
 
         # # Positions
         # positions = self._mt5.positions_get(self.__load_history_since, to)
         # if positions:
-        #     self._exchange.on_new_positions(positions)
+        #     self._exchange.on_positions_new(positions)
 
         # TODO: generate history order from
         # # History positions
         # positions = self._mt5.history_()
-        # self._exchange.on_old_positions(positions)
+        # self._exchange.on_positions_old(positions)
 
     def _check_transaction_events(self):
         if not self._exchange:
@@ -582,21 +582,21 @@ class MetaTraderAPI(LiveAPI):
         if self._use_execution:
             deals = self._check_deals()
             if deals:
-                self._exchange.on_new_deals(deals)
+                self._exchange.on_deals_new(deals)
 
         # Orders
         orders, removed_orders = self._check_orders()
         if orders:
-            self._exchange.on_new_orders(orders)
+            self._exchange.on_orders_new(orders)
         if removed_orders:
-            self._exchange.on_old_orders(removed_orders)
+            self._exchange.on_orders_old(removed_orders)
 
         # Positions
         positions, removed_positions = self._check_positions()
         if positions:
-            self._exchange.on_new_positions(positions)
+            self._exchange.on_positions_new(positions)
         if removed_positions:
-            self._exchange.on_old_positions(removed_positions)
+            self._exchange.on_positions_old(removed_positions)
 
     # Deal
     def _check_deals(self):

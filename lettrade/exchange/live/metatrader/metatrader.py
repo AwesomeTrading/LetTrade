@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, Type
 
-from lettrade import BotStatistic, Commander, Plotter
+from lettrade import BotStatistic, Commander, Plotter, Strategy
 from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -11,7 +11,6 @@ from lettrade.exchange.live import (
     LiveExchange,
     let_live,
 )
-from lettrade.strategy.strategy import Strategy
 
 from .api import MetaTraderAPI
 from .trade import MetaTraderExecution, MetaTraderOrder, MetaTraderPosition
@@ -72,6 +71,18 @@ class MetaTraderExchange(LiveExchange):
     _execution_cls: Type[MetaTraderExecution] = MetaTraderExecution
     _order_cls: Type[MetaTraderOrder] = MetaTraderOrder
     _position_cls: Type[MetaTraderPosition] = MetaTraderPosition
+
+    def on_order(
+        self,
+        order: MetaTraderOrder,
+        broadcast: bool | None = True,
+        **kwargs,
+    ) -> None:
+        if not order.is_real:
+            if order.id in self.history_orders:
+                del self.history_orders[order.id]
+
+        return super().on_order(order=order, broadcast=broadcast, **kwargs)
 
 
 class LetTradeMetaTraderBot(LetTradeLiveBot):

@@ -70,6 +70,12 @@ class MetaTraderOrder(LiveOrder):
 
     exchange: "LiveExchange"
 
+    def __init__(self, is_real: bool = True, **kwargs):
+        super().__init__(**kwargs)
+
+        self.is_real: bool = is_real
+        """Flag to check `Order` is real, cannot duplicate id, cannot recall from history"""
+
     def place(self) -> OrderResult:
         """_summary_
 
@@ -155,6 +161,21 @@ class MetaTraderOrder(LiveOrder):
                 limit_price=limit_price,
                 stop_price=stop_price,
             )
+
+    def cancel(self, **kwargs) -> OrderResult:
+        """Cancel order
+
+        Returns:
+            OrderResult: _description_
+        """
+        if not self.parent:
+            # Abandon order
+            result = self._api.order_close(order=self, **kwargs)
+        else:
+            # Virtual SL/TP order of trade
+            result = None
+
+        return super(LiveOrder, self).cancel(raw=result)
 
     @classmethod
     def from_raw(
@@ -313,6 +334,7 @@ class MetaTraderOrder(LiveOrder):
             stop_price=sl,
             parent=position,
             placed_at=position.entry_at,
+            is_real=False,
         )
 
 

@@ -182,8 +182,13 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         # )
 
     def cancel(self, **kwargs) -> OrderResult:
+        """Cancel order
+
+        Returns:
+            OrderResult: _description_
+        """
         result = self._api.order_close(order=self, **kwargs)
-        return super(LiveOrder, self).cancel(raw=result)
+        return super().cancel(raw=result)
 
     @classmethod
     @abstractmethod
@@ -280,6 +285,20 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
             bool: _description_
         """
         raise NotImplementedError(type(self))
+
+    def merge(self, other: "LivePosition") -> bool:
+        """Merge LivePosition from another
+
+        Args:
+            other (LivePosition): _description_
+
+        Returns:
+            bool: _description_
+        """
+        if not super().merge(other):
+            return False
+        self.raw = other.raw
+        return True
 
     @classmethod
     @abstractmethod

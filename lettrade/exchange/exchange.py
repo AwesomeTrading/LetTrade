@@ -155,13 +155,14 @@ class Exchange(metaclass=ABCMeta):
         broadcast: Optional[bool] = True,
         **kwargs,
     ) -> None:
-        """
-        Receive Order event from exchange then store and notify Brain
-        """
+        """Receive Order event from exchange then store and notify Brain"""
         if not isinstance(order, Order):
             raise RuntimeError(f"{order} is not instance of type Order")
 
-        if order.state in [OrderState.Filled, OrderState.Canceled]:
+        if order.is_closed:
+            if order.id in self.history_orders:
+                logger.warning("Order closed recall: %s", order)
+
             self.history_orders[order.id] = order
             if order.id in self.orders:
                 del self.orders[order.id]
@@ -188,7 +189,6 @@ class Exchange(metaclass=ABCMeta):
         self,
         position: Position,
         broadcast: Optional[bool] = True,
-        *args,
         **kwargs,
     ) -> None:
         """Receive Position event from exchange then store and notify Brain
@@ -203,10 +203,9 @@ class Exchange(metaclass=ABCMeta):
         if not isinstance(position, Position):
             raise RuntimeError(f"{position} is not instance of type Position")
 
-        if position.state == PositionState.Exit:
+        if position.is_exited:
             if position.id in self.history_positions:
-                logger.debug("Position exited recall: %s", position)
-                return
+                logger.warning("Position exited recall: %s", position)
 
             self.history_positions[position.id] = position
             if position.id in self.positions:

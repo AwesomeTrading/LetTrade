@@ -873,7 +873,7 @@ class MetaTraderAPI(LiveAPI):
                     and raw.sl == stored.sl
                     and raw.tp == stored.tp
                     and raw.volume == stored.volume
-                    and raw.price_open == stored.price_open
+                    # and raw.price_open == stored.price_open
                 ):
                     continue
 

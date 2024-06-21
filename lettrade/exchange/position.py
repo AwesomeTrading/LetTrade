@@ -102,18 +102,36 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         self.exchange.on_position(self)
         return PositionResultOk(position=self, raw=raw)
 
-    def merge(self, other: "Position"):
+    def merge(self, other: "Position") -> bool:
+        """Merge position from another position has same id
+
+        Args:
+            other (Position): _description_
+
+        Raises:
+            RuntimeError: _description_
+        """
         if other is self:
-            return
+            return False
 
         if self.id != other.id:
             raise RuntimeError(f"Merge difference id {self.id} != {other.id} order")
 
         self.size = other.size
-        if other.sl_order:
+
+        if other.sl_order is not None:
             self.sl_order = other.sl_order
-        if other.tp_order:
+            self.sl_order.parent = self
+        elif self.sl_order is not None:
+            self.sl_order.cancel()
+            self.sl_order = None
+
+        if other.tp_order is not None:
             self.tp_order = other.tp_order
+            self.tp_order.parent = self
+        elif self.tp_order is not None:
+            self.tp_order.cancel()
+            self.tp_order = None
 
         if other.entry_price:
             self.entry_price = other.entry_price
@@ -126,6 +144,8 @@ class Position(BaseTransaction, metaclass=ABCMeta):
             self.exit_at = other.exit_at
         if other.parent:
             self.parent = other.parent
+
+        return True
 
     # Extra properties
     @property

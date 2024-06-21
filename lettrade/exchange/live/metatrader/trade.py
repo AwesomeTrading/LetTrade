@@ -2,6 +2,8 @@ import logging
 from typing import Any, Optional
 
 import pandas as pd
+from mt5linux import MetaTrader5 as MT5
+
 from lettrade import (
     OrderResult,
     OrderResultError,
@@ -19,7 +21,6 @@ from lettrade.exchange.live import (
     LiveOrder,
     LivePosition,
 )
-from mt5linux import MetaTrader5 as MT5
 
 from .api import MetaTraderAPI
 
@@ -326,7 +327,7 @@ class MetaTraderPosition(LivePosition):
         tp: Optional[float] = None,
         caller: Optional[float] = None,
         **kwargs,
-    ):
+    ) -> PositionResult:
         """_summary_
 
         Args:
@@ -338,7 +339,7 @@ class MetaTraderPosition(LivePosition):
             RuntimeError: _description_
 
         Returns:
-            _type_: _description_
+            PositionResult: _description_
         """
         if not sl and not tp:
             raise RuntimeError("Update sl=None and tp=None")
@@ -378,6 +379,11 @@ class MetaTraderPosition(LivePosition):
         return super(LivePosition, self).update(raw=result)
 
     def exit(self) -> PositionResult:
+        """_summary_
+
+        Returns:
+            PositionResult: _description_
+        """
         result = self._api.position_close(position=self)
         if result.code != 0:
             logger.error("Update position %s", str(result))

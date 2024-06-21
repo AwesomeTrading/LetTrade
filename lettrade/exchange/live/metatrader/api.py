@@ -38,6 +38,8 @@ TIMEFRAME_L2M = {
 
 
 class MetaTraderAPI(LiveAPI):
+    """API to connect MetaTrader 5 Terminal"""
+
     _mt5: MT5
     _exchange: "MetaTraderExchange"
     _magic: int
@@ -85,6 +87,24 @@ class MetaTraderAPI(LiveAPI):
         magic: int = 88888888,
         **kwargs,
     ):
+        """_summary_
+
+        Args:
+            login (int): _description_
+            password (str): _description_
+            server (str): _description_
+            timeout (int, optional): _description_. Defaults to 60.
+            retry (int, optional): _description_. Defaults to 20.
+            host (str, optional): _description_. Defaults to "localhost".
+            port (int, optional): _description_. Defaults to 18812.
+            wine (Optional[str], optional): _description_. Defaults to None.
+            magic (int, optional): _description_. Defaults to 88888888.
+
+        Raises:
+            ConnectionRefusedError: _description_
+            RuntimeError: _description_
+            RuntimeError: _description_
+        """
         # Parameters
         self._magic = magic
         self._use_execution = False
@@ -150,7 +170,12 @@ class MetaTraderAPI(LiveAPI):
             self._mt5.version(),
         )
 
-    def start(self, exchange: "MetaTraderExchange" = None):
+    def start(self, exchange: "MetaTraderExchange"):
+        """_summary_
+
+        Args:
+            exchange (MetaTraderExchange): _description_
+        """
         self._exchange = exchange
         self._use_execution = exchange.executions is not None
 
@@ -158,29 +183,58 @@ class MetaTraderAPI(LiveAPI):
         self._check_transaction_events()
 
     def stop(self):
+        """Stop MetaTrader 5 Terminal"""
         self._mt5.shutdown()
 
     def next(self):
+        """Next tick action"""
         self._check_transaction_events()
 
-    def heartbeat(self):
+    def heartbeat(self) -> bool:
+        """Heartbeat
+
+        Returns:
+            bool: _description_
+        """
         return True
 
     ### Public
-    def market(self, symbol):
+    def market(self, symbol: str) -> dict:
+        """_summary_
+
+        Args:
+            symbol (str): _description_
+
+        Returns:
+            dict: _description_
+        """
         return self._mt5.symbol_info(symbol)
 
-    def markets(self, search=None):
+    def markets(self, search: Optional[str] = None) -> list[dict]:
         """The filter for arranging a group of necessary symbols. Optional parameter.
         If the group is specified, the function returns only symbols meeting a specified criteria.
 
         Search example:
             Get symbols whose names do not contain USD, EUR, JPY and GBP
             `search="*,!*USD*,!*EUR*,!*JPY*,!*GBP*"`
+
+        Args:
+            search (Optional[str], optional): _description_. Defaults to None.
+
+        Returns:
+            list[dict]: _description_
         """
         return self._mt5.symbols_get(search)
 
-    def tick_get(self, symbol):
+    def tick_get(self, symbol: str) -> dict:
+        """_summary_
+
+        Args:
+            symbol (str): _description_
+
+        Returns:
+            dict: _description_
+        """
         return self._mt5.symbol_info_tick(symbol)
 
     def bars(
@@ -189,7 +243,18 @@ class MetaTraderAPI(LiveAPI):
         timeframe,
         since: Optional[int | datetime] = 0,
         to: Optional[int | datetime] = 1_000,
-    ):
+    ) -> list[list]:
+        """_summary_
+
+        Args:
+            symbol (_type_): _description_
+            timeframe (_type_): _description_
+            since (Optional[int  |  datetime], optional): _description_. Defaults to 0.
+            to (Optional[int  |  datetime], optional): _description_. Defaults to 1_000.
+
+        Returns:
+            list[list]: _description_
+        """
         timeframe = TIMEFRAME_L2M[timeframe]
 
         if isinstance(since, int):
@@ -202,7 +267,12 @@ class MetaTraderAPI(LiveAPI):
 
     ### Private
     # Account
-    def account(self):
+    def account(self) -> dict:
+        """Metatrader 5 account information
+
+        Returns:
+            dict: _description_
+        """
         return self._mt5.account_info()
 
     # Order
@@ -212,6 +282,15 @@ class MetaTraderAPI(LiveAPI):
         to: Optional[datetime] = None,
         **kwargs,
     ) -> int:
+        """_summary_
+
+        Args:
+            since (Optional[datetime], optional): _description_. Defaults to None.
+            to (Optional[datetime], optional): _description_. Defaults to None.
+
+        Returns:
+            int: _description_
+        """
         if since is not None:
             kwargs["date_from"] = since
         if to is not None:
@@ -224,7 +303,16 @@ class MetaTraderAPI(LiveAPI):
         id: Optional[str] = None,
         symbol: Optional[str] = None,
         **kwargs,
-    ):
+    ) -> list[dict]:
+        """_summary_
+
+        Args:
+            id (Optional[str], optional): _description_. Defaults to None.
+            symbol (Optional[str], optional): _description_. Defaults to None.
+
+        Returns:
+            list[dict]: _description_
+        """
         if id is not None:
             kwargs["ticket"] = int(id)
         if symbol is not None:
@@ -233,7 +321,18 @@ class MetaTraderAPI(LiveAPI):
         raws = self._mt5.orders_get(**kwargs)
         return [self._order_parse_response(raw) for raw in raws]
 
-    def order_open(self, order: LiveOrder):
+    def order_open(self, order: LiveOrder) -> dict:
+        """_summary_
+
+        Args:
+            order (LiveOrder): _description_
+
+        Raises:
+            NotImplementedError: _description_
+
+        Returns:
+            dict: _description_
+        """
         match order.type:
             case OrderType.Limit:
                 price = order.limit_price
@@ -269,7 +368,22 @@ class MetaTraderAPI(LiveAPI):
         tp: float = None,
         tag: str = "",
         deviation: int = 10,
-    ):
+    ) -> dict:
+        """_summary_
+
+        Args:
+            symbol (str): _description_
+            size (float): _description_
+            type (int): _description_
+            price (float): _description_
+            sl (float, optional): _description_. Defaults to None.
+            tp (float, optional): _description_. Defaults to None.
+            tag (str, optional): _description_. Defaults to "".
+            deviation (int, optional): _description_. Defaults to 10.
+
+        Returns:
+            dict: _description_
+        """
         request = self._parse_trade_request(
             symbol=symbol,
             size=size,
@@ -334,7 +448,7 @@ class MetaTraderAPI(LiveAPI):
     def order_close(self, order: LiveOrder, **kwargs):
         raise NotImplementedError
 
-    def _parse_trade_send_response(self, raw):
+    def _parse_trade_send_response(self, raw) -> dict:
         if raw is None:
             raise RuntimeError("Trade response is None")
 
@@ -371,6 +485,15 @@ class MetaTraderAPI(LiveAPI):
         to: Optional[datetime] = None,
         **kwargs,
     ) -> int:
+        """_summary_
+
+        Args:
+            since (Optional[datetime], optional): _description_. Defaults to None.
+            to (Optional[datetime], optional): _description_. Defaults to None.
+
+        Returns:
+            int: _description_
+        """
         if since is not None:
             kwargs["date_from"] = since
         if to is not None:
@@ -385,7 +508,18 @@ class MetaTraderAPI(LiveAPI):
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
         **kwargs,
-    ):
+    ) -> dict:
+        """_summary_
+
+        Args:
+            id (Optional[str], optional): _description_. Defaults to None.
+            position_id (Optional[str], optional): _description_. Defaults to None.
+            since (Optional[datetime], optional): _description_. Defaults to None.
+            to (Optional[datetime], optional): _description_. Defaults to None.
+
+        Returns:
+            dict: _description_
+        """
         if id is not None:
             kwargs["ticket"] = int(id)
         if position_id is not None:
@@ -409,6 +543,15 @@ class MetaTraderAPI(LiveAPI):
         to: Optional[datetime] = None,
         **kwargs,
     ) -> int:
+        """_summary_
+
+        Args:
+            since (Optional[datetime], optional): _description_. Defaults to None.
+            to (Optional[datetime], optional): _description_. Defaults to None.
+
+        Returns:
+            int: _description_
+        """
         if since is not None:
             kwargs["date_from"] = since
         if to is not None:
@@ -421,7 +564,16 @@ class MetaTraderAPI(LiveAPI):
         position_id: Optional[str] = None,
         search: Optional[str] = None,
         **kwargs,
-    ) -> int:
+    ) -> list[dict]:
+        """_summary_
+
+        Args:
+            position_id (Optional[str], optional): _description_. Defaults to None.
+            search (Optional[str], optional): _description_. Defaults to None.
+
+        Returns:
+            list[dict]: _description_
+        """
         if position_id is not None:
             kwargs["position"] = int(position_id)
         if search is not None:
@@ -434,7 +586,15 @@ class MetaTraderAPI(LiveAPI):
 
         return [self._execution_parse_response(raw) for raw in raws]
 
-    def execution_get(self, id: str, **kwargs) -> int:
+    def execution_get(self, id: str, **kwargs) -> dict:
+        """_summary_
+
+        Args:
+            id (str): _description_
+
+        Returns:
+            dict: _description_
+        """
         if id is not None:
             kwargs["ticket"] = int(id)
 
@@ -458,6 +618,15 @@ class MetaTraderAPI(LiveAPI):
         to: Optional[datetime] = None,
         **kwargs,
     ) -> int:
+        """_summary_
+
+        Args:
+            since (Optional[datetime], optional): _description_. Defaults to None.
+            to (Optional[datetime], optional): _description_. Defaults to None.
+
+        Returns:
+            int: _description_
+        """
         if since is not None:
             kwargs["date_from"] = since
         if to is not None:
@@ -465,7 +634,19 @@ class MetaTraderAPI(LiveAPI):
 
         return self._mt5.positions_total(**kwargs)
 
-    def positions_get(self, id: str = None, symbol: str = None, **kwargs):
+    def positions_get(self, id: str = None, symbol: str = None, **kwargs) -> list[dict]:
+        """_summary_
+
+        Args:
+            id (str, optional): _description_. Defaults to None.
+            symbol (str, optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+
+        Returns:
+            list[dict]: _description_
+        """
         if id is not None:
             kwargs.update(ticket=int(id))
         if symbol is not None:
@@ -483,7 +664,17 @@ class MetaTraderAPI(LiveAPI):
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         **kwargs,
-    ):
+    ) -> dict:
+        """_summary_
+
+        Args:
+            position (LivePosition): _description_
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+
+        Returns:
+            dict: _description_
+        """
         return self.do_position_update(
             id=int(position.id),
             symbol=position.data.symbol,
@@ -499,7 +690,17 @@ class MetaTraderAPI(LiveAPI):
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         **kwargs,
-    ):
+    ) -> dict:
+        """_summary_
+
+        Args:
+            id (int): _description_
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+
+        Returns:
+            dict: _description_
+        """
         request = self._parse_trade_request(
             position=id,
             # symbol=symbol,
@@ -511,14 +712,14 @@ class MetaTraderAPI(LiveAPI):
         raw = self._mt5.order_send(request)
         return self._parse_trade_send_response(raw)
 
-    def position_close(self, position: LivePosition, **kwargs):
+    def position_close(self, position: LivePosition, **kwargs) -> dict:
         """Close a position
 
         Args:
             position (LivePosition): _description_
 
         Returns:
-            _type_: _description_
+            dict: _description_
         """
         tick = self.tick_get(position.data.symbol)
         price = tick.ask if position.is_long else tick.bid
@@ -543,7 +744,7 @@ class MetaTraderAPI(LiveAPI):
         price: float,
         size: float,
         **kwargs,
-    ):
+    ) -> dict:
         request = self._parse_trade_request(
             position=id,
             symbol=symbol,

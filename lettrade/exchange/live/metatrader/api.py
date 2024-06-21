@@ -418,28 +418,38 @@ class MetaTraderAPI(LiveAPI):
 
     def executions_get(
         self,
-        id: Optional[str] = None,
         position_id: Optional[str] = None,
+        search: Optional[str] = None,
         **kwargs,
     ) -> int:
-        if id is not None:
-            kwargs["ticket"] = int(id)
         if position_id is not None:
             kwargs["position"] = int(position_id)
+        if search is not None:
+            kwargs["group"] = search
 
         raws = self._mt5.history_deals_get(**kwargs)
 
+        if __debug__:
+            logger.info("Raw executions: %s", raws)
+
         return [self._execution_parse_response(raw) for raw in raws]
+
+    def execution_get(self, id: str, **kwargs) -> int:
+        if id is not None:
+            kwargs["ticket"] = int(id)
+
+        raws = self._mt5.history_deals_get(**kwargs)
+        if not raws:
+            return
+
+        if __debug__:
+            logger.info("Raw execution: %s", raws)
+
+        return self._execution_parse_response(raws[0])
 
     def _execution_parse_response(self, raw):
         raw = Box(dict(raw._asdict()))
-        response = Box(
-            fee=(
-                raw.get("commission", 0.0) + raw.get("swap", 0.0) + raw.get("fee", 0.0)
-            ),
-            raw=raw,
-        )
-        return response
+        return raw
 
     # Position
     def positions_total(

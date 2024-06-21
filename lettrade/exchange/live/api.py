@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +97,17 @@ class LiveAPI(ABC):
     ) -> int:
         """"""
 
-    def executions_get(self, id: str, **kwargs) -> int:
+    @abstractmethod
+    def executions_get(
+        self,
+        position_id: Optional[str] = None,
+        search: Optional[str] = None,
+        **kwargs,
+    ) -> list[Any]:
+        """"""
+
+    @abstractmethod
+    def execution_get(self, id: str, **kwargs) -> Any:
         """"""
 
     # Position

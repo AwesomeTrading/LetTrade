@@ -283,7 +283,13 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def from_raw(cls, raw, exchange: "LiveExchange") -> "LivePosition":
+    def from_raw(
+        cls,
+        raw,
+        exchange: "LiveExchange",
+        state: PositionState = PositionState.Open,
+        **kwargs,
+    ) -> "LivePosition":
         """_summary_
 
         Args:

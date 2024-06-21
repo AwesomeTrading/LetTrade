@@ -2,7 +2,7 @@ import logging
 from typing import Optional, Type
 
 from lettrade.data import DataFeed
-from lettrade.exchange import Exchange, OrderResult, OrderType
+from lettrade.exchange import Exchange, OrderResult, OrderType, PositionState
 
 from .api import LiveAPI
 from .trade import LiveExecution, LiveOrder, LivePosition
@@ -96,45 +96,53 @@ class LiveExchange(Exchange):
     # Events
     def on_deals_new(self, raws):
         if __debug__:
-            logger.info("Raw new deals: %s", raws)
+            logger.debug("Raw new deals: %s", raws)
         for raw in raws:
-            execution = self._execution_cls.from_raw(raw, exchange=self)
+            execution = self._execution_cls.from_raw(raw=raw, exchange=self)
             if execution is None:
                 continue
             self.on_execution(execution)
 
     def on_orders_new(self, raws):
         if __debug__:
-            logger.info("Raw new orders: %s", raws)
+            logger.debug("Raw new orders: %s", raws)
         for raw in raws:
-            order = self._order_cls.from_raw(raw, exchange=self)
+            order = self._order_cls.from_raw(raw=raw, exchange=self)
             if order is None:
                 continue
             self.on_order(order)
 
     def on_orders_old(self, raws):
         if __debug__:
-            logger.info("Raw old orders: %s", raws)
+            logger.debug("Raw old orders: %s", raws)
         for raw in raws:
-            order = self._order_cls.from_raw(raw, exchange=self)
+            order = self._order_cls.from_raw(raw=raw, exchange=self)
             if order is None:
                 continue
             self.on_order(order)
 
     def on_positions_new(self, raws):
         if __debug__:
-            logger.info("Raw new positions: %s", raws)
+            logger.debug("Raw new positions: %s", raws)
         for raw in raws:
-            position = self._position_cls.from_raw(raw, exchange=self)
+            position = self._position_cls.from_raw(
+                raw=raw,
+                exchange=self,
+                state=PositionState.Open,
+            )
             if position is None:
                 continue
             self.on_position(position)
 
     def on_positions_old(self, raws):
         if __debug__:
-            logger.info("Raw old positions: %s", raws)
+            logger.debug("Raw old positions: %s", raws)
         for raw in raws:
-            position = self._position_cls.from_raw(raw, exchange=self)
+            position = self._position_cls.from_raw(
+                raw=raw,
+                exchange=self,
+                state=PositionState.Open,
+            )
             if position is None:
                 continue
             self.on_position(position)

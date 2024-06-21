@@ -404,7 +404,7 @@ class MetaTraderPosition(LivePosition):
         return super(LivePosition, self).exit(
             price=result.price,
             at=pd.to_datetime(execution_raw.time_msc, unit="ms", utc=True),
-            pl=result.profit,
+            pl=execution_raw.profit,
             fee=execution_raw.fee + execution_raw.swap + execution_raw.commission,
             raw=result,
         )
@@ -414,6 +414,7 @@ class MetaTraderPosition(LivePosition):
         cls,
         raw,
         exchange: "LiveExchange",
+        state: PositionState = PositionState.Open,
         data: "LiveDataFeed" = None,
         api: MetaTraderAPI = None,
     ) -> "MetaTraderPosition":
@@ -457,7 +458,7 @@ class MetaTraderPosition(LivePosition):
             exchange=exchange,
             id=raw.ticket,
             data=data,
-            state=PositionState.Open,
+            state=state,
             size=side * raw.volume,
             entry_price=raw.price_open,
             entry_fee=raw.swap,

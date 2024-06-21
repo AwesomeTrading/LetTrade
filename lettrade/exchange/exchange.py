@@ -204,6 +204,10 @@ class Exchange(metaclass=ABCMeta):
             raise RuntimeError(f"{position} is not instance of type Position")
 
         if position.state == PositionState.Exit:
+            if position.id in self.history_positions:
+                logger.debug("Position exited recall: %s", position)
+                return
+
             self.history_positions[position.id] = position
             if position.id in self.positions:
                 del self.positions[position.id]
@@ -211,7 +215,7 @@ class Exchange(metaclass=ABCMeta):
             self._account._on_position_exit(position)
         else:
             if position.id in self.history_positions:
-                raise RuntimeError(f"Order {position.id} closed")
+                raise RuntimeError(f"Position {position.id} closed: {position}")
             if position.id in self.positions:
                 # Merge to keep Position handler for strategy using
                 # when strategy want to store Position object

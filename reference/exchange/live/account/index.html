@@ -2614,18 +2614,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lettrade.exchange.live.account.LiveAccount.pl" class="md-nav__link">
+  <a href="#lettrade.exchange.live.account.LiveAccount.risk" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;pl
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;risk
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#lettrade.exchange.live.account.LiveAccount.risk" class="md-nav__link">
+  <a href="#lettrade.exchange.live.account.LiveAccount.start" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;risk
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;start
     </span>
   </a>
   
@@ -2954,6 +2954,27 @@
   
   <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> metatrader
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metatrader/trade/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> trade
   </span>
   
 
@@ -4268,18 +4289,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lettrade.exchange.live.account.LiveAccount.pl" class="md-nav__link">
+  <a href="#lettrade.exchange.live.account.LiveAccount.risk" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;pl
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;risk
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#lettrade.exchange.live.account.LiveAccount.risk" class="md-nav__link">
+  <a href="#lettrade.exchange.live.account.LiveAccount.start" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;risk
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;start
     </span>
   </a>
   
@@ -4383,15 +4404,15 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/live/account.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
-<span class="normal">15</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Account for live trading</span>
 
 <span class="sd">    Args:</span>
@@ -4414,40 +4435,6 @@
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="lettrade.exchange.live.account.LiveAccount.pl" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">pl</span>
-
-
-<a href="#lettrade.exchange.live.account.LiveAccount.pl" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">pl</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span> <span class="n">exit_price</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-      <p>Estimate temporary profit and loss</p>
-
-            <details class="quote">
-              <summary>Source code in <code>lettrade/account/account.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">entry_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">exit_price</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate temporary profit and loss&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">exit_price</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">exit_price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exchange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">open</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">size</span> <span class="o">*</span> <span class="p">(</span><span class="n">exit_price</span> <span class="o">-</span> <span class="n">entry_price</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-function">
 
@@ -4475,6 +4462,36 @@
     <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">side</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_risk</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">side</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.exchange.live.account.LiveAccount.start" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">start</span>
+
+
+<a href="#lettrade.exchange.live.account.LiveAccount.start" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Start live account by load account info from API</p>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/exchange/live/account.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start live account by load account info from API&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">account</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Account: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

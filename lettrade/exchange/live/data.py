@@ -20,15 +20,17 @@ class LiveDataFeed(DataFeed):
         timeframe: str | int | pd.Timedelta,
         name: Optional[str] = None,
         api: Optional[LiveAPI] = None,
+        columns: Optional[list[str]] = None,
         **kwargs,
     ) -> None:
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
             timeframe=timeframe,
-            columns=["open", "high", "low", "close", "volume"],
+            columns=columns or ["open", "high", "low", "close", "volume"],
             **kwargs,
         )
-        self.meta.update(symbol=symbol)
+
+        self.meta.update(symbol=symbol, base_columns=self.columns.copy())
 
         if api is not None:
             self._api = api
@@ -37,6 +39,10 @@ class LiveDataFeed(DataFeed):
     @property
     def symbol(self) -> str:
         return self.meta["symbol"]
+
+    @property
+    def _base_columns(self) -> LiveAPI:
+        return self.meta["base_columns"]
 
     @property
     def _api(self) -> LiveAPI:
@@ -54,6 +60,18 @@ class LiveDataFeed(DataFeed):
         return super().copy(deep, symbol=self.symbol, **kwargs)
 
     def next(self, size=1, tick=0) -> bool:
+        """Drop extra columns and load next datafeed
+
+        Args:
+            size (int, optional): _description_. Defaults to 1.
+            tick (int, optional): _description_. Defaults to 0.
+
+        Returns:
+            bool: _description_
+        """
+        # Drop existed extra columns to skip reusing calculated data
+        self.drop(columns=self.columns.difference(self._base_columns), inplace=True)
+
         self.bars_load(since=0, to=size + 1)
         self.l.go_stop()
         return True

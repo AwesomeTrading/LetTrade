@@ -60,21 +60,39 @@ class Position(BaseTransaction, metaclass=ABCMeta):
             f"sl={self.sl} tp={self.tp}, pl={round(self.pl, 5)} tag='{self.tag}' >"
         )
 
-    def entry(self, price: float, at: pd.Timestamp, fee: float) -> bool:
+    def entry(
+        self,
+        price: float,
+        at: pd.Timestamp,
+        fee: float,
+        raw: Optional[object] = None,
+    ) -> "PositionResult":
         self.entry_price = price
         self.entry_at = at
         self.entry_fee = fee
         self.state = PositionState.Open
         self.exchange.on_position(self)
-        return True
+        return PositionResultOk(position=self, raw=raw)
 
-    @abstractmethod
-    def update(self, sl: float = None, tp: float = None, **kwargs):
-        raise NotImplementedError(type(self))
+    def update(self, raw: Optional[object] = None, **kwargs) -> "PositionResult":
+        self.exchange.on_position(self)
+        return PositionResultOk(position=self, raw=raw)
 
-    def exit(self, price: float, at: pd.Timestamp, pl: float, fee: float) -> bool:
+    def exit(
+        self,
+        price: float,
+        at: pd.Timestamp,
+        pl: float,
+        fee: float,
+        raw: Optional[object] = None,
+    ) -> "PositionResult":
         if self.state != PositionState.Open:
-            return False
+            return PositionResultError(
+                f"Position state {self.state} != PositionState.Open",
+                code=-1,
+                position=self,
+                raw=raw,
+            )
 
         self.exit_price = price
         self.exit_at = at
@@ -82,7 +100,7 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         self.exit_fee = fee
         self.state = PositionState.Exit
         self.exchange.on_position(self)
-        return True
+        return PositionResultOk(position=self, raw=raw)
 
     def merge(self, other: "Position"):
         if other is self:

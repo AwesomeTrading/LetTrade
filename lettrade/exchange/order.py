@@ -106,7 +106,11 @@ class Order(BaseTransaction):
         else:
             raise LetOrderValidateException(f"Order side {self.size} is invalid")
 
-    def place(self, at: pd.Timestamp) -> "OrderResult":
+    def place(
+        self,
+        at: pd.Timestamp,
+        raw: Optional[object] = None,
+    ) -> "OrderResult":
         """Place `Order`
         Set `status` to `OrderState.Placed`.
         Send event to `Exchange`
@@ -126,7 +130,7 @@ class Order(BaseTransaction):
         logger.info("Placing new order: %s", self)
 
         self.exchange.on_order(self)
-        return OrderResultOk(order=self)
+        return OrderResultOk(order=self, raw=raw)
 
     def update(
         self,
@@ -134,8 +138,8 @@ class Order(BaseTransaction):
         stop_price: float = None,
         sl: float = None,
         tp: float = None,
-        **kwargs,
-    ):
+        raw: Optional[object] = None,
+    ) -> "OrderResult":
         """Update Order
 
         Args:
@@ -162,8 +166,14 @@ class Order(BaseTransaction):
             self.tp_price = tp
 
         self.exchange.on_order(self)
+        return OrderResultOk(order=self, raw=raw)
 
-    def fill(self, price: float, at: pd.Timestamp) -> "OrderResult":
+    def fill(
+        self,
+        price: float,
+        at: pd.Timestamp,
+        raw: Optional[object] = None,
+    ) -> "OrderResult":
         """Fill `Order`.
         Set `status` to `OrderState.Executed`.
         Send event to `Exchange`
@@ -185,9 +195,12 @@ class Order(BaseTransaction):
         self.filled_price = price
         self.state = OrderState.Filled
         self.exchange.on_order(self)
-        return OrderResultOk(order=self)
+        return OrderResultOk(order=self, raw=raw)
 
-    def cancel(self) -> "OrderResult":
+    def cancel(
+        self,
+        raw: Optional[object] = None,
+    ) -> "OrderResult":
         """Cancel `Order`
         Set `status` to `OrderState.Canceled`.
         Send event to `Exchange`
@@ -203,7 +216,7 @@ class Order(BaseTransaction):
 
         self.state = OrderState.Canceled
         self.exchange.on_order(self)
-        return OrderResultOk(order=self)
+        return OrderResultOk(order=self, raw=raw)
 
     def merge(self, other: "Order"):
         """Update current `Order` variables by other `Order`

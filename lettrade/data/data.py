@@ -112,7 +112,7 @@ class DataFeed(pd.DataFrame):
             )
 
         if __debug__:
-            logger.info("[%s] Update bar: \n%s", self.name, self.tail(len(rows)))
+            logger.debug("[%s] Update bar: \n%s", self.name, self.tail(len(rows)))
 
     def drop(self, *args, since=None, **kwargs):
         if since is None:
@@ -130,7 +130,9 @@ class DataFeed(pd.DataFrame):
         index = self[self.index < loc].index
         super().drop(index=index, inplace=True)
         self.l.reset()
-        logger.info("BackTestDataFeed %s dropped %s rows", self.name, len(index))
+
+        if __debug__:
+            logger.debug("BackTestDataFeed %s dropped %s rows", self.name, len(index))
 
     # Properties
     # @property

@@ -582,7 +582,7 @@ class MetaTraderAPI(LiveAPI):
         raws = self._mt5.history_deals_get(**kwargs)
 
         if __debug__:
-            logger.info("Raw executions: %s", raws)
+            logger.debug("Raw executions: %s", raws)
 
         return [self._execution_parse_response(raw) for raw in raws]
 
@@ -603,7 +603,7 @@ class MetaTraderAPI(LiveAPI):
             return
 
         if __debug__:
-            logger.info("Raw execution: %s", raws)
+            logger.debug("Raw execution: %s", raws)
 
         return self._execution_parse_response(raws[0])
 

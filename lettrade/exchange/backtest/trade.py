@@ -1,5 +1,7 @@
 from typing import Optional
 
+import pandas as pd
+
 from lettrade.exchange import (
     Execution,
     Order,
@@ -7,6 +9,7 @@ from lettrade.exchange import (
     OrderState,
     OrderType,
     Position,
+    PositionResult,
     PositionState,
 )
 
@@ -124,7 +127,7 @@ class BackTestOrder(Order):
 class BackTestPosition(Position):
     """Position for backtesting"""
 
-    def update(self, sl=None, tp=None, **kwargs):
+    def update(self, sl=None, tp=None, **kwargs) -> PositionResult:
         if not sl and not tp:
             raise RuntimeError("Update sl=None and tp=None")
 
@@ -140,21 +143,19 @@ class BackTestPosition(Position):
             else:
                 self._new_tp_order(limit_price=tp)
 
-        # Refresh position
-        self.exchange.on_position(self)
-        # TODO: call super().update()
+        super().update()
 
-    def entry(self, price: float, at: object) -> bool:
+    def entry(self, price: float, at: object) -> PositionResult:
         # Fee
         fee = self._account.fee(size=self.size)
         return super().entry(price, at, fee)
 
     def exit(
         self,
-        price: float,
-        at: object,
+        price: Optional[float] = None,
+        at: Optional[pd.Timestamp] = None,
         caller: Optional[Order | Position] = None,
-    ):
+    ) -> PositionResult:
         """Exit Position
 
         Args:
@@ -163,7 +164,24 @@ class BackTestPosition(Position):
             caller (Order | Position, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
         """
         if self.state != PositionState.Open:
+            if caller is None:
+                # Call by user
+                raise RuntimeError(f"Call exited position {self}")
             return
+
+        if caller is None:
+            # Call by user
+            if price is not None:
+                raise RuntimeError(f"Price set {price} is not available")
+            if at is not None:
+                raise RuntimeError(f"At set {at} is not available")
+
+            price = self.data.l.open[0]
+            at = self.data.l.index[0]
+        else:
+            # Call by SL/TP order
+            if price is None or at is None:
+                raise RuntimeError(f"Caller {caller} with price is None or at is None")
 
         # PnL
         pl = self._account.pl(
@@ -176,13 +194,21 @@ class BackTestPosition(Position):
         fee = self._account.fee(size=self.size)
 
         # State
-        super().exit(price=price, at=at, pl=pl, fee=fee)
+        ok = super().exit(price=price, at=at, pl=pl, fee=fee)
 
         # Caller is position close by tp/sl order
-        if caller is None or (self.sl_order and self.sl_order is not caller):
-            self.sl_order.cancel()
-        if caller is None or (self.tp_order and self.tp_order is not caller):
-            self.tp_order.cancel()
+        if caller is None:
+            if self.sl_order is not None:
+                self.sl_order.cancel(caller=self)
+            if self.tp_order is not None:
+                self.tp_order.cancel(caller=self)
+        else:
+            if self.sl_order and self.sl_order is not caller:
+                self.sl_order.cancel(caller=caller)
+            if self.tp_order and self.tp_order is not caller:
+                self.tp_order.cancel(caller=caller)
+
+        return ok
 
     def _new_sl_order(self, stop_price: float) -> BackTestOrder:
         if self.sl_order:

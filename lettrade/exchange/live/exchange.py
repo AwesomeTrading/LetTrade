@@ -141,7 +141,7 @@ class LiveExchange(Exchange):
             position = self._position_cls.from_raw(
                 raw=raw,
                 exchange=self,
-                state=PositionState.Open,
+                state=PositionState.Exit,
             )
             if position is None:
                 continue

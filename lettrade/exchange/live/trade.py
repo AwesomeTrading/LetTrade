@@ -2,7 +2,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
-from pandas import Timestamp
+import pandas as pd
 
 from lettrade.exchange import (
     Execution,
@@ -13,6 +13,7 @@ from lettrade.exchange import (
     OrderState,
     OrderType,
     Position,
+    PositionResult,
     PositionResultError,
     PositionResultOk,
     PositionState,
@@ -74,8 +75,6 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
             **kwargs,
         )
         # self.tag: str = tag
-        # self.raw: object = raw
-        # self._api: LiveAPI = api or exchange._api
 
     @classmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveExecution":
@@ -88,7 +87,7 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
         Returns:
             LiveExecution: _description_
         """
-        raise NotImplementedError
+        raise NotImplementedError(cls)
 
 
 class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
@@ -127,32 +126,32 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
             raw=raw,
             **kwargs,
         )
-        # self.raw: dict = raw
-        # self._api: LiveAPI = api or exchange._api
 
+    @abstractmethod
     def place(self) -> OrderResult:
-        if self.state != OrderState.Pending:
-            raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
+        raise NotImplementedError(type(self))
 
-        result = self._api.order_open(self)
-        self.raw = result
-        if result.code != 0:
-            logger.error("Place order %s", str(result))
-            error = OrderResultError(
-                error=result.error,
-                code=result.code,
-                order=self,
-                raw=result,
-            )
-            self.exchange.on_notify(error=error)
-            return error
+        # if self.state != OrderState.Pending:
+        #     raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
-        self.id = result.order
-        # TODO: get current order time
-        ok = super().place(at=self.data.l.index[0])
-        ok.raw = result
-        return ok
+        # result = self._api.order_open(self)
+        # self.raw = result
+        # if result.code != 0:
+        #     logger.error("Place order %s", str(result))
+        #     error = OrderResultError(
+        #         error=result.error,
+        #         code=result.code,
+        #         order=self,
+        #         raw=result,
+        #     )
+        #     self.exchange.on_notify(error=error)
+        #     return error
 
+        # self.id = result.order
+        # # TODO: get current order time
+        # return super().place(at=self.data.l.index[0], raw=result)
+
+    @abstractmethod
     def update(
         self,
         limit_price: Optional[float] = None,
@@ -162,29 +161,29 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         caller: Optional[float] = None,
         **kwargs,
     ) -> OrderResult:
-        if caller is self:
-            raise RuntimeError(f"Order recusive update {self}")
+        raise NotImplementedError(type(self))
+        # if caller is self:
+        #     raise RuntimeError(f"Order recusive update {self}")
 
-        result = self._api.order_update(
-            order=self,
-            limit_price=limit_price,
-            stop_price=stop_price,
-            sl=sl,
-            tp=tp,
-            **kwargs,
-        )
+        # result = self._api.order_update(
+        #     order=self,
+        #     limit_price=limit_price,
+        #     stop_price=stop_price,
+        #     sl=sl,
+        #     tp=tp,
+        #     **kwargs,
+        # )
 
-        return super().update(
-            limit_price=result.limit_price,
-            stop_price=result.stop_price,
-            sl=result.sl,
-            tp=result.tp,
-        )
+        # return super().update(
+        #     limit_price=result.limit_price,
+        #     stop_price=result.stop_price,
+        #     sl=result.sl,
+        #     tp=result.tp,
+        # )
 
     def cancel(self, **kwargs) -> OrderResult:
-        self._api.order_close(order=self, **kwargs)
-        # TODO: test
-        return super().cancel()
+        result = self._api.order_close(order=self, **kwargs)
+        return super(LiveOrder, self).cancel(raw=result)
 
     @classmethod
     @abstractmethod
@@ -198,7 +197,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         Returns:
             LiveOrder: _description_
         """
-        raise NotImplementedError
+        raise NotImplementedError(cls)
 
     @classmethod
     @abstractmethod
@@ -213,7 +212,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         Returns:
             LiveOrder: _description_
         """
-        raise NotImplementedError
+        raise NotImplementedError(cls)
 
 
 class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
@@ -252,9 +251,8 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
             raw=raw,
             **kwargs,
         )
-        # self.raw: dict = raw
-        # self._api: LiveAPI = api or exchange._api
 
+    @abstractmethod
     def update(
         self,
         sl: Optional[float] = None,
@@ -262,62 +260,26 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         caller: Optional[float] = None,
         **kwargs,
     ):
-        if not sl and not tp:
-            raise RuntimeError("Update sl=None and tp=None")
-        if caller is self:
-            raise RuntimeError(f"Position recusive update {self}")
+        """_summary_
 
-        result = self._api.position_update(position=self, sl=sl, tp=tp)
-        if result.code != 0:
-            logger.error("Update position %s", str(result))
-            error = PositionResultError(
-                error=result.error,
-                code=result.code,
-                position=self,
-                raw=result,
-            )
-            self.exchange.on_notify(error=error)
-            return error
+        Args:
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            caller (Optional[float], optional): _description_. Defaults to None.
 
-        if sl is not None:
-            if self.sl_order:
-                if caller is not self.sl_order:
-                    self.sl_order.update(stop_price=sl, caller=self)
-            else:
-                self.sl_order = self.exchange._order_cls.from_position(
-                    position=self, sl=sl
-                )
+        Raises:
+            NotImplementedError: _description_
+        """
+        raise NotImplementedError(type(self))
 
-        if tp is not None:
-            if self.tp_order:
-                if caller is not self.tp_order:
-                    self.tp_order.update(limit_price=tp, caller=self)
-            else:
-                self.tp_order = self.exchange._order_cls.from_position(
-                    position=self, tp=tp
-                )
+    @abstractmethod
+    def exit(self) -> PositionResult:
+        """_summary_
 
-        self.exchange.on_position(self)
-
-    def exit(self) -> bool:
-        result = self._api.position_close(position=self)
-        if result.code != 0:
-            logger.error("Update position %s", str(result))
-            error = PositionResultError(
-                error=result.error,
-                code=result.code,
-                position=self,
-                raw=result,
-            )
-            self.exchange.on_notify(error=error)
-            return error
-
-        return super().exit(
-            price=result.price,
-            at=result.at,
-            pl=result.pl,
-            fee=result.fee,
-        )
+        Returns:
+            bool: _description_
+        """
+        raise NotImplementedError(type(self))
 
     @classmethod
     @abstractmethod
@@ -331,7 +293,7 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         Returns:
             LivePosition: _description_
         """
-        raise NotImplementedError
+        raise NotImplementedError(cls)
 
     # @classmethod
     # # @abstractmethod

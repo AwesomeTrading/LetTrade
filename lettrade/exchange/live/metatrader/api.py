@@ -206,6 +206,33 @@ class MetaTraderAPI(LiveAPI):
         return self._mt5.account_info()
 
     # Order
+    def orders_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
+        if since is not None:
+            kwargs["date_from"] = since
+        if to is not None:
+            kwargs["date_to"] = to
+
+        return self._mt5.orders_total(**kwargs)
+
+    def orders_get(
+        self,
+        id: Optional[str] = None,
+        symbol: Optional[str] = None,
+        **kwargs,
+    ):
+        if id is not None:
+            kwargs["ticket"] = int(id)
+        if symbol is not None:
+            kwargs["symbol"] = symbol
+
+        raws = self._mt5.orders_get(**kwargs)
+        return [self._order_parse_response(raw) for raw in raws]
+
     def order_open(self, order: LiveOrder):
         match order.type:
             case OrderType.Limit:
@@ -311,31 +338,122 @@ class MetaTraderAPI(LiveAPI):
         if raw is None:
             raise RuntimeError("Trade response is None")
 
-        raw = Box(dict(raw._asdict()))
-        raw.code = raw.retcode
-        if raw.code == MT5.TRADE_RETCODE_DONE:
-            raw.code = 0
-        elif raw.code == MT5.TRADE_RETCODE_NO_CHANGES:
-            logger.warning("Trade response nothing changes code %s %s", raw.code, raw)
-            raw.code = 0
+        response = Box(dict(raw._asdict()))
 
-        if raw.code != 0:
-            raw.error = raw.comment
+        # Error code
+        response.code = response.retcode
+        if response.code == MT5.TRADE_RETCODE_DONE:
+            response.code = 0
+        elif response.code == MT5.TRADE_RETCODE_NO_CHANGES:
+            logger.warning(
+                "Trade response nothing changes code %s %s", response.code, response
+            )
+            response.code = 0
+        if response.code != 0:
+            response.error = response.comment
+
+        # Order
+        if hasattr(response, "order"):
+            response.order_id = response.order
+
+        # Execution
+        if hasattr(response, "deal"):
+            response.execution_id = response.deal
 
         if __debug__:
-            logger.info("New order response: %s", raw)
+            logger.info("New order response: %s", response)
 
-        return raw
+        return response
 
-    def orders_total(self):
-        return self._mt5.orders_total()
+    def orders_history_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
+        if since is not None:
+            kwargs["date_from"] = since
+        if to is not None:
+            kwargs["date_to"] = to
 
-    def orders_get(self, **kwargs):
-        return self._mt5.orders_get(**kwargs)
+        return self._mt5.history_orders_get(**kwargs)
+
+    def orders_history_get(
+        self,
+        id: Optional[str] = None,
+        position_id: Optional[str] = None,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ):
+        if id is not None:
+            kwargs["ticket"] = int(id)
+        if position_id is not None:
+            kwargs["position"] = int(position_id)
+        if since is not None:
+            kwargs["date_from"] = since
+        if to is not None:
+            kwargs["date_to"] = to
+
+        raws = self._mt5.history_orders_get(**kwargs)
+        return [self._order_parse_response(raw) for raw in raws]
+
+    def _order_parse_response(self, raw):
+        response = Box(dict(raw._asdict()))
+        return response
+
+    # Execution
+    def executions_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
+        if since is not None:
+            kwargs["date_from"] = since
+        if to is not None:
+            kwargs["date_to"] = to
+
+        return self._mt5.history_deals_total(**kwargs)
+
+    def executions_get(
+        self,
+        id: Optional[str] = None,
+        position_id: Optional[str] = None,
+        **kwargs,
+    ) -> int:
+        if id is not None:
+            kwargs["ticket"] = int(id)
+        if position_id is not None:
+            kwargs["position"] = int(position_id)
+
+        raws = self._mt5.history_deals_get(**kwargs)
+
+        return [self._execution_parse_response(raw) for raw in raws]
+
+    def _execution_parse_response(self, raw):
+        raw = Box(dict(raw._asdict()))
+        response = Box(
+            fee=(
+                raw.get("commission", 0.0) + raw.get("swap", 0.0) + raw.get("fee", 0.0)
+            ),
+            raw=raw,
+        )
+        return response
 
     # Position
-    def positions_total(self):
-        return self._mt5.positions_total()
+    def positions_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
+        if since is not None:
+            kwargs["date_from"] = since
+        if to is not None:
+            kwargs["date_to"] = to
+
+        return self._mt5.positions_total(**kwargs)
 
     def positions_get(self, id: str = None, symbol: str = None, **kwargs):
         if id is not None:
@@ -384,6 +502,14 @@ class MetaTraderAPI(LiveAPI):
         return self._parse_trade_send_response(raw)
 
     def position_close(self, position: LivePosition, **kwargs):
+        """Close a position
+
+        Args:
+            position (LivePosition): _description_
+
+        Returns:
+            _type_: _description_
+        """
         tick = self.tick_get(position.data.symbol)
         price = tick.ask if position.is_long else tick.bid
 
@@ -394,6 +520,7 @@ class MetaTraderAPI(LiveAPI):
             id=int(position.id),
             symbol=position.data.symbol,
             type=type,
+            size=position.size,
             price=price,
             **kwargs,
         )
@@ -402,6 +529,7 @@ class MetaTraderAPI(LiveAPI):
         self,
         id: int,
         symbol: str,
+        type: int,
         price: float,
         size: float,
         **kwargs,
@@ -409,6 +537,7 @@ class MetaTraderAPI(LiveAPI):
         request = self._parse_trade_request(
             position=id,
             symbol=symbol,
+            type=type,
             price=price,
             size=size,
             **kwargs,
@@ -425,10 +554,10 @@ class MetaTraderAPI(LiveAPI):
         if orders:
             self._exchange.on_old_orders(orders)
 
-        # Positions
-        positions = self._mt5.positions_get(self.__load_history_since, to)
-        if positions:
-            self._exchange.on_new_positions(positions)
+        # # Positions
+        # positions = self._mt5.positions_get(self.__load_history_since, to)
+        # if positions:
+        #     self._exchange.on_new_positions(positions)
 
         # TODO: generate history order from
         # # History positions

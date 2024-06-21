@@ -9,12 +9,15 @@ from lettrade import (
     Commander,
     Order,
     OrderResult,
+    OrderResultError,
     OrderState,
     OrderType,
     Plotter,
+    PositionResultError,
     PositionState,
     TradeSide,
 )
+from lettrade.exchange import PositionResult
 from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -118,6 +121,29 @@ class MetaTraderExecution(LiveExecution):
 class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
 
+    exchange: "MetaTraderExchange"
+
+    def place(self) -> OrderResult:
+        if self.state != OrderState.Pending:
+            raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
+
+        result = self._api.order_open(self)
+        self.raw = result
+        if result.code != 0:
+            logger.error("Place order %s", str(result))
+            error = OrderResultError(
+                error=result.error,
+                code=result.code,
+                order=self,
+                raw=result,
+            )
+            self.exchange.on_notify(error=error)
+            return error
+
+        self.id = result.order
+        # TODO: get current order time
+        return super(LiveOrder, self).place(at=self.data.l.index[0], raw=result)
+
     def update(
         self,
         limit_price: Optional[float] = None,
@@ -146,7 +172,7 @@ class MetaTraderOrder(LiveOrder):
                 tp=result.tp,
             )
         else:
-            # SL/Tp Order just a virtual order
+            # SL/TP Order just a virtual order
             if caller is not self.parent:
                 if self.is_sl_order:
                     self.parent.update(sl=stop_price, caller=self)
@@ -315,6 +341,77 @@ class MetaTraderOrder(LiveOrder):
 
 class MetaTraderPosition(LivePosition):
     """Position for MetaTrader"""
+
+    exchange: "MetaTraderExchange"
+
+    def update(
+        self,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        caller: Optional[float] = None,
+        **kwargs,
+    ):
+        if not sl and not tp:
+            raise RuntimeError("Update sl=None and tp=None")
+        if caller is self:
+            raise RuntimeError(f"Position recusive update {self}")
+
+        result = self._api.position_update(position=self, sl=sl, tp=tp)
+        if result.code != 0:
+            logger.error("Update position %s", str(result))
+            error = PositionResultError(
+                error=result.error,
+                code=result.code,
+                position=self,
+                raw=result,
+            )
+            self.exchange.on_notify(error=error)
+            return error
+
+        if sl is not None:
+            if self.sl_order:
+                if caller is not self.sl_order:
+                    self.sl_order.update(stop_price=sl, caller=self)
+            else:
+                self.sl_order = self.exchange._order_cls.from_position(
+                    position=self, sl=sl
+                )
+
+        if tp is not None:
+            if self.tp_order:
+                if caller is not self.tp_order:
+                    self.tp_order.update(limit_price=tp, caller=self)
+            else:
+                self.tp_order = self.exchange._order_cls.from_position(
+                    position=self, tp=tp
+                )
+
+        return super(LivePosition, self).update(raw=result)
+
+    def exit(self) -> PositionResult:
+        result = self._api.position_close(position=self)
+        if result.code != 0:
+            logger.error("Update position %s", str(result))
+            error = PositionResultError(
+                error=result.error,
+                code=result.code,
+                position=self,
+                raw=result,
+            )
+            self.exchange.on_notify(error=error)
+            return error
+
+        execution_raw = self._api.executions_get(id=result.execution_id)
+        # TODO: execution object and event
+        result.execution_raw = execution_raw
+
+        return super(LivePosition, self).exit(
+            price=result.price,
+            at=pd.to_datetime(execution_raw.time_msc, unit="ms", utc=True),
+            pl=result.profit,
+            fee=execution_raw.fee + execution_raw.swap + execution_raw.commission,
+            raw=result,
+        )
 
     @classmethod
     def from_raw(

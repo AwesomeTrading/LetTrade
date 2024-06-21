@@ -1,5 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
+from datetime import datetime
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +58,24 @@ class LiveAPI(ABC):
 
     #  Order
     @abstractmethod
+    def orders_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
+        """"""
+
+    @abstractmethod
+    def orders_get(
+        self,
+        id: Optional[str] = None,
+        symbol: Optional[str] = None,
+        **kwargs,
+    ):
+        """"""
+
+    @abstractmethod
     def order_open(self, **kwargs):
         """"""
 
@@ -67,17 +87,27 @@ class LiveAPI(ABC):
     def order_close(self, order: "LiveOrder", **kwargs):
         """"""
 
+    # Execution
     @abstractmethod
-    def orders_total(self):
+    def executions_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
         """"""
 
-    @abstractmethod
-    def orders_get(self, **kwargs):
+    def executions_get(self, id: str, **kwargs) -> int:
         """"""
 
-    # Trade
+    # Position
     @abstractmethod
-    def positions_total(self):
+    def positions_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
         """"""
 
     @abstractmethod
@@ -85,7 +115,13 @@ class LiveAPI(ABC):
         """"""
 
     @abstractmethod
-    def position_update(self, position: "LivePosition", sl=None, tp=None, **kwargs):
+    def position_update(
+        self,
+        position: "LivePosition",
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        **kwargs,
+    ):
         """"""
 
     @abstractmethod

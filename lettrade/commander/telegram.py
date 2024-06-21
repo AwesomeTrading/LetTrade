@@ -452,7 +452,18 @@ class TelegramAPI:
 
         if self._bot_selected is not None:
             msg += f"\n------\nSelected bot: *{self._bot_selected}*"
-        await self._send_msg(msg)
+            keyboard = [
+                [
+                    InlineKeyboardButton(
+                        text=f"/plot {self._bot_selected}",
+                        callback_data=f"cmd:/plot {self._bot_selected}",
+                    )
+                ]
+            ]
+        else:
+            keyboard = None
+
+        await self._send_msg(msg, keyboard=keyboard)
 
     @authorized_only
     async def _cmd_stats(self, update: Update, context: CallbackContext) -> None:
@@ -507,6 +518,8 @@ class TelegramAPI:
         match datas[0]:
             case "/bot":
                 await self._cmd_bot(update=update, context=context)
+            case "/plot":
+                await self._cmd_plot(update=update, context=context)
 
 
 class TelegramCommander(Commander):

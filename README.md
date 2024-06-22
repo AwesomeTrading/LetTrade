@@ -34,7 +34,8 @@ pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
 ```python
 import talib.abstract as ta
 
-from lettrade.all import DataFeed, Strategy, let_backtest, indicator as i
+from lettrade import indicator as i
+from lettrade.all import DataFeed, Strategy, let_backtest
 
 
 class SmaCross(Strategy):
@@ -50,9 +51,12 @@ class SmaCross(Strategy):
 
     def next(self, df: DataFeed):
         if df.l.crossover[-1]:
-            self.buy(0.1)
+            self.positions_exit()
+            self.buy(size=0.1)
         elif df.l.crossunder[-1]:
-            self.sell(0.1)
+            self.positions_exit()
+            self.sell(size=0.1)
+
 
 lt = let_backtest(
     strategy=SmaCross,

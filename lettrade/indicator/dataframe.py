@@ -1,3 +1,5 @@
+from typing import Any
+
 import pandas as pd
 
 
@@ -5,6 +7,7 @@ def pandas_inject():
     from pandas.core.base import PandasObject
 
     PandasObject.signal_direction = signal_direction
+    PandasObject.signal_condiction = signal_condiction
 
 
 def signal_direction(
@@ -18,6 +21,63 @@ def signal_direction(
     inplace: bool = False,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
+    """Define a signal with 2 direction Up and Down
+
+    Args:
+        dataframe (pd.DataFrame): _description_
+        signal_up (pd.Series): _description_
+        signal_down (pd.Series): _description_
+        name (str): _description_
+        value (int, optional): Default value when condiction is not matched. Defaults to 0.
+        value_up (int, optional): _description_. Defaults to 100.
+        value_down (int, optional): _description_. Defaults to -100.
+        inplace (bool, optional): _description_. Defaults to False.
+
+    Returns:
+        pd.Series | pd.DataFrame: _description_
+    """
+    return signal_condiction(
+        dataframe,
+        [signal_up, value_up],
+        [signal_down, value_down],
+        name=name,
+        value=value,
+        inplace=inplace,
+        **kwargs,
+    )
+
+
+def signal_condiction(
+    dataframe: pd.DataFrame,
+    *condictions: list[list[pd.Series | Any]],
+    name: str,
+    value: int | float = 0,
+    inplace: bool = False,
+    **kwargs,
+) -> pd.Series | pd.DataFrame:
+    """Define a signal with multiple condiction
+
+    Args:
+        dataframe (pd.DataFrame): _description_
+        *condictions (list[list[pd.Series | Any]]): Pairs of [<pandas.Series condiction>, <value>]
+        name (str): _description_
+        value (int, optional): Default value when condiction is not matched. Defaults to 0.
+        inplace (bool, optional): _description_. Defaults to False.
+
+    Usage:
+        df.i.signal_condiction(
+            [df["close"] > df["open"], 100],
+            [df["close"] < df["open"], -100],
+            name="cdl_direction",
+            inplace=True,
+        )
+
+    Raises:
+        RuntimeError: _description_
+
+    Returns:
+        pd.Series | pd.DataFrame: _description_
+    """
     if __debug__:
         if not isinstance(dataframe, pd.DataFrame):
             raise RuntimeError(
@@ -26,8 +86,8 @@ def signal_direction(
             )
 
     s = pd.Series(value, index=dataframe.index, name=name, **kwargs)
-    s.loc[signal_up] = value_up
-    s.loc[signal_down] = value_down
+    for condiction in condictions:
+        s.loc[condiction[0]] = condiction[1]
 
     if inplace:
         dataframe[name] = s

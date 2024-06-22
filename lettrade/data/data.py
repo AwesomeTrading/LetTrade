@@ -1,11 +1,14 @@
 import logging
 import re
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import pandas as pd
 
 from .timeframe import TimeFrame
 from .wrapper import LetDataFeedWrapper
+
+if TYPE_CHECKING:
+    from lettrade import indicator
 
 logger = logging.getLogger(__name__)
 
@@ -158,6 +161,17 @@ class DataFeed(pd.DataFrame):
     @property
     def is_main(self) -> bool:
         return self.meta.get("is_main", False)
+
+    @property
+    def i(self) -> "indicator":
+        """Alias to lettrade.indicator and using in DataFeed by call: DataFeed.i.indicator_name()"""
+        if not hasattr(self, "__indicator_injected"):
+            from lettrade import indicator
+
+            indicator.indicators_inject_pandas()
+            object.__setattr__(self, "__indicator_injected", True)
+
+        return self
 
 
 if __debug__:

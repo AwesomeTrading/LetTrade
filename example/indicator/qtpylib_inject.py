@@ -24,10 +24,10 @@ class SmaCross(Strategy):
             return
 
         if df.l.signal_ema_crossover[-1]:
-            price = self.data.l.close[-1]
+            price = df.l.close[-1]
             self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
         elif df.l.signal_ema_crossunder[-1]:
-            price = self.data.l.close[-1]
+            price = df.l.close[-1]
             self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
 
     def plot(self, df: DataFeed):

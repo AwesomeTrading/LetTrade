@@ -1,8 +1,41 @@
-import numpy as np
 import pandas as pd
 
 
-def diff(series1: pd.Series, series2: pd.Series) -> pd.Series:
+def pandas_inject():
+    from pandas.core.base import PandasObject
+
+    # diff
+    def __call_diff(dataframe, *args, **kwargs):
+        return diff(*args, **kwargs, dataframe=dataframe)
+
+    PandasObject.diff = __call_diff
+
+    # above
+    def __call_above(dataframe, *args, **kwargs):
+        return above(*args, **kwargs, dataframe=dataframe)
+
+    PandasObject.above = __call_above
+
+    # below
+    def __call_below(dataframe, *args, **kwargs):
+        return below(*args, **kwargs, dataframe=dataframe)
+
+    PandasObject.below = __call_below
+
+    # crossover
+    def __call_crossover(dataframe, *args, **kwargs):
+        return crossover(*args, **kwargs, dataframe=dataframe)
+
+    PandasObject.crossover = __call_crossover
+
+    # crossunder
+    def __call_crossunder(dataframe, *args, **kwargs):
+        return crossunder(*args, **kwargs, dataframe=dataframe)
+
+    PandasObject.crossunder = __call_crossunder
+
+
+def diff(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:
     """Difference between 2 series
 
     Args:
@@ -15,7 +48,7 @@ def diff(series1: pd.Series, series2: pd.Series) -> pd.Series:
     return series1 - series2
 
 
-def above(series1: pd.Series, series2: pd.Series) -> pd.Series:
+def above(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:
     """Check a Series is above another Series
 
     Args:
@@ -29,7 +62,7 @@ def above(series1: pd.Series, series2: pd.Series) -> pd.Series:
     return diffed.apply(lambda v: True if v > 0 else False).astype(bool)
 
 
-def below(series1: pd.Series, series2: pd.Series) -> pd.Series:
+def below(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:
     """Check a Series is below another Series
 
     Args:
@@ -43,7 +76,7 @@ def below(series1: pd.Series, series2: pd.Series) -> pd.Series:
     return diffed.apply(lambda v: True if v < 0 else False).astype(bool)
 
 
-def crossover(series1: pd.Series, series2: pd.Series) -> pd.Series:
+def crossover(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:
     """Check if a Series cross over another Series
 
     Args:
@@ -58,7 +91,7 @@ def crossover(series1: pd.Series, series2: pd.Series) -> pd.Series:
     return below1 & above0
 
 
-def crossunder(series1: pd.Series, series2: pd.Series) -> pd.Series:
+def crossunder(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:
     """Check if a Series cross under another Series
 
     Args:

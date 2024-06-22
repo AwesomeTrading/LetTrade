@@ -587,7 +587,7 @@ class TelegramCommander(Commander):
                     case "plot":
                         self._on_action_plot()
             except (BrokenPipeError, EOFError) as e:
-                logger.error("Action", exc_info=e)
+                # logger.error("Action", exc_info=e)
                 self._is_running = False
                 raise e
             except Exception as e:

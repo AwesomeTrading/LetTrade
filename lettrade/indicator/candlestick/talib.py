@@ -2,7 +2,20 @@ import pandas as pd
 import talib.abstract as ta
 
 
-def cdl_3blackcrows(df: pd.DataFrame, suffix: str = "") -> pd.Series:
+def cdl_3blackcrows(dataframe: pd.DataFrame, **kwargs) -> pd.Series | pd.DataFrame:
+    return cdl_pattern(dataframe=dataframe, name="3blackcrows", **kwargs)
+
+
+def cdl_3whitesoldiers(dataframe: pd.DataFrame, **kwargs) -> pd.Series | pd.DataFrame:
+    return cdl_pattern(dataframe=dataframe, name="3whitesoldiers", **kwargs)
+
+
+def cdl_pattern(
+    dataframe: pd.DataFrame,
+    name: str,
+    prefix: str = "cdl_",
+    inplace: bool = False,
+) -> pd.Series | pd.DataFrame:
     """_summary_
 
     Args:
@@ -12,21 +25,17 @@ def cdl_3blackcrows(df: pd.DataFrame, suffix: str = "") -> pd.Series:
     Returns:
         pd.Series: _description_
     """
-    i = ta.CDL3BLACKCROWS(df)
-    i.name = f"3blackcrows{suffix}"
-    return i
+    if __debug__:
+        if not isinstance(dataframe, pd.DataFrame):
+            raise RuntimeError(
+                f"dataframe type '{type(dataframe)}' "
+                "is not instance of pandas.DataFrame"
+            )
 
+    i = getattr(ta, f"CDL{name.upper()}")(dataframe)
 
-def cdl_3whitesoldiers(df: pd.DataFrame, suffix: str = "") -> pd.Series:
-    """_summary_
+    if inplace:
+        dataframe[f"{prefix}{name.lower()}"] = i
+        return dataframe
 
-    Args:
-        df (pd.DataFrame): _description_
-        suffix (str, optional): _description_. Defaults to "".
-
-    Returns:
-        pd.Series: _description_
-    """
-    i = ta.CDL3WHITESOLDIERS(df)
-    i.name = f"3whitesoldiers{suffix}"
     return i

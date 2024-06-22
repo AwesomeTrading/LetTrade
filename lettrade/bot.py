@@ -115,7 +115,7 @@ class LetTradeBot:
         # Init
         if self.commander:
             self.commander.init(
-                lettrade=self,
+                bot=self,
                 brain=self.brain,
                 exchange=self.exchange,
                 strategy=self.strategy,

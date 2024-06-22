@@ -2,10 +2,11 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Optional
 
 from lettrade.account import Account
-from lettrade.data import DataFeed, DataFeeder
+from lettrade.data import DataFeeder
 
 if TYPE_CHECKING:
-    from lettrade import LetTrade
+    # Recusive
+    from lettrade import LetTradeBot
     from lettrade.brain import Brain
     from lettrade.exchange import Exchange
     from lettrade.plot import Plotter
@@ -17,7 +18,7 @@ class Commander(ABC):
     Abstract class for strategy commander. Help to manage and report strategy real-time
     """
 
-    lettrade: "LetTrade"
+    bot: "LetTradeBot"
     brain: "Brain"
     feeder: DataFeeder
     exchange: "Exchange"
@@ -27,12 +28,9 @@ class Commander(ABC):
 
     _name: str
 
-    def __init__(self) -> None:
-        super().__init__()
-
     def init(
         self,
-        lettrade: "LetTrade",
+        bot: "LetTradeBot",
         brain: "Brain",
         exchange: "Exchange",
         strategy: "Strategy",
@@ -40,17 +38,17 @@ class Commander(ABC):
         """Init commander dependencies
 
         Args:
-            lettrade (LetTrade): LetTrade object
+            bot (LetTradeBot): LetTradeBot object
             brain (Brain): Brain of bot
             exchange (Exchange): Manage bot trading
             strategy (Strategy): Strategy of bot
         """
-        self.lettrade = lettrade
+        self.bot = bot
         self.brain = brain
         self.exchange = exchange
         self.strategy = strategy
 
-        self._name = self.lettrade.name
+        self._name = self.bot._name
 
     @abstractmethod
     def start(self):

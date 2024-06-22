@@ -475,7 +475,7 @@ class TelegramAPI:
             update (Update): message update
             context (CallbackContext): Telegram context
         """
-        # stats: Statistic = self.lettrade.stats
+        # stats: Statistic = self.bot.stats
         # stats.compute()
         # await self._send_msg(stats.result.to_string())
 
@@ -493,7 +493,7 @@ class TelegramAPI:
             update (Update): message update
             context (CallbackContext): Telegram context
         """
-        # plot: Statistic = self.lettrade.plot
+        # plot: Statistic = self.bot.plot
         # plot.compute()
         # await self._send_msg(plot.result.to_string())
 
@@ -595,12 +595,12 @@ class TelegramCommander(Commander):
                 time.sleep(5)
 
     def _on_action_stats(self):
-        stats: BotStatistic = self.lettrade.stats
+        stats: BotStatistic = self.bot.stats
         stats.compute()
         self._api.on_stats(stats=stats.result.to_string(), pname=self._name)
 
     def _on_action_plot(self):
-        plotter: BotPlotter = self.lettrade.plotter
+        plotter: BotPlotter = self.bot.plotter
         plotter.load()
         plotter.plot()
         # self._api.on_plot(plot=plot.result.to_string(), pname=self._name)

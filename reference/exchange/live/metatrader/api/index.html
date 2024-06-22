@@ -817,28 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../indicator/install/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TA Library
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../../indicator/talib/" class="md-nav__link">
+      <a href="../../../../../indicator/1.talib/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -859,7 +838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../indicator/technical/" class="md-nav__link">
+      <a href="../../../../../indicator/2.freqtrade_technical/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -868,6 +847,133 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../indicator/3.pandas_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandas-TA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../indicator/9.bukosabino_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bukosabino Technical Analysis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vendor
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Vendor
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../indicator/vendor/1.qtpylib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    QTPyLib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../indicator/vendor/2.fastfinance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.fastfinance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -5677,7 +5783,7 @@
         <span class="k">return</span>
 
     <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Raw execution: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">raws</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Raw execution: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">raws</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execution_parse_response</span><span class="p">(</span><span class="n">raws</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
@@ -5792,7 +5898,7 @@
     <span class="n">raws</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mt5</span><span class="o">.</span><span class="n">history_deals_get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Raw executions: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">raws</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Raw executions: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">raws</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_execution_parse_response</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="k">for</span> <span class="n">raw</span> <span class="ow">in</span> <span class="n">raws</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>

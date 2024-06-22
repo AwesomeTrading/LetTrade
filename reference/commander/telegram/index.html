@@ -817,28 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../indicator/install/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TA Library
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../indicator/talib/" class="md-nav__link">
+      <a href="../../../indicator/1.talib/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -859,7 +838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../indicator/technical/" class="md-nav__link">
+      <a href="../../../indicator/2.freqtrade_technical/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -868,6 +847,133 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../indicator/3.pandas_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandas-TA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../indicator/9.bukosabino_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bukosabino Technical Analysis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vendor
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Vendor
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../indicator/vendor/1.qtpylib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    QTPyLib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../indicator/vendor/2.fastfinance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.fastfinance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -4593,11 +4699,11 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
-<span class="normal"> 98</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
-<span class="normal">101</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chat_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">101</span>
+<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chat_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">token</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_chat_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">chat_id</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_bots_queue</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -4634,11 +4740,11 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
-<span class="normal">148</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
-<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">151</span>
+<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Stops all running telegram threads.&quot;&quot;&quot;</span>
     <span class="c1"># This can take up to `timeout` from the call to `start_polling`.</span>
     <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cleanup_telegram</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
@@ -4691,8 +4797,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">128</span>
-<span class="normal">129</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
 <span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
@@ -4702,7 +4807,8 @@
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">139</span>
+<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Send message to Telegram Bot</span>
 
 <span class="sd">    Args:</span>
@@ -4737,8 +4843,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">103</span>
-<span class="normal">104</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
@@ -4750,7 +4855,8 @@
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action_queue</span><span class="p">:</span> <span class="n">Queue</span><span class="p">):</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action_queue</span><span class="p">:</span> <span class="n">Queue</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">pname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bots_queue</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Process name </span><span class="si">%s</span><span class="s2"> override existed action queue&quot;</span><span class="p">,</span> <span class="n">pname</span><span class="p">)</span>
@@ -4827,8 +4933,7 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">538</span>
-<span class="normal">539</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">539</span>
 <span class="normal">540</span>
 <span class="normal">541</span>
 <span class="normal">542</span>
@@ -4843,7 +4948,8 @@
 <span class="normal">551</span>
 <span class="normal">552</span>
 <span class="normal">553</span>
-<span class="normal">554</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">554</span>
+<span class="normal">555</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">chat_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -4884,7 +4990,7 @@
 
 <a href="#lettrade.commander.telegram.TelegramCommander.init" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">init</span><span class="p">(</span>
-    <span class="n">lettrade</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade" href="../../lettrade/#lettrade.lettrade.LetTrade">LetTrade</a></span><span class="p">,</span>
+    <span class="n">bot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.LetTradeBot" href="../../bot/#lettrade.bot.LetTradeBot">LetTradeBot</a></span><span class="p">,</span>
     <span class="n">brain</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.brain.Brain" href="../../brain/brain/#lettrade.brain.brain.Brain">Brain</a></span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">,</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">,</span>
@@ -4899,11 +5005,11 @@
 <p><span class="doc-section-title">Parameters:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-          <b><code>lettrade</code></b>
-              (<code><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade" href="../../lettrade/#lettrade.lettrade.LetTrade">LetTrade</a></code>)
+          <b><code>bot</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.LetTradeBot" href="../../bot/#lettrade.bot.LetTradeBot">LetTradeBot</a></code>)
           –
           <div class="doc-md-description">
-            <p>LetTrade object</p>
+            <p>LetTradeBot object</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -4934,8 +5040,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/commander.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
-<span class="normal">31</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
@@ -4954,9 +5059,10 @@
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
-<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">lettrade</span><span class="p">:</span> <span class="s2">&quot;LetTrade&quot;</span><span class="p">,</span>
+    <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">,</span>
     <span class="n">brain</span><span class="p">:</span> <span class="s2">&quot;Brain&quot;</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;Exchange&quot;</span><span class="p">,</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;Strategy&quot;</span><span class="p">,</span>
@@ -4964,17 +5070,17 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Init commander dependencies</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        lettrade (LetTrade): LetTrade object</span>
+<span class="sd">        bot (LetTradeBot): LetTradeBot object</span>
 <span class="sd">        brain (Brain): Brain of bot</span>
 <span class="sd">        exchange (Exchange): Manage bot trading</span>
 <span class="sd">        strategy (Strategy): Strategy of bot</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">lettrade</span> <span class="o">=</span> <span class="n">lettrade</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">bot</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">brain</span> <span class="o">=</span> <span class="n">brain</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">exchange</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lettrade</span><span class="o">.</span><span class="n">_name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">_name</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4998,11 +5104,11 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">556</span>
-<span class="normal">557</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">557</span>
 <span class="normal">558</span>
 <span class="normal">559</span>
-<span class="normal">560</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">560</span>
+<span class="normal">561</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start&quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TelegramCommander start </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
     <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t_action</span><span class="p">()</span>
@@ -5030,11 +5136,11 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">562</span>
-<span class="normal">563</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">563</span>
 <span class="normal">564</span>
 <span class="normal">565</span>
-<span class="normal">566</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">566</span>
+<span class="normal">567</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop&quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TelegramCommander stop </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
@@ -5063,7 +5169,7 @@
 
 <a href="#lettrade.commander.telegram.authorized_only" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">authorized_only</span><span class="p">(</span>
-    <span class="n">command_handler</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[</span>
+    <span class="n">command_handler</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.abc.Callable" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable">Callable</a></span><span class="p">[</span>
         <span class="o">...</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Coroutine" href="https://docs.python.org/3/library/typing.html#typing.Coroutine">Coroutine</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="p">]</span>
 <span class="p">)</span>
@@ -5078,7 +5184,7 @@
     <ul>
         <li class="doc-section-item field-body">
           <b><code>command_handler</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a>[..., <a class="autorefs autorefs-external" title="typing.Coroutine" href="https://docs.python.org/3/library/typing.html#typing.Coroutine">Coroutine</a>[<a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>, <a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>, None]]</code>)
+              (<code><a class="autorefs autorefs-external" title="collections.abc.Callable" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable">Callable</a>[..., <a class="autorefs autorefs-external" title="typing.Coroutine" href="https://docs.python.org/3/library/typing.html#typing.Coroutine">Coroutine</a>[<a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>, <a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>, None]]</code>)
           –
           <div class="doc-md-description">
             <p>Telegram CommandHandler</p>
@@ -5088,8 +5194,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/telegram.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
-<span class="normal">47</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
@@ -5122,7 +5227,8 @@
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
-<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">authorized_only</span><span class="p">(</span><span class="n">command_handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]):</span>
+<span class="normal">80</span>
+<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">authorized_only</span><span class="p">(</span><span class="n">command_handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to check if the message comes from the correct chat_id</span>
 
 <span class="sd">    Args:</span>

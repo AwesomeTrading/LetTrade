@@ -817,28 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../indicator/install/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TA Library
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../indicator/talib/" class="md-nav__link">
+      <a href="../../../../indicator/1.talib/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -859,7 +838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../indicator/technical/" class="md-nav__link">
+      <a href="../../../../indicator/2.freqtrade_technical/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -868,6 +847,133 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../indicator/3.pandas_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandas-TA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../indicator/9.bukosabino_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bukosabino Technical Analysis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vendor
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Vendor
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../indicator/vendor/1.qtpylib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    QTPyLib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../indicator/vendor/2.fastfinance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.fastfinance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -4334,8 +4440,7 @@
 
 
 <a href="#lettrade.exchange.backtest.commander.BackTestCommander" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">BackTestCommander</span><span class="p">()</span>
-</code></pre></div>
+
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
@@ -4344,13 +4449,6 @@
 
       <p>BackTest Commander to debug commander notify</p>
 
-                  <details class="quote">
-                    <summary>Source code in <code>lettrade/commander/commander.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-                  </details>
 
 
 
@@ -4373,7 +4471,7 @@
 
 <a href="#lettrade.exchange.backtest.commander.BackTestCommander.init" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">init</span><span class="p">(</span>
-    <span class="n">lettrade</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade" href="../../../lettrade/#lettrade.lettrade.LetTrade">LetTrade</a></span><span class="p">,</span>
+    <span class="n">bot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.LetTradeBot" href="../../../bot/#lettrade.bot.LetTradeBot">LetTradeBot</a></span><span class="p">,</span>
     <span class="n">brain</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.brain.Brain" href="../../../brain/brain/#lettrade.brain.brain.Brain">Brain</a></span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">,</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">,</span>
@@ -4388,11 +4486,11 @@
 <p><span class="doc-section-title">Parameters:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-          <b><code>lettrade</code></b>
-              (<code><a class="autorefs autorefs-internal" title="lettrade.lettrade.LetTrade" href="../../../lettrade/#lettrade.lettrade.LetTrade">LetTrade</a></code>)
+          <b><code>bot</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.LetTradeBot" href="../../../bot/#lettrade.bot.LetTradeBot">LetTradeBot</a></code>)
           –
           <div class="doc-md-description">
-            <p>LetTrade object</p>
+            <p>LetTradeBot object</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -4423,8 +4521,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/commander/commander.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
-<span class="normal">31</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
@@ -4443,9 +4540,10 @@
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
-<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">lettrade</span><span class="p">:</span> <span class="s2">&quot;LetTrade&quot;</span><span class="p">,</span>
+    <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">,</span>
     <span class="n">brain</span><span class="p">:</span> <span class="s2">&quot;Brain&quot;</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;Exchange&quot;</span><span class="p">,</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;Strategy&quot;</span><span class="p">,</span>
@@ -4453,17 +4551,17 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Init commander dependencies</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        lettrade (LetTrade): LetTrade object</span>
+<span class="sd">        bot (LetTradeBot): LetTradeBot object</span>
 <span class="sd">        brain (Brain): Brain of bot</span>
 <span class="sd">        exchange (Exchange): Manage bot trading</span>
 <span class="sd">        strategy (Strategy): Strategy of bot</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">lettrade</span> <span class="o">=</span> <span class="n">lettrade</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">bot</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">brain</span> <span class="o">=</span> <span class="n">brain</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">exchange</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lettrade</span><span class="o">.</span><span class="n">_name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">_name</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

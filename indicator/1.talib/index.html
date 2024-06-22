@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://AwesomeTrading.github.io/LetTrade/indicator/talib/">
+        <link rel="canonical" href="https://AwesomeTrading.github.io/LetTrade/indicator/1.talib/">
       
       
-        <link rel="prev" href="../install/">
+        <link rel="prev" href="../../tutorial/plot/candlestick/">
       
       
-        <link rel="next" href="../technical/">
+        <link rel="next" href="../2.freqtrade_technical/">
       
       
       <link rel="icon" href="../../image/logo.svg">
@@ -816,27 +816,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../install/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TA Library
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -927,6 +906,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -943,7 +931,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../technical/" class="md-nav__link">
+      <a href="../2.freqtrade_technical/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -952,6 +940,133 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.pandas_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandas-TA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9.bukosabino_ta/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bukosabino Technical Analysis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vendor
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Vendor
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vendor/1.qtpylib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    QTPyLib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vendor/2.fastfinance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.fastfinance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -4314,6 +4429,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4351,6 +4475,53 @@ sudo<span class="w"> </span>make<span class="w"> </span>install
 <h3 id="python-library">Python library<a class="headerlink" href="#python-library" title="Permanent link">¤</a></h3>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>TA-Lib
 </code></pre></div>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">¤</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">talib.abstract</span> <span class="k">as</span> <span class="nn">ta</span>
+
+<span class="kn">from</span> <span class="nn">lettrade</span> <span class="kn">import</span> <span class="n">DataFeed</span><span class="p">,</span> <span class="n">Strategy</span>
+<span class="kn">from</span> <span class="nn">lettrade</span> <span class="kn">import</span> <span class="n">indicator</span> <span class="k">as</span> <span class="n">i</span>
+<span class="kn">from</span> <span class="nn">lettrade.exchange.backtest</span> <span class="kn">import</span> <span class="n">ForexBackTestAccount</span><span class="p">,</span> <span class="n">let_backtest</span>
+
+
+<span class="k">class</span> <span class="nc">SmaCross</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+    <span class="n">ema1_period</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">ema2_period</span> <span class="o">=</span> <span class="mi">21</span>
+
+    <span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_period</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">signal_ema_crossover</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">close</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">sl</span><span class="o">=</span><span class="n">price</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">tp</span><span class="o">=</span><span class="n">price</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">signal_ema_crossunder</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">close</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">sl</span><span class="o">=</span><span class="n">price</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">tp</span><span class="o">=</span><span class="n">price</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">lettrade.plot.plotly</span> <span class="kn">import</span> <span class="n">PlotColor</span><span class="p">,</span> <span class="n">plot_line</span><span class="p">,</span> <span class="n">plot_merge</span>
+
+        <span class="n">plot_ema1</span> <span class="o">=</span> <span class="n">plot_line</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">PlotColor</span><span class="o">.</span><span class="n">AMBER</span><span class="p">)</span>
+        <span class="n">plot_ema2</span> <span class="o">=</span> <span class="n">plot_line</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">PlotColor</span><span class="o">.</span><span class="n">CYAN</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plot_merge</span><span class="p">(</span><span class="n">plot_ema1</span><span class="p">,</span> <span class="n">plot_ema2</span><span class="p">)</span>
+
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">let_backtest</span><span class="p">(</span>
+    <span class="n">strategy</span><span class="o">=</span><span class="n">SmaCross</span><span class="p">,</span>
+    <span class="n">datas</span><span class="o">=</span><span class="s2">&quot;example/data/data/EURUSD_5m-0_1000.csv&quot;</span><span class="p">,</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">ForexBackTestAccount</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">lt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>
 
 
 
@@ -4386,7 +4557,7 @@ sudo<span class="w"> </span>make<span class="w"> </span>install
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../install/" class="md-footer__link md-footer__link--prev" aria-label="Previous: TA Library">
+          <a href="../../tutorial/plot/candlestick/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Plot EMA and Candlestick">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -4396,14 +4567,14 @@ sudo<span class="w"> </span>make<span class="w"> </span>install
                 Previous
               </span>
               <div class="md-ellipsis">
-                TA Library
+                Plot EMA and Candlestick
               </div>
             </div>
           </a>
         
         
           
-          <a href="../technical/" class="md-footer__link md-footer__link--next" aria-label="Next: Freqtrade Technical">
+          <a href="../2.freqtrade_technical/" class="md-footer__link md-footer__link--next" aria-label="Next: Freqtrade Technical">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next

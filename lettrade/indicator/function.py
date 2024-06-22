@@ -4,35 +4,23 @@ import pandas as pd
 def pandas_inject():
     from pandas.core.base import PandasObject
 
-    # diff
-    def __call_diff(dataframe, *args, **kwargs):
-        return diff(*args, **kwargs, dataframe=dataframe)
+    def __call_indicator(fn):
+        def __call(data, *args, **kwargs):
+            if isinstance(data, pd.DataFrame):
+                dataframe = data
+            elif isinstance(data, pd.Series):
+                dataframe = None
+            else:
+                raise RuntimeError(f"Indicator parameter type {type(data)} is invalid")
+            return fn(*args, **kwargs, dataframe=dataframe)
 
-    PandasObject.diff = __call_diff
+        return __call
 
-    # above
-    def __call_above(dataframe, *args, **kwargs):
-        return above(*args, **kwargs, dataframe=dataframe)
-
-    PandasObject.above = __call_above
-
-    # below
-    def __call_below(dataframe, *args, **kwargs):
-        return below(*args, **kwargs, dataframe=dataframe)
-
-    PandasObject.below = __call_below
-
-    # crossover
-    def __call_crossover(dataframe, *args, **kwargs):
-        return crossover(*args, **kwargs, dataframe=dataframe)
-
-    PandasObject.crossover = __call_crossover
-
-    # crossunder
-    def __call_crossunder(dataframe, *args, **kwargs):
-        return crossunder(*args, **kwargs, dataframe=dataframe)
-
-    PandasObject.crossunder = __call_crossunder
+    PandasObject.diff = __call_indicator(diff)
+    PandasObject.above = __call_indicator(above)
+    PandasObject.below = __call_indicator(below)
+    PandasObject.crossover = __call_indicator(crossover)
+    PandasObject.crossunder = __call_indicator(crossunder)
 
 
 def diff(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:

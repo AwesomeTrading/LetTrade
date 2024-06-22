@@ -10,8 +10,7 @@ def cdl_direction(
 
     Args:
         dataframe (pd.DataFrame): _description_
-        prefix (str, optional): _description_. Defaults to "".
-        suffix (str, optional): _description_. Defaults to "".
+        prefix (str, optional): _description_. Defaults to "cdl_".
         inplace (bool, optional): _description_. Defaults to False.
 
     Returns:

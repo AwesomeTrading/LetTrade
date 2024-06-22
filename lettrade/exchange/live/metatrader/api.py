@@ -804,6 +804,8 @@ class MetaTraderAPI(LiveAPI):
         to = datetime.now()  # + timedelta(days=1)
 
         deal_total = self._mt5.history_deals_total(self.__deal_time_checked, to)
+        if deal_total is None:
+            return
 
         # No thing new in deal
         if deal_total <= 0:
@@ -820,6 +822,8 @@ class MetaTraderAPI(LiveAPI):
     # Order
     def _check_orders(self):
         order_total = self._mt5.orders_total()
+        if order_total is None:
+            return None, None
 
         # No thing new in order
         if order_total <= 0 and len(self.__orders_stored) == 0:
@@ -852,6 +856,8 @@ class MetaTraderAPI(LiveAPI):
     # Trade
     def _check_positions(self):
         positions_total = self._mt5.positions_total()
+        if positions_total is None:
+            return None, None
 
         # No thing new in trade
         if positions_total <= 0 and len(self.__positions_stored) == 0:

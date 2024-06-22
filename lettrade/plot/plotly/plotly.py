@@ -32,7 +32,7 @@ class PlotlyBotPlotter(BotPlotter):
             vertical_spacing=0.03,
             # row_width=[0.2, 0.7],
             # 0.3 for equity
-            row_heights=[1] * (plot_rows - 1) + [0.3],
+            row_heights=[1] * (plot_rows - 1) + [0.5],
         )
         if "params" in config:
             params.update(**config["params"])

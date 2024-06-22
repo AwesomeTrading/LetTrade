@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     setup(
         name="lettrade",
-        version="0.0.5-beta-1",
+        version="0.0.5-beta-2",
         author="Santatic",
         # author_email = "author@example.com",
         description="Lightweight trading framwork",
@@ -31,16 +31,19 @@ if __name__ == "__main__":
         python_requires=">=3.8.0,<3.13",
         install_requires=["pandas", "numpy", "numexpr"],
         extras_require={
-            "extra": ["plotly", "nbformat"],
-            "backtest": ["tqdm", "plotly"],
-            "backtest-extra": ["yfinance"],
-            "commander": ["python-telegram-bot"],
-            "test": ["pytest"],
+            "plot": ["plotly", "nbformat"],
+            "commander": ["lettrade[plot]"],
+            "commander-telegram": ["lettrade[commander]", "python-telegram-bot"],
+            "backtest": ["lettrade[plot]", "tqdm"],
+            "backtest-extra": ["lettrade[backtest]", "yfinance"],
+            "live": ["lettrade[plot]"],
             "exchange-metatrader": [
+                "lettrade[live]",
                 "python-box",
                 "mt5linux",
                 # "mt5linux @ git+https://github.com/AwesomeTrading//mt5linux.git@master"
             ],
-            "exchange-ccxt": ["ccxt"],
+            "exchange-ccxt": ["lettrade[live]", "ccxt"],
+            "test": ["pytest"],
         },
     )

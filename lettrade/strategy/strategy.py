@@ -236,6 +236,13 @@ class Strategy:
         return self.__exchange.new_order(**params)
 
     @final
+    def positions_exit(self, side: Optional[TradeSide] = None):
+        for p in list(self.positions.values()):
+            if side is not None and p.side != side:
+                continue
+            p.exit()
+
+    @final
     @property
     def feeder(self) -> DataFeeder:
         """Getter of `DataFeeder`

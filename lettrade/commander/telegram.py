@@ -11,11 +11,12 @@ Example:
 import asyncio
 import logging
 import time
+from collections.abc import Callable
 from functools import partial, wraps
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import BaseManager
 from threading import Thread
-from typing import Any, Callable, Coroutine, Dict, List, Literal, Optional, Union
+from typing import Any, Coroutine, Dict, List, Literal, Optional, Union
 
 from telegram import (
     CallbackQuery,

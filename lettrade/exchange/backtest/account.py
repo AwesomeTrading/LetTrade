@@ -55,5 +55,5 @@ class ForexBackTestAccount(BackTestAccount):
     def __repr__(self):
         return "<ForexBackTestAccount " + str(self) + ">"
 
-    def pl(self, size, entry_price: float, exit_price: float | None = None) -> float:
+    def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
         return super().pl(size, entry_price, exit_price) * 100_000

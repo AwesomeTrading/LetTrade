@@ -45,7 +45,7 @@ class LetTradeBot:
     _plotter_cls: Optional[Type[Plotter]]
     _stats_cls: Optional[Type[BotStatistic]]
     _kwargs: dict[str, Any]
-    _name: str
+    _name: Optional[str]
 
     def __init__(
         self,

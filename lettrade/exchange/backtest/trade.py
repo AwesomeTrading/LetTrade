@@ -53,7 +53,11 @@ class BackTestOrder(Order):
 
     parent: "BackTestPosition"
 
-    def cancel(self) -> "OrderResult":
+    def cancel(
+        self,
+        caller: Optional[Order | Position] = None,
+        **kwargs,
+    ) -> "OrderResult":
         """Cancel the Order and notify Exchange"""
         if self.state != OrderState.Placed:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Placed")
@@ -66,7 +70,7 @@ class BackTestOrder(Order):
 
         return super().cancel()
 
-    def fill(self, price: float, at: object) -> BackTestExecution:
+    def fill(self, price: float, at: object, **kwargs) -> BackTestExecution:
         """Execution order and notify for Exchange
 
         Args:
@@ -109,6 +113,7 @@ class BackTestOrder(Order):
         type: OrderType,
         limit_price: float = None,
         stop_price: float = None,
+        **kwargs,
     ) -> "BackTestOrder":
         order = cls(
             id=id,
@@ -120,6 +125,7 @@ class BackTestOrder(Order):
             stop_price=stop_price,
             tag=position.tag,
             parent=position,
+            **kwargs,
         )
         return order
 
@@ -127,7 +133,12 @@ class BackTestOrder(Order):
 class BackTestPosition(Position):
     """Position for backtesting"""
 
-    def update(self, sl=None, tp=None, **kwargs) -> PositionResult:
+    def update(
+        self,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        **kwargs,
+    ) -> PositionResult:
         if not sl and not tp:
             raise RuntimeError("Update sl=None and tp=None")
 
@@ -143,18 +154,19 @@ class BackTestPosition(Position):
             else:
                 self._new_tp_order(limit_price=tp)
 
-        super().update()
+        return super().update(**kwargs)
 
-    def entry(self, price: float, at: object) -> PositionResult:
+    def entry(self, price: float, at: object, **kwargs) -> PositionResult:
         # Fee
         fee = self._account.fee(size=self.size)
-        return super().entry(price, at, fee)
+        return super().entry(price=price, at=at, fee=fee, **kwargs)
 
     def exit(
         self,
         price: Optional[float] = None,
         at: Optional[pd.Timestamp] = None,
         caller: Optional[Order | Position] = None,
+        **kwargs,
     ) -> PositionResult:
         """Exit Position
 
@@ -194,7 +206,7 @@ class BackTestPosition(Position):
         fee = self._account.fee(size=self.size)
 
         # State
-        ok = super().exit(price=price, at=at, pl=pl, fee=fee)
+        ok = super().exit(price=price, at=at, pl=pl, fee=fee, **kwargs)
 
         # Caller is position close by tp/sl order
         if caller is None:
@@ -245,6 +257,7 @@ class BackTestPosition(Position):
         order: "BackTestOrder",
         size: Optional[float] = None,
         state: PositionState = PositionState.Open,
+        **kwargs,
     ) -> "BackTestPosition":
         """Build Position object from Order object
 

@@ -1,12 +1,15 @@
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING, Optional
 
 from lettrade.account import Account
 from lettrade.data import DataFeed, DataFeeder
 
-# from lettrade.brain import Brain
-# from lettrade.exchange import Exchange
-# from lettrade.plot import Plotter
-# from lettrade.strategy import Strategy
+if TYPE_CHECKING:
+    from lettrade import LetTrade
+    from lettrade.brain import Brain
+    from lettrade.exchange import Exchange
+    from lettrade.plot import Plotter
+    from lettrade.strategy import Strategy
 
 
 class Commander(ABC):
@@ -20,7 +23,7 @@ class Commander(ABC):
     exchange: "Exchange"
     account: Account
     strategy: "Strategy"
-    plotter: "Plotter" = None
+    plotter: Optional["Plotter"] = None
 
     _name: str
 
@@ -47,7 +50,7 @@ class Commander(ABC):
         self.exchange = exchange
         self.strategy = strategy
 
-        self._name = self.lettrade._name
+        self._name = self.lettrade.name
 
     @abstractmethod
     def start(self):

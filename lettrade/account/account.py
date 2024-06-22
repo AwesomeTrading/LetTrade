@@ -1,4 +1,9 @@
+from typing import TYPE_CHECKING
+
 from .error import LetAccountInsufficientException
+
+if TYPE_CHECKING:
+    from lettrade.exchange import Exchange, Position, TradeSide
 
 
 class Account:
@@ -66,7 +71,7 @@ class Account:
             return side * abs(self._risk)
         return side * abs(size)
 
-    def pl(self, size, entry_price: float, exit_price=None):
+    def pl(self, size, entry_price: float, exit_price=None) -> float:
         """Estimate temporary profit and loss"""
         if exit_price is None:
             exit_price = self._exchange.data.l.open[0]

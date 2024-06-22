@@ -33,22 +33,11 @@ class SmaCross(Strategy):
         print(self.orders)
 
     def plot(self, df: DataFeed):
-        return dict(
-            scatters=[
-                dict(
-                    x=df.index,
-                    y=df["ema1"],
-                    line=dict(color="blue", width=1),
-                    name="ema1",
-                ),
-                dict(
-                    x=df.index,
-                    y=df["ema2"],
-                    line=dict(color="green", width=1),
-                    name="ema2",
-                ),
-            ]
-        )
+        from lettrade.plot.plotly import PlotColor, plot_line, plot_merge
+
+        plot_ema1 = plot_line(df["ema1"], color=PlotColor.AMBER)
+        plot_ema2 = plot_line(df["ema2"], color=PlotColor.CYAN)
+        return plot_merge(plot_ema1, plot_ema2)
 
 
 lt = let_backtest(

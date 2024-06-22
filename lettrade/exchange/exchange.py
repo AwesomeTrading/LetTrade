@@ -2,16 +2,19 @@ import logging
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from lettrade.account import Account
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 
-from .base import OrderState, PositionState
 from .execution import Execution
 from .order import Order, OrderResult
 from .position import Position
+
+if TYPE_CHECKING:
+    from lettrade.brain import Brain
+
 
 logger = logging.getLogger(__name__)
 

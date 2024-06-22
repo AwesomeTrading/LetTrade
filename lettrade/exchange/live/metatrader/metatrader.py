@@ -75,7 +75,7 @@ class MetaTraderExchange(LiveExchange):
     def on_order(
         self,
         order: MetaTraderOrder,
-        broadcast: bool | None = True,
+        broadcast: Optional[bool] = True,
         **kwargs,
     ) -> None:
         if not order.is_real:

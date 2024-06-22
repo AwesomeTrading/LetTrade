@@ -1,6 +1,9 @@
 import logging
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from lettrade import DataFeed, Exchange
 
 logger = logging.getLogger(__name__)
 

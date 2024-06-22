@@ -1,9 +1,10 @@
 import logging
 import os
+from collections.abc import Callable
 from concurrent.futures import Future, ProcessPoolExecutor
 from itertools import product, repeat
 from multiprocessing import Queue
-from typing import Any, Callable, Literal, Optional, Type
+from typing import Any, Literal, Optional, Type
 
 import numpy as np
 import pandas as pd
@@ -106,7 +107,7 @@ class LetTradeBackTest(LetTrade):
 
         return super().start(force)
 
-    def run(self, worker: int | None = None, **kwargs):
+    def run(self, worker: Optional[int] = None, **kwargs):
         # Load plotly here just for backtest to improve performance
         if self._plotter_cls == "PlotlyBotPlotter":
             from lettrade.plot.plotly import PlotlyBotPlotter
@@ -535,7 +536,7 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
     return cache_dir.absolute()
 
 
-def _optimize_cache_get(dir: str, optimize: dict) -> str | None:
+def _optimize_cache_get(dir: str, optimize: dict) -> Optional[str]:
     import json
 
     try:

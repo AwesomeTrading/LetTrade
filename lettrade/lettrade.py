@@ -17,10 +17,10 @@ logger = logging.getLogger(__name__)
 class LetTrade:
     """Building new bot object and handle multiprocessing"""
 
-    _plotter: Plotter = None
+    _plotter: Optional[Plotter] = None
     """Plot graphic results"""
-    _stats: BotStatistic = None
-    _bot: LetTradeBot = None
+    _stats: Optional[BotStatistic] = None
+    _bot: Optional[LetTradeBot] = None
 
     _kwargs: dict
 
@@ -75,13 +75,14 @@ class LetTrade:
             datas = [datas]
 
         # Check data
+        feeds: list[list[DataFeed]] | list[DataFeed]
         if isinstance(datas[0], list):
             feeds = []
             for i, data in enumerate(datas):
-                data_feeds = []
+                data_feeds: list[DataFeed] = []
                 for j, d in enumerate(data):
-                    d = self._datafeed(data=d, index=i * j)
-                    data_feeds.append(d)
+                    df = self._datafeed(data=d, index=i * j)
+                    data_feeds.append(df)
                 feeds.append(data_feeds)
         else:
             feeds = [self._datafeed(data=data, index=i) for i, data in enumerate(datas)]
@@ -170,15 +171,16 @@ class LetTrade:
             self.stats.stop()
 
     @property
-    def stats(self) -> BotStatistic | None:
+    def stats(self) -> Optional[BotStatistic]:
         if self._stats:
             return self._stats
         if self._bot is not None:
             return self._bot.stats
+        return None
 
     # Plotter
     @property
-    def plotter(self) -> BotPlotter | OptimizePlotter:
+    def plotter(self) -> Optional[Plotter | BotPlotter | OptimizePlotter]:
         if self._plotter is not None:
             return self._plotter
         if self._bot is not None:
@@ -230,6 +232,10 @@ class LetTrade:
     @property
     def datas(self) -> list[DataFeed]:
         return self._kwargs.get("datas", None)
+
+    @datas.setter
+    def datas(self, value: list[DataFeed]) -> None:
+        self._kwargs["datas"] = value
 
     @property
     def data(self) -> DataFeed:

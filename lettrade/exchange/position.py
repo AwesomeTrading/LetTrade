@@ -1,10 +1,15 @@
 from abc import ABCMeta, abstractmethod
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import pandas as pd
 
 from .base import BaseTransaction, PositionState
 from .order import Order
+
+if TYPE_CHECKING:
+    from lettrade.account import Account
+    from lettrade.data import DataFeed
+    from lettrade.exchange import Exchange
 
 
 class Position(BaseTransaction, metaclass=ABCMeta):
@@ -149,13 +154,13 @@ class Position(BaseTransaction, metaclass=ABCMeta):
 
     # Extra properties
     @property
-    def sl(self) -> float | None:
+    def sl(self) -> Optional[float]:
         if self.sl_order:
             return self.sl_order.stop_price
         return None
 
     @property
-    def tp(self) -> float | None:
+    def tp(self) -> Optional[float]:
         if self.tp_order:
             return self.tp_order.limit_price
         return None

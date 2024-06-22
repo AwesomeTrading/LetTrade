@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import pandas as pd
 
@@ -8,6 +8,9 @@ from lettrade.exchange import Exchange
 from lettrade.strategy import Strategy
 
 from .plot import Plotter
+
+if TYPE_CHECKING:
+    from lettrade.bot import LetTradeBot
 
 
 class BotPlotter(Plotter):
@@ -54,7 +57,7 @@ class BotPlotter(Plotter):
 
     def jump(
         self,
-        since: int | str | pd.Timestamp | None = None,
+        since: Optional[int | str | pd.Timestamp] = None,
         order_id: Optional[str] = None,
         position_id: Optional[str] = None,
         range: int = 300,
@@ -63,7 +66,7 @@ class BotPlotter(Plotter):
         """Jump to place on datefeed
 
         Args:
-            since (int | str | pd.Timestamp | None, optional): Jump to index/datetime. Defaults to None.
+            since (Optional[int | str | pd.Timestamp], optional): Jump to index/datetime. Defaults to None.
             order_id (Optional[str], optional): Jump to order id. Defaults to None.
             position_id (Optional[str], optional): Jump to position id. Defaults to None.
             range (int, optional): number of candle plot. Defaults to 300.

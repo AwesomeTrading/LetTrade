@@ -1,7 +1,14 @@
 import logging
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from .base import BaseTransaction
+
+if TYPE_CHECKING:
+    from lettrade.data import DataFeed
+
+    from .exchange import Exchange
+    from .order import Order
+    from .position import Position
 
 logger = logging.getLogger(__name__)
 

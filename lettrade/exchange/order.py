@@ -1,10 +1,13 @@
 import logging
-from typing import Optional, Type
+from typing import TYPE_CHECKING, Optional
 
 import pandas as pd
 
 from .base import BaseTransaction, OrderState, OrderType
 from .error import LetOrderValidateException
+
+if TYPE_CHECKING:
+    from lettrade import DataFeed, Exchange, Position
 
 logger = logging.getLogger(__name__)
 
@@ -134,10 +137,10 @@ class Order(BaseTransaction):
 
     def update(
         self,
-        limit_price: float = None,
-        stop_price: float = None,
-        sl: float = None,
-        tp: float = None,
+        limit_price: Optional[float] = None,
+        stop_price: Optional[float] = None,
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
         raw: Optional[object] = None,
     ) -> "OrderResult":
         """Update Order
@@ -197,10 +200,7 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self, raw=raw)
 
-    def cancel(
-        self,
-        raw: Optional[object] = None,
-    ) -> "OrderResult":
+    def cancel(self, raw: Optional[object] = None, **kwargs) -> "OrderResult":
         """Cancel `Order`
         Set `status` to `OrderState.Canceled`.
         Send event to `Exchange`
@@ -264,6 +264,7 @@ class Order(BaseTransaction):
             return self.limit_price
         if self.type == OrderType.Stop:
             return self.stop_price
+        return None
 
     @property
     def limit(self) -> Optional[float]:

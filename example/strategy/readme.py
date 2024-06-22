@@ -1,7 +1,7 @@
 import talib.abstract as ta
 
 from lettrade import indicator as i
-from lettrade.all import DataFeed, Strategy, let_backtest
+from lettrade.all import DataFeed, ForexBackTestAccount, Strategy, let_backtest
 
 
 class SmaCross(Strategy):
@@ -27,6 +27,7 @@ class SmaCross(Strategy):
 lt = let_backtest(
     strategy=SmaCross,
     datas="example/data/data/EURUSD_5m_0_1000.csv",
+    account=ForexBackTestAccount,
 )
 
 lt.run()

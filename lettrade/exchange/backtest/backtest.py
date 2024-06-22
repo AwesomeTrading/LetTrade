@@ -519,10 +519,17 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
             strategy_hash=hashlib.md5(open(strategy_file, "rb").read()).hexdigest(),
         )
     except OSError:
-        import pickle
+        # Get disassembly code of class
+        import dis
+        import io
+        from contextlib import redirect_stdout
+
+        with redirect_stdout(io.StringIO()) as f:
+            dis.dis(strategy_cls)
+            asm = f.getvalue()
 
         info.update(
-            strategy_hash=hashlib.md5(pickle.dumps(strategy_cls)).hexdigest(),
+            strategy_hash=hashlib.md5(asm.encode("utf-8")).hexdigest(),
         )
 
     cache_dir = Path(f"{dir}/{_md5_dict(info)}")

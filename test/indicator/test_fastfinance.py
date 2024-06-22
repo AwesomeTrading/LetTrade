@@ -7,7 +7,6 @@ import pandas as pd
 from pandas import testing as pdtest
 
 from lettrade.exchange.backtest.data import CSVBackTestDataFeed
-from lettrade.indicator.vendor import fastfinance as ff
 from lettrade.indicator.vendor import qtpylib as ql
 
 
@@ -26,20 +25,11 @@ class FastFinanceIndicatorTestCase(unittest.TestCase):
         self.ql_ema = ql.ema(self.data.close, window=21)
         self.ql_ema_raw = ql.ema(self.raw_data.close, window=21)
 
-        # FastFinance
-        self.ff_ema = ff.ema(self.data.close, period=21)
-        self.ff_ema_raw = ff.ema(self.raw_data.close, period=21)
-
     def test_types(self):
         self.assertIsInstance(
             self.ql_ema,
             pd.Series,
             "QTPyLib EMA is not instance of pandas.Series",
-        )
-        self.assertIsInstance(
-            self.ff_ema,
-            pd.Series,
-            "FastFinance EMA is not instance of pandas.Series",
         )
 
     # def test_indicator(self):

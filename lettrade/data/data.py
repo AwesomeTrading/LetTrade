@@ -165,12 +165,9 @@ class DataFeed(pd.DataFrame):
     @property
     def i(self) -> "indicator":
         """Alias to lettrade.indicator and using in DataFeed by call: DataFeed.i.indicator_name()"""
-        if not hasattr(self, "__indicator_injected"):
-            from lettrade import indicator
+        from lettrade import indicator
 
-            indicator.indicators_inject_pandas()
-            object.__setattr__(self, "__indicator_injected", True)
-
+        indicator.indicators_inject_pandas()
         return self
 
 

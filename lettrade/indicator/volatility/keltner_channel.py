@@ -35,10 +35,9 @@ def keltner_channel(
             )
 
     ma_fn = ta.SMA if ma_mode == "sma" else ta.EMA
+    i_atr = ta.ATR(dataframe, timeperiod=atr)
 
     i_basis = ma_fn(dataframe, timeperiod=ma)
-
-    i_atr = ta.ATR(dataframe, timeperiod=atr)
     i_upper = i_basis + shift * i_atr
     i_lower = i_basis - shift * i_atr
 

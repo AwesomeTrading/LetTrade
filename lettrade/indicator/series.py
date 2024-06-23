@@ -1,26 +1,27 @@
 import pandas as pd
 
 
+def series_indicator_inject(fn):
+    def __call(data, *args, **kwargs):
+        if isinstance(data, pd.DataFrame):
+            return fn(*args, **kwargs, dataframe=data)
+
+        if isinstance(data, pd.Series):
+            return fn(data, *args, **kwargs)
+
+        raise RuntimeError(f"Indicator parameter type {type(data)} is invalid")
+
+    return __call
+
+
 def pandas_inject():
     from pandas.core.base import PandasObject
 
-    def __call_indicator(fn):
-        def __call(data, *args, **kwargs):
-            if isinstance(data, pd.DataFrame):
-                dataframe = data
-            elif isinstance(data, pd.Series):
-                dataframe = None
-            else:
-                raise RuntimeError(f"Indicator parameter type {type(data)} is invalid")
-            return fn(*args, **kwargs, dataframe=dataframe)
-
-        return __call
-
-    PandasObject.diff = __call_indicator(diff)
-    PandasObject.above = __call_indicator(above)
-    PandasObject.below = __call_indicator(below)
-    PandasObject.crossover = __call_indicator(crossover)
-    PandasObject.crossunder = __call_indicator(crossunder)
+    PandasObject.diff = series_indicator_inject(diff)
+    PandasObject.above = series_indicator_inject(above)
+    PandasObject.below = series_indicator_inject(below)
+    PandasObject.crossover = series_indicator_inject(crossover)
+    PandasObject.crossunder = series_indicator_inject(crossunder)
 
 
 def diff(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:

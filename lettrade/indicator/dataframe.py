@@ -59,18 +59,20 @@ def signal_condiction(
 
     Args:
         dataframe (pd.DataFrame): _description_
-        *condictions (list[list[pd.Series | Any]]): Pairs of condiction [<pandas.Series condiction>, <value>]
+        *condictions (list[list[pd.Series | Any]]): Pairs of condiction [`<pandas.Series condiction>`, `<value>`]
         name (str): Name of signal, column name when add to DataFrame with inplace=True.
         value (int, optional): Default value when condiction is not matched. Defaults to 0.
         inplace (bool, optional): _description_. Defaults to False.
 
     Usage:
+        ```python
         df.i.signal_condiction(
             [df["close"] > df["open"], 100],
             [df["close"] < df["open"], -100],
             name="cdl_direction",
             inplace=True,
         )
+        ```
 
     Raises:
         RuntimeError: _description_

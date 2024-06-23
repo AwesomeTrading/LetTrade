@@ -1,6 +1,6 @@
 import logging
 
-from lettrade.data import DataFeeder, LetTradeNoMoreDataFeed
+from lettrade.data import DataFeeder, LetNoMoreDataFeedException
 
 from .data import BackTestDataFeed
 
@@ -65,7 +65,7 @@ class BackTestDataFeeder(DataFeeder):
 
         if no_next >= len(self.datas):
             # Skip lastest available bar, because if next some data feeded some are not
-            raise LetTradeNoMoreDataFeed()
+            raise LetNoMoreDataFeedException()
 
     def alive(self):
         return self.data.alive()

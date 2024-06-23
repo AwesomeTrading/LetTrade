@@ -2,7 +2,7 @@ import logging
 
 from lettrade.account import LetAccountInsufficientException
 from lettrade.commander import Commander
-from lettrade.data import DataFeed, DataFeeder, LetTradeNoMoreDataFeed
+from lettrade.data import DataFeed, DataFeeder, LetNoMoreDataFeedException
 from lettrade.exchange import (
     Exchange,
     Execution,
@@ -80,7 +80,7 @@ class Brain:
             except LetAccountInsufficientException as e:
                 logger.error("Account equity is insufficient", exc_info=e)
                 break
-            except LetTradeNoMoreDataFeed:
+            except LetNoMoreDataFeedException:
                 break
             except Exception as e:
                 logger.exception("Bot running error", exc_info=e)

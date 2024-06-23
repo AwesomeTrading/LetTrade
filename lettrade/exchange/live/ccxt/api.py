@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from multiprocessing.managers import BaseManager
 from typing import TYPE_CHECKING, Literal, Optional
 
 import ccxt
@@ -111,14 +112,13 @@ class CCXTAPIExchange:
         return self._exchange.watch_balance(params)
 
     # Order
-    def create_my_order(self, symbol, type, side, amount, price, params, **kwargs):
+    def create_my_order(self, symbol, type, side, amount, price, **kwargs):
         return self._exchange.create_order(
             symbol=symbol,
             type=type,
             side=side,
             amount=amount,
             price=price,
-            params=params,
             **kwargs,
         )
 
@@ -153,6 +153,8 @@ class CCXTAPIExchange:
 
 
 class CCXTAPI(LiveAPI):
+    """CCXT API"""
+
     _ccxt: CCXTAPIExchange
     _exchange: "CCXTExchange"
 
@@ -176,6 +178,14 @@ class CCXTAPI(LiveAPI):
         ccxt: Optional[CCXTAPIExchange] = None,
         **kwargs,
     ):
+        """_summary_
+
+        Args:
+            exchange (int): _description_
+            key (str): _description_
+            secret (str): _description_
+            ccxt (Optional[CCXTAPIExchange], optional): _description_. Defaults to None.
+        """
         if ccxt is None:
             ccxt = CCXTAPIExchange(exchange=exchange, key=key, secret=secret, **kwargs)
         self._ccxt = ccxt
@@ -220,9 +230,6 @@ class CCXTAPI(LiveAPI):
         **kwargs,
     ) -> list[list]:
         return self._ccxt.fetch_ohlcv(symbol, timeframe, limit=to, **kwargs)
-
-    def _parse_bars(self, raws):
-        return raws
 
     ### Private
     # Account

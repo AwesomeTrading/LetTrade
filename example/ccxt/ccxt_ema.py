@@ -75,7 +75,6 @@ if __name__ == "__main__":
     lt = let_ccxt(
         strategy=SmaCross,
         datas=[("BTC/USD", "1m", "BTCUSD_1m")],
-        # datas=[[("EURUSD", "1m")], [("GBPUSD", "1m")]],
         ccxt_exchange=os.getenv("CCXT_EXCHANGE"),
         ccxt_type=os.getenv("CCXT_TYPE"),
         ccxt_key=os.getenv("CCXT_KEY"),

@@ -15,6 +15,7 @@ class LiveDataFeed(DataFeed):
     """Live trading DataFeed"""
 
     _api_cls: Type[LiveAPI] = LiveAPI
+    _bar_datetime_unit: str = "ms"
 
     def __init__(
         self,
@@ -109,7 +110,7 @@ class LiveDataFeed(DataFeed):
             logger.warning("No bars data for %s", self.name)
             return False
 
-        self.push(bars)
+        self.push(bars, unit=self._bar_datetime_unit)
         return True
 
     def bars(

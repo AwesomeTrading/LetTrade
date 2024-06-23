@@ -16,6 +16,12 @@ class TradeSide(int, Enum):
     Sell = -1
     """Sell/Short side"""
 
+    def lower(self) -> str:
+        return self.name.lower()
+
+    def upper(self) -> str:
+        return self.name.upper()
+
 
 class OrderType(str, Enum):
     """Order type"""

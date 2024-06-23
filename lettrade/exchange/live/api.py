@@ -1,7 +1,11 @@
 import logging
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from .exchange import LiveExchange
+    from .trade import LiveOrder, LivePosition
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +21,7 @@ class LiveAPI(ABC):
     def init(self, **kwargs):
         """"""
 
-    def start(self, exchange=None):
+    def start(self, exchange: "LiveExchange"):
         """"""
 
     def next(self):
@@ -28,32 +32,38 @@ class LiveAPI(ABC):
 
     # Public
     @abstractmethod
-    def heartbeat(self):
+    def heartbeat(self) -> bool:
         """"""
 
     # Market
     @abstractmethod
-    def market(self, symbol: str):
+    def market(self, symbol: str) -> dict:
         """"""
 
     @abstractmethod
-    def markets(self, symbols: list[str]):
+    def markets(self, symbols: list[str]) -> dict:
         """"""
 
     # Bars
     @abstractmethod
-    def bars(self, **kwargs):
+    def bars(
+        self,
+        symbol,
+        timeframe,
+        since: Optional[int | datetime] = 0,
+        to: Optional[int | datetime] = 1_000,
+    ) -> list[list]:
         """"""
 
     # Tick
     @abstractmethod
-    def tick_get(self, symbol):
+    def tick_get(self, symbol: str) -> dict:
         """"""
 
     ### Private
     # Account
     @abstractmethod
-    def account(self):
+    def account(self) -> dict:
         """"""
 
     #  Order
@@ -76,15 +86,24 @@ class LiveAPI(ABC):
         """"""
 
     @abstractmethod
-    def order_open(self, **kwargs):
+    def order_open(self, **kwargs) -> dict:
         """"""
 
     @abstractmethod
-    def order_update(self, order: "LiveOrder", sl=None, tp=None, **kwargs):
+    def order_update(self, order: "LiveOrder", sl=None, tp=None, **kwargs) -> dict:
         """"""
 
     @abstractmethod
-    def order_close(self, order: "LiveOrder", **kwargs):
+    def order_close(self, order: "LiveOrder", **kwargs) -> dict:
+        """"""
+
+    def orders_history_get(
+        self,
+        id: Optional[str] = None,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> list[dict]:
         """"""
 
     # Execution
@@ -103,11 +122,11 @@ class LiveAPI(ABC):
         position_id: Optional[str] = None,
         search: Optional[str] = None,
         **kwargs,
-    ) -> list[Any]:
+    ) -> list[dict]:
         """"""
 
     @abstractmethod
-    def execution_get(self, id: str, **kwargs) -> Any:
+    def execution_get(self, id: str, **kwargs) -> dict:
         """"""
 
     # Position
@@ -121,7 +140,7 @@ class LiveAPI(ABC):
         """"""
 
     @abstractmethod
-    def positions_get(self, **kwargs):
+    def positions_get(self, id: str = None, symbol: str = None, **kwargs) -> list[dict]:
         """"""
 
     @abstractmethod
@@ -131,9 +150,9 @@ class LiveAPI(ABC):
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         **kwargs,
-    ):
+    ) -> dict:
         """"""
 
     @abstractmethod
-    def position_close(self, position: "LivePosition", **kwargs):
+    def position_close(self, position: "LivePosition", **kwargs) -> dict:
         """"""

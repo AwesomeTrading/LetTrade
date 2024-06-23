@@ -22,7 +22,7 @@ class MetaTraderDataFeed(LiveDataFeed):
     """DataFeed for MetaTrader"""
 
     _api_cls: Type[MetaTraderAPI] = MetaTraderAPI
-    """API to communicate with MetaTrader Terminal"""
+    _bar_datetime_unit: str = "s"
 
     # def push(self, rows: list):
     #     if isinstance(rows, np.ndarray):
@@ -55,10 +55,7 @@ class MetaTraderDataFeeder(LiveDataFeeder):
     """DataFeeder for MetaTrader"""
 
     _api_cls: Type[MetaTraderAPI] = MetaTraderAPI
-    """API to communicate with MetaTrader Terminal"""
-
     _data_cls: Type[MetaTraderDataFeed] = MetaTraderDataFeed
-    """DataFeed for MetaTrader"""
 
 
 class MetaTraderAccount(LiveAccount):

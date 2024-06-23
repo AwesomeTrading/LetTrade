@@ -1,39 +1,52 @@
+import logging
 import os
 
-import talib.abstract as ta
+import pandas as pd
 from dotenv import load_dotenv
 
 import example.logger
-from lettrade.all import DataFeed, Strategy, crossover, crossunder, let_ccxt
+from lettrade import DataFeed, Strategy
+from lettrade.exchange.live.ccxt import let_ccxt
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 
 class SmaCross(Strategy):
     ema1_period = 9
     ema2_period = 21
+    _now: pd.Timestamp
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema1"] = df.i.ema(period=self.ema1_period)
+        df["ema2"] = df.i.ema(period=self.ema2_period)
 
-        df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
-        df["signal_ema_crossunder"] = crossunder(df.ema1, df.ema2)
-        return df
+        df["signal_ema_crossover"] = df.i.crossover(df.ema1, df.ema2)
+        df["signal_ema_crossunder"] = df.i.crossunder(df.ema1, df.ema2)
+
+    def start(self, df: DataFeed):
+        if self.is_live:
+            self._now = df.now
 
     def next(self, df: DataFeed):
+        if self.is_live:
+            # Filter start of new bar
+            if self._now == df.now:
+                return
+
+            self._now = df.now
+            logger.info("New bar: %s", self._now)
+
         if len(self.orders) > 0 or len(self.positions) > 0:
             return
 
         if df.l.signal_ema_crossover[-1]:
             price = self.data.l.close[-1]
-            self.buy(size=0.1, sl=price - 0.01, tp=price + 0.01)
+            self.buy(size=0.1, sl=price - 1000, tp=price + 1000)
         elif df.l.signal_ema_crossunder[-1]:
             price = self.data.l.close[-1]
-            self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
-
-    # def on_transaction(self, transaction):
-    #     print("Transaction", transaction)
+            self.sell(size=0.1, sl=price + 1000, tp=price - 1000)
 
     def stop(self, df: DataFeed):
         print(df)
@@ -63,9 +76,11 @@ if __name__ == "__main__":
         strategy=SmaCross,
         datas=[("BTC/USD", "1m", "BTCUSD_1m")],
         # datas=[[("EURUSD", "1m")], [("GBPUSD", "1m")]],
-        ccxt_exchange=os.environ["CCXT_EXCHANGE"],
-        ccxt_key=os.environ["CCXT_KEY"],
-        ccxt_secret=os.environ["CCXT_SECRET"],
+        ccxt_exchange=os.getenv("CCXT_EXCHANGE"),
+        ccxt_type=os.getenv("CCXT_TYPE"),
+        ccxt_key=os.getenv("CCXT_KEY"),
+        ccxt_secret=os.getenv("CCXT_SECRET"),
+        ccxt_verbose=os.getenv("CCXT_VERBOSE", "").lower() in ["true", "1"],
     )
 
     lt.run()

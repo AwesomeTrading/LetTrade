@@ -1,10 +1,15 @@
 import logging
-from multiprocessing.managers import BaseManager
-from typing import Optional
+from datetime import datetime
+from typing import TYPE_CHECKING, Literal, Optional
 
 import ccxt
 
-from lettrade.exchange.live import LiveAPI, LiveOrder
+from lettrade.exchange.live import LiveAPI
+
+if TYPE_CHECKING:
+    from .ccxt import CCXTExchange
+    from .trade import CCXTOrder, CCXTPosition
+
 
 logger = logging.getLogger(__name__)
 
@@ -24,14 +29,17 @@ class CCXTAPIExchange:
         exchange: str,
         key: str,
         secret: str,
-        options: dict = {},
+        options: Optional[dict] = None,
+        type: Literal["spot", "margin", "future"] = "spot",
         sandbox: bool = True,
-        debug=False,
+        verbose: bool = False,
+        **kwargs,
     ) -> None:
         config = dict(
             apiKey=key,
             secret=secret,
             enableRateLimit=True,
+            defaultType=type,
             options={
                 "sandboxMode": sandbox,
                 "warnOnFetchOpenOrdersWithoutSymbol": False,
@@ -40,20 +48,28 @@ class CCXTAPIExchange:
                 "OHLCVLimit": 1,
             },
         )
-        config["options"].update(options)
+        config.update(kwargs)
+
+        if options is not None:
+            config["options"].update(options)
 
         self._exchange = getattr(ccxt, exchange)(config)
 
         # Must call sanbox function instead of option sandboxMode
         self._exchange.set_sandbox_mode(sandbox)
-        self._exchange.verbose = debug
+        self._exchange.verbose = verbose
         logger.info("Starting exchange class: %s", self._exchange)
 
     def start(self):
         self._exchange.load_markets()
 
-    # def stop(self):
-    #     self._exchange.close()
+    def stop(self):
+        """"""
+        # self._exchange.close()
+
+    # def __getattr__(self, attr: str) -> ccxt.Exchange:
+    #     # if hasattr(self._exchange, attr):
+    #     return getattr(self._exchange, attr)
 
     # Public functions
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
@@ -95,7 +111,7 @@ class CCXTAPIExchange:
         return self._exchange.watch_balance(params)
 
     # Order
-    def create_my_order(self, symbol, type, side, amount, price, params):
+    def create_my_order(self, symbol, type, side, amount, price, params, **kwargs):
         return self._exchange.create_order(
             symbol=symbol,
             type=type,
@@ -103,6 +119,7 @@ class CCXTAPIExchange:
             amount=amount,
             price=price,
             params=params,
+            **kwargs,
         )
 
     def fetch_my_order(self, oid, symbol):
@@ -159,7 +176,6 @@ class CCXTAPI(LiveAPI):
         ccxt: Optional[CCXTAPIExchange] = None,
         **kwargs,
     ):
-        # Start wine server if not inited
         if ccxt is None:
             ccxt = CCXTAPIExchange(exchange=exchange, key=key, secret=secret, **kwargs)
         self._ccxt = ccxt
@@ -185,38 +201,53 @@ class CCXTAPI(LiveAPI):
     def heartbeat(self):
         return True
 
-    def market(self, symbol):
+    def market(self, symbol: str) -> dict:
         pass
 
-    def markets(self, symbols: list):
+    def markets(self, symbols: list[str]) -> dict:
         pass
 
-    def tick_get(self, symbol):
+    def tick_get(self, symbol: str) -> dict:
         pass
 
     # Bars
-    def bars(self, symbol, timeframe, since=0, to=1000):
-        raws = self._ccxt.fetch_ohlcv(symbol, timeframe, limit=to)
-        return self._parse_bars(raws)
+    def bars(
+        self,
+        symbol,
+        timeframe,
+        since: Optional[int | datetime] = 0,
+        to: Optional[int | datetime] = 1_000,
+        **kwargs,
+    ) -> list[list]:
+        return self._ccxt.fetch_ohlcv(symbol, timeframe, limit=to, **kwargs)
 
     def _parse_bars(self, raws):
-        for raw in raws:
-            raw[0] = raw[0] / 1_000
         return raws
 
     ### Private
     # Account
-    def account(self):
+    def account(self) -> dict:
         """"""
+        return self._ccxt.fetch_my_balance()
 
     #  Order
-    def order_open(self, order: LiveOrder):
+    def order_open(self, order: "CCXTOrder", **kwargs):
         """"""
+        result = self._ccxt.create_my_order(
+            symbol=order.data.symbol,
+            type=order.type.lower(),
+            side=order.side.lower(),
+            amount=abs(order.size),
+            price=order.place_price,
+            **kwargs,
+        )
+        print("order_open", order, result)
+        return result
 
-    def order_update(self, order: LiveOrder):
+    def order_update(self, order: "CCXTOrder"):
         pass
 
-    def order_close(self, order: LiveOrder):
+    def order_close(self, order: "CCXTOrder"):
         """"""
 
     def orders_total(self):
@@ -225,9 +256,46 @@ class CCXTAPI(LiveAPI):
     def orders_get(self, **kwargs):
         """"""
 
-    # Positions
-    def positions_total(self):
+    # Execution
+    def executions_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
         """"""
 
-    def positions_get(self, **kwargs):
+    def executions_get(
+        self,
+        position_id: Optional[str] = None,
+        search: Optional[str] = None,
+        **kwargs,
+    ) -> list[dict]:
+        """"""
+
+    def execution_get(self, id: str, **kwargs) -> dict:
+        """"""
+
+    # Position
+    def positions_total(
+        self,
+        since: Optional[datetime] = None,
+        to: Optional[datetime] = None,
+        **kwargs,
+    ) -> int:
+        """"""
+
+    def positions_get(self, id: str = None, symbol: str = None, **kwargs) -> list[dict]:
+        """"""
+
+    def position_update(
+        self,
+        position: "CCXTPosition",
+        sl: Optional[float] = None,
+        tp: Optional[float] = None,
+        **kwargs,
+    ) -> dict:
+        """"""
+
+    def position_close(self, position: "CCXTPosition", **kwargs) -> dict:
         """"""

@@ -49,8 +49,7 @@ class LiveExchange(Exchange):
         tp: Optional[float] = None,
         tag: Optional[str] = None,
         data: Optional[DataFeed] = None,
-        *args,
-        **kwargs
+        **kwargs,
     ) -> OrderResult:
         """Place new order to server
 
@@ -85,6 +84,7 @@ class LiveExchange(Exchange):
             sl_price=sl,
             tp_price=tp,
             tag=tag,
+            **kwargs,
         )
         ok = order.place()
 

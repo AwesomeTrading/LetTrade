@@ -1,7 +1,7 @@
-# import logging
-from typing import Optional, Type
+import logging
+from typing import Literal, Optional, Type
 
-from lettrade import BotStatistic, Commander, Plotter
+from lettrade import BotStatistic, Commander, Plotter, Strategy
 from lettrade.exchange.live import (
     LetTradeLive,
     LetTradeLiveBot,
@@ -9,45 +9,26 @@ from lettrade.exchange.live import (
     LiveDataFeed,
     LiveDataFeeder,
     LiveExchange,
-    LiveExecution,
-    LiveOrder,
-    LivePosition,
     let_live,
 )
-from lettrade.strategy.strategy import Strategy
 
 from .api import CCXTAPI
+from .trade import CCXTExecution, CCXTOrder, CCXTPosition
 
-# logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class CCXTDataFeed(LiveDataFeed):
     """DataFeed for CCXT"""
 
     _api_cls: Type[CCXTAPI] = CCXTAPI
-    """API to communicate with CCXT Terminal"""
 
 
 class CCXTDataFeeder(LiveDataFeeder):
     """DataFeeder for CCXT"""
 
     _api_cls: Type[CCXTAPI] = CCXTAPI
-    """API to communicate with CCXT Terminal"""
-
     _data_cls: Type[CCXTDataFeed] = CCXTDataFeed
-    """DataFeed for CCXT"""
-
-
-class CCXTExecution(LiveExecution):
-    """Execution for CCXT"""
-
-
-class CCXTOrder(LiveOrder):
-    """Order for CCXT"""
-
-
-class CCXTPosition(LivePosition):
-    """Trade for CCXT"""
 
 
 class CCXTAccount(LiveAccount):
@@ -67,7 +48,7 @@ class LetTradeCCXTBot(LetTradeLiveBot):
 
 
 class LetTradeCCXT(LetTradeLive):
-    """Help to maintain CCXT bot"""
+    """Help to maintain CCXT bots"""
 
     _data_cls: Type[CCXTDataFeed] = CCXTDataFeed
 
@@ -99,14 +80,16 @@ def let_ccxt(
     ccxt_exchange: str,
     ccxt_key: str,
     ccxt_secret: str,
+    ccxt_type: Literal["spot", "margin", "future"] = "spot",
+    ccxt_verbose: bool = False,
     feeder: Type[CCXTDataFeeder] = CCXTDataFeeder,
     exchange: Type[CCXTExchange] = CCXTExchange,
     account: Type[CCXTAccount] = CCXTAccount,
     commander: Optional[Type[Commander]] = None,
     plotter: Optional[Type[Plotter]] = None,
     stats: Optional[Type[BotStatistic]] = BotStatistic,
-    lettrade: Optional[Type[LetTradeCCXT]] = LetTradeCCXT,
     bot: Optional[Type[LetTradeCCXTBot]] = LetTradeCCXTBot,
+    lettrade: Optional[Type[LetTradeCCXT]] = LetTradeCCXT,
     api: Optional[Type[CCXTAPI]] = CCXTAPI,
     **kwargs,
 ) -> LetTradeCCXT:
@@ -118,15 +101,18 @@ def let_ccxt(
         ccxt_exchange (str): _description_
         ccxt_key (str): _description_
         ccxt_secret (str): _description_
+        ccxt_type (Literal["spot", "margin", "future"], optional): _description_. Defaults to "spot".
+        ccxt_verbose (bool, optional): _description_. Defaults to False.
         feeder (Type[CCXTDataFeeder], optional): _description_. Defaults to CCXTDataFeeder.
         exchange (Type[CCXTExchange], optional): _description_. Defaults to CCXTExchange.
         account (Type[CCXTAccount], optional): _description_. Defaults to CCXTAccount.
         commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
         plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
         stats (Optional[Type[BotStatistic]], optional): _description_. Defaults to BotStatistic.
-        lettrade (Optional[Type[LetTradeCCXT]], optional): _description_. Defaults to LetTradeCCXT.
         bot (Optional[Type[LetTradeCCXTBot]], optional): _description_. Defaults to LetTradeCCXTBot.
+        lettrade (Optional[Type[LetTradeCCXT]], optional): _description_. Defaults to LetTradeCCXT.
         api (Optional[Type[CCXTAPI]], optional): _description_. Defaults to CCXTAPI.
+        **kwargs (dict): All remaining properties are passed to the constructor of `LetTradeLive`
 
     Returns:
         LetTradeCCXT: _description_
@@ -136,6 +122,8 @@ def let_ccxt(
         exchange=ccxt_exchange,
         key=ccxt_key,
         secret=ccxt_secret,
+        type=ccxt_type,
+        verbose=ccxt_verbose,
     )
 
     return let_live(
@@ -147,8 +135,8 @@ def let_ccxt(
         commander=commander,
         plotter=plotter,
         stats=stats,
-        lettrade=lettrade,
         bot=bot,
+        lettrade=lettrade,
         api=api,
         **kwargs,
     )

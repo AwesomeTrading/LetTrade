@@ -1,13 +1,17 @@
 import logging
 import time
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from box import Box
 from mt5linux import MetaTrader5 as MT5
 
 from lettrade.exchange import OrderType
-from lettrade.exchange.live import LiveAPI, LiveOrder, LivePosition
+from lettrade.exchange.live import LiveAPI
+
+if TYPE_CHECKING:
+    from .metatrader import MetaTraderExchange
+    from .trade import MetaTraderExecution, MetaTraderOrder, MetaTraderPosition
 
 logger = logging.getLogger(__name__)
 
@@ -321,11 +325,11 @@ class MetaTraderAPI(LiveAPI):
         raws = self._mt5.orders_get(**kwargs)
         return [self._order_parse_response(raw) for raw in raws]
 
-    def order_open(self, order: LiveOrder) -> dict:
+    def order_open(self, order: "MetaTraderOrder") -> dict:
         """_summary_
 
         Args:
-            order (LiveOrder): _description_
+            order (MetaTraderOrder): _description_
 
         Raises:
             NotImplementedError: _description_
@@ -442,10 +446,10 @@ class MetaTraderAPI(LiveAPI):
 
         return request
 
-    def order_update(self, order: LiveOrder, sl=None, tp=None, **kwargs):
+    def order_update(self, order: "MetaTraderOrder", sl=None, tp=None, **kwargs):
         raise NotImplementedError
 
-    def order_close(self, order: LiveOrder, **kwargs):
+    def order_close(self, order: "MetaTraderOrder", **kwargs):
         raise NotImplementedError
 
     def _parse_trade_send_response(self, raw) -> dict:
@@ -508,7 +512,7 @@ class MetaTraderAPI(LiveAPI):
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
         **kwargs,
-    ) -> dict:
+    ) -> list[dict]:
         """_summary_
 
         Args:
@@ -660,7 +664,7 @@ class MetaTraderAPI(LiveAPI):
 
     def position_update(
         self,
-        position: LivePosition,
+        position: "MetaTraderPosition",
         sl: Optional[float] = None,
         tp: Optional[float] = None,
         **kwargs,
@@ -668,7 +672,7 @@ class MetaTraderAPI(LiveAPI):
         """_summary_
 
         Args:
-            position (LivePosition): _description_
+            position (MetaTraderPosition): _description_
             sl (Optional[float], optional): _description_. Defaults to None.
             tp (Optional[float], optional): _description_. Defaults to None.
 
@@ -712,11 +716,11 @@ class MetaTraderAPI(LiveAPI):
         raw = self._mt5.order_send(request)
         return self._parse_trade_send_response(raw)
 
-    def position_close(self, position: LivePosition, **kwargs) -> dict:
+    def position_close(self, position: "MetaTraderPosition", **kwargs) -> dict:
         """Close a position
 
         Args:
-            position (LivePosition): _description_
+            position (MetaTraderPosition): _description_
 
         Returns:
             dict: _description_

@@ -1,6 +1,8 @@
 import importlib.util
 import logging
 
+logging.basicConfig(level=logging.INFO)
+
 coloredlogs = importlib.util.find_spec("coloredlogs")
 if coloredlogs:
     import coloredlogs
@@ -8,11 +10,11 @@ if coloredlogs:
     coloredlogs.DEFAULT_FIELD_STYLES["funcName"] = dict(color="cyan")
 
     coloredlogs.install(
-        level="INFO",
+        level=logging.root.level,
         fmt="%(asctime)s,%(msecs)03d %(levelname)6s %(name)16s %(funcName)16s(): %(message)s",
     )
 
-logging.basicConfig(level=logging.INFO)
+logging.getLogger("lettrade.data.data").setLevel(logging.DEBUG)
 
 
 def logging_filter_necessary_only():

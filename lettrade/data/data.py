@@ -116,12 +116,18 @@ class DataFeed(pd.DataFrame):
         """
         return self.l.index[i]
 
-    def push(self, rows: list[list[int | float]], unit="s", utc: bool = True, **kwargs):
+    def push(
+        self,
+        rows: list[list[int | float]],
+        unit: Optional[str] = None,
+        utc: bool = True,
+        **kwargs,
+    ):
         """Push new rows to DataFeed
 
         Args:
             rows (list[list[int | float]]): list of rows `[["timestamp", "open price", "high price"...]]`
-            unit (str, optional): pandas.Timestamp parsing unit. Defaults to "s".
+            unit (Optional[str], optional): pandas.Timestamp parsing unit. Defaults to None.
             utc (bool, optional): _description_. Defaults to True.
         """
         for row in rows:
@@ -156,8 +162,8 @@ class DataFeed(pd.DataFrame):
         """_summary_
 
         Args:
-            since (Optional[int  |  str  |  pd.Timestamp], optional): _description_. Defaults to None.
-            to (Optional[int  |  str  |  pd.Timestamp], optional): _description_. Defaults to None.
+            since (Optional[int | str | pd.Timestamp], optional): _description_. Defaults to None.
+            to (Optional[int | str | pd.Timestamp], optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_

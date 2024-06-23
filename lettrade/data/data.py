@@ -19,6 +19,7 @@ class DataFeed(pd.DataFrame):
     """Data for Strategy. A implement of pandas.DataFrame"""
 
     l: LetDataFeedWrapper
+    """LetTrade DataFeed wrapper using to manage index pointer of DataFeed"""
 
     def __init__(
         self,
@@ -78,6 +79,14 @@ class DataFeed(pd.DataFrame):
 
     # External
     def copy(self, deep: bool = False, **kwargs) -> "DataFeed":
+        """_summary_
+
+        Args:
+            deep (bool, optional): _description_. Defaults to False.
+
+        Returns:
+            DataFeed: _description_
+        """
         df = super().copy(deep=deep)
         df = self.__class__(
             data=df,
@@ -89,14 +98,34 @@ class DataFeed(pd.DataFrame):
         return df
 
     def next(self, size=1):
+        """Load next data
+
+        Args:
+            size (int, optional): _description_. Defaults to 1.
+        """
         self.l.next(size)
 
-    def bar(self, i=0) -> pd.Timestamp:
+    def bar(self, i: int = 0) -> pd.Timestamp:
+        """Get current pd.Timestamp value of DataFeed
+
+        Args:
+            i (int, optional): Index. Defaults to 0.
+
+        Returns:
+            pd.Timestamp: _description_
+        """
         return self.l.index[i]
 
-    def push(self, rows: list):
+    def push(self, rows: list[list[int | float]], unit="s", utc: bool = True, **kwargs):
+        """Push new rows to DataFeed
+
+        Args:
+            rows (list[list[int | float]]): list of rows `[["timestamp", "open price", "high price"...]]`
+            unit (str, optional): pandas.Timestamp parsing unit. Defaults to "s".
+            utc (bool, optional): _description_. Defaults to True.
+        """
         for row in rows:
-            dt = pd.to_datetime(row[0], unit="s", utc=True)
+            dt = pd.to_datetime(row[0], unit=unit, utc=utc, **kwargs)
             self.at[
                 dt,
                 (
@@ -117,7 +146,15 @@ class DataFeed(pd.DataFrame):
         if __debug__:
             logger.debug("[%s] Update bar: \n%s", self.name, self.tail(len(rows)))
 
-    def drop(self, *args, since=None, **kwargs):
+    def drop(self, *args, since: int | str | pd.Timestamp = None, **kwargs) -> None:
+        """_summary_
+
+        Args:
+            since (int | str | pd.Timestamp, optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: _description_
+        """
         if since is None:
             return super().drop(*args, **kwargs)
 
@@ -137,34 +174,34 @@ class DataFeed(pd.DataFrame):
         if __debug__:
             logger.debug("BackTestDataFeed %s dropped %s rows", self.name, len(index))
 
-    # Properties
-    # @property
-    # def datetime(self) -> pd.DatetimeIndex:
-    #     return self.index
-
     @property
     def now(self) -> pd.Timestamp:
+        """Property to get current index value of DataFeed"""
         return self.l.index[0]
 
     @property
     def meta(self) -> dict:
+        """Property to get metadata of DataFeed"""
         return self.attrs["lt_meta"]
 
     @property
     def name(self) -> str:
+        """Property to get name of DataFeed"""
         return self.meta["name"]
 
     @property
     def timeframe(self) -> TimeFrame:
+        """Property to get timeframe of DataFeed"""
         return self.meta["timeframe"]
 
     @property
     def is_main(self) -> bool:
+        """Property to check DataFeed is main DataFeed or not"""
         return self.meta.get("is_main", False)
 
     @property
     def i(self) -> "indicator":
-        """Alias to lettrade.indicator and using in DataFeed by call: DataFeed.i.indicator_name()"""
+        """Alias to `lettrade.indicator` and using in DataFeed by call: `DataFeed.i.indicator_name()`"""
         from lettrade import indicator
 
         indicator.indicators_inject_pandas()

@@ -7,10 +7,18 @@ __LET_WRAPPER_KEY__ = "_lt_wrapper"
 
 
 class LetILocWrapper:
+    """Wrap iloc object from DataFeed"""
+
     _data: pd.DatetimeIndex
     _owner: "LetDataFeedWrapper"
 
     def __init__(self, data, owner) -> None:
+        """_summary_
+
+        Args:
+            data (_type_): DataFeed or pd.Series
+            owner (_type_): DataFeed object
+        """
         self._data = data
         self._owner = owner
         # print("-----> ILocWrapper", data.name, type(data))
@@ -43,10 +51,18 @@ class LetILocWrapper:
 
 
 class LetIndexWapper:
+    """Wrap DataFeed.index"""
+
     _data: pd.DatetimeIndex
     _owner: "LetDataFeedWrapper"
 
     def __init__(self, data, owner) -> None:
+        """_summary_
+
+        Args:
+            data (_type_): pandas.DatetimeIndex
+            owner (_type_): DataFeed object
+        """
         self._data = data
         self._owner = owner
         # print("-----> IndexWapper", data.name, type(data))
@@ -83,6 +99,8 @@ class LetIndexWapper:
 
 
 class LetSeriesWapper:
+    """Wrap DataFeed column"""
+
     _data: pd.DatetimeIndex
     _owner: "LetDataFeedWrapper"
     _iloc: LetILocWrapper | _iLocIndexer
@@ -118,11 +136,21 @@ class LetSeriesWapper:
 
 # @pd.api.extensions.register_dataframe_accessor("l")
 class LetDataFeedWrapper:
+    """Wrap DataFeed"""
+
     _data: pd.DataFrame
     _pointer: int
     _iloc: LetILocWrapper | _iLocIndexer
 
     def __init__(self, data: pd.DataFrame) -> None:
+        """_summary_
+
+        Args:
+            data (pd.DataFrame): DataFeed object
+
+        Raises:
+            RuntimeError: _description_
+        """
         # Validate new instance not load an existed wrapper
         if hasattr(data.index, __LET_WRAPPER_KEY__):
             raise RuntimeError("DataFeed.index reuses a loaded wrapper")
@@ -178,30 +206,38 @@ class LetDataFeedWrapper:
 
     # Function
     def next(self, size=1):
+        """Move pointer to next"""
         self._pointer += size
 
     def go_start(self) -> None:
+        """Move pointer to begin"""
         self._pointer = 0
 
     def go_stop(self) -> None:
+        """Move pointer to end"""
         self._pointer = len(self._data) - 1
 
     def reset(self) -> None:
+        """Reset pointer to begin"""
         self._pointer = 0
 
     # Property
     @property
     def iloc(self) -> LetILocWrapper | _iLocIndexer:
+        """Get iloc wrapper of DataFeed"""
         return self._iloc
 
     @property
     def pointer(self):
+        """Get current pointer value"""
         return self._pointer
 
     @property
     def pointer_start(self):
+        """Get start pointer value"""
         return -self._pointer
 
     @property
     def pointer_stop(self):
+        """Get stop pointer value"""
         return len(self._data) - self._pointer

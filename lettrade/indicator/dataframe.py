@@ -27,11 +27,11 @@ def signal_direction(
         dataframe (pd.DataFrame): _description_
         signal_up (pd.Series): _description_
         signal_down (pd.Series): _description_
-        name (str): _description_
+        name (str): Name of signal, column name when add to DataFrame with inplace=True.
         value (int, optional): Default value when condiction is not matched. Defaults to 0.
         value_up (int, optional): _description_. Defaults to 100.
         value_down (int, optional): _description_. Defaults to -100.
-        inplace (bool, optional): _description_. Defaults to False.
+        inplace (bool, optional): Whether to add to the DataFrame and return DataFrame rather than return result. Defaults to False.
 
     Returns:
         pd.Series | pd.DataFrame: _description_
@@ -59,8 +59,8 @@ def signal_condiction(
 
     Args:
         dataframe (pd.DataFrame): _description_
-        *condictions (list[list[pd.Series | Any]]): Pairs of [<pandas.Series condiction>, <value>]
-        name (str): _description_
+        *condictions (list[list[pd.Series | Any]]): Pairs of condiction [<pandas.Series condiction>, <value>]
+        name (str): Name of signal, column name when add to DataFrame with inplace=True.
         value (int, optional): Default value when condiction is not matched. Defaults to 0.
         inplace (bool, optional): _description_. Defaults to False.
 

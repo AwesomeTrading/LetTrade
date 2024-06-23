@@ -38,6 +38,7 @@ class Account:
             cash (float, optional): _description_. Defaults to 10_000.
             margin (float, optional): _description_. Defaults to 1.0.
             leverage (float, optional): _description_. Defaults to 1.0.
+            **kwargs (dict, optional): Config of account. Defaults to {}.
         """
         self._risk = risk
         self._cash = cash

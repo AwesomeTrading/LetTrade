@@ -121,13 +121,23 @@ class TimeFrame:
 
     @property
     def string(self):
+        """TimeFrame as lettrade string"""
         return f"{self.value}{self.unit}"
 
     @property
     def string_pandas(self):
+        """TimeFrame as pandas string"""
         return f"{self.value}{self.unit_pandas}"
 
-    def floor(self, at: datetime | pd.Timestamp):
+    def floor(self, at: datetime | pd.Timestamp) -> pd.Timestamp:
+        """Get floor of TimeFrame
+
+        Args:
+            at (datetime | pd.Timestamp): _description_
+
+        Returns:
+            pd.Timestamp: _description_
+        """
         if isinstance(at, datetime):
             at = pd.Timestamp(at)
 
@@ -136,7 +146,15 @@ class TimeFrame:
             freq += "in"
         return at.floor(freq=freq)
 
-    def ceil(self, at: datetime | pd.Timestamp):
+    def ceil(self, at: datetime | pd.Timestamp) -> pd.Timestamp:
+        """Get ceil of TimeFrame
+
+        Args:
+            at (datetime | pd.Timestamp): _description_
+
+        Returns:
+            pd.Timestamp: _description_
+        """
         if isinstance(at, datetime):
             at = pd.Timestamp(at)
 

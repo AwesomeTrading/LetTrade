@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 class LiveDataFeed(DataFeed):
+    """Live trading DataFeed"""
+
     _api_cls: Type[LiveAPI] = LiveAPI
 
     def __init__(
@@ -23,6 +25,15 @@ class LiveDataFeed(DataFeed):
         columns: Optional[list[str]] = None,
         **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            symbol (str): Symbol of DataFeed
+            timeframe (str | int | pd.Timedelta): TimeFrame of DataFeed
+            name (Optional[str], optional): Name of DataFeed, auto generate `{symbol}_{timeframe}` if none. Defaults to None.
+            api (Optional[LiveAPI], optional): Live trading API. Defaults to None.
+            columns (Optional[list[str]], optional): List of DataFeed columns. Defaults to None.
+        """
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
             timeframe=timeframe,
@@ -38,6 +49,7 @@ class LiveDataFeed(DataFeed):
     # Properties
     @property
     def symbol(self) -> str:
+        """Property to get symbol of DataFeed"""
         return self.meta["symbol"]
 
     @property
@@ -54,13 +66,14 @@ class LiveDataFeed(DataFeed):
 
     # Functions
     def symbol_info(self):
+        """Get symbol information from API"""
         return self._api.market(symbol=self.symbol)
 
     def copy(self, deep: bool = False, **kwargs) -> DataFeed:
         return super().copy(deep, symbol=self.symbol, **kwargs)
 
     def next(self, size=1, tick=0) -> bool:
-        """Drop extra columns and load next datafeed
+        """Drop extra columns and load next DataFeed
 
         Args:
             size (int, optional): _description_. Defaults to 1.
@@ -81,7 +94,7 @@ class LiveDataFeed(DataFeed):
         since: int | str | pd.Timestamp,
         to: int | str | pd.Timestamp,
     ) -> bool:
-        """Get bar and push to DataFeed
+        """Get bar from API and push to DataFeed
 
         Args:
             since (int | str | pd.Timestamp): _description_
@@ -128,6 +141,13 @@ class LiveDataFeed(DataFeed):
         to: Optional[int | str | datetime] = 1_000,
         **kwargs,
     ):
+        """_summary_
+
+        Args:
+            path (Optional[str], optional): _description_. Defaults to None.
+            since (Optional[int  |  str  |  datetime], optional): _description_. Defaults to 0.
+            to (Optional[int  |  str  |  datetime], optional): _description_. Defaults to 1_000.
+        """
         if self.empty:
             if isinstance(since, str):
                 since = pd.to_datetime(since).to_pydatetime()

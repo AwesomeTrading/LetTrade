@@ -66,10 +66,27 @@ class Strategy:
 
     def indicators(self, df: DataFeed) -> None:
         """All indicator and signal should implement here to cacheable.
-        Because of `lettrade` will cache/pre-load all `DataFeed`
+        Because of `lettrade` will cache/pre-load all `DataFeed`.
+
+        To add indicators for a special DataFeed, define a new function name
+        `indicators_<DataFeed name>`.
+
+        Usage:
+            ```python
+            df_eurusd = DataFeed(name="eurusd")
+            df_gbpusd = DataFeed(name="gbpusd")
+
+            # This function will load indicators for df_eurusd
+            def indicators(self, df: DataFeed):
+                df['ema'] = df.i.ema(period=21)
+
+            # This function will load indicators for df_gbpusd
+            def indicators_gbpusd(self, df: DataFeed):
+                df['ema'] = df.i.ema(period=25)
+            ```
 
         Args:
-            df (DataFeed): main data of strategy
+            df (DataFeed): DataFeed need to load indicators value
         """
 
     @final

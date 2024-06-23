@@ -356,6 +356,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/ccxt/trade/</loc>
+         <lastmod>2024-06-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/metatrader/</loc>
          <lastmod>2024-06-23</lastmod>
          <changefreq>daily</changefreq>
@@ -532,6 +537,16 @@
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/tut-001/</loc>
+         <lastmod>2024-06-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/ccxt/</loc>
+         <lastmod>2024-06-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/metatrader/</loc>
          <lastmod>2024-06-23</lastmod>
          <changefreq>daily</changefreq>
     </url>

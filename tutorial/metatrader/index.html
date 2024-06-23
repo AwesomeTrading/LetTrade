@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://AwesomeTrading.github.io/LetTrade/install/metatrader/">
+        <link rel="canonical" href="https://AwesomeTrading.github.io/LetTrade/tutorial/metatrader/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../ccxt/">
       
       
-        <link rel="next" href="../../tutorial/tut-001/">
+        <link rel="next" href="feeder/">
       
       
       <link rel="icon" href="../../image/logo.svg">
@@ -22,7 +22,7 @@
     
     
       
-        <title>MetaTrader 5 Install - LetTrade</title>
+        <title>MetaTrader exchange - LetTrade</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#metatrader-5-install" class="md-skip">
+        <a href="#metatrader-exchange" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MetaTrader 5 Install
+              MetaTrader exchange
             
           </span>
         </div>
@@ -293,19 +293,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -319,7 +317,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Install
@@ -333,7 +331,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -351,30 +349,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    MetaTrader 5 Install
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../install/metatrader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -383,110 +361,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#ubuntu" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ubuntu
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Ubuntu">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wine" class="md-nav__link">
-    <span class="md-ellipsis">
-      Wine
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python requirements
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#start-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      Start Server
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#metatrader-terminal" class="md-nav__link">
-    <span class="md-ellipsis">
-      MetaTrader Terminal
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="MetaTrader Terminal">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#load-broker-information" class="md-nav__link">
-    <span class="md-ellipsis">
-      Load broker information
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enable-automatic-algo-trading" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enable Automatic Algo Trading
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -503,17 +377,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -527,7 +403,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -541,7 +417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/tut-001/" class="md-nav__link">
+      <a href="../tut-001/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -597,7 +473,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/ccxt/" class="md-nav__link">
+      <a href="../ccxt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -623,17 +499,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -647,7 +525,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             Metatrader
@@ -658,10 +536,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../tutorial/metatrader/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    MetaTrader exchange
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -670,6 +568,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -682,7 +627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/metatrader/feeder/" class="md-nav__link">
+      <a href="feeder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -703,7 +648,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/metatrader/trade/" class="md-nav__link">
+      <a href="trade/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -767,7 +712,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/optimize/0.lettrade/" class="md-nav__link">
+      <a href="../optimize/0.lettrade/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -788,7 +733,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/optimize/1.optuna/" class="md-nav__link">
+      <a href="../optimize/1.optuna/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -809,7 +754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/optimize/2.hyperopt/" class="md-nav__link">
+      <a href="../optimize/2.hyperopt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -830,7 +775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/optimize/3.ray/" class="md-nav__link">
+      <a href="../optimize/3.ray/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -851,7 +796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/optimize/7.bayesopt/" class="md-nav__link">
+      <a href="../optimize/7.bayesopt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -872,7 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/optimize/8.blackbox/" class="md-nav__link">
+      <a href="../optimize/8.blackbox/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -893,7 +838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/optimize/9.hyperactive/" class="md-nav__link">
+      <a href="../optimize/9.hyperactive/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -957,7 +902,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/plot/candlestick/" class="md-nav__link">
+      <a href="../plot/candlestick/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4570,86 +4515,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#ubuntu" class="md-nav__link">
+  <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
-      Ubuntu
+      Installation
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Ubuntu">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wine" class="md-nav__link">
-    <span class="md-ellipsis">
-      Wine
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python requirements
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#start-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      Start Server
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#metatrader-terminal" class="md-nav__link">
+  <a href="#default-config" class="md-nav__link">
     <span class="md-ellipsis">
-      MetaTrader Terminal
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="MetaTrader Terminal">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#load-broker-information" class="md-nav__link">
-    <span class="md-ellipsis">
-      Load broker information
+      Default config
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#enable-automatic-algo-trading" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Enable Automatic Algo Trading
+      Example
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -4671,50 +4559,98 @@
   
 
 
-<h1 id="metatrader-5-install">MetaTrader 5 Install<a class="headerlink" href="#metatrader-5-install" title="Permanent link">¤</a></h1>
-<p><code>MetaTrader 5</code> is exchange server of module <a href="../../reference/exchange/live/metatrader/metatrader/">MetaTrader</a></p>
-<h2 id="ubuntu">Ubuntu<a class="headerlink" href="#ubuntu" title="Permanent link">¤</a></h2>
-<h3 id="wine">Wine<a class="headerlink" href="#wine" title="Permanent link">¤</a></h3>
-<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5ubuntu.sh<span class="w"> </span><span class="p">;</span><span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>mt5ubuntu.sh<span class="w"> </span><span class="p">;</span><span class="w"> </span>./mt5ubuntu.sh
+<h1 id="metatrader-exchange">MetaTrader exchange<a class="headerlink" href="#metatrader-exchange" title="Permanent link">¤</a></h1>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">¤</a></h2>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>lettrade<span class="o">[</span>exchange-metatrader<span class="o">]</span>
 </code></pre></div>
-<h3 id="python">Python<a class="headerlink" href="#python" title="Permanent link">¤</a></h3>
-<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://www.python.org/ftp/python/3.10.11/python-3.10.11.exe
+<h2 id="default-config">Default config<a class="headerlink" href="#default-config" title="Permanent link">¤</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lettrade.exchange.live.metatrader</span> <span class="kn">import</span> <span class="n">let_metatrader</span>
 
-<span class="nb">export</span><span class="w"> </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="nv">$HOME</span>/.mt5
-wine<span class="w"> </span>python-3.10.11.exe
+
+<span class="n">lt</span> <span class="o">=</span> <span class="n">let_metatrader</span><span class="p">(</span>
+    <span class="n">strategy</span><span class="o">=</span><span class="n">SmaCross</span><span class="p">,</span>
+    <span class="n">datas</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;EURUSD&quot;</span><span class="p">,</span> <span class="s2">&quot;1m&quot;</span><span class="p">)],</span>
+    <span class="n">mt5_login</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MT5_LOGIN&quot;</span><span class="p">]),</span>
+    <span class="n">mt5_password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MT5_PASSWORD&quot;</span><span class="p">],</span>
+    <span class="n">mt5_server</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MT5_SERVER&quot;</span><span class="p">],</span>
+    <span class="n">mt5_wine</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MT5_WINE&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">)</span>
 </code></pre></div>
-<h3 id="python-requirements">Python requirements<a class="headerlink" href="#python-requirements" title="Permanent link">¤</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="nv">$HOME</span>/.mt5
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">¤</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/.mt5/dosdevices/c:/users/<span class="nv">$USER</span>/AppData/Local/Programs/Python/Python310-32/
+<span class="kn">import</span> <span class="nn">talib.abstract</span> <span class="k">as</span> <span class="nn">ta</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
 
-wine<span class="w"> </span>python.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
-wine<span class="w"> </span>python.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>MetaTrader5
-wine<span class="w"> </span>python.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/AwesomeTrading/mt5linux/archive/master.zip
+<span class="kn">import</span> <span class="nn">example.logger</span>
+<span class="kn">from</span> <span class="nn">lettrade.all</span> <span class="kn">import</span> <span class="n">DataFeed</span><span class="p">,</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">crossover</span><span class="p">,</span> <span class="n">crossunder</span><span class="p">,</span> <span class="n">let_metatrader</span>
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">SmaCross</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+    <span class="n">ema1_period</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">ema2_period</span> <span class="o">=</span> <span class="mi">21</span>
+
+    <span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_period</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">signal_ema_crossover</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">close</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">sl</span><span class="o">=</span><span class="n">price</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">tp</span><span class="o">=</span><span class="n">price</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">signal_ema_crossunder</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">close</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">sl</span><span class="o">=</span><span class="n">price</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">tp</span><span class="o">=</span><span class="n">price</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="c1"># def on_transaction(self, transaction):</span>
+    <span class="c1">#     print(&quot;Transaction&quot;, transaction)</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">scatters</span><span class="o">=</span><span class="p">[</span>
+                <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">],</span>
+                    <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ema1&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">],</span>
+                    <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ema2&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">lt</span> <span class="o">=</span> <span class="n">let_metatrader</span><span class="p">(</span>
+        <span class="n">strategy</span><span class="o">=</span><span class="n">SmaCross</span><span class="p">,</span>
+        <span class="n">datas</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;EURUSD&quot;</span><span class="p">,</span> <span class="s2">&quot;1m&quot;</span><span class="p">)],</span>
+        <span class="c1"># datas=[[(&quot;EURUSD&quot;, &quot;1m&quot;)], [(&quot;GBPUSD&quot;, &quot;1m&quot;)]],</span>
+        <span class="n">mt5_login</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MT5_LOGIN&quot;</span><span class="p">]),</span>
+        <span class="n">mt5_password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MT5_PASSWORD&quot;</span><span class="p">],</span>
+        <span class="n">mt5_server</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MT5_SERVER&quot;</span><span class="p">],</span>
+        <span class="n">mt5_wine</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MT5_WINE&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">lt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="c1"># lt.plot()</span>
 </code></pre></div>
-<h3 id="start-server">Start Server<a class="headerlink" href="#start-server" title="Permanent link">¤</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="nv">$HOME</span>/.mt5
-
-python<span class="w"> </span>-m<span class="w"> </span>mt5linux<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.mt5/dosdevices/c:/users/</span><span class="nv">$USER</span><span class="s2">/AppData/Local/Programs/Python/Python310-32/python.exe&quot;</span>
-</code></pre></div>
-<h2 id="metatrader-terminal">MetaTrader Terminal<a class="headerlink" href="#metatrader-terminal" title="Permanent link">¤</a></h2>
-<h3 id="load-broker-information">Load broker information<a class="headerlink" href="#load-broker-information" title="Permanent link">¤</a></h3>
-<p>Load broker information before start by steps:</p>
-<ul>
-<li><code>File</code> menu</li>
-<li><code>Open an Account</code> action</li>
-<li>Search your broker (ex: <code>Tickmill</code>, <code>Roboforex</code>...)</li>
-<li><code>Enter</code> to load</li>
-<li><code>Cancel</code> (Done)</li>
-</ul>
-<h3 id="enable-automatic-algo-trading">Enable Automatic Algo Trading<a class="headerlink" href="#enable-automatic-algo-trading" title="Permanent link">¤</a></h3>
-<ul>
-<li><code>Tools</code> menu</li>
-<li><code>Options</code> menu</li>
-<li><code>Expert Advisors</code> tab</li>
-<li><code>Allow Auto Trading</code> checkbox</li>
-<li>Uncheck <code>Disable automated trading when switching accounts</code> and <code>Disable automated trading when switching profiles</code></li>
-</ul>
 
 
 
@@ -4750,7 +4686,7 @@ python<span class="w"> </span>-m<span class="w"> </span>mt5linux<span class="w">
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: LetTrade install">
+          <a href="../ccxt/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CCXT exchange">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -4760,20 +4696,20 @@ python<span class="w"> </span>-m<span class="w"> </span>mt5linux<span class="w">
                 Previous
               </span>
               <div class="md-ellipsis">
-                LetTrade install
+                CCXT exchange
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../tutorial/tut-001/" class="md-footer__link md-footer__link--next" aria-label="Next: Tutorial 001">
+          <a href="feeder/" class="md-footer__link md-footer__link--next" aria-label="Next: Interactive with MetaTraderDataFeeder">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Tutorial 001
+                Interactive with MetaTraderDataFeeder
               </div>
             </div>
             <div class="md-footer__button md-icon">

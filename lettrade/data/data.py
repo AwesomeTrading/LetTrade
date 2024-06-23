@@ -146,28 +146,58 @@ class DataFeed(pd.DataFrame):
         if __debug__:
             logger.debug("[%s] Update bar: \n%s", self.name, self.tail(len(rows)))
 
-    def drop(self, *args, since: int | str | pd.Timestamp = None, **kwargs) -> None:
+    def drop(
+        self,
+        *args,
+        since: Optional[int | str | pd.Timestamp] = None,
+        to: Optional[int | str | pd.Timestamp] = None,
+        **kwargs,
+    ) -> None:
         """_summary_
 
         Args:
-            since (int | str | pd.Timestamp, optional): _description_. Defaults to None.
+            since (Optional[int  |  str  |  pd.Timestamp], optional): _description_. Defaults to None.
+            to (Optional[int  |  str  |  pd.Timestamp], optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_
+            RuntimeError: _description_
         """
-        if since is None:
-            return super().drop(*args, **kwargs)
+        if since is None and to is None:
+            super().drop(*args, **kwargs)
+            return
 
-        if isinstance(since, int):
-            loc = self.l.index[since]
-        elif isinstance(since, str):
-            loc = pd.Timestamp(since)
-        elif isinstance(since, pd.Timestamp):
-            loc = since
-        else:
-            raise RuntimeError(f"DataFeed.drop since {since} is invalid")
+        condiction = None
 
-        index = self[self.index < loc].index
+        # Since
+        if since is not None:
+            if isinstance(since, int):
+                loc = self.l.index[since]
+            elif isinstance(since, str):
+                loc = pd.to_datetime(since, utc=True)
+            elif isinstance(since, pd.Timestamp):
+                loc = since
+            else:
+                raise RuntimeError(f"DataFeed.drop since {since} is invalid")
+            condiction = self.index < loc
+
+        # To
+        if to is not None:
+            if isinstance(to, int):
+                loc = self.l.index[to]
+            elif isinstance(to, str):
+                loc = pd.to_datetime(to, utc=True)
+            elif isinstance(to, pd.Timestamp):
+                loc = to
+            else:
+                raise RuntimeError(f"DataFeed.drop to {to} is invalid")
+
+            if condiction is None:
+                condiction = self.index > loc
+            else:
+                condiction = condiction | (self.index > loc)
+
+        index = self[condiction].index
         super().drop(index=index, inplace=True)
         self.l.reset()
 

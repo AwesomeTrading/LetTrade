@@ -10,15 +10,28 @@ logger = logging.getLogger(__name__)
 
 
 class BackTestDataFeed(DataFeed):
+    """BackTest DataFeed"""
+
     def __init__(
         self,
         data: pd.DataFrame,
         name: str,
         timeframe: Optional[str | int | pd.Timedelta] = None,
         meta: Optional[dict] = None,
-        since: Optional[int] = None,
+        since: Optional[int | str | pd.Timestamp] = None,
+        to: Optional[int | str | pd.Timestamp] = None,
         **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            data (pd.DataFrame): _description_
+            name (str): _description_
+            timeframe (Optional[str  |  int  |  pd.Timedelta], optional): _description_. Defaults to None.
+            meta (Optional[dict], optional): _description_. Defaults to None.
+            since (Optional[int  |  str  |  pd.Timestamp], optional): Drop data before since. Defaults to None.
+            to (Optional[int  |  str  |  pd.Timestamp], optional): Drop data after to. Defaults to None.
+        """
         if timeframe is None:
             timeframe = self._find_timeframe(data)
             logger.info("DataFeed %s auto detect timeframe %s", name, timeframe)
@@ -29,8 +42,8 @@ class BackTestDataFeed(DataFeed):
             meta=meta,
             **kwargs,
         )
-        if since is not None:
-            self.drop(since=since)
+        if since is not None or to is not None:
+            self.drop(since=since, to=to)
 
     def _find_timeframe(self, df):
         if len(df.index) < 3:

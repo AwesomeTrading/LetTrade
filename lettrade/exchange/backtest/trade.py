@@ -1,4 +1,5 @@
-from typing import Optional
+import logging
+from typing import TYPE_CHECKING, Optional
 
 import pandas as pd
 
@@ -13,11 +14,25 @@ from lettrade.exchange import (
     PositionState,
 )
 
+if TYPE_CHECKING:
+    from .exchange import BackTestExchange
+
+logger = logging.getLogger(__name__)
+
 
 class BackTestExecution(Execution):
     """
     Execution for backtesting
     """
+
+    def __init__(self, exchange: "BackTestExchange", *args, **kwargs):
+        if exchange.executions is None:
+            logger.warning(
+                "Execution transaction is disable, enable by flag: show_execution=True"
+            )
+            return
+
+        super().__init__(*args, **kwargs)
 
     @classmethod
     def from_order(

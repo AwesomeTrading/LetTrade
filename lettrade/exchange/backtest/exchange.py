@@ -12,6 +12,12 @@ logger = logging.getLogger(__name__)
 class BackTestExchange(Exchange):
     __id = 0
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        if self._config.setdefault("use_execution", False):
+            self.executions = None
+
     def _id(self) -> str:
         self.__id += 1
         return str(self.__id)
@@ -20,6 +26,15 @@ class BackTestExchange(Exchange):
         """Execution when new data feeded"""
         self._simulate_orders()
         super().next()
+
+    def on_execution(self, **kwargs) -> None:
+        if self.executions is None:
+            logger.warning(
+                "Execution transaction is disable, enable by flag: show_execution=True"
+            )
+            return
+
+        super().on_execution(**kwargs)
 
     def new_order(
         self,
@@ -31,7 +46,7 @@ class BackTestExchange(Exchange):
         tp: Optional[float] = None,
         tag: Optional[object] = None,
         data: Optional[DataFeed] = None,
-        **kwargs
+        **kwargs,
     ) -> OrderResult:
         """Place new order.
         Then send order events to `Brain`

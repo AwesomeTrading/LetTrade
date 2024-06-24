@@ -30,12 +30,6 @@ class Execution(BaseTransaction):
         position: Optional["Position"] = None,
         **kwargs,
     ):
-        if exchange.executions is None:
-            logger.warning(
-                "Execution transaction is disable, enable by flag: show_execution=True"
-            )
-            return
-
         super().__init__(
             id=id,
             exchange=exchange,

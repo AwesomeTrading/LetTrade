@@ -61,12 +61,7 @@ class Exchange(metaclass=ABCMeta):
         self.history_orders = dict()
         self.positions = dict()
         self.history_positions = dict()
-
-        # Disable Execution by defaul
-        if self._config.setdefault("use_execution", False):
-            self.executions = dict()
-        else:
-            self.executions = None
+        self.executions = dict()
 
         self._state = ExchangeState.Init
 
@@ -128,12 +123,6 @@ class Exchange(metaclass=ABCMeta):
         """
         Receive Execution event from exchange then store and notify Brain
         """
-        if self.executions is None:
-            logger.warning(
-                "Execution transaction is disable, enable by flag: show_execution=True"
-            )
-            return
-
         if not isinstance(execution, Execution):
             raise RuntimeError(f"{execution} is not instance of type Execution")
 

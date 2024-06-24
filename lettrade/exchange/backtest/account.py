@@ -1,6 +1,9 @@
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from lettrade.account import Account
+
+if TYPE_CHECKING:
+    from lettrade.exchange.backtest import BackTestPosition
 
 
 class BackTestAccount(Account):
@@ -47,6 +50,10 @@ class BackTestAccount(Account):
 
     def fee(self, size: float, **kwargs: dict):
         return -abs(size * self._commission)
+
+    def on_position_exit(self, position: "BackTestPosition"):
+        self._cash += position.pl - position.fee
+        super().on_position_exit(position)
 
 
 class ForexBackTestAccount(BackTestAccount):

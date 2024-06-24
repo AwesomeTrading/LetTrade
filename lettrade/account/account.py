@@ -11,6 +11,7 @@ class Account:
     Manage account balance, leverage, commission. Risk calculate and control
     """
 
+    _exchange: "Exchange"
     _config: dict
 
     _risk: float
@@ -18,8 +19,6 @@ class Account:
     _margin: float
     _leverage: float
     _equities: dict[str, float]
-
-    _exchange: "Exchange"
 
     _do_equity_snapshot: bool
 
@@ -62,7 +61,7 @@ class Account:
     def stop(self):
         """Stop account"""
         try:
-            self._equity_snapshot()
+            self.equity_snapshot()
         except LetAccountInsufficientException:
             pass
 
@@ -86,7 +85,7 @@ class Account:
             equity += sum(position.pl for position in self._exchange.positions.values())
         return equity
 
-    def _equity_snapshot(self):
+    def equity_snapshot(self):
         if self._do_equity_snapshot or len(self._exchange.positions) > 0:
             equity = self.equity
 
@@ -99,12 +98,10 @@ class Account:
             if self._do_equity_snapshot:
                 self._do_equity_snapshot = False
 
-    def _on_position_entry(self, position: "Position"):
+    def on_position_entry(self, position: "Position"):
         if not self._do_equity_snapshot:
             self._do_equity_snapshot = True
 
-    def _on_position_exit(self, position: "Position"):
-        self._cash += position.pl - position.fee
-
+    def on_position_exit(self, position: "Position"):
         if not self._do_equity_snapshot:
             self._do_equity_snapshot = True

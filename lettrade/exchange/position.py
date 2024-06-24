@@ -138,15 +138,20 @@ class Position(BaseTransaction, metaclass=ABCMeta):
             self.tp_order.cancel()
             self.tp_order = None
 
-        if other.entry_price:
-            self.entry_price = other.entry_price
         if other.entry_at:
             self.entry_at = other.entry_at
+        if other.entry_price:
+            self.entry_price = other.entry_price
 
-        if other.exit_price:
-            self.exit_price = other.exit_price
         if other.exit_at:
             self.exit_at = other.exit_at
+        if other.exit_price:
+            self.exit_price = other.exit_price
+        if other.exit_fee:
+            self.exit_fee = other.exit_fee
+        if other.exit_pl:
+            self.exit_pl = other.exit_pl
+
         if other.parent:
             self.parent = other.parent
 

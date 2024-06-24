@@ -61,7 +61,7 @@ class Account:
     def stop(self):
         """Stop account"""
         try:
-            self.equity_snapshot()
+            self._equity_snapshot()
         except LetAccountInsufficientException:
             pass
 
@@ -85,7 +85,7 @@ class Account:
             equity += sum(position.pl for position in self._exchange.positions.values())
         return equity
 
-    def equity_snapshot(self):
+    def _equity_snapshot(self):
         if self._do_equity_snapshot or len(self._exchange.positions) > 0:
             equity = self.equity
 
@@ -98,10 +98,12 @@ class Account:
             if self._do_equity_snapshot:
                 self._do_equity_snapshot = False
 
-    def on_position_entry(self, position: "Position"):
+    def _on_position_entry(self, position: "Position"):
+        # TODO: refresh balance
         if not self._do_equity_snapshot:
             self._do_equity_snapshot = True
 
-    def on_position_exit(self, position: "Position"):
+    def _on_position_exit(self, position: "Position"):
+        # TODO: refresh balance
         if not self._do_equity_snapshot:
             self._do_equity_snapshot = True

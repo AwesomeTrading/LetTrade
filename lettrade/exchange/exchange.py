@@ -107,7 +107,7 @@ class Exchange(metaclass=ABCMeta):
 
     def next_next(self):
         "Call after strategy.next()"
-        self._account.equity_snapshot()
+        self._account._equity_snapshot()
 
     def stop(self) -> None:
         """Stop Exchange"""
@@ -203,7 +203,7 @@ class Exchange(metaclass=ABCMeta):
             if position.id in self.positions:
                 del self.positions[position.id]
 
-            self._account.on_position_exit(position)
+            self._account._on_position_exit(position)
         else:
             if position.id in self.history_positions:
                 raise RuntimeError(f"Position {position.id} closed: {position}")
@@ -215,7 +215,7 @@ class Exchange(metaclass=ABCMeta):
                 position = self.positions[position.id]
             else:
                 self.positions[position.id] = position
-                self._account.on_position_entry(position)
+                self._account._on_position_entry(position)
 
         if self._state != ExchangeState.Run:
             return

@@ -27,14 +27,14 @@ class BackTestExchange(Exchange):
         self._simulate_orders()
         super().next()
 
-    def on_execution(self, **kwargs) -> None:
+    def on_execution(self, *args, **kwargs) -> None:
         if self.executions is None:
             logger.warning(
                 "Execution transaction is disable, enable by flag: show_execution=True"
             )
             return
 
-        super().on_execution(**kwargs)
+        super().on_execution(*args, **kwargs)
 
     def new_order(
         self,

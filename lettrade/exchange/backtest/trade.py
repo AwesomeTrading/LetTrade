@@ -32,7 +32,7 @@ class BackTestExecution(Execution):
             )
             return
 
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, exchange=exchange, **kwargs)
 
     @classmethod
     def from_order(

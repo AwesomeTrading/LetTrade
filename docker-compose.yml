@@ -1,0 +1,14 @@
+services:
+  lettrade:
+    image: lettrade/lettrade:stable
+    container_name: lettrade
+    # restart: unless-stopped
+    # Build step by running `docker compose build`
+    build:
+      context: .
+      dockerfile: "docker/Dockerfile.build"
+    volumes:
+      - "./let_trade:/lettrade/let_trade"
+    # Default command used when running `docker compose up`
+    command: >
+      echo "HELLO!!!"

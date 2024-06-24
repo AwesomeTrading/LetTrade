@@ -41,7 +41,7 @@ if __name__ == "__main__":
                 "lettrade[live]",
                 "python-box",
                 "mt5linux",
-                # "mt5linux @ git+https://github.com/AwesomeTrading//mt5linux.git@master"
+                # "mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master"
             ],
             "exchange-ccxt": ["lettrade[live]", "ccxt"],
             "test": ["pytest"],

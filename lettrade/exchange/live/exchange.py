@@ -94,14 +94,14 @@ class LiveExchange(Exchange):
         return ok
 
     # Events
-    def on_deals_new(self, raws):
+    def on_executions_new(self, raws, broadcast: Optional[bool] = True):
         if __debug__:
-            logger.debug("Raw new deals: %s", raws)
+            logger.debug("Raw new executions: %s", raws)
         for raw in raws:
             execution = self._execution_cls.from_raw(raw=raw, exchange=self)
             if execution is None:
                 continue
-            self.on_execution(execution)
+            self.on_execution(execution, broadcast=broadcast)
 
     def on_orders_new(self, raws):
         if __debug__:

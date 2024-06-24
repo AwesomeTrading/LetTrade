@@ -1,6 +1,8 @@
+import functools
 import logging
 import time
 from datetime import datetime, timedelta
+from subprocess import Popen
 from typing import TYPE_CHECKING, Optional
 
 from box import Box
@@ -11,7 +13,7 @@ from lettrade.exchange.live import LiveAPI
 
 if TYPE_CHECKING:
     from .metatrader import MetaTraderExchange
-    from .trade import MetaTraderExecution, MetaTraderOrder, MetaTraderPosition
+    from .trade import MetaTraderOrder, MetaTraderPosition
 
 logger = logging.getLogger(__name__)
 
@@ -41,18 +43,42 @@ TIMEFRAME_L2M = {
 }
 
 
+def mt5_connection(api_function):
+    @functools.wraps(api_function)
+    def wrapper(self: "MetaTraderAPI", *args, api_retry: int = 3, **kwargs):
+        while api_retry > 0:
+            result = api_function(self, *args, api_retry=api_retry, **kwargs)
+
+            if result is not None:
+                return result
+
+            logger.warning(
+                "Retry to reconnect MetaTrader 5 RPC for functon %s", api_function
+            )
+            if not self._refresh_environments():
+                return result
+
+            time.sleep(1)
+            api_retry -= 1
+
+    return wrapper
+
+
 class MetaTraderAPI(LiveAPI):
     """API to connect MetaTrader 5 Terminal"""
 
     _mt5: MT5
     _exchange: "MetaTraderExchange"
     _magic: int
-    _use_execution: bool
+    _config: dict
 
-    __load_history_since: datetime
-    __deal_time_checked: datetime
-    __orders_stored: dict[int, object] = {}
-    __positions_stored: dict[int, object] = {}
+    _load_history_since: datetime
+    _deal_time_checked: datetime
+    _orders_stored: dict[int, object]
+    _executions_stored: dict[int, object]
+    _positions_stored: dict[int, object]
+
+    _wine_process: Optional[Popen] = None
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
@@ -66,14 +92,16 @@ class MetaTraderAPI(LiveAPI):
         if not wine:
             return
 
-        cls._wine_process(wine)
+        cls._wine_run(wine)
 
     @classmethod
-    def _wine_process(cls, wine: str):
-        from subprocess import Popen
+    def _wine_run(cls, wine: str):
+        if cls._wine_process is not None and cls._wine_process.poll() is None:
+            logger.info("Wine MetaTrader rpyc is running: %s", wine)
+            return
 
-        logger.info("Start Wine MetaTrader rpyc from path: %s", wine)
-        Popen(wine, shell=True)
+        logger.info("Start new Wine MetaTrader rpyc from path: %s", wine)
+        cls._wine_process = Popen(wine, shell=True)
 
         # Wait for wine start
         time.sleep(5)
@@ -110,29 +138,56 @@ class MetaTraderAPI(LiveAPI):
             RuntimeError: _description_
         """
         # Parameters
+        self._config = kwargs
         self._magic = magic
-        self._use_execution = False
-        self.__load_history_since = datetime.now() - timedelta(days=7)
-        self.__deal_time_checked = datetime.now() - timedelta(days=1)
-        self.__orders_stored = {}
-        self.__positions_stored = {}
 
-        # Start wine server if not inited
+        self._load_history_since = datetime.now() - timedelta(days=7)
+        self._deal_time_checked = datetime.now() - timedelta(days=1)
+        self._orders_stored = dict()
+        self._executions_stored = dict()
+        self._positions_stored = dict()
+
+        # Update config
+        self._config.update(
+            host=host,
+            port=port,
+            login=int(login),
+            password=password,
+            server=server,
+            wine=wine,
+            retry=retry,
+        )
+
+        # Start enviroments
+        self._refresh_environments()
+
+    def _refresh_environments(self) -> bool:
+        # Check start wine server if not inited yet
+        wine = self._config.get("wine", False)
         if wine:
-            self.__class__._wine_process(wine)
+            self.__class__._wine_run(wine)
 
-        try:
-            self._mt5 = MT5(host=host, port=port)
-        except ConnectionRefusedError as e:
-            raise ConnectionRefusedError(
-                "Cannot connect to MetaTrader 5 Terminal rpyc server"
-            ) from e
-        except TimeoutError as e:
-            raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e
+        # Init MT5
+        if not hasattr(self, "_mt5") or self._mt5.account_info() is None:
+            host = self._config.get("host")
+            port = self._config.get("port")
+
+            try:
+                self._mt5 = MT5(host=host, port=port)
+            except ConnectionRefusedError as e:
+                raise ConnectionRefusedError(
+                    "Cannot connect to MetaTrader 5 Terminal rpyc server"
+                ) from e
+            except TimeoutError as e:
+                raise RuntimeError("Timeout start MetaTrader 5 Terminal") from e
 
         # Login account
-        account = self.account()
+        account = self._mt5.account_info()
+        login = self._config.get("login")
         if not account or account.login != login:
+            password = self._config.get("password")
+            server = self._config.get("server")
+            retry = self._config.get("retry")
             while retry > 0:
                 login = self._mt5.initialize(
                     login=int(login),
@@ -144,7 +199,7 @@ class MetaTraderAPI(LiveAPI):
                     break
 
                 if __debug__:
-                    logger.info("Login retry: %d", retry)
+                    logger.debug("Login retry: %d", retry)
 
                 time.sleep(1)
                 retry -= 1
@@ -154,25 +209,27 @@ class MetaTraderAPI(LiveAPI):
 
             # Preload trading data
             now = datetime.now()
-            self._mt5.history_deals_get(self.__deal_time_checked, now)
-            self._mt5.history_orders_get(self.__load_history_since, now)
+            self._mt5.history_deals_get(self._deal_time_checked, now)
+            self._mt5.history_orders_get(self._load_history_since, now)
             self._mt5.orders_get()
             self._mt5.positions_get()
             time.sleep(5)
 
-        # Terminal
-        terminal = self._mt5.terminal_info()
-        logger.info("Terminal information: %s", str(terminal))
-        if not terminal.trade_allowed:
-            logger.warning("Terminal trading mode is not allowed")
+            # Terminal
+            terminal = self._mt5.terminal_info()
+            logger.info("Terminal: %s", str(terminal))
+            if not terminal.trade_allowed:
+                logger.warning("Terminal trading mode is not allowed")
 
-        # Account
-        logger.info(
-            "Login success account=%s, server=%s, version=%s",
-            account,
-            server,
-            self._mt5.version(),
-        )
+            # Account
+            logger.info(
+                "Login success account=%s, server=%s, version=%s",
+                account,
+                server,
+                self._mt5.version(),
+            )
+
+        return True
 
     def start(self, exchange: "MetaTraderExchange"):
         """_summary_
@@ -181,7 +238,6 @@ class MetaTraderAPI(LiveAPI):
             exchange (MetaTraderExchange): _description_
         """
         self._exchange = exchange
-        self._use_execution = exchange.executions is not None
 
         self._load_history_transactions()
         self._check_transaction_events()
@@ -203,7 +259,8 @@ class MetaTraderAPI(LiveAPI):
         return True
 
     ### Public
-    def market(self, symbol: str) -> dict:
+    @mt5_connection
+    def market(self, symbol: str, **kwargs) -> dict:
         """_summary_
 
         Args:
@@ -214,7 +271,8 @@ class MetaTraderAPI(LiveAPI):
         """
         return self._mt5.symbol_info(symbol)
 
-    def markets(self, search: Optional[str] = None) -> list[dict]:
+    @mt5_connection
+    def markets(self, search: Optional[str] = None, **kwargs) -> list[dict]:
         """The filter for arranging a group of necessary symbols. Optional parameter.
         If the group is specified, the function returns only symbols meeting a specified criteria.
 
@@ -230,7 +288,8 @@ class MetaTraderAPI(LiveAPI):
         """
         return self._mt5.symbols_get(search)
 
-    def tick_get(self, symbol: str) -> dict:
+    @mt5_connection
+    def tick_get(self, symbol: str, **kwargs) -> dict:
         """_summary_
 
         Args:
@@ -241,12 +300,14 @@ class MetaTraderAPI(LiveAPI):
         """
         return self._mt5.symbol_info_tick(symbol)
 
+    @mt5_connection
     def bars(
         self,
         symbol,
         timeframe,
         since: Optional[int | datetime] = 0,
         to: Optional[int | datetime] = 1_000,
+        **kwargs,
     ) -> list[list]:
         """_summary_
 
@@ -271,7 +332,8 @@ class MetaTraderAPI(LiveAPI):
 
     ### Private
     # Account
-    def account(self) -> dict:
+    @mt5_connection
+    def account(self, **kwargs) -> dict:
         """Metatrader 5 account information
 
         Returns:
@@ -280,10 +342,12 @@ class MetaTraderAPI(LiveAPI):
         return self._mt5.account_info()
 
     # Order
+    @mt5_connection
     def orders_total(
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -302,10 +366,12 @@ class MetaTraderAPI(LiveAPI):
 
         return self._mt5.orders_total(**kwargs)
 
+    @mt5_connection
     def orders_get(
         self,
         id: Optional[str] = None,
         symbol: Optional[str] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> list[dict]:
         """_summary_
@@ -323,6 +389,11 @@ class MetaTraderAPI(LiveAPI):
             kwargs["symbol"] = symbol
 
         raws = self._mt5.orders_get(**kwargs)
+
+        # Return None to retry
+        if raws is None:
+            return None
+
         return [self._order_parse_response(raw) for raw in raws]
 
     def order_open(self, order: "MetaTraderOrder") -> dict:
@@ -362,6 +433,7 @@ class MetaTraderAPI(LiveAPI):
             tag=order.tag,
         )
 
+    @mt5_connection
     def do_order_open(
         self,
         symbol: str,
@@ -372,6 +444,7 @@ class MetaTraderAPI(LiveAPI):
         tp: float = None,
         tag: str = "",
         deviation: int = 10,
+        **kwargs,
     ) -> dict:
         """_summary_
 
@@ -399,6 +472,11 @@ class MetaTraderAPI(LiveAPI):
             deviation=deviation,
         )
         raw = self._mt5.order_send(request)
+
+        # Return None to retry
+        if raw is None:
+            return None
+
         return self._parse_trade_send_response(raw)
 
     def _parse_trade_request(
@@ -483,10 +561,12 @@ class MetaTraderAPI(LiveAPI):
 
         return response
 
+    @mt5_connection
     def orders_history_total(
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -505,12 +585,14 @@ class MetaTraderAPI(LiveAPI):
 
         return self._mt5.history_orders_get(**kwargs)
 
+    @mt5_connection
     def orders_history_get(
         self,
         id: Optional[str] = None,
         position_id: Optional[str] = None,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> list[dict]:
         """_summary_
@@ -534,6 +616,11 @@ class MetaTraderAPI(LiveAPI):
             kwargs["date_to"] = to
 
         raws = self._mt5.history_orders_get(**kwargs)
+
+        # Retry
+        if raws is None:
+            return None
+
         return [self._order_parse_response(raw) for raw in raws]
 
     def _order_parse_response(self, raw):
@@ -541,10 +628,12 @@ class MetaTraderAPI(LiveAPI):
         return response
 
     # Execution
+    @mt5_connection
     def executions_total(
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -563,10 +652,12 @@ class MetaTraderAPI(LiveAPI):
 
         return self._mt5.history_deals_total(**kwargs)
 
+    @mt5_connection
     def executions_get(
         self,
         position_id: Optional[str] = None,
         search: Optional[str] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> list[dict]:
         """_summary_
@@ -585,12 +676,29 @@ class MetaTraderAPI(LiveAPI):
 
         raws = self._mt5.history_deals_get(**kwargs)
 
+        # Retry
+        if raws is None:
+            return None
+
+        # May be wrong account when position exist but no execution
+        if not raws and position_id is not None:
+            logger.warning(
+                "Execution retry %s check connection when position=%s exist but no execution",
+                api_retry,
+                position_id,
+            )
+
+            # Retry check mt5 connection
+            if api_retry > 0:
+                return None
+
         if __debug__:
             logger.debug("Raw executions: %s", raws)
 
         return [self._execution_parse_response(raw) for raw in raws]
 
-    def execution_get(self, id: str, **kwargs) -> dict:
+    @mt5_connection
+    def execution_get(self, id: str, api_retry: int = 1, **kwargs) -> dict:
         """_summary_
 
         Args:
@@ -603,8 +711,10 @@ class MetaTraderAPI(LiveAPI):
             kwargs["ticket"] = int(id)
 
         raws = self._mt5.history_deals_get(**kwargs)
-        if not raws:
-            return
+
+        # Retry
+        if raws is None:
+            return None
 
         if __debug__:
             logger.debug("Raw execution: %s", raws)
@@ -612,14 +722,19 @@ class MetaTraderAPI(LiveAPI):
         return self._execution_parse_response(raws[0])
 
     def _execution_parse_response(self, raw):
+        # Store
+        self._executions_stored[raw.ticket] = raw
+
         raw = Box(dict(raw._asdict()))
         return raw
 
     # Position
+    @mt5_connection
     def positions_total(
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -638,15 +753,19 @@ class MetaTraderAPI(LiveAPI):
 
         return self._mt5.positions_total(**kwargs)
 
-    def positions_get(self, id: str = None, symbol: str = None, **kwargs) -> list[dict]:
+    @mt5_connection
+    def positions_get(
+        self,
+        id: str = None,
+        symbol: str = None,
+        api_retry: int = 1,
+        **kwargs,
+    ) -> list[dict]:
         """_summary_
 
         Args:
             id (str, optional): _description_. Defaults to None.
             symbol (str, optional): _description_. Defaults to None.
-
-        Raises:
-            RuntimeError: _description_
 
         Returns:
             list[dict]: _description_
@@ -657,16 +776,19 @@ class MetaTraderAPI(LiveAPI):
             kwargs.update(symbol=symbol)
 
         raws = self._mt5.positions_get(**kwargs)
-        if raws is None:
-            raise RuntimeError(f"Cannot get position by parameters {kwargs}")
 
-        return [Box(dict(raw._asdict())) for raw in raws]
+        # Retry
+        if raws is None:
+            return None
+
+        return [self._position_parse_response(raw) for raw in raws]
 
     def position_update(
         self,
         position: "MetaTraderPosition",
         sl: Optional[float] = None,
         tp: Optional[float] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> dict:
         """_summary_
@@ -687,12 +809,14 @@ class MetaTraderAPI(LiveAPI):
             **kwargs,
         )
 
+    @mt5_connection
     def do_position_update(
         self,
         id: int,
         # symbol: str,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
+        api_retry: int = 1,
         **kwargs,
     ) -> dict:
         """_summary_
@@ -714,6 +838,11 @@ class MetaTraderAPI(LiveAPI):
             **kwargs,
         )
         raw = self._mt5.order_send(request)
+
+        # Retry
+        if raw is None:
+            return None
+
         return self._parse_trade_send_response(raw)
 
     def position_close(self, position: "MetaTraderPosition", **kwargs) -> dict:
@@ -740,6 +869,7 @@ class MetaTraderAPI(LiveAPI):
             **kwargs,
         )
 
+    @mt5_connection
     def do_position_close(
         self,
         id: int,
@@ -747,6 +877,7 @@ class MetaTraderAPI(LiveAPI):
         type: int,
         price: float,
         size: float,
+        api_retry: int = 1,
         **kwargs,
     ) -> dict:
         request = self._parse_trade_request(
@@ -758,19 +889,27 @@ class MetaTraderAPI(LiveAPI):
             **kwargs,
         )
         raw = self._mt5.order_send(request)
+
+        # Retry
+        if raw is None:
+            return None
+
         return self._parse_trade_send_response(raw)
+
+    def _position_parse_response(self, raw) -> dict:
+        return Box(dict(raw._asdict()))
 
     # Transaction
     def _load_history_transactions(self):
         to = datetime.now()  # + timedelta(days=1)
 
         # History orders
-        orders = self._mt5.history_orders_get(self.__load_history_since, to)
+        orders = self._mt5.history_orders_get(self._load_history_since, to)
         if orders:
             self._exchange.on_orders_old(orders)
 
         # # Positions
-        # positions = self._mt5.positions_get(self.__load_history_since, to)
+        # positions = self._mt5.positions_get(self._load_history_since, to)
         # if positions:
         #     self._exchange.on_positions_new(positions)
 
@@ -784,10 +923,9 @@ class MetaTraderAPI(LiveAPI):
             return
 
         # Deals
-        if self._use_execution:
-            deals = self._check_deals()
-            if deals:
-                self._exchange.on_deals_new(deals)
+        deals = self._check_deals()
+        if deals:
+            self._exchange.on_executions_new(deals)
 
         # Orders
         orders, removed_orders = self._check_orders()
@@ -804,46 +942,65 @@ class MetaTraderAPI(LiveAPI):
             self._exchange.on_positions_old(removed_positions)
 
     # Deal
-    def _check_deals(self):
+    @mt5_connection
+    def _check_deals(self, **kwargs) -> list | bool | None:
         to = datetime.now()  # + timedelta(days=1)
 
-        deal_total = self._mt5.history_deals_total(self.__deal_time_checked, to)
+        deal_total = self._mt5.history_deals_total(self._deal_time_checked, to)
+
+        # Re-connect
         if deal_total is None:
-            return
+            return None
 
         # No thing new in deal
         if deal_total <= 0:
-            return
+            return False
 
-        raws = self._mt5.history_deals_get(self.__deal_time_checked, to)
+        raws = self._mt5.history_deals_get(self._deal_time_checked, to)
 
-        if raws:
+        # Re-connect
+        if raws is None:
+            return None
+
+        if len(raws) > 0:
             # Update last check time +1 second
-            self.__deal_time_checked = datetime.fromtimestamp(raws[-1].time + 1)
+            self._deal_time_checked = datetime.fromtimestamp(raws[-1].time + 1)
+
+            # Store
+            for raw in raws:
+                self._executions_stored[raw.ticket] = raw
 
         return raws
 
     # Order
-    def _check_orders(self):
+    @mt5_connection
+    def _check_orders(self, **kwargs) -> tuple | None:
         order_total = self._mt5.orders_total()
+
+        # Re-connect
         if order_total is None:
-            return None, None
+            return None
 
         # No thing new in order
-        if order_total <= 0 and len(self.__orders_stored) == 0:
+        if order_total <= 0 and len(self._orders_stored) == 0:
             return None, None
 
         raws = self._mt5.orders_get()
+
+        # Re-connect
+        if raws is None:
+            return None
+
         tickets = [raw.ticket for raw in raws]
 
         removed_orders = [
-            raw for raw in self.__orders_stored.values() if raw.ticket not in tickets
+            raw for raw in self._orders_stored.values() if raw.ticket not in tickets
         ]
 
         added_orders = []
         for raw in raws:
-            if raw.ticket in self.__orders_stored:
-                stored = self.__orders_stored[raw.ticket]
+            if raw.ticket in self._orders_stored:
+                stored = self._orders_stored[raw.ticket]
                 if (
                     raw.sl == stored.sl
                     and raw.tp == stored.tp
@@ -854,30 +1011,56 @@ class MetaTraderAPI(LiveAPI):
                     continue
 
             added_orders.append(raw)
-        self.__orders_stored = {raw.ticket: raw for raw in raws}
+        self._orders_stored = {raw.ticket: raw for raw in raws}
         return added_orders, removed_orders
 
     # Trade
-    def _check_positions(self):
+    @mt5_connection
+    def _check_positions(self, **kwargs) -> tuple | None:
         positions_total = self._mt5.positions_total()
+
+        # Re-connect
         if positions_total is None:
-            return None, None
+            return None
 
         # No thing new in trade
-        if positions_total <= 0 and len(self.__positions_stored) == 0:
+        if positions_total <= 0 and not bool(self._positions_stored):
             return None, None
 
         raws = self._mt5.positions_get()
+
+        # Re-connect
+        if raws is None:
+            return None
+
+        # May be wrong account when position exist but no execution
+        if not raws and bool(self._positions_stored):
+            position_exit = list(self._positions_stored.values())[-1]
+            executions = [
+                e
+                for e in self._executions_stored.values()
+                if e.position_id == position_exit.ticket
+            ]
+
+            # Execution is not close of position
+            if not executions or executions[-1].type == position_exit.type:
+                logger.warning(
+                    "Positions retry check connection when position=%s exited but no execution",
+                    position_exit.ticket,
+                )
+                return None
+
         tickets = [raw.ticket for raw in raws]
+        raws = {raw.ticket: self._position_parse_response(raw) for raw in raws}
 
         removed_positions = [
-            raw for raw in self.__positions_stored.values() if raw.ticket not in tickets
+            raw for raw in self._positions_stored.values() if raw.ticket not in tickets
         ]
 
         added_positions = []
-        for raw in raws:
-            if raw.ticket in self.__positions_stored:
-                stored = self.__positions_stored[raw.ticket]
+        for raw in raws.values():
+            if raw.ticket in self._positions_stored:
+                stored = self._positions_stored[raw.ticket]
                 if (
                     raw.time_update == stored.time_update
                     and raw.sl == stored.sl
@@ -889,7 +1072,7 @@ class MetaTraderAPI(LiveAPI):
 
             added_positions.append(raw)
 
-        self.__positions_stored = {raw.ticket: raw for raw in raws}
+        self._positions_stored = raws
         return added_positions, removed_positions
 
     # Bypass pickle

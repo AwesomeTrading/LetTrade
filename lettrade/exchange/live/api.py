@@ -31,9 +31,9 @@ class LiveAPI(ABC):
         """"""
 
     # Public
-    @abstractmethod
     def heartbeat(self) -> bool:
         """"""
+        return True
 
     # Market
     @abstractmethod

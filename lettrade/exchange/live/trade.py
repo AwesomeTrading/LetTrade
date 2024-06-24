@@ -1,25 +1,23 @@
 import logging
 from abc import ABCMeta, abstractmethod
-from typing import Optional
-
-import pandas as pd
+from typing import TYPE_CHECKING, Optional
 
 from lettrade.exchange import (
     Execution,
     Order,
     OrderResult,
-    OrderResultError,
-    OrderResultOk,
     OrderState,
     OrderType,
     Position,
     PositionResult,
-    PositionResultError,
-    PositionResultOk,
     PositionState,
 )
 
 from .api import LiveAPI
+
+if TYPE_CHECKING:
+    from .data import LiveDataFeed
+    from .exchange import LiveExchange
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +44,7 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
         self,
         id: str,
         exchange: "LiveExchange",
-        data: "DataFeed",
+        data: "LiveDataFeed",
         size: float,
         price: float,
         at: float,
@@ -77,6 +75,7 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
         # self.tag: str = tag
 
     @classmethod
+    @abstractmethod
     def from_raw(cls, raw, exchange: "LiveExchange") -> "LiveExecution":
         """Building new LiveExecution from live api raw object
 
@@ -95,7 +94,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         self,
         id: str,
         exchange: "LiveExchange",
-        data: "DataFeed",
+        data: "LiveDataFeed",
         size: float,
         state: OrderState = OrderState.Pending,
         type: OrderType = OrderType.Market,
@@ -225,7 +224,7 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         self,
         id: str,
         exchange: "LiveExchange",
-        data: "DataFeed",
+        data: "LiveDataFeed",
         size: float,
         parent: Order,
         tag: str = "",

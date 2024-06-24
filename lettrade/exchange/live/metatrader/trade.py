@@ -30,13 +30,26 @@ logger = logging.getLogger(__name__)
 class MetaTraderExecution(LiveExecution):
     """Execution for MetaTrader"""
 
+    def __init__(
+        self,
+        pl: float = None,
+        fee: float = None,
+        tag: Optional[str] = None,
+        **kwargs,
+    ):
+        super().__init__(**kwargs)
+        self.pl: float = pl
+        self.fee: float = fee
+        self.tag: str = tag
+
     @classmethod
     def from_raw(
         cls,
         raw,
         exchange: "LiveExchange",
+        data: "LiveDataFeed" = None,
         api: MetaTraderAPI = None,
-    ) -> "MetaTraderExecution":
+    ) -> Optional["MetaTraderExecution"]:
         """Building new MetaTraderExecution from live api raw object
 
         Args:
@@ -46,19 +59,41 @@ class MetaTraderExecution(LiveExecution):
         Returns:
             MetaTraderExecution: _description_
         """
+        # DataFeed
+        if data is None:
+            for d in exchange.datas:
+                if d.symbol == raw.symbol:
+                    data = d
+                    break
+            if data is None:
+                logger.warning("Raw execution %s is not handling %s", raw.symbol, raw)
+                return
+        # Side
+        match raw.type:
+            case MT5.DEAL_TYPE_BUY:
+                side = TradeSide.Buy
+            case MT5.DEAL_TYPE_SELL:
+                side = TradeSide.Sell
+            case _:
+                logger.warning(
+                    "Raw execution %s type %s is not handling %s",
+                    raw.symbol,
+                    raw.type,
+                    raw,
+                )
+                return
 
         return cls(
             exchange=exchange,
             id=raw.ticket,
-            # TODO: Fix by get data from symbol
-            data=exchange.data,
-            # TODO: size and type from raw.type
-            size=raw.volume,
-            price=raw.price,
-            # TODO: set bar time
-            at=None,
+            data=data,
             order_id=raw.order,
             position_id=raw.position_id,
+            size=side * raw.volume,
+            price=raw.price,
+            pl=raw.profit,
+            fee=raw.fee + raw.swap + raw.commission,
+            at=pd.to_datetime(raw.time_msc, unit="ms", utc=True),
             tag=raw.comment,
             api=api,
             raw=raw,
@@ -182,6 +217,7 @@ class MetaTraderOrder(LiveOrder):
         cls,
         raw: Any,
         exchange: "LiveExchange",
+        data: "LiveDataFeed" = None,
         api: Optional[MetaTraderAPI] = None,
     ) -> Optional["MetaTraderOrder"]:
         """_summary_
@@ -198,14 +234,14 @@ class MetaTraderOrder(LiveOrder):
             MetaTraderOrder: _description_
         """
         # DataFeed
-        data = None
-        for d in exchange.datas:
-            if d.symbol == raw.symbol:
-                data = d
-                break
         if data is None:
-            logger.warning("Raw order %s is not handling %s", raw.symbol, raw)
-            return
+            for d in exchange.datas:
+                if d.symbol == raw.symbol:
+                    data = d
+                    break
+            if data is None:
+                logger.warning("Raw order %s is not handling %s", raw.symbol, raw)
+                return
 
         # Prices & Side & Type
         limit_price = None
@@ -475,6 +511,9 @@ class MetaTraderPosition(LivePosition):
                     f"Position type {raw.type} is not implement",
                     raw,
                 )
+        # API
+        if api is None:
+            api = exchange._api
 
         position = cls(
             exchange=exchange,
@@ -504,6 +543,19 @@ class MetaTraderPosition(LivePosition):
                 position=position, tp=raw.tp
             )
             exchange.on_order(position.tp_order)
+
+        if position.state == PositionState.Exit:
+            if position.exit_price is None:
+                if not hasattr(raw, "executions"):
+                    raw.executions = api.executions_get(position_id=position.id)
+
+                exchange.on_executions_new(raw.executions, broadcast=False)
+
+                execution = exchange.executions[raw.executions[-1].ticket]
+                position.exit_at = execution.at
+                position.exit_price = execution.price
+                position.exit_pl = execution.pl
+                position.exit_fee = execution.fee
 
         return position
 

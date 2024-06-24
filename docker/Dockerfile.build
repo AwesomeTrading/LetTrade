@@ -1,4 +1,3 @@
-# docker build -t lettrade/lettrade -f docker/Dockerfile.build .
 FROM python:3.12.4-slim as base
 
 # Setup env
@@ -12,7 +11,7 @@ ENV LT_APP_ENV="docker"
 # Prepare environment
 RUN mkdir /lettrade \
   && apt-get update \
-  && apt-get -y install sudo wget tar \
+  && apt-get -y install sudo \
   && apt-get clean \
   && useradd -u 1000 -G sudo -U -m letuser \
   && chown letuser:letuser /lettrade \
@@ -25,13 +24,13 @@ WORKDIR /lettrade
 # Install dependencies
 FROM base as python-deps
 RUN  apt-get update \
-  && apt-get -y install build-essential libssl-dev pkg-config cmake gcc \
-  && apt-get clean \
-  && echo "[global]\nextra-index-url=https://www.piwheels.org/simple" > /etc/pip.conf
+  && apt-get -y install build-essential libssl-dev pkg-config cmake gcc wget tar \
+  && apt-get clean
 
 # Install TA-lib
 COPY docker/builder/* /tmp/
-RUN /tmp/talib.sh
+RUN  chmod +x /tmp/talib.sh \
+  && /tmp/talib.sh
 
 # Install dependencies
 COPY --chown=letuser:letuser requirements.txt /lettrade/

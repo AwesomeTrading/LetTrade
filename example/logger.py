@@ -5,11 +5,10 @@ rich = importlib.util.find_spec("rich")
 if rich:
     from rich.logging import RichHandler
 
-    FORMAT = "%(message)s"
     logging.basicConfig(
         level=logging.root.level,
         format="%(funcName)16s(): %(message)s",
-        datefmt="[%X]",
+        datefmt="[%x %X.%f]",
         handlers=[RichHandler(rich_tracebacks=True)],
     )
 else:

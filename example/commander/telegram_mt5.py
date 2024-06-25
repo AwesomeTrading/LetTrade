@@ -1,4 +1,3 @@
-import logging
 import os
 from datetime import datetime
 
@@ -10,7 +9,6 @@ from lettrade import indicator as i
 # import example.logger
 from lettrade.all import DataFeed, Strategy, TelegramCommander, let_metatrader
 
-logger = logging.getLogger(__name__)
 load_dotenv()
 
 
@@ -74,11 +72,13 @@ class SmaCross(Strategy):
 if __name__ == "__main__":
     lt = let_metatrader(
         strategy=SmaCross,
-        datas={("EURGBP", "5m")},
+        datas=[("EURGBP", "5m")],
         mt5_login=os.getenv("MT5_LOGIN"),
         mt5_password=os.getenv("MT5_PASSWORD"),
         mt5_server=os.getenv("MT5_SERVER"),
-        commander=TelegramCommander(
+        mt5_wine=os.getenv("MT5_WINE", None),
+        commander=TelegramCommander,
+        commander_kwargs=dict(
             token=os.getenv("TELEGRAM_TOKEN"),
             chat_id=os.getenv("TELEGRAM_CHAT_ID"),
         ),

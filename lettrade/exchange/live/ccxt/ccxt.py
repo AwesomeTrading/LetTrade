@@ -11,6 +11,7 @@ from lettrade.exchange.live import (
     LiveExchange,
     let_live,
 )
+from lettrade.exchange.live.api import LiveAPI
 
 from .api import CCXTAPI
 from .trade import CCXTExecution, CCXTOrder, CCXTPosition
@@ -33,6 +34,12 @@ class CCXTDataFeeder(LiveDataFeeder):
 
 class CCXTAccount(LiveAccount):
     """Account for CCXT"""
+
+    _currency: str
+
+    def __init__(self, api: LiveAPI, currency: str = "USDT", **kwargs) -> None:
+        super().__init__(api, **kwargs)
+        self._currency = currency
 
 
 class CCXTExchange(LiveExchange):

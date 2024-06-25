@@ -55,11 +55,11 @@ class LiveAccount(Account):
         """Refresh account balance"""
         self._account = self._api.account()
 
-        self._balance = self._account.balance
-        self._equity = self._account.equity
-
         if __debug__:
             logger.debug("Account: %s", str(self._account))
+
+        self._balance = self._account.balance
+        self._equity = self._account.equity
 
     def on_positions(self, positions: list[BackTestPosition]):
         self.account_refresh()

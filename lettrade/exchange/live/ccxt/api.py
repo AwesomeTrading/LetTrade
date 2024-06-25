@@ -4,6 +4,7 @@ from multiprocessing.managers import BaseManager
 from typing import TYPE_CHECKING, Literal, Optional
 
 import ccxt
+from box import Box
 
 from lettrade.exchange.live import LiveAPI
 
@@ -157,6 +158,7 @@ class CCXTAPI(LiveAPI):
 
     _ccxt: CCXTAPIExchange
     _exchange: "CCXTExchange"
+    _currency: str
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
@@ -175,6 +177,7 @@ class CCXTAPI(LiveAPI):
         exchange: int,
         key: str,
         secret: str,
+        currency: str = "USDT",
         ccxt: Optional[CCXTAPIExchange] = None,
         **kwargs,
     ):
@@ -189,6 +192,7 @@ class CCXTAPI(LiveAPI):
         if ccxt is None:
             ccxt = CCXTAPIExchange(exchange=exchange, key=key, secret=secret, **kwargs)
         self._ccxt = ccxt
+        self._currency = ccxt
 
     # Bypass pickle
     def __copy__(self):
@@ -199,6 +203,8 @@ class CCXTAPI(LiveAPI):
 
     def start(self, exchange: Optional["CCXTExchange"] = None):
         self._exchange = exchange
+        self._currency = exchange._account._currency
+
         self._ccxt.start()
 
     def stop(self):
@@ -235,7 +241,15 @@ class CCXTAPI(LiveAPI):
     # Account
     def account(self) -> dict:
         """"""
-        return self._ccxt.fetch_my_balance()
+        raw = self._ccxt.fetch_my_balance()
+        currency = raw[self._currency]
+        return Box(
+            balance=currency["free"],
+            equity=currency["total"],
+            margin=1,
+            leverage=1,
+            raw=raw,
+        )
 
     #  Order
     def order_open(self, order: "CCXTOrder", **kwargs):

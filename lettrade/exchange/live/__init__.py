@@ -1,3 +1,5 @@
+"""Live trading base classes"""
+
 from .account import LiveAccount
 from .api import LiveAPI
 from .data import LiveDataFeed

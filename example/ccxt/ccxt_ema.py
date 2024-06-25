@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 import example.logger
 from lettrade import DataFeed, Strategy
-from lettrade.exchange.live.ccxt import let_ccxt
+from lettrade.exchange.ccxt import let_ccxt
 
 load_dotenv()
 

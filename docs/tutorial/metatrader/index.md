@@ -9,7 +9,7 @@ pip install lettrade[exchange-metatrader]
 ## Default config
 
 ```python
-from lettrade.exchange.live.metatrader import let_metatrader
+from lettrade.exchange.metatrader import let_metatrader
 
 
 lt = let_metatrader(

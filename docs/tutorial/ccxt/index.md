@@ -9,7 +9,7 @@ pip install lettrade[exchange-ccxt]
 ## Default config
 
 ```python
-from lettrade.exchange.live.ccxt import let_ccxt
+from lettrade.exchange.ccxt import let_ccxt
 
 lt = let_ccxt(
     strategy=SmaCross,

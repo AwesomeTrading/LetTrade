@@ -4,9 +4,9 @@ import pytest
 from box import Box
 from pytest_mock import MockerFixture
 
-from lettrade.exchange.live.metatrader.api import MT5, MetaTraderAPI
+from lettrade.exchange.metatrader.api import MT5, MetaTraderAPI
 
-_api_module_path = "lettrade.exchange.live.metatrader.api"
+_api_module_path = "lettrade.exchange.metatrader.api"
 _api_class_path = f"{_api_module_path}.MetaTraderAPI"
 
 

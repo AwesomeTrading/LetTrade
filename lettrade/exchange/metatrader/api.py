@@ -6,9 +6,10 @@ from subprocess import Popen
 from typing import TYPE_CHECKING, Optional
 
 from box import Box
+from mt5linux import MetaTrader5 as MT5
+
 from lettrade.exchange import OrderType
 from lettrade.exchange.live import LiveAPI
-from mt5linux import MetaTrader5 as MT5
 
 if TYPE_CHECKING:
     from .metatrader import MetaTraderExchange

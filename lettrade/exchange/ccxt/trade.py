@@ -8,11 +8,11 @@ from lettrade import (
     OrderResultError,
     OrderState,
     OrderType,
+    PositionResult,
     PositionResultError,
     PositionState,
     TradeSide,
 )
-from lettrade.exchange import PositionResult
 from lettrade.exchange.live import (
     LiveDataFeed,
     LiveExchange,

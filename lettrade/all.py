@@ -4,7 +4,7 @@ from . import *
 from .commander.telegram import *
 from .exchange.backtest import *
 from .exchange.backtest.plotly import *
-from .exchange.live.ccxt import *
-from .exchange.live.metatrader import *
+from .exchange.ccxt import *
+from .exchange.metatrader import *
 from .indicator import *
 from .plot.plotly import *

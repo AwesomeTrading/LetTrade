@@ -2,9 +2,9 @@ import logging
 from typing import Optional
 
 from lettrade.account import Account
-from lettrade.exchange.backtest import BackTestPosition
 
 from .api import LiveAPI
+from .trade import LivePosition
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +61,7 @@ class LiveAccount(Account):
         self._balance = self._account.balance
         self._equity = self._account.equity
 
-    def on_positions(self, positions: list[BackTestPosition]):
+    def on_positions(self, positions: list[LivePosition]):
         self.account_refresh()
         return super().on_positions(positions)
 

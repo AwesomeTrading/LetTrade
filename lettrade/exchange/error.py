@@ -7,3 +7,7 @@ class LetOrderException(LetException):
 
 class LetOrderValidateException(LetOrderException):
     """Order attribute validate exception"""
+
+
+class LetOrderInvalidException(LetOrderException):
+    """Order place is invalid exception"""

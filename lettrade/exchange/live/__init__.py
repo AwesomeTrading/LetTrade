@@ -3,7 +3,7 @@
 from .account import LiveAccount
 from .api import LiveAPI
 from .data import LiveDataFeed
-from .error import LetAPIUnauthorizedException
+from .error import LetLiveAPIUnauthorizedException, LetLiveOrderInvalidException
 from .exchange import LiveExchange
 from .feeder import LiveDataFeeder
 from .live import LetTradeLive, LetTradeLiveBot, let_live

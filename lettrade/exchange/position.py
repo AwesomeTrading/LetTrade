@@ -217,7 +217,6 @@ class PositionResult:
     def __init__(
         self,
         ok: bool = True,
-        code: int = 0,
         position: Optional["Position"] = None,
         raw: Optional[object] = None,
     ) -> None:
@@ -226,11 +225,9 @@ class PositionResult:
         Args:
             ok (Optional[bool], optional): Flag to check `Position` is success or not. Defaults to True.
             position (Optional[Position], optional): Position own the result. Defaults to None.
-            code (Optional[int], optional): Error code of result. Defaults to 0.
             raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
         """
         self.ok: bool = ok
-        self.code: int = code
         self.position: Optional["Position"] = position
         self.raw: Optional[object] = raw
 
@@ -258,7 +255,6 @@ class PositionResultError(PositionResult):
     def __init__(
         self,
         error: str,
-        code: int,
         position: Optional["Position"] = None,
         raw: Optional[object] = None,
     ) -> None:
@@ -266,9 +262,8 @@ class PositionResultError(PositionResult):
 
         Args:
             error (str): Error message
-            code (int): Error code of result
             position (Optional[Position], optional): Position own the result. Defaults to None.
             raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
         """
-        super().__init__(ok=False, position=position, code=code, raw=raw)
+        super().__init__(ok=False, position=position, raw=raw)
         self.error: str = error

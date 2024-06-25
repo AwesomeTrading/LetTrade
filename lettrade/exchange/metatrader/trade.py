@@ -15,6 +15,7 @@ from lettrade import (
 )
 from lettrade.exchange import PositionResult
 from lettrade.exchange.live import (
+    LetLiveOrderInvalidException,
     LiveDataFeed,
     LiveExchange,
     LiveExecution,
@@ -123,22 +124,24 @@ class MetaTraderOrder(LiveOrder):
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 
-        result = self._api.order_open(self)
-        self.raw = result
-        if result.code != 0:
+        try:
+            result = self._api.order_open(self)
+
             logger.error("Place order %s", str(result))
+
+            self.raw = result
+            self.id = result.order
+
+            # TODO: get current order time
+            return super(LiveOrder, self).place(at=self.data.l.index[0], raw=result)
+        except LetLiveOrderInvalidException as e:
             error = OrderResultError(
-                error=result.error,
-                code=result.code,
+                error=e.message,
                 order=self,
-                raw=result,
+                raw=e.raw,
             )
             self.exchange.on_notify(error=error)
             return error
-
-        self.id = result.order
-        # TODO: get current order time
-        return super(LiveOrder, self).place(at=self.data.l.index[0], raw=result)
 
     def update(
         self,

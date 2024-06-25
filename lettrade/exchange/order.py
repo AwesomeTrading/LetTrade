@@ -346,7 +346,6 @@ class OrderResult:
     def __init__(
         self,
         ok: bool = True,
-        code: int = 0,
         order: Optional["Order"] = None,
         raw: Optional[object] = None,
     ) -> None:
@@ -355,11 +354,9 @@ class OrderResult:
         Args:
             ok (Optional[bool], optional): Flag to check `Order` is success or not. Defaults to True.
             order (Optional[Order], optional): Order own the result. Defaults to None.
-            code (Optional[int], optional): Error code of result. Defaults to 0.
             raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
         """
         self.ok: bool = ok
-        self.code: int = code
         self.order: Optional["Order"] = order
         self.raw: Optional[object] = raw
 
@@ -387,7 +384,6 @@ class OrderResultError(OrderResult):
     def __init__(
         self,
         error: str,
-        code: int,
         order: Optional["Order"] = None,
         raw: Optional[object] = None,
     ) -> None:
@@ -395,9 +391,8 @@ class OrderResultError(OrderResult):
 
         Args:
             error (str): Error message
-            code (int): Error code of result
             order (Optional[Order], optional): Order own the result. Defaults to None.
             raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
         """
-        super().__init__(ok=False, order=order, code=code, raw=raw)
+        super().__init__(ok=False, order=order, raw=raw)
         self.error: str = error

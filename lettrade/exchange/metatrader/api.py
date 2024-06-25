@@ -9,7 +9,7 @@ from box import Box
 from mt5linux import MetaTrader5 as MT5
 
 from lettrade.exchange import OrderType
-from lettrade.exchange.live import LiveAPI
+from lettrade.exchange.live import LetLiveOrderInvalidException, LiveAPI
 
 if TYPE_CHECKING:
     from .metatrader import MetaTraderExchange
@@ -477,7 +477,11 @@ class MetaTraderAPI(LiveAPI):
         if raw is None:
             return None
 
-        return self._parse_trade_send_response(raw)
+        raw = self._parse_trade_send_response(raw)
+        if raw.code != 0:
+            raise LetLiveOrderInvalidException(raw.error, raw=raw)
+
+        return raw
 
     def _parse_trade_request(
         self,

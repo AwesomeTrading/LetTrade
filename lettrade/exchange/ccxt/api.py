@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Literal, Optional
 import ccxt
 from box import Box
 
-from lettrade.exchange.live import LiveAPI
+from lettrade.exchange.live import LetLiveOrderInvalidException, LiveAPI
 
 if TYPE_CHECKING:
     from .ccxt import CCXTExchange
@@ -254,16 +254,20 @@ class CCXTAPI(LiveAPI):
     #  Order
     def order_open(self, order: "CCXTOrder", **kwargs):
         """"""
-        result = self._ccxt.create_my_order(
-            symbol=order.data.symbol,
-            type=order.type.lower(),
-            side=order.side.lower(),
-            amount=abs(order.size),
-            price=order.place_price,
-            **kwargs,
-        )
-        print("order_open", order, result)
-        return result
+        try:
+            result = self._ccxt.create_my_order(
+                symbol=order.data.symbol,
+                type=order.type.lower(),
+                side=order.side.lower(),
+                amount=abs(order.size),
+                price=order.place_price,
+                **kwargs,
+            )
+
+            print("order_open", order, result)
+            return result
+        except ccxt.InvalidOrder as e:
+            raise LetLiveOrderInvalidException(e.args[0]) from e
 
     def order_update(self, order: "CCXTOrder"):
         pass

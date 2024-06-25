@@ -6,7 +6,7 @@ def ema(
     series: pd.Series | str = "close",
     period: int = 21,
     dataframe: pd.DataFrame = None,
-    prefix: str = "cdl_",
+    prefix: str = "",
     inplace: bool = False,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
@@ -16,7 +16,7 @@ def ema(
         series (pd.Series | str): _description_
         period (int): _description_
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
-        prefix (str, optional): _description_. Defaults to "cdl_".
+        prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
 
     Raises:

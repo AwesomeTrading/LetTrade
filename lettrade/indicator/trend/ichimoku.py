@@ -12,7 +12,9 @@ def ichimoku(
     inplace: bool = False,
 ) -> dict[str, pd.Series] | pd.DataFrame:
     """Ichimoku cloud indicator
-    Note: Do not use chikou_span for backtesting.
+
+    Note:
+        Do not use `chikou_span` for backtesting.
         It looks into the future, is not printed by most charting platforms.
         It is only useful for visual analysis
 

@@ -1,8 +1,11 @@
+from typing import Optional
+
 import pandas as pd
 
 
 def cdl_direction(
     dataframe: pd.DataFrame,
+    name: Optional[str] = None,
     prefix: str = "cdl_",
     inplace: bool = False,
 ) -> pd.Series | pd.DataFrame:
@@ -10,6 +13,7 @@ def cdl_direction(
 
     Args:
         dataframe (pd.DataFrame): _description_
+        name (Optional[str], optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "cdl_".
         inplace (bool, optional): _description_. Defaults to False.
 
@@ -31,7 +35,7 @@ def cdl_direction(
     ).astype(int)
 
     if inplace:
-        dataframe[f"{prefix}direction"] = i
+        dataframe[name or f"{prefix}direction"] = i
         return dataframe
 
     return i

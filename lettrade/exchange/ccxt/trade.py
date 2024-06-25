@@ -91,8 +91,6 @@ class CCXTOrder(LiveOrder):
         try:
             result = self._api.order_open(self)
 
-            logger.error("Place order %s", str(result))
-
             self.raw = result
             self.id = result.order
 
@@ -104,6 +102,7 @@ class CCXTOrder(LiveOrder):
                 order=self,
                 raw=e.raw,
             )
+            logger.error("Place order %s", str(error))
             self.exchange.on_notify(error=error)
             return error
 

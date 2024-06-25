@@ -6,10 +6,9 @@ from subprocess import Popen
 from typing import TYPE_CHECKING, Optional
 
 from box import Box
-from mt5linux import MetaTrader5 as MT5
-
 from lettrade.exchange import OrderType
 from lettrade.exchange.live import LiveAPI
+from mt5linux import MetaTrader5 as MT5
 
 if TYPE_CHECKING:
     from .metatrader import MetaTraderExchange
@@ -906,7 +905,7 @@ class MetaTraderAPI(LiveAPI):
         # History orders
         orders = self._mt5.history_orders_get(self._load_history_since, to)
         if orders:
-            self._exchange.on_orders_old(orders)
+            self._exchange.on_orders_event(old=orders)
 
         # # Positions
         # positions = self._mt5.positions_get(self._load_history_since, to)
@@ -925,21 +924,17 @@ class MetaTraderAPI(LiveAPI):
         # Deals
         deals = self._check_deals()
         if deals:
-            self._exchange.on_executions_new(deals)
+            self._exchange.on_executions_event(deals)
 
         # Orders
-        orders, removed_orders = self._check_orders()
-        if orders:
-            self._exchange.on_orders_new(orders)
-        if removed_orders:
-            self._exchange.on_orders_old(removed_orders)
+        orders_new, orders_old = self._check_orders()
+        if orders_new or orders_old:
+            self._exchange.on_orders_event(new=orders_new, old=orders_old)
 
         # Positions
-        positions, removed_positions = self._check_positions()
-        if positions:
-            self._exchange.on_positions_new(positions)
-        if removed_positions:
-            self._exchange.on_positions_old(removed_positions)
+        positions_new, positions_old = self._check_positions()
+        if positions_new or positions_old:
+            self._exchange.on_positions_event(new=positions_new, old=positions_old)
 
     # Deal
     @mt5_connection

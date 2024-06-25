@@ -549,7 +549,7 @@ class MetaTraderPosition(LivePosition):
                 if not hasattr(raw, "executions"):
                     raw.executions = api.executions_get(position_id=position.id)
 
-                exchange.on_executions_new(raw.executions, broadcast=False)
+                exchange.on_executions_event(raw.executions, broadcast=False)
 
                 execution = exchange.executions[raw.executions[-1].ticket]
                 position.exit_at = execution.at

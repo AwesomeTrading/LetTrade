@@ -12,7 +12,7 @@ class BackTestAccount(Account):
     def __init__(
         self,
         risk: float = 0.02,
-        cash: float = 10_000,
+        balance: float = 10_000,
         commission: float = 0.2,
         margin: float = 1,
         leverage: float = 1,
@@ -22,7 +22,7 @@ class BackTestAccount(Account):
 
         Args:
             risk (float, optional): _description_. Defaults to 0.02.
-            cash (float, optional): _description_. Defaults to 10_000.
+            balance (float, optional): _description_. Defaults to 10_000.
             commission (float, optional): Commission fee is percent of size. Defaults to 0.2.
             margin (float, optional): _description_. Defaults to 1.
             leverage (float, optional): _description_. Defaults to 1.
@@ -30,7 +30,7 @@ class BackTestAccount(Account):
         """
         super().__init__(
             risk=risk,
-            cash=cash,
+            balance=balance,
             margin=margin,
             leverage=leverage,
             **kwargs,
@@ -39,6 +39,13 @@ class BackTestAccount(Account):
 
     def __repr__(self):
         return "<BackTestAccount " + str(self) + ">"
+
+    @property
+    def equity(self) -> float:
+        equity = self._balance
+        if len(self._exchange.positions) > 0:
+            equity += sum(position.pl for position in self._exchange.positions.values())
+        return equity
 
     def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
         if exit_price is None:
@@ -53,7 +60,7 @@ class BackTestAccount(Account):
 
     def on_positions(self, positions: list["BackTestPosition"]):
         for position in positions:
-            self._cash += position.pl - position.fee
+            self._balance += position.pl - position.fee
         super().on_positions(positions)
 
 

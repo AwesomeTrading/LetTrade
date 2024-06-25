@@ -13,6 +13,9 @@ class LiveAccount(Account):
     _api: LiveAPI
     _account: object
 
+    _balance: float
+    _equity: float
+
     def __init__(self, api: LiveAPI, **kwargs) -> None:
         """Account for live trading
 
@@ -23,17 +26,22 @@ class LiveAccount(Account):
         super().__init__(**kwargs)
         self._api = api
 
+        self._balance = 0.0
+        self._equity = 0.0
+
     # def __repr__(self):
     #     return "<LiveAccount " + str(self) + ">"
 
     def start(self):
         """Start live account by load account info from API"""
         self.account_refresh()
+        self._margin = self._account.margin
+        self._leverage = self._account.leverage
 
-    def next(self):
-        """Live account next"""
-        self.account_refresh()
-        return super().next()
+    # def next(self):
+    #     """Live account next"""
+    #     self.account_refresh()
+    #     return super().next()
 
     def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
         if exit_price is None:
@@ -46,8 +54,17 @@ class LiveAccount(Account):
     def account_refresh(self):
         """Refresh account balance"""
         self._account = self._api.account()
-        logger.info("Account: %s", str(self._account))
 
-    # def on_positions(self, positions: list[BackTestPosition]):
-    #     # self.account_refresh()
-    #     return super().on_positions(positions)
+        self._balance = self._account.balance
+        self._equity = self._account.equity
+
+        if __debug__:
+            logger.debug("Account: %s", str(self._account))
+
+    def on_positions(self, positions: list[BackTestPosition]):
+        self.account_refresh()
+        return super().on_positions(positions)
+
+    @property
+    def equity(self) -> float:
+        return self._equity

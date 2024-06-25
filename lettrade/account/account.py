@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING
 
 from .error import LetAccountInsufficientException
@@ -6,7 +7,7 @@ if TYPE_CHECKING:
     from lettrade.exchange import Exchange, Position, TradeSide
 
 
-class Account:
+class Account(metaclass=ABCMeta):
     """
     Manage account balance, leverage, commission. Risk calculate and control
     """
@@ -15,7 +16,7 @@ class Account:
     _config: dict
 
     _risk: float
-    _cash: float
+    _balance: float
     _margin: float
     _leverage: float
     _equities: dict[str, float]
@@ -25,7 +26,7 @@ class Account:
     def __init__(
         self,
         risk: float = 0.02,
-        cash: float = 10_000,
+        balance: float = 10_000,
         margin: float = 1.0,
         leverage: float = 1.0,
         **kwargs,
@@ -34,13 +35,13 @@ class Account:
 
         Args:
             risk (float, optional): _description_. Defaults to 0.02.
-            cash (float, optional): _description_. Defaults to 10_000.
+            balance (float, optional): _description_. Defaults to 10_000.
             margin (float, optional): _description_. Defaults to 1.0.
             leverage (float, optional): _description_. Defaults to 1.0.
             **kwargs (dict, optional): Config of account. Defaults to {}.
         """
         self._risk = risk
-        self._cash = cash
+        self._balance = balance
         self._margin = margin
         self._leverage = leverage
         self._config = kwargs
@@ -86,11 +87,23 @@ class Account:
         return size * (exit_price - entry_price)
 
     @property
+    def balance(self) -> float:
+        """Balance of account
+
+        Returns:
+            float: _description_
+        """
+        return self._balance
+
+    @property
+    @abstractmethod
     def equity(self) -> float:
-        equity = self._cash
-        if len(self._exchange.positions) > 0:
-            equity += sum(position.pl for position in self._exchange.positions.values())
-        return equity
+        """Equity value of account
+
+        Returns:
+            float: _description_
+        """
+        raise NotImplementedError(type(self))
 
     def _equity_snapshot(self):
         if self._do_equity_snapshot or len(self._exchange.positions) > 0:

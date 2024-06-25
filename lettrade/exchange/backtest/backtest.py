@@ -586,7 +586,7 @@ def let_backtest(
     optimize_plotter: Optional[Type[OptimizePlotter]] = "PlotlyOptimizePlotter",
     bot: Optional[Type[LetTradeBackTestBot]] = LetTradeBackTestBot,
     # Account kwargs
-    cash: Optional[float] = 1_000,
+    balance: Optional[float] = 1_000,
     commission: Optional[float] = 0.2,
     leverage: Optional[float] = 20,
     **kwargs,
@@ -610,7 +610,7 @@ def let_backtest(
     """
     account_kwargs: dict = kwargs.setdefault("account_kwargs", {})
     account_kwargs.update(
-        cash=cash,
+        balance=balance,
         commission=commission,
         leverage=leverage,
     )

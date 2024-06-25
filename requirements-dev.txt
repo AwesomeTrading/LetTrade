@@ -8,6 +8,7 @@ python-telegram-bot
 tqdm
 ccxt
 numba
+rich[jupyter]
 
 # Live
 python-box

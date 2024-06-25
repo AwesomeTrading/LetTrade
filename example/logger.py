@@ -1,20 +1,23 @@
 import importlib.util
 import logging
 
-logging.basicConfig(level=logging.INFO)
+rich = importlib.util.find_spec("rich")
+if rich:
+    from rich.logging import RichHandler
 
-coloredlogs = importlib.util.find_spec("coloredlogs")
-if coloredlogs:
-    import coloredlogs
-
-    coloredlogs.DEFAULT_FIELD_STYLES["funcName"] = dict(color="cyan")
-
-    coloredlogs.install(
+    FORMAT = "%(message)s"
+    logging.basicConfig(
         level=logging.root.level,
-        fmt="%(asctime)s,%(msecs)03d %(levelname)6s %(name)16s %(funcName)16s(): %(message)s",
+        format="%(funcName)16s(): %(message)s",
+        datefmt="[%X]",
+        handlers=[RichHandler(rich_tracebacks=True)],
     )
+else:
+    logging.basicConfig(level=logging.INFO)
+
 
 logging.getLogger("lettrade.data.data").setLevel(logging.DEBUG)
+logging.getLogger("lettrade.exchange.live.account").setLevel(logging.DEBUG)
 
 
 def logging_filter_necessary_only():

@@ -242,7 +242,7 @@ class Exchange(metaclass=ABCMeta):
         """Receive Positions event from exchange then store and notify Brain
 
         Args:
-            position (Position): list of new comming `Position`
+            positions (list[Position]): list of new comming `Position`
             broadcast (Optional[bool], optional): Flag notify to Brain. Defaults to True.
 
         Raises:

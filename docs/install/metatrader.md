@@ -1,6 +1,6 @@
 # MetaTrader 5 Install
 
-`MetaTrader 5` is exchange server of module [MetaTrader](../reference/exchange/live/metatrader/metatrader.md)
+`MetaTrader 5` is exchange server of module [MetaTrader](../reference/exchange/metatrader/metatrader.md)
 
 ## Ubuntu
 

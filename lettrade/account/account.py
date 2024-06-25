@@ -58,6 +58,13 @@ class Account:
     def start(self):
         """Start account"""
 
+    def next(self):
+        """Next account"""
+
+    def next_next(self):
+        """Call after strategy.next()"""
+        self._equity_snapshot()
+
     def stop(self):
         """Stop account"""
         try:
@@ -98,12 +105,17 @@ class Account:
             if self._do_equity_snapshot:
                 self._do_equity_snapshot = False
 
-    def _on_position_entry(self, position: "Position"):
-        # TODO: refresh balance
-        if not self._do_equity_snapshot:
-            self._do_equity_snapshot = True
+    # def _on_position_entry(self, position: "Position"):
+    #     # TODO: refresh balance
+    #     if not self._do_equity_snapshot:
+    #         self._do_equity_snapshot = True
 
-    def _on_position_exit(self, position: "Position"):
-        # TODO: refresh balance
+    # def _on_position_exit(self, position: "Position"):
+    #     # TODO: refresh balance
+    #     if not self._do_equity_snapshot:
+    #         self._do_equity_snapshot = True
+
+    def on_positions(self, positions: list["Position"]):
+        """Event positions updated"""
         if not self._do_equity_snapshot:
             self._do_equity_snapshot = True

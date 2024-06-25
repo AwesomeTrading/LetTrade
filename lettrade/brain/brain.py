@@ -94,29 +94,29 @@ class Brain:
         self.exchange.stop()
 
     # Events
-    def on_execution(self, execution: Execution):
+    def on_executions(self, executions: list[Execution]):
         """Receive new `Execution` event and send to `Strategy`"""
-        self.on_transaction(execution)
-        self.strategy.on_execution(execution)
+        self.on_transactions(executions)
+        self.strategy.on_executions(executions)
 
-    def on_order(self, order: Order):
+    def on_orders(self, orders: list[Order]):
         """Receive new `Order` event and send to `Strategy`"""
-        self.on_transaction(order)
-        self.strategy.on_order(order)
+        self.on_transactions(orders)
+        self.strategy.on_orders(orders)
 
-    def on_position(self, position: Position):
+    def on_positions(self, positions: list[Position]):
         """Receive new `Position` event and send to `Strategy`"""
-        self.on_transaction(position)
-        self.strategy.on_position(position)
+        self.on_transactions(positions)
+        self.strategy.on_positions(positions)
 
     def on_notify(self, *args, **kwargs):
         """Receive new notify and send to Strategy"""
         self.strategy.on_notify(*args, **kwargs)
 
-    def on_transaction(self, transaction):
+    def on_transactions(self, transactions):
         """Receive new transaction event and send to `Strategy`"""
         if self.commander is not None:
             # TODO: send message to commander when new transaction
-            self.commander.send_message(f"New transaction: {str(transaction)}")
+            self.commander.send_message(f"New transactions: {str(transactions)}")
 
-        self.strategy.on_transaction(transaction)
+        self.strategy.on_transactions(transactions)

@@ -2,6 +2,7 @@ import logging
 from typing import Optional
 
 from lettrade.account import Account
+from lettrade.exchange.backtest import BackTestPosition
 
 from .api import LiveAPI
 
@@ -27,8 +28,12 @@ class LiveAccount(Account):
 
     def start(self):
         """Start live account by load account info from API"""
-        self._account = self._api.account()
-        logger.info("Account: %s", str(self._account))
+        self.account_refresh()
+
+    def next(self):
+        """Live account next"""
+        self.account_refresh()
+        return super().next()
 
     def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
         if exit_price is None:
@@ -37,3 +42,12 @@ class LiveAccount(Account):
         pl = size * (exit_price - entry_price)
 
         return pl * 100_000
+
+    def account_refresh(self):
+        """Refresh account balance"""
+        self._account = self._api.account()
+        logger.info("Account: %s", str(self._account))
+
+    # def on_positions(self, positions: list[BackTestPosition]):
+    #     # self.account_refresh()
+    #     return super().on_positions(positions)

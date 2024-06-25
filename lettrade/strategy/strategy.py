@@ -400,33 +400,45 @@ class Strategy:
         return self.__is_optimize
 
     # Events
-    def on_transaction(self, trans: Execution | Order | Position):
+    def on_transactions(self, trans: list[Execution | Order | Position]):
         """Listen for transaction events
 
         Args:
-            trans (Execution | Order | Position): _description_
+            trans (list[Execution  |  Order  |  Position]): _description_
         """
+        if hasattr(self, "on_transaction"):
+            for tran in trans:
+                self.on_transaction(tran)
 
-    def on_execution(self, execution: Execution):
+    def on_executions(self, executions: list[Execution]):
         """Listen for `Execution` event
 
         Args:
-            execution (Execution): _description_
+            executions (list[Execution]): _description_
         """
+        if hasattr(self, "on_execution"):
+            for execution in executions:
+                self.on_execution(execution)
 
-    def on_order(self, order: Order):
+    def on_orders(self, orders: list[Order]):
         """Listen for `Order` event
 
         Args:
-            order (Order): _description_
+            orders (list[Order]): _description_
         """
+        if hasattr(self, "on_order"):
+            for order in orders:
+                self.on_order(order)
 
-    def on_position(self, position: Position):
+    def on_positions(self, positions: list[Position]):
         """Listen for `Position` event
 
         Args:
-            position (Position): _description_
+            positions (list[Position]): _description_
         """
+        if hasattr(self, "on_position"):
+            for position in positions:
+                self.on_position(position)
 
     def on_notify(self, *args, **kwargs) -> None:
         """Listen for `notify` event

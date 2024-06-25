@@ -51,9 +51,10 @@ class BackTestAccount(Account):
     def fee(self, size: float, **kwargs: dict):
         return -abs(size * self._commission)
 
-    def _on_position_exit(self, position: "BackTestPosition"):
-        self._cash += position.pl - position.fee
-        super()._on_position_exit(position)
+    def on_positions(self, positions: list["BackTestPosition"]):
+        for position in positions:
+            self._cash += position.pl - position.fee
+        super().on_positions(positions)
 
 
 class ForexBackTestAccount(BackTestAccount):

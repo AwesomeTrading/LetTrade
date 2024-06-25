@@ -103,11 +103,12 @@ class Exchange(metaclass=ABCMeta):
         self._state = ExchangeState.Run
 
     def next(self):
-        "Call after data feeded and before strategy.next()"
+        """Call after data feeded and before strategy.next()"""
+        self._account.next()
 
     def next_next(self):
-        "Call after strategy.next()"
-        self._account._equity_snapshot()
+        """Call after strategy.next()"""
+        self._account.next_next()
 
     def stop(self) -> None:
         """Stop Exchange"""
@@ -120,26 +121,41 @@ class Exchange(metaclass=ABCMeta):
         broadcast: Optional[bool] = True,
         **kwargs,
     ) -> None:
+        """Receive Execution event from exchange then store and notify Brain
+
+        Args:
+            execution (Execution): _description_
+            broadcast (Optional[bool], optional): _description_. Defaults to True.
+        """
+        self.on_executions(executions=[execution], broadcast=broadcast, **kwargs)
+
+    def on_executions(
+        self,
+        executions: list[Execution],
+        broadcast: Optional[bool] = True,
+        **kwargs,
+    ) -> None:
         """
         Receive Execution event from exchange then store and notify Brain
         """
-        if not isinstance(execution, Execution):
-            raise RuntimeError(f"{execution} is not instance of type Execution")
+        for execution in executions:
+            if not isinstance(execution, Execution):
+                raise RuntimeError(f"{execution} is not instance of type Execution")
 
-        if execution.id in self.executions:
-            # Merge to keep Execution handler for strategy using
-            # when strategy want to store Execution object
-            # and object will be automatic update directly
-            self.executions[execution.id].merge(execution)
-            execution = self.executions[execution.id]
-        else:
-            self.executions[execution.id] = execution
+            if execution.id in self.executions:
+                # Merge to keep Execution handler for strategy using
+                # when strategy want to store Execution object
+                # and object will be automatic update directly
+                self.executions[execution.id].merge(execution)
+                execution = self.executions[execution.id]
+            else:
+                self.executions[execution.id] = execution
 
         if self._state != ExchangeState.Run:
             return
 
         if broadcast:
-            self._brain.on_execution(execution)
+            self._brain.on_executions(executions)
 
     def on_order(
         self,
@@ -147,35 +163,58 @@ class Exchange(metaclass=ABCMeta):
         broadcast: Optional[bool] = True,
         **kwargs,
     ) -> None:
-        """Receive Order event from exchange then store and notify Brain"""
-        if not isinstance(order, Order):
-            raise RuntimeError(f"{order} is not instance of type Order")
+        """Receive order event from exchange then store and notify Brain
 
-        if order.is_closed:
-            if order.id in self.history_orders:
-                logger.warning("Order closed recall: %s", order)
+        Args:
+            order (Order): _description_
+            broadcast (Optional[bool], optional): _description_. Defaults to True.
+        """
+        self.on_orders(orders=[order], broadcast=broadcast, **kwargs)
 
-            self.history_orders[order.id] = order
-            if order.id in self.orders:
-                del self.orders[order.id]
-        else:
-            if order.id in self.history_orders:
-                raise RuntimeError(f"Order {order.id} closed")
+    def on_orders(
+        self,
+        orders: list[Order],
+        broadcast: Optional[bool] = True,
+        **kwargs,
+    ) -> None:
+        """Receive orders event from exchange then store and notify Brain
 
-            if order.id in self.orders:
-                # Merge to keep Order handler for strategy using
-                # when strategy want to store Order object
-                # and object will be automatic update directly
-                self.orders[order.id].merge(order)
-                order = self.orders[order.id]
+        Args:
+            orders (list[Order]): _description_
+            broadcast (Optional[bool], optional): _description_. Defaults to True.
+
+        Raises:
+            RuntimeError: _description_
+        """
+        for order in orders:
+            if not isinstance(order, Order):
+                raise RuntimeError(f"{order} is not instance of type Order")
+
+            if order.is_closed:
+                if order.id in self.history_orders:
+                    logger.warning("Order closed recall: %s", order)
+
+                self.history_orders[order.id] = order
+                if order.id in self.orders:
+                    del self.orders[order.id]
             else:
-                self.orders[order.id] = order
+                if order.id in self.history_orders:
+                    raise RuntimeError(f"Order {order.id} closed")
+
+                if order.id in self.orders:
+                    # Merge to keep Order handler for strategy using
+                    # when strategy want to store Order object
+                    # and object will be automatic update directly
+                    self.orders[order.id].merge(order)
+                    order = self.orders[order.id]
+                else:
+                    self.orders[order.id] = order
 
         if self._state != ExchangeState.Run:
             return
 
         if broadcast:
-            self._brain.on_order(order)
+            self._brain.on_orders(orders)
 
     def on_position(
         self,
@@ -187,41 +226,59 @@ class Exchange(metaclass=ABCMeta):
 
         Args:
             position (Position): new comming `Position`
-            broadcast (Optional[bool], optional): Flag notify for Brain. Defaults to True.
+            broadcast (Optional[bool], optional): Flag notify to Brain. Defaults to True.
 
         Raises:
-            RuntimeError: validat `Position` instance
+            RuntimeError: validate `Position` instance
         """
-        if not isinstance(position, Position):
-            raise RuntimeError(f"{position} is not instance of type Position")
+        self.on_positions(positions=[position], broadcast=broadcast, **kwargs)
 
-        if position.is_exited:
-            if position.id in self.history_positions:
-                logger.warning("Position exited recall: %s", position)
+    def on_positions(
+        self,
+        positions: list[Position],
+        broadcast: Optional[bool] = True,
+        **kwargs,
+    ) -> None:
+        """Receive Positions event from exchange then store and notify Brain
 
-            self.history_positions[position.id] = position
-            if position.id in self.positions:
-                del self.positions[position.id]
+        Args:
+            position (Position): list of new comming `Position`
+            broadcast (Optional[bool], optional): Flag notify to Brain. Defaults to True.
 
-            self._account._on_position_exit(position)
-        else:
-            if position.id in self.history_positions:
-                raise RuntimeError(f"Position {position.id} closed: {position}")
-            if position.id in self.positions:
-                # Merge to keep Position handler for strategy using
-                # when strategy want to store Position object
-                # and object will be automatic update directly
-                self.positions[position.id].merge(position)
-                position = self.positions[position.id]
+        Raises:
+            RuntimeError: validate `Position` instance
+        """
+        for position in positions:
+            if not isinstance(position, Position):
+                raise RuntimeError(f"{position} is not instance of type Position")
+
+            if position.is_exited:
+                if position.id in self.history_positions:
+                    logger.warning("Position exited recall: %s", position)
+
+                self.history_positions[position.id] = position
+                if position.id in self.positions:
+                    del self.positions[position.id]
+
+                # self._account._on_position_exit(position)
             else:
-                self.positions[position.id] = position
-                self._account._on_position_entry(position)
+                if position.id in self.history_positions:
+                    raise RuntimeError(f"Position {position.id} closed: {position}")
+                if position.id in self.positions:
+                    # Merge to keep Position handler for strategy using
+                    # when strategy want to store Position object
+                    # and object will be automatic update directly
+                    self.positions[position.id].merge(position)
+                    position = self.positions[position.id]
+                else:
+                    self.positions[position.id] = position
+                    # self._account._on_position_entry(position)
 
         if self._state != ExchangeState.Run:
             return
 
         if broadcast:
-            self._brain.on_position(position)
+            self._brain.on_positions(positions)
 
     def on_notify(self, *args, **kwargs):
         return self._brain.on_notify(*args, **kwargs)

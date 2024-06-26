@@ -1,5 +1,5 @@
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from .base import BaseTransaction
 
@@ -24,10 +24,10 @@ class Execution(BaseTransaction):
         size: float,
         price: float,
         at: float,
-        order_id: Optional[str] = None,
-        order: Optional["Order"] = None,
-        position_id: Optional[str] = None,
-        position: Optional["Position"] = None,
+        order_id: str | None = None,
+        order: "Order | None" = None,
+        position_id: str | None = None,
+        position: "Position | None" = None,
         **kwargs,
     ):
         super().__init__(

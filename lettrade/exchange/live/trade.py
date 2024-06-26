@@ -1,6 +1,6 @@
 import logging
 from abc import ABCMeta, abstractmethod
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from lettrade.exchange import (
     Execution,
@@ -26,8 +26,8 @@ class _LiveTrade:
     def __init__(
         self,
         exchange: "LiveExchange",
-        api: Optional[LiveAPI] = None,
-        raw: Optional[object] = None,
+        api: LiveAPI | None = None,
+        raw: object | None = None,
         **kwargs,
     ) -> None:
         super().__init__(exchange=exchange, **kwargs)
@@ -48,13 +48,13 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
         size: float,
         price: float,
         at: float,
-        order_id: Optional[str] = None,
-        order: Optional["Order"] = None,
-        position_id: Optional[str] = None,
-        position: Optional["Position"] = None,
-        # tag: Optional[str] = None,
-        api: Optional[LiveAPI] = None,
-        raw: Optional[object] = None,
+        order_id: str | None = None,
+        order: "Order | None" = None,
+        position_id: str | None = None,
+        position: "Position | None" = None,
+        # tag: str | None = None,
+        api: LiveAPI | None = None,
+        raw: object | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -72,7 +72,7 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
             raw=raw,
             **kwargs,
         )
-        # self.tag: Optional[str] = tag
+        # self.tag: str | None = tag
 
     @classmethod
     @abstractmethod
@@ -98,14 +98,14 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         size: float,
         state: OrderState = OrderState.Pending,
         type: OrderType = OrderType.Market,
-        limit_price: Optional[float] = None,
-        stop_price: Optional[float] = None,
-        sl_price: Optional[float] = None,
-        tp_price: Optional[float] = None,
-        parent: Optional["Position"] = None,
-        tag: Optional[str] = None,
-        api: Optional[LiveAPI] = None,
-        raw: Optional[object] = None,
+        limit_price: float | None = None,
+        stop_price: float | None = None,
+        sl_price: float | None = None,
+        tp_price: float | None = None,
+        parent: "Position | None" = None,
+        tag: str | None = None,
+        api: LiveAPI | None = None,
+        raw: object | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -153,11 +153,11 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
     @abstractmethod
     def update(
         self,
-        limit_price: Optional[float] = None,
-        stop_price: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        caller: Optional[float] = None,
+        limit_price: float | None = None,
+        stop_price: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        caller: float | None = None,
         **kwargs,
     ) -> OrderResult:
         raise NotImplementedError(type(self))
@@ -227,15 +227,15 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         data: "LiveDataFeed",
         size: float,
         parent: Order,
-        tag: Optional[str] = None,
+        tag: str | None = None,
         state: PositionState = PositionState.Open,
-        entry_price: Optional[float] = None,
+        entry_price: float | None = None,
         entry_fee: float = 0.0,
-        entry_at: Optional[int] = None,
-        sl_order: Optional[Order] = None,
-        tp_order: Optional[Order] = None,
-        api: Optional[LiveAPI] = None,
-        raw: Optional[object] = None,
+        entry_at: int | None = None,
+        sl_order: Order | None = None,
+        tp_order: Order | None = None,
+        api: LiveAPI | None = None,
+        raw: object | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -259,17 +259,17 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
     @abstractmethod
     def update(
         self,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        caller: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        caller: float | None = None,
         **kwargs,
     ):
         """_summary_
 
         Args:
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            caller (Optional[float], optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            caller (float | None, optional): _description_. Defaults to None.
 
         Raises:
             NotImplementedError: _description_

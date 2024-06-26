@@ -1,5 +1,5 @@
 import logging
-from typing import Literal, Optional, Type
+from typing import Literal
 
 from lettrade import BotStatistic, Commander, Plotter, Strategy
 from lettrade.exchange.live import (
@@ -22,14 +22,14 @@ logger = logging.getLogger(__name__)
 class CCXTDataFeed(LiveDataFeed):
     """DataFeed for CCXT"""
 
-    _api_cls: Type[CCXTAPI] = CCXTAPI
+    _api_cls: type[CCXTAPI] = CCXTAPI
 
 
 class CCXTDataFeeder(LiveDataFeeder):
     """DataFeeder for CCXT"""
 
-    _api_cls: Type[CCXTAPI] = CCXTAPI
-    _data_cls: Type[CCXTDataFeed] = CCXTDataFeed
+    _api_cls: type[CCXTAPI] = CCXTAPI
+    _data_cls: type[CCXTDataFeed] = CCXTDataFeed
 
 
 class CCXTAccount(LiveAccount):
@@ -45,9 +45,9 @@ class CCXTAccount(LiveAccount):
 class CCXTExchange(LiveExchange):
     """MetaTrade 5 exchange module for `lettrade`"""
 
-    _execution_cls: Type[CCXTExecution] = CCXTExecution
-    _order_cls: Type[CCXTOrder] = CCXTOrder
-    _position_cls: Type[CCXTPosition] = CCXTPosition
+    _execution_cls: type[CCXTExecution] = CCXTExecution
+    _order_cls: type[CCXTOrder] = CCXTOrder
+    _position_cls: type[CCXTPosition] = CCXTPosition
 
 
 class LetTradeCCXTBot(LetTradeLiveBot):
@@ -57,13 +57,13 @@ class LetTradeCCXTBot(LetTradeLiveBot):
 class LetTradeCCXT(LetTradeLive):
     """Help to maintain CCXT bots"""
 
-    _data_cls: Type[CCXTDataFeed] = CCXTDataFeed
+    _data_cls: type[CCXTDataFeed] = CCXTDataFeed
 
     def __init__(
         self,
-        feeder: Type[CCXTDataFeeder] = CCXTDataFeeder,
-        exchange: Type[CCXTExchange] = CCXTExchange,
-        account: Type[CCXTAccount] = CCXTAccount,
+        feeder: type[CCXTDataFeeder] = CCXTDataFeeder,
+        exchange: type[CCXTExchange] = CCXTExchange,
+        account: type[CCXTAccount] = CCXTAccount,
         **kwargs,
     ) -> None:
         """_summary_
@@ -82,22 +82,22 @@ class LetTradeCCXT(LetTradeLive):
 
 
 def let_ccxt(
-    strategy: Type[Strategy],
+    strategy: type[Strategy],
     datas: set[set[str]],
     ccxt_exchange: str,
     ccxt_key: str,
     ccxt_secret: str,
     ccxt_type: Literal["spot", "margin", "future"] = "spot",
     ccxt_verbose: bool = False,
-    feeder: Type[CCXTDataFeeder] = CCXTDataFeeder,
-    exchange: Type[CCXTExchange] = CCXTExchange,
-    account: Type[CCXTAccount] = CCXTAccount,
-    commander: Optional[Type[Commander]] = None,
-    plotter: Optional[Type[Plotter]] = None,
-    stats: Optional[Type[BotStatistic]] = BotStatistic,
-    bot: Optional[Type[LetTradeCCXTBot]] = LetTradeCCXTBot,
-    lettrade: Optional[Type[LetTradeCCXT]] = LetTradeCCXT,
-    api: Optional[Type[CCXTAPI]] = CCXTAPI,
+    feeder: type[CCXTDataFeeder] = CCXTDataFeeder,
+    exchange: type[CCXTExchange] = CCXTExchange,
+    account: type[CCXTAccount] = CCXTAccount,
+    commander: type[Commander] | None = None,
+    plotter: type[Plotter] | None = None,
+    stats: type[BotStatistic] | None = BotStatistic,
+    bot: type[LetTradeCCXTBot] | None = LetTradeCCXTBot,
+    lettrade: type[LetTradeCCXT] | None = LetTradeCCXT,
+    api: type[CCXTAPI] | None = CCXTAPI,
     **kwargs,
 ) -> LetTradeCCXT:
     """Help to build `LetTradeCCXT`
@@ -113,12 +113,12 @@ def let_ccxt(
         feeder (Type[CCXTDataFeeder], optional): _description_. Defaults to CCXTDataFeeder.
         exchange (Type[CCXTExchange], optional): _description_. Defaults to CCXTExchange.
         account (Type[CCXTAccount], optional): _description_. Defaults to CCXTAccount.
-        commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
-        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
-        stats (Optional[Type[BotStatistic]], optional): _description_. Defaults to BotStatistic.
-        bot (Optional[Type[LetTradeCCXTBot]], optional): _description_. Defaults to LetTradeCCXTBot.
-        lettrade (Optional[Type[LetTradeCCXT]], optional): _description_. Defaults to LetTradeCCXT.
-        api (Optional[Type[CCXTAPI]], optional): _description_. Defaults to CCXTAPI.
+        commander (Type[Commander] | None, optional): _description_. Defaults to None.
+        plotter (Type[Plotter] | None, optional): _description_. Defaults to None.
+        stats (Type[BotStatistic] | None, optional): _description_. Defaults to BotStatistic.
+        bot (Type[LetTradeCCXTBot] | None, optional): _description_. Defaults to LetTradeCCXTBot.
+        lettrade (Type[LetTradeCCXT] | None, optional): _description_. Defaults to LetTradeCCXT.
+        api (Type[CCXTAPI] | None, optional): _description_. Defaults to CCXTAPI.
         **kwargs (dict): All remaining properties are passed to the constructor of `LetTradeLive`
 
     Returns:

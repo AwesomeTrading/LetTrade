@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from lettrade.account import Account
 from lettrade.data import DataFeeder
@@ -24,7 +24,7 @@ class Commander(ABC):
     exchange: "Exchange"
     account: Account
     strategy: "Strategy"
-    plotter: Optional["Plotter"] = None
+    plotter: "Plotter | None" = None
 
     _name: str
 

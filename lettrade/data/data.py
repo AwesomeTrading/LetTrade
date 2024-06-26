@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
@@ -26,7 +26,7 @@ class DataFeed(pd.DataFrame):
         *args,
         name: str,
         timeframe: TimeFrame,
-        meta: Optional[dict] = None,
+        meta: dict | None = None,
         **kwargs,
     ) -> None:
         """_summary_
@@ -34,7 +34,7 @@ class DataFeed(pd.DataFrame):
         Args:
             name (str): _description_
             timeframe (TimeFrame): _description_
-            meta (Optional[dict], optional): _description_. Defaults to None.
+            meta (dict | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_
@@ -119,7 +119,7 @@ class DataFeed(pd.DataFrame):
     def push(
         self,
         rows: list[list[int | float]],
-        unit: Optional[str] = None,
+        unit: str | None = None,
         utc: bool = True,
         **kwargs,
     ):
@@ -127,7 +127,7 @@ class DataFeed(pd.DataFrame):
 
         Args:
             rows (list[list[int | float]]): list of rows `[["timestamp", "open price", "high price"...]]`
-            unit (Optional[str], optional): pandas.Timestamp parsing unit. Defaults to None.
+            unit (str | None, optional): pandas.Timestamp parsing unit. Defaults to None.
             utc (bool, optional): _description_. Defaults to True.
         """
         for row in rows:
@@ -155,15 +155,15 @@ class DataFeed(pd.DataFrame):
     def drop(
         self,
         *args,
-        since: Optional[int | str | pd.Timestamp] = None,
-        to: Optional[int | str | pd.Timestamp] = None,
+        since: int | str | pd.Timestamp | None = None,
+        to: int | str | pd.Timestamp | None = None,
         **kwargs,
     ) -> None:
         """_summary_
 
         Args:
-            since (Optional[int | str | pd.Timestamp], optional): _description_. Defaults to None.
-            to (Optional[int | str | pd.Timestamp], optional): _description_. Defaults to None.
+            since (int | str | pd.Timestamp | None, optional): _description_. Defaults to None.
+            to (int | str | pd.Timestamp | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_

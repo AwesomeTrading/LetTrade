@@ -3,7 +3,7 @@ import logging
 import time
 from datetime import datetime
 from multiprocessing.managers import BaseManager
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Literal
 
 import ccxt
 from box import Box
@@ -51,7 +51,7 @@ class CCXTAPIExchange:
         exchange: str,
         key: str,
         secret: str,
-        options: Optional[dict] = None,
+        options: dict | None = None,
         type: Literal["spot", "margin", "future"] = "spot",
         sandbox: bool = True,
         verbose: bool = False,
@@ -200,7 +200,7 @@ class CCXTAPI(LiveAPI):
         key: str,
         secret: str,
         currency: str = "USDT",
-        ccxt: Optional[CCXTAPIExchange] = None,
+        ccxt: CCXTAPIExchange | None = None,
         **kwargs,
     ):
         """_summary_
@@ -209,7 +209,7 @@ class CCXTAPI(LiveAPI):
             exchange (int): _description_
             key (str): _description_
             secret (str): _description_
-            ccxt (Optional[CCXTAPIExchange], optional): _description_. Defaults to None.
+            ccxt (CCXTAPIExchange | None, optional): _description_. Defaults to None.
         """
         if ccxt is None:
             ccxt = CCXTAPIExchange(exchange=exchange, key=key, secret=secret, **kwargs)
@@ -223,7 +223,7 @@ class CCXTAPI(LiveAPI):
     def __deepcopy__(self, memo):
         return self.__class__._singleton
 
-    def start(self, exchange: Optional["CCXTExchange"] = None):
+    def start(self, exchange: "CCXTExchange | None" = None):
         self._exchange = exchange
         self._currency = exchange._account._currency
 
@@ -253,8 +253,8 @@ class CCXTAPI(LiveAPI):
         self,
         symbol,
         timeframe,
-        since: Optional[int | datetime] = 0,
-        to: Optional[int | datetime] = 1_000,
+        since: int | datetime | None = 0,
+        to: int | datetime | None = 1_000,
         **kwargs,
     ) -> list[list]:
         return self._ccxt.fetch_ohlcv(symbol, timeframe, limit=to, **kwargs)
@@ -306,16 +306,16 @@ class CCXTAPI(LiveAPI):
     # Execution
     def executions_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """"""
 
     def executions_get(
         self,
-        position_id: Optional[str] = None,
-        search: Optional[str] = None,
+        position_id: str | None = None,
+        search: str | None = None,
         **kwargs,
     ) -> list[dict]:
         """"""
@@ -326,8 +326,8 @@ class CCXTAPI(LiveAPI):
     # Position
     def positions_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """"""
@@ -338,8 +338,8 @@ class CCXTAPI(LiveAPI):
     def position_update(
         self,
         position: "CCXTPosition",
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
         **kwargs,
     ) -> dict:
         """"""

@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
@@ -26,12 +26,12 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         size: float,
         parent: "Order",
         state: PositionState = PositionState.Open,
-        entry_price: Optional[float] = None,
+        entry_price: float | None = None,
         entry_fee: float = 0.0,
-        entry_at: Optional[pd.Timestamp] = None,
-        sl_order: Optional[Order] = None,
-        tp_order: Optional[Order] = None,
-        tag: Optional[str] = None,
+        entry_at: pd.Timestamp | None = None,
+        sl_order: Order | None = None,
+        tp_order: Order | None = None,
+        tag: str | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -45,19 +45,19 @@ class Position(BaseTransaction, metaclass=ABCMeta):
 
         self.state: PositionState = state
         self.parent: "Order" = parent
-        self.tag: Optional[str] = tag
+        self.tag: str | None = tag
 
-        self.entry_price: Optional[float] = entry_price
+        self.entry_price: float | None = entry_price
         self.entry_fee: float = entry_fee
-        self.entry_at: Optional[pd.Timestamp] = entry_at
+        self.entry_at: pd.Timestamp | None = entry_at
 
-        self.exit_price: Optional[float] = None
+        self.exit_price: float | None = None
         self.exit_fee: float = 0.0
-        self.exit_at: Optional[pd.Timestamp] = None
-        self.exit_pl: Optional[float] = None
+        self.exit_at: pd.Timestamp | None = None
+        self.exit_pl: float | None = None
 
-        self.sl_order: Optional[Order] = sl_order
-        self.tp_order: Optional[Order] = tp_order
+        self.sl_order: Order | None = sl_order
+        self.tp_order: Order | None = tp_order
 
     def _repr_params(self):
         params = (
@@ -95,7 +95,7 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         price: float,
         at: pd.Timestamp,
         fee: float,
-        raw: Optional[object] = None,
+        raw: object | None = None,
     ) -> "PositionResult":
         self.entry_price = price
         self.entry_at = at
@@ -104,7 +104,7 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         self.exchange.on_position(self)
         return PositionResultOk(position=self, raw=raw)
 
-    def update(self, raw: Optional[object] = None, **kwargs) -> "PositionResult":
+    def update(self, raw: object | None = None, **kwargs) -> "PositionResult":
         self.exchange.on_position(self)
         return PositionResultOk(position=self, raw=raw)
 
@@ -114,7 +114,7 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         at: pd.Timestamp,
         pl: float,
         fee: float,
-        raw: Optional[object] = None,
+        raw: object | None = None,
     ) -> "PositionResult":
         if self.state != PositionState.Open:
             return PositionResultError(
@@ -184,13 +184,13 @@ class Position(BaseTransaction, metaclass=ABCMeta):
 
     # Extra properties
     @property
-    def sl(self) -> Optional[float]:
+    def sl(self) -> float | None:
         if self.sl_order:
             return self.sl_order.stop_price
         return None
 
     @property
-    def tp(self) -> Optional[float]:
+    def tp(self) -> float | None:
         if self.tp_order:
             return self.tp_order.limit_price
         return None
@@ -242,19 +242,19 @@ class PositionResult:
     def __init__(
         self,
         ok: bool = True,
-        position: Optional["Position"] = None,
-        raw: Optional[object] = None,
+        position: "Position | None" = None,
+        raw: object | None = None,
     ) -> None:
         """_summary_
 
         Args:
-            ok (Optional[bool], optional): Flag to check `Position` is success or not. Defaults to True.
-            position (Optional[Position], optional): Position own the result. Defaults to None.
-            raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
+            ok (bool | None, optional): Flag to check `Position` is success or not. Defaults to True.
+            position (Position | None, optional): Position own the result. Defaults to None.
+            raw (object | None, optional): Raw object of `Position`. Defaults to None.
         """
         self.ok: bool = ok
-        self.position: Optional["Position"] = position
-        self.raw: Optional[object] = raw
+        self.position: "Position | None" = position
+        self.raw: object | None = raw
 
     def _repr_params(self):
         params = f"ok={self.ok} position={self.position}"
@@ -271,14 +271,14 @@ class PositionResultOk(PositionResult):
 
     def __init__(
         self,
-        position: Optional["Position"] = None,
-        raw: Optional[object] = None,
+        position: "Position | None" = None,
+        raw: object | None = None,
     ) -> None:
         """_summary_
 
         Args:
-            position (Optional[Position], optional): Position own the result. Defaults to None.
-            raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
+            position (Position | None, optional): Position own the result. Defaults to None.
+            raw (object | None, optional): Raw object of `Position`. Defaults to None.
         """
         super().__init__(ok=True, position=position, raw=raw)
 
@@ -289,15 +289,15 @@ class PositionResultError(PositionResult):
     def __init__(
         self,
         error: str,
-        position: Optional["Position"] = None,
-        raw: Optional[object] = None,
+        position: "Position | None" = None,
+        raw: object | None = None,
     ) -> None:
         """_summary_
 
         Args:
             error (str): Error message
-            position (Optional[Position], optional): Position own the result. Defaults to None.
-            raw (Optional[object], optional): Raw object of `Position`. Defaults to None.
+            position (Position | None, optional): Position own the result. Defaults to None.
+            raw (object | None, optional): Raw object of `Position`. Defaults to None.
         """
         super().__init__(ok=False, position=position, raw=raw)
         self.error: str = error

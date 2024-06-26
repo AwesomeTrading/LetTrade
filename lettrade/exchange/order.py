@@ -1,5 +1,5 @@
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
@@ -21,13 +21,13 @@ class Order(BaseTransaction):
         size: float,
         state: OrderState = OrderState.Pending,
         type: OrderType = OrderType.Market,
-        limit_price: Optional[float] = None,
-        stop_price: Optional[float] = None,
-        sl_price: Optional[float] = None,
-        tp_price: Optional[float] = None,
-        parent: Optional["Position"] = None,
-        tag: Optional[str] = None,
-        placed_at: Optional[pd.Timestamp] = None,
+        limit_price: float | None = None,
+        stop_price: float | None = None,
+        sl_price: float | None = None,
+        tp_price: float | None = None,
+        parent: "Position | None" = None,
+        tag: str | None = None,
+        placed_at: pd.Timestamp | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -40,15 +40,15 @@ class Order(BaseTransaction):
 
         self.type: OrderType = type
         self.state: OrderState = state
-        self.limit_price: Optional[float] = limit_price
-        self.stop_price: Optional[float] = stop_price
-        self.sl_price: Optional[float] = sl_price
-        self.tp_price: Optional[float] = tp_price
-        self.parent: Optional["Position"] = parent
-        self.tag: Optional[str] = tag
-        self.placed_at: Optional[pd.Timestamp] = placed_at
-        self.filled_at: Optional[pd.Timestamp] = None
-        self.filled_price: Optional[float] = None
+        self.limit_price: float | None = limit_price
+        self.stop_price: float | None = stop_price
+        self.sl_price: float | None = sl_price
+        self.tp_price: float | None = tp_price
+        self.parent: "Position | None" = parent
+        self.tag: str | None = tag
+        self.placed_at: pd.Timestamp | None = placed_at
+        self.filled_at: pd.Timestamp | None = None
+        self.filled_price: float | None = None
 
         self.validate()
 
@@ -116,7 +116,7 @@ class Order(BaseTransaction):
     def place(
         self,
         at: pd.Timestamp,
-        raw: Optional[object] = None,
+        raw: object | None = None,
     ) -> "OrderResult":
         """Place `Order`
         Set `status` to `OrderState.Placed`.
@@ -141,11 +141,11 @@ class Order(BaseTransaction):
 
     def update(
         self,
-        limit_price: Optional[float] = None,
-        stop_price: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        raw: Optional[object] = None,
+        limit_price: float | None = None,
+        stop_price: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        raw: object | None = None,
     ) -> "OrderResult":
         """Update Order
 
@@ -179,7 +179,7 @@ class Order(BaseTransaction):
         self,
         price: float,
         at: pd.Timestamp,
-        raw: Optional[object] = None,
+        raw: object | None = None,
     ) -> "OrderResult":
         """Fill `Order`.
         Set `status` to `OrderState.Executed`.
@@ -204,7 +204,7 @@ class Order(BaseTransaction):
         self.exchange.on_order(self)
         return OrderResultOk(order=self, raw=raw)
 
-    def cancel(self, raw: Optional[object] = None, **kwargs) -> "OrderResult":
+    def cancel(self, raw: object | None = None, **kwargs) -> "OrderResult":
         """Cancel `Order`
         Set `status` to `OrderState.Canceled`.
         Send event to `Exchange`
@@ -258,11 +258,11 @@ class Order(BaseTransaction):
 
     # Fields getters
     @property
-    def place_price(self) -> Optional[float]:
+    def place_price(self) -> float | None:
         """Getter of place_price
 
         Returns:
-            Optional[float]: `float` or `None`
+            float | None: `float` or `None`
         """
         if self.type == OrderType.Limit:
             return self.limit_price
@@ -271,38 +271,38 @@ class Order(BaseTransaction):
         return None
 
     @property
-    def limit(self) -> Optional[float]:
+    def limit(self) -> float | None:
         """Getter of limit_price
 
         Returns:
-            Optional[float]: `float` or `None`
+            float | None: `float` or `None`
         """
         return self.limit_price
 
     @property
-    def stop(self) -> Optional[float]:
+    def stop(self) -> float | None:
         """Getter of stop_price
 
         Returns:
-            Optional[float]: `float` or `None`
+            float | None: `float` or `None`
         """
         return self.stop_price
 
     @property
-    def sl(self) -> Optional[float]:
+    def sl(self) -> float | None:
         """Getter of sl_price
 
         Returns:
-            Optional[float]: `float` or `None`
+            float | None: `float` or `None`
         """
         return self.sl_price
 
     @property
-    def tp(self) -> Optional[float]:
+    def tp(self) -> float | None:
         """Getter of tp_price
 
         Returns:
-            Optional[float]: `float` or `None`
+            float | None: `float` or `None`
         """
         return self.tp_price
 
@@ -350,19 +350,19 @@ class OrderResult:
     def __init__(
         self,
         ok: bool = True,
-        order: Optional["Order"] = None,
-        raw: Optional[object] = None,
+        order: "Order | None" = None,
+        raw: object | None = None,
     ) -> None:
         """_summary_
 
         Args:
-            ok (Optional[bool], optional): Flag to check `Order` is success or not. Defaults to True.
-            order (Optional[Order], optional): Order own the result. Defaults to None.
-            raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
+            ok (bool | None, optional): Flag to check `Order` is success or not. Defaults to True.
+            order (Order | None, optional): Order own the result. Defaults to None.
+            raw (object | None, optional): Raw object of `Order`. Defaults to None.
         """
         self.ok: bool = ok
-        self.order: Optional["Order"] = order
-        self.raw: Optional[object] = raw
+        self.order: "Order | None" = order
+        self.raw: object | None = raw
 
     def _repr_params(self):
         params = f"ok={self.ok} order={self.order}"
@@ -379,14 +379,14 @@ class OrderResultOk(OrderResult):
 
     def __init__(
         self,
-        order: Optional["Order"] = None,
-        raw: Optional[object] = None,
+        order: "Order | None" = None,
+        raw: object | None = None,
     ) -> None:
         """_summary_
 
         Args:
-            order (Optional[Order], optional): Order own the result. Defaults to None.
-            raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
+            order (Order | None, optional): Order own the result. Defaults to None.
+            raw (object | None, optional): Raw object of `Order`. Defaults to None.
         """
         super().__init__(ok=True, order=order, raw=raw)
 
@@ -397,15 +397,15 @@ class OrderResultError(OrderResult):
     def __init__(
         self,
         error: str,
-        order: Optional["Order"] = None,
-        raw: Optional[object] = None,
+        order: "Order | None" = None,
+        raw: object | None = None,
     ) -> None:
         """_summary_
 
         Args:
             error (str): Error message
-            order (Optional[Order], optional): Order own the result. Defaults to None.
-            raw (Optional[object], optional): Raw object of `Order`. Defaults to None.
+            order (Order | None, optional): Order own the result. Defaults to None.
+            raw (object | None, optional): Raw object of `Order`. Defaults to None.
         """
         super().__init__(ok=False, order=order, raw=raw)
         self.error: str = error

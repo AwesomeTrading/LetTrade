@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Literal, Optional, Type
+from typing import Any, Literal
 
 from lettrade.account import Account
 from lettrade.brain import Brain
@@ -31,33 +31,33 @@ class LetTradeBot:
     """Trading account handler"""
     strategy: Strategy
     """Strategy"""
-    commander: Optional[Commander] = None
+    commander: Commander | None = None
     """Control the bot"""
-    plotter: Optional[Plotter] = None
+    plotter: Plotter | None = None
     """Plot graphic results"""
-    stats: Optional[BotStatistic] = None
+    stats: BotStatistic | None = None
 
-    _strategy_cls: Type[Strategy]
-    _feeder_cls: Type[DataFeeder]
-    _exchange_cls: Type[Exchange]
-    _account_cls: Type[Account]
-    _commander_cls: Optional[Type[Commander]]
-    _plotter_cls: Optional[Type[Plotter]]
-    _stats_cls: Optional[Type[BotStatistic]]
+    _strategy_cls: type[Strategy]
+    _feeder_cls: type[DataFeeder]
+    _exchange_cls: type[Exchange]
+    _account_cls: type[Account]
+    _commander_cls: type[Commander] | None
+    _plotter_cls: type[Plotter] | None
+    _stats_cls: type[BotStatistic] | None
     _kwargs: dict[str, Any]
-    _name: Optional[str]
+    _name: str | None
 
     def __init__(
         self,
-        strategy: Type[Strategy],
+        strategy: type[Strategy],
         datas: DataFeed | list[DataFeed] | str | list[str],
-        feeder: Type[DataFeeder],
-        exchange: Type[Exchange],
-        account: Type[Account],
-        commander: Optional[Type[Commander]] = None,
-        plotter: Optional[Type[Plotter]] = None,
-        stats: Optional[Type[BotStatistic]] = None,
-        name: Optional[str] = None,
+        feeder: type[DataFeeder],
+        exchange: type[Exchange],
+        account: type[Account],
+        commander: type[Commander] | None = None,
+        plotter: type[Plotter] | None = None,
+        stats: type[BotStatistic] | None = None,
+        name: str | None = None,
         **kwargs,
     ) -> None:
         logger.info("New bot: %s", name)
@@ -186,14 +186,14 @@ class LetTradeBot:
     def new_bot(
         cls,
         datas: list[DataFeed],
-        strategy_cls: Type[Strategy],
-        feeder_cls: Type[DataFeeder],
-        exchange_cls: Type[Exchange],
-        account_cls: Type[Account],
-        commander_cls: Type[Commander],
-        plotter_cls: Type[Plotter],
-        stats_cls: Type[BotStatistic],
-        name: Optional[str] = None,
+        strategy_cls: type[Strategy],
+        feeder_cls: type[DataFeeder],
+        exchange_cls: type[Exchange],
+        account_cls: type[Account],
+        commander_cls: type[Commander],
+        plotter_cls: type[Plotter],
+        stats_cls: type[BotStatistic],
+        name: str | None = None,
         **kwargs,
     ) -> "LetTradeBot":
         bot = cls(
@@ -213,7 +213,7 @@ class LetTradeBot:
     @classmethod
     def start_bot(
         cls,
-        bot: Optional["LetTradeBot"] = None,
+        bot: "LetTradeBot | None" = None,
         **kwargs,
     ):
         if bot is None:
@@ -225,10 +225,10 @@ class LetTradeBot:
     @classmethod
     def run_bot(
         cls,
-        bot: Optional["LetTradeBot"] = None,
-        datas: Optional[list[DataFeed]] = None,
-        id: Optional[int] = None,
-        name: Optional[str] = None,
+        bot: "LetTradeBot | None" = None,
+        datas: list[DataFeed] | None = None,
+        id: int | None = None,
+        name: str | None = None,
         result: Literal["str", "stats", "bot", None] = "str",
         **kwargs,
     ):

@@ -1,5 +1,4 @@
 import logging
-from typing import Optional, Type
 
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType, PositionState
@@ -13,9 +12,9 @@ logger = logging.getLogger(__name__)
 class LiveExchange(Exchange):
     """MetaTrade 5 exchange module for `lettrade`"""
 
-    _execution_cls: Type[LiveExecution] = LiveExecution
-    _order_cls: Type[LiveOrder] = LiveOrder
-    _position_cls: Type[LivePosition] = LivePosition
+    _execution_cls: type[LiveExecution] = LiveExecution
+    _order_cls: type[LiveOrder] = LiveOrder
+    _position_cls: type[LivePosition] = LivePosition
 
     _api: LiveAPI
 
@@ -42,26 +41,26 @@ class LiveExchange(Exchange):
     def new_order(
         self,
         size: float,
-        type: Optional[OrderType] = OrderType.Market,
-        limit: Optional[float] = None,
-        stop: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        tag: Optional[str] = None,
-        data: Optional[DataFeed] = None,
+        type: OrderType | None = OrderType.Market,
+        limit: float | None = None,
+        stop: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        tag: str | None = None,
+        data: DataFeed | None = None,
         **kwargs,
     ) -> OrderResult:
         """Place new order to server
 
         Args:
             size (float): _description_
-            type (Optional[OrderType], optional): _description_. Defaults to OrderType.Market.
-            limit (Optional[float], optional): _description_. Defaults to None.
-            stop (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[str], optional): _description_. Defaults to None.
-            data (Optional[DataFeed], optional): _description_. Defaults to None.
+            type (OrderType | None, optional): _description_. Defaults to OrderType.Market.
+            limit (float | None, optional): _description_. Defaults to None.
+            stop (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            tag (str | None, optional): _description_. Defaults to None.
+            data (DataFeed | None, optional): _description_. Defaults to None.
 
         Returns:
             OrderResult: _description_
@@ -94,7 +93,7 @@ class LiveExchange(Exchange):
         return ok
 
     # Events
-    def on_executions_event(self, raws, broadcast: Optional[bool] = True):
+    def on_executions_event(self, raws, broadcast: bool | None = True):
         if __debug__:
             logger.debug("Raw new executions: %s", raws)
         for raw in raws:

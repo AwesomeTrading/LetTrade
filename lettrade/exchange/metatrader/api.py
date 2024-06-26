@@ -3,7 +3,7 @@ import logging
 import time
 from datetime import datetime, timedelta
 from subprocess import Popen
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from box import Box
 from mt5linux import MetaTrader5 as MT5
@@ -82,7 +82,7 @@ class MetaTraderAPI(LiveAPI):
     _executions_stored: dict[int, object]
     _positions_stored: dict[int, object]
 
-    _wine_process: Optional[Popen] = None
+    _wine_process: Popen | None = None
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_singleton"):
@@ -119,7 +119,7 @@ class MetaTraderAPI(LiveAPI):
         retry: int = 20,
         host: str = "localhost",
         port: int = 18812,
-        wine: Optional[str] = None,
+        wine: str | None = None,
         magic: int = 88888888,
         **kwargs,
     ):
@@ -133,12 +133,11 @@ class MetaTraderAPI(LiveAPI):
             retry (int, optional): _description_. Defaults to 20.
             host (str, optional): _description_. Defaults to "localhost".
             port (int, optional): _description_. Defaults to 18812.
-            wine (Optional[str], optional): _description_. Defaults to None.
+            wine (str | None, optional): _description_. Defaults to None.
             magic (int, optional): _description_. Defaults to 88888888.
 
         Raises:
             ConnectionRefusedError: _description_
-            RuntimeError: _description_
             RuntimeError: _description_
         """
         # Parameters
@@ -279,8 +278,8 @@ class MetaTraderAPI(LiveAPI):
         return raw
 
     @mt5_connection
-    def markets(self, search: Optional[str] = None, **kwargs) -> list[dict]:
-        """The filter for arranging a group of necessary symbols. Optional parameter.
+    def markets(self, search: str | None = None, **kwargs) -> list[dict]:
+        """The filter for arranging a group of necessary symbols.
         If the group is specified, the function returns only symbols meeting a specified criteria.
 
         Search example:
@@ -288,7 +287,7 @@ class MetaTraderAPI(LiveAPI):
             `search="*,!*USD*,!*EUR*,!*JPY*,!*GBP*"`
 
         Args:
-            search (Optional[str], optional): _description_. Defaults to None.
+            search (str | None, optional): _description_. Defaults to None.
 
         Returns:
             list[dict]: _description_
@@ -318,8 +317,8 @@ class MetaTraderAPI(LiveAPI):
         self,
         symbol,
         timeframe,
-        since: Optional[int | datetime] = 0,
-        to: Optional[int | datetime] = 1_000,
+        since: int | datetime | None = 0,
+        to: int | datetime | None = 1_000,
         **kwargs,
     ) -> list[list]:
         """_summary_
@@ -327,8 +326,8 @@ class MetaTraderAPI(LiveAPI):
         Args:
             symbol (_type_): _description_
             timeframe (_type_): _description_
-            since (Optional[int  |  datetime], optional): _description_. Defaults to 0.
-            to (Optional[int  |  datetime], optional): _description_. Defaults to 1_000.
+            since (int | datetime | None, optional): _description_. Defaults to 0.
+            to (int | datetime | None, optional): _description_. Defaults to 1_000.
 
         Returns:
             list[list]: _description_
@@ -365,15 +364,15 @@ class MetaTraderAPI(LiveAPI):
     @mt5_connection
     def orders_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """_summary_
 
         Args:
-            since (Optional[datetime], optional): _description_. Defaults to None.
-            to (Optional[datetime], optional): _description_. Defaults to None.
+            since (datetime | None, optional): _description_. Defaults to None.
+            to (datetime | None, optional): _description_. Defaults to None.
 
         Returns:
             int: _description_
@@ -392,15 +391,15 @@ class MetaTraderAPI(LiveAPI):
     @mt5_connection
     def orders_get(
         self,
-        id: Optional[str] = None,
-        symbol: Optional[str] = None,
+        id: str | None = None,
+        symbol: str | None = None,
         **kwargs,
     ) -> list[dict]:
         """_summary_
 
         Args:
-            id (Optional[str], optional): _description_. Defaults to None.
-            symbol (Optional[str], optional): _description_. Defaults to None.
+            id (str | None, optional): _description_. Defaults to None.
+            symbol (str | None, optional): _description_. Defaults to None.
 
         Returns:
             list[dict]: _description_
@@ -464,7 +463,7 @@ class MetaTraderAPI(LiveAPI):
         price: float,
         sl: float = None,
         tp: float = None,
-        tag: Optional[str] = None,
+        tag: str | None = None,
         deviation: int = 10,
         **kwargs,
     ) -> dict:
@@ -507,14 +506,14 @@ class MetaTraderAPI(LiveAPI):
 
     def _parse_trade_request(
         self,
-        symbol: Optional[str] = None,
-        size: Optional[float] = None,
-        type: Optional[int] = None,
-        price: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        tag: Optional[str] = None,
-        position: Optional[int] = None,
+        symbol: str | None = None,
+        size: float | None = None,
+        type: int | None = None,
+        price: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        tag: str | None = None,
+        position: int | None = None,
         deviation: int = 10,
         action: int = MT5.TRADE_ACTION_DEAL,
         type_time: int = MT5.ORDER_TIME_GTC,
@@ -590,15 +589,15 @@ class MetaTraderAPI(LiveAPI):
     @mt5_connection
     def orders_history_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """_summary_
 
         Args:
-            since (Optional[datetime], optional): _description_. Defaults to None.
-            to (Optional[datetime], optional): _description_. Defaults to None.
+            since (datetime | None, optional): _description_. Defaults to None.
+            to (datetime | None, optional): _description_. Defaults to None.
 
         Returns:
             int: _description_
@@ -616,22 +615,22 @@ class MetaTraderAPI(LiveAPI):
     @mt5_connection
     def orders_history_get(
         self,
-        id: Optional[str] = None,
-        position_id: Optional[str] = None,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        id: str | None = None,
+        position_id: str | None = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> list[dict]:
         """_summary_
 
         Args:
-            id (Optional[str], optional): _description_. Defaults to None.
-            position_id (Optional[str], optional): _description_. Defaults to None.
-            since (Optional[datetime], optional): _description_. Defaults to None.
-            to (Optional[datetime], optional): _description_. Defaults to None.
+            id (str | None, optional): _description_. Defaults to None.
+            position_id (str | None, optional): _description_. Defaults to None.
+            since (datetime | None, optional): _description_. Defaults to None.
+            to (datetime | None, optional): _description_. Defaults to None.
 
         Returns:
-            dict: _description_
+            list[dict]: _description_
         """
         if id is not None:
             kwargs["ticket"] = int(id)
@@ -658,15 +657,15 @@ class MetaTraderAPI(LiveAPI):
     @mt5_connection
     def executions_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """_summary_
 
         Args:
-            since (Optional[datetime], optional): _description_. Defaults to None.
-            to (Optional[datetime], optional): _description_. Defaults to None.
+            since (datetime | None, optional): _description_. Defaults to None.
+            to (datetime | None, optional): _description_. Defaults to None.
 
         Returns:
             int: _description_
@@ -684,15 +683,15 @@ class MetaTraderAPI(LiveAPI):
     @mt5_connection
     def executions_get(
         self,
-        position_id: Optional[str] = None,
-        search: Optional[str] = None,
+        position_id: str | None = None,
+        search: str | None = None,
         **kwargs,
     ) -> list[dict]:
         """_summary_
 
         Args:
-            position_id (Optional[str], optional): _description_. Defaults to None.
-            search (Optional[str], optional): _description_. Defaults to None.
+            position_id (str | None, optional): _description_. Defaults to None.
+            search (str | None, optional): _description_. Defaults to None.
 
         Returns:
             list[dict]: _description_
@@ -758,15 +757,15 @@ class MetaTraderAPI(LiveAPI):
     @mt5_connection
     def positions_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """_summary_
 
         Args:
-            since (Optional[datetime], optional): _description_. Defaults to None.
-            to (Optional[datetime], optional): _description_. Defaults to None.
+            since (datetime | None, optional): _description_. Defaults to None.
+            to (datetime | None, optional): _description_. Defaults to None.
 
         Returns:
             int: _description_
@@ -813,16 +812,16 @@ class MetaTraderAPI(LiveAPI):
     def position_update(
         self,
         position: "MetaTraderPosition",
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
         **kwargs,
     ) -> dict:
         """_summary_
 
         Args:
             position (MetaTraderPosition): _description_
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
 
         Returns:
             dict: _description_
@@ -840,16 +839,16 @@ class MetaTraderAPI(LiveAPI):
         self,
         id: int,
         # symbol: str,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
         **kwargs,
     ) -> dict:
         """_summary_
 
         Args:
             id (int): _description_
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
 
         Returns:
             dict: _description_

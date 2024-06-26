@@ -2,7 +2,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -118,21 +118,21 @@ class Exchange(metaclass=ABCMeta):
     def on_execution(
         self,
         execution: Execution,
-        broadcast: Optional[bool] = True,
+        broadcast: bool | None = True,
         **kwargs,
     ) -> None:
         """Receive Execution event from exchange then store and notify Brain
 
         Args:
             execution (Execution): _description_
-            broadcast (Optional[bool], optional): _description_. Defaults to True.
+            broadcast (bool | None, optional): _description_. Defaults to True.
         """
         self.on_executions(executions=[execution], broadcast=broadcast, **kwargs)
 
     def on_executions(
         self,
         executions: list[Execution],
-        broadcast: Optional[bool] = True,
+        broadcast: bool | None = True,
         **kwargs,
     ) -> None:
         """
@@ -160,28 +160,28 @@ class Exchange(metaclass=ABCMeta):
     def on_order(
         self,
         order: Order,
-        broadcast: Optional[bool] = True,
+        broadcast: bool | None = True,
         **kwargs,
     ) -> None:
         """Receive order event from exchange then store and notify Brain
 
         Args:
             order (Order): _description_
-            broadcast (Optional[bool], optional): _description_. Defaults to True.
+            broadcast (bool | None, optional): _description_. Defaults to True.
         """
         self.on_orders(orders=[order], broadcast=broadcast, **kwargs)
 
     def on_orders(
         self,
         orders: list[Order],
-        broadcast: Optional[bool] = True,
+        broadcast: bool | None = True,
         **kwargs,
     ) -> None:
         """Receive orders event from exchange then store and notify Brain
 
         Args:
             orders (list[Order]): _description_
-            broadcast (Optional[bool], optional): _description_. Defaults to True.
+            broadcast (bool | None, optional): _description_. Defaults to True.
 
         Raises:
             RuntimeError: _description_
@@ -219,14 +219,14 @@ class Exchange(metaclass=ABCMeta):
     def on_position(
         self,
         position: Position,
-        broadcast: Optional[bool] = True,
+        broadcast: bool | None = True,
         **kwargs,
     ) -> None:
         """Receive Position event from exchange then store and notify Brain
 
         Args:
             position (Position): new comming `Position`
-            broadcast (Optional[bool], optional): Flag notify to Brain. Defaults to True.
+            broadcast (bool | None, optional): Flag notify to Brain. Defaults to True.
 
         Raises:
             RuntimeError: validate `Position` instance
@@ -236,14 +236,14 @@ class Exchange(metaclass=ABCMeta):
     def on_positions(
         self,
         positions: list[Position],
-        broadcast: Optional[bool] = True,
+        broadcast: bool | None = True,
         **kwargs,
     ) -> None:
         """Receive Positions event from exchange then store and notify Brain
 
         Args:
             positions (list[Position]): list of new comming `Position`
-            broadcast (Optional[bool], optional): Flag notify to Brain. Defaults to True.
+            broadcast (bool | None, optional): Flag notify to Brain. Defaults to True.
 
         Raises:
             RuntimeError: validate `Position` instance
@@ -289,11 +289,11 @@ class Exchange(metaclass=ABCMeta):
     def new_order(
         self,
         size: float,
-        limit: Optional[float] = None,
-        stop: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        tag: Optional[str] = None,
+        limit: float | None = None,
+        stop: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        tag: str | None = None,
         *args,
         **kwargs,
     ) -> OrderResult:
@@ -301,11 +301,11 @@ class Exchange(metaclass=ABCMeta):
 
         Args:
             size (float): _description_
-            limit (Optional[float], optional): _description_. Defaults to None.
-            stop (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[str], optional): _description_. Defaults to None.
+            limit (float | None, optional): _description_. Defaults to None.
+            stop (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            tag (str | None, optional): _description_. Defaults to None.
 
         Returns:
             OrderResult: _description_

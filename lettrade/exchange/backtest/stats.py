@@ -4,7 +4,6 @@ import threading
 import time
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import SyncManager
-from typing import Optional
 
 import pandas as pd
 
@@ -21,7 +20,7 @@ class OptimizeStatistic:
     _q: Queue
     _total: int = 0
     _manager: SyncManager
-    _result_thread: Optional[threading.Thread]
+    _result_thread: threading.Thread | None
 
     results: list
     result: pd.Series

@@ -1,5 +1,3 @@
-from typing import Optional
-
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -194,7 +192,7 @@ class PlotlyBotPlotter(BotPlotter):
                 for trace in data_config["traces"]:
                     self.figure.add_trace(trace, **data_shape)
 
-    def plot(self, jump: Optional[dict] = None, **kwargs):
+    def plot(self, jump: dict | None = None, **kwargs):
         """Plot `equity`, `orders`, and `positions` then show"""
         if jump is not None:
             self.jump(**jump)

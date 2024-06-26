@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class PlotlyOptimizePlotter(OptimizePlotter):
-    _process_bar: Optional["Progress"]
+    _process_bar: "Progress | None"
 
     def __init__(self, total=None, process_bar: bool = True) -> None:
         super().__init__()

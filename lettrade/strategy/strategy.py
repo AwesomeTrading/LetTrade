@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-from typing import Any, Optional, final
+from typing import Any, final
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -38,7 +38,7 @@ class Strategy:
             exchange (Exchange): Trading exchange
             account (Account): Account manager
             commander (Commander): Event/Command manager
-            is_optimize (Optional[bool], optional): flag validate optimize condiction. Defaults to False.
+            is_optimize (bool | None, optional): flag validate optimize condiction. Defaults to False.
 
         Raises:
             RuntimeError: Validate valid is_optimize flag
@@ -154,24 +154,24 @@ class Strategy:
     @final
     def order_buy(
         self,
-        size: Optional[float] = None,
-        limit: Optional[float] = None,
-        stop: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        tag: Optional[str] = None,
+        size: float | None = None,
+        limit: float | None = None,
+        stop: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        tag: str | None = None,
         **kwargs,
     ) -> OrderResult:
         """Place a new long order.
 
         Args:
-            size (Optional[float], optional): _description_. Defaults to None.
-            limit (Optional[float], optional): _description_. Defaults to None.
-            stop (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[str], optional): _description_. Defaults to None.
-            **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`
+            size (float | None, optional): _description_. Defaults to None.
+            limit (float | None, optional): _description_. Defaults to None.
+            stop (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            tag (str | None, optional): _description_. Defaults to None.
+            **kwargs (dict | None, optional): Extra-parameters send to `Exchange.new_order`
 
         Returns:
             OrderResult: order result information
@@ -192,24 +192,24 @@ class Strategy:
     @final
     def order_sell(
         self,
-        size: Optional[float] = None,
-        limit: Optional[float] = None,
-        stop: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        tag: Optional[str] = None,
+        size: float | None = None,
+        limit: float | None = None,
+        stop: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        tag: str | None = None,
         **kwargs,
     ) -> OrderResult:
         """Place a new short order.
 
         Args:
-            size (Optional[float], optional): _description_. Defaults to None.
-            limit (Optional[float], optional): _description_. Defaults to None.
-            stop (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[str], optional): _description_. Defaults to None.
-            **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`
+            size (float | None, optional): _description_. Defaults to None.
+            limit (float | None, optional): _description_. Defaults to None.
+            stop (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            tag (str | None, optional): _description_. Defaults to None.
+            **kwargs (dict | None, optional): Extra-parameters send to `Exchange.new_order`
 
         Returns:
             OrderResult: order result information
@@ -231,24 +231,24 @@ class Strategy:
     def order_place(
         self,
         side: TradeSide,
-        size: Optional[float] = None,
-        limit: Optional[float] = None,
-        stop: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        tag: Optional[str] = None,
+        size: float | None = None,
+        limit: float | None = None,
+        stop: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        tag: str | None = None,
         **kwargs,
     ) -> OrderResult:
         """_summary_
 
         Args:
             side (TradeSide): _description_
-            size (Optional[float], optional): _description_. Defaults to None.
-            limit (Optional[float], optional): _description_. Defaults to None.
-            stop (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[str], optional): _description_. Defaults to None.
+            size (float | None, optional): _description_. Defaults to None.
+            limit (float | None, optional): _description_. Defaults to None.
+            stop (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            tag (str | None, optional): _description_. Defaults to None.
 
         Returns:
             OrderResult: _description_
@@ -266,7 +266,7 @@ class Strategy:
         return self.__exchange.new_order(**params)
 
     @final
-    def positions_exit(self, side: Optional[TradeSide] = None):
+    def positions_exit(self, side: TradeSide | None = None):
         for p in list(self.positions.values()):
             if side is not None and p.side != side:
                 continue

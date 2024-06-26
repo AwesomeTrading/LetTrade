@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 from lettrade.account import Account
 
@@ -43,7 +42,7 @@ class LiveAccount(Account):
     #     self.account_refresh()
     #     return super().next()
 
-    def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
+    def pl(self, size, entry_price: float, exit_price: float | None = None) -> float:
         if exit_price is None:
             exit_price = self._exchange.data.l.open[0]
 

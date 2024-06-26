@@ -1,6 +1,5 @@
 import time
 from datetime import datetime
-from typing import Optional, Type
 
 from lettrade.data import DataFeeder, TimeFrame
 
@@ -10,8 +9,8 @@ from .data import LiveDataFeed
 
 class LiveDataFeeder(DataFeeder):
     # Class properties
-    _api_cls: Type[LiveAPI] = LiveAPI
-    _data_cls: Type[LiveDataFeed] = LiveDataFeed
+    _api_cls: type[LiveAPI] = LiveAPI
+    _data_cls: type[LiveDataFeed] = LiveDataFeed
 
     # Object properties
     datas: list[LiveDataFeed]
@@ -75,8 +74,8 @@ class LiveDataFeeder(DataFeeder):
     @classmethod
     def instance(
         cls,
-        api: Optional[LiveAPI] = None,
-        api_kwargs: Optional[dict] = None,
+        api: LiveAPI | None = None,
+        api_kwargs: dict | None = None,
         **kwargs,
     ) -> "LiveDataFeed":
         """_summary_

@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Optional
+from typing import Any
 
 import pandas as pd
 from mt5linux import MetaTrader5 as MT5
@@ -35,13 +35,13 @@ class MetaTraderExecution(LiveExecution):
         self,
         pl: float = None,
         fee: float = None,
-        tag: Optional[str] = None,
+        tag: str | None = None,
         **kwargs,
     ):
         super().__init__(**kwargs)
         self.pl: float = pl
         self.fee: float = fee
-        self.tag: Optional[str] = tag
+        self.tag: str | None = tag
 
     @classmethod
     def from_raw(
@@ -50,7 +50,7 @@ class MetaTraderExecution(LiveExecution):
         exchange: "LiveExchange",
         data: "LiveDataFeed" = None,
         api: MetaTraderAPI = None,
-    ) -> Optional["MetaTraderExecution"]:
+    ) -> "MetaTraderExecution | None":
         """Building new MetaTraderExecution from live api raw object
 
         Args:
@@ -144,21 +144,21 @@ class MetaTraderOrder(LiveOrder):
 
     def update(
         self,
-        limit_price: Optional[float] = None,
-        stop_price: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        caller: Optional[float] = None,
+        limit_price: float | None = None,
+        stop_price: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        caller: float | None = None,
         **kwargs,
     ) -> OrderResult:
         """_summary_
 
         Args:
-            limit_price (Optional[float], optional): _description_. Defaults to None.
-            stop_price (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            caller (Optional[float], optional): _description_. Defaults to None.
+            limit_price (float | None, optional): _description_. Defaults to None.
+            stop_price (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            caller (float | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_
@@ -220,20 +220,21 @@ class MetaTraderOrder(LiveOrder):
         raw: Any,
         exchange: "LiveExchange",
         data: "LiveDataFeed" = None,
-        api: Optional[MetaTraderAPI] = None,
-    ) -> Optional["MetaTraderOrder"]:
+        api: MetaTraderAPI | None = None,
+    ) -> "MetaTraderOrder | None":
         """_summary_
 
         Args:
-            raw (Any): _description_.
-            exchange (LiveExchange): _description_.
-            api (Optional[MetaTraderAPI], optional): _description_. Defaults to None.
+            raw (Any): _description_
+            exchange (LiveExchange): _description_
+            data (LiveDataFeed, optional): _description_. Defaults to None.
+            api (MetaTraderAPI | None, optional): _description_. Defaults to None.
 
         Raises:
             NotImplementedError: _description_
 
         Returns:
-            MetaTraderOrder: _description_
+            MetaTraderOrder | None: _description_
         """
         # DataFeed
         if data is None:
@@ -343,15 +344,15 @@ class MetaTraderOrder(LiveOrder):
     def from_position(
         cls,
         position: "MetaTraderPosition",
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
     ) -> "MetaTraderOrder":
         """_summary_
 
         Args:
             position (MetaTraderPosition): _description_
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_
@@ -383,19 +384,20 @@ class MetaTraderPosition(LivePosition):
 
     def update(
         self,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        caller: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        caller: float | None = None,
         **kwargs,
     ) -> PositionResult:
         """_summary_
 
         Args:
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            caller (Optional[float], optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            caller (float | None, optional): _description_. Defaults to None.
 
         Raises:
+            RuntimeError: _description_
             RuntimeError: _description_
 
         Returns:

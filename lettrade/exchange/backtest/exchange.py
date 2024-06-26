@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 from lettrade.data import DataFeed
 from lettrade.exchange import Exchange, OrderResult, OrderType
@@ -39,13 +38,13 @@ class BackTestExchange(Exchange):
     def new_order(
         self,
         size: float,
-        type: Optional[OrderType] = OrderType.Market,
-        limit: Optional[float] = None,
-        stop: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        tag: Optional[object] = None,
-        data: Optional[DataFeed] = None,
+        type: OrderType = OrderType.Market,
+        limit: float | None = None,
+        stop: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        tag: object | None = None,
+        data: DataFeed | None = None,
         **kwargs,
     ) -> OrderResult:
         """Place new order.
@@ -53,14 +52,14 @@ class BackTestExchange(Exchange):
 
         Args:
             size (float): _description_
-            type (Optional[OrderType], optional): _description_. Defaults to OrderType.Market.
-            limit (Optional[float], optional): _description_. Defaults to None.
-            stop (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[object], optional): _description_. Defaults to None.
-            data (Optional[DataFeed], optional): _description_. Defaults to None.
-            **kwargs (Optional[dict], optional): Extra-parameters
+            type (OrderType | None, optional): _description_. Defaults to OrderType.Market.
+            limit (float | None, optional): _description_. Defaults to None.
+            stop (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            tag (object | None, optional): _description_. Defaults to None.
+            data (DataFeed | None, optional): _description_. Defaults to None.
+            **kwargs (dict | None, optional): Extra-parameters
 
         Returns:
             OrderResult: Result when place new `Order`

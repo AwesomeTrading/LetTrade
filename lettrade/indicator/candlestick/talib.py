@@ -1,12 +1,10 @@
-from typing import Optional
-
 import pandas as pd
 import talib.abstract as ta
 
 
 def cdl_3blackcrows(
     dataframe: pd.DataFrame,
-    name: Optional[str] = None,
+    name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
     **kwargs,
@@ -15,7 +13,7 @@ def cdl_3blackcrows(
 
     Args:
         dataframe (pd.DataFrame): _description_
-        name (Optional[str], optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "cdl_".
         inplace (bool, optional): _description_. Defaults to False.
 
@@ -34,7 +32,7 @@ def cdl_3blackcrows(
 
 def cdl_3whitesoldiers(
     dataframe: pd.DataFrame,
-    name: Optional[str] = None,
+    name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
     **kwargs,
@@ -43,7 +41,7 @@ def cdl_3whitesoldiers(
 
     Args:
         dataframe (pd.DataFrame): _description_
-        name (Optional[str], optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "cdl_".
         inplace (bool, optional): _description_. Defaults to False.
 
@@ -63,7 +61,7 @@ def cdl_3whitesoldiers(
 def cdl_pattern(
     dataframe: pd.DataFrame,
     pattern: str,
-    name: Optional[str] = None,
+    name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
     **kwargs,
@@ -73,7 +71,7 @@ def cdl_pattern(
     Args:
         dataframe (pd.DataFrame): pandas.DataFrame with ohlcv
         pattern (str): TA-Lib candle pattern name. Ex: `3whitesoldiers`, `3blackcrows`
-        name (Optional[str], optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "cdl_".
         inplace (bool, optional): _description_. Defaults to False.
 

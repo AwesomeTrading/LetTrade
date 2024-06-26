@@ -4,7 +4,7 @@ from collections.abc import Callable
 from concurrent.futures import Future, ProcessPoolExecutor
 from itertools import product, repeat
 from multiprocessing import Queue
-from typing import Any, Literal, Optional, Type
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -63,11 +63,11 @@ class LetTradeBackTest(LetTrade):
     _stats: OptimizeStatistic = None
 
     @property
-    def _optimize_stats_cls(self) -> Type["OptimizeStatistic"]:
+    def _optimize_stats_cls(self) -> type["OptimizeStatistic"]:
         return self._kwargs.get("optimize_stats_cls", None)
 
     @property
-    def _optimize_plotter_cls(self) -> Type["OptimizePlotter"]:
+    def _optimize_plotter_cls(self) -> type["OptimizePlotter"]:
         return self._kwargs.get("optimize_plotter_cls", None)
 
     @_optimize_plotter_cls.setter
@@ -75,7 +75,7 @@ class LetTradeBackTest(LetTrade):
         self._kwargs["optimize_plotter_cls"] = value
 
     @property
-    def _strategy_cls(self) -> Type[Strategy]:
+    def _strategy_cls(self) -> type[Strategy]:
         return self._kwargs.get("strategy_cls", None)
 
     def _datafeed(
@@ -107,7 +107,7 @@ class LetTradeBackTest(LetTrade):
 
         return super().start(force)
 
-    def run(self, worker: Optional[int] = None, **kwargs):
+    def run(self, worker: int | None = None, **kwargs):
         # Load plotly here just for backtest to improve performance
         if self._plotter_cls == "PlotlyBotPlotter":
             from lettrade.plot.plotly import PlotlyBotPlotter
@@ -160,7 +160,7 @@ class LetTradeBackTest(LetTrade):
     def optimize(
         self,
         multiprocessing: Literal["auto", "fork"] = "auto",
-        workers: Optional[int] = None,
+        workers: int | None = None,
         process_bar: bool = True,
         cache: str = "data/optimize",
         **kwargs,
@@ -168,7 +168,7 @@ class LetTradeBackTest(LetTrade):
         """Backtest optimization
 
         Args:
-            multiprocessing (Optional[str], optional): _description_. Defaults to "auto".
+            multiprocessing (str | None, optional): _description_. Defaults to "auto".
         """
         if self.data.l.pointer != 0:
             # TODO: Can drop unnecessary columns by snapshort data.columns from init time
@@ -196,7 +196,7 @@ class LetTradeBackTest(LetTrade):
         self,
         optimizes: list[set],
         multiprocessing: Literal["auto", "fork"],
-        workers: Optional[int] = None,
+        workers: int | None = None,
     ):
         # If multiprocessing start method is 'fork' (i.e. on POSIX), use
         # a pool of processes to compute results in parallel.
@@ -282,7 +282,7 @@ class LetTradeBackTest(LetTrade):
         total: int = 0,
         cache: str = "data/optimize",
         process_bar: bool = False,
-        dumper: Optional[Callable[[dict, "LetTradeBackTest"], None]] = None,
+        dumper: Callable[[dict, "LetTradeBackTest"], None] | None = None,
     ) -> Callable[[Any], Any]:
         """Optimize function help to integrated with external optimize trainer
 
@@ -415,7 +415,7 @@ class LetTradeBackTest(LetTrade):
 
             try:
                 cache_path = f"{cache_dir}/{cache_file}"
-                data = json.load(open(cache_path, mode="r", encoding="utf-8"))
+                data = json.load(open(cache_path, encoding="utf-8"))
 
                 queue.put(
                     dict(
@@ -439,9 +439,9 @@ class LetTradeBackTest(LetTrade):
         cls,
         datas: list[DataFeed],
         optimize: dict[str, Any],
-        bot_cls: Type[LetTradeBot],
+        bot_cls: type[LetTradeBot],
         index: int = 0,
-        queue: Optional[Queue] = None,
+        queue: "Queue | None" = None,
         cache: str = None,
         **kwargs,
     ):
@@ -499,7 +499,7 @@ def _md5_dict(d: dict):
     return hashlib.md5(json.dumps(d, sort_keys=True).encode("utf-8")).hexdigest()
 
 
-def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
+def _optimize_cache_dir(dir: str, strategy_cls: type[Strategy]) -> str:
     import hashlib
     import inspect
     import json
@@ -542,14 +542,14 @@ def _optimize_cache_dir(dir: str, strategy_cls: Type[Strategy]) -> str:
     return cache_dir.absolute()
 
 
-def _optimize_cache_get(dir: str, optimize: dict) -> Optional[str]:
+def _optimize_cache_get(dir: str, optimize: dict) -> str | None:
     import json
 
     try:
         hash = _md5_dict(optimize)
         path = f"{dir}/{hash}.json"
 
-        data = json.load(open(path, "r", encoding="utf-8"))
+        data = json.load(open(path, encoding="utf-8"))
         data["path"] = path
         data["result"] = pd.Series(data["result"])
         return data
@@ -573,21 +573,21 @@ def _optimize_cache_set(dir: str, optimize: dict, result: pd.Series):
 
 
 def let_backtest(
-    strategy: Type[Strategy],
+    strategy: type[Strategy],
     datas: DataFeed | list[DataFeed] | str | list[str],
-    feeder: Type[DataFeeder] = BackTestDataFeeder,
-    exchange: Type[Exchange] = BackTestExchange,
-    account: Type[Account] = BackTestAccount,
-    commander: Optional[Type[Commander]] = BackTestCommander,
-    stats: Optional[Type[BotStatistic]] = BotStatistic,
-    optimize_stats: Optional[Type[OptimizeStatistic]] = OptimizeStatistic,
-    plotter: Optional[Type[BotPlotter]] = "PlotlyBotPlotter",
-    optimize_plotter: Optional[Type[OptimizePlotter]] = "PlotlyOptimizePlotter",
-    bot: Optional[Type[LetTradeBackTestBot]] = LetTradeBackTestBot,
+    feeder: type[DataFeeder] = BackTestDataFeeder,
+    exchange: type[Exchange] = BackTestExchange,
+    account: type[Account] = BackTestAccount,
+    commander: type[Commander] | None = BackTestCommander,
+    stats: type[BotStatistic] | None = BotStatistic,
+    optimize_stats: type[OptimizeStatistic] | None = OptimizeStatistic,
+    plotter: type[BotPlotter] | None = "PlotlyBotPlotter",
+    optimize_plotter: type[OptimizePlotter] | None = "PlotlyOptimizePlotter",
+    bot: type[LetTradeBackTestBot] | None = LetTradeBackTestBot,
     # Account kwargs
-    balance: Optional[float] = 1_000,
-    commission: Optional[float] = 0.2,
-    leverage: Optional[float] = 20,
+    balance: float | None = 1_000,
+    commission: float | None = 0.2,
+    leverage: float | None = 20,
     **kwargs,
 ) -> "LetTradeBackTest":
     """Complete `lettrade` backtest depenencies
@@ -598,8 +598,8 @@ def let_backtest(
         feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
         exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
         account (Type[Account], optional): _description_. Defaults to BackTestAccount.
-        commander (Optional[Type[Commander]], optional): _description_. Defaults to BackTestCommander.
-        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to PlotlyBotPlotter.
+        commander (Type[Commander] | None, optional): _description_. Defaults to BackTestCommander.
+        plotter (Type[Plotter] | None, optional): _description_. Defaults to PlotlyBotPlotter.
 
     Raises:
         RuntimeError: The validate parameter error

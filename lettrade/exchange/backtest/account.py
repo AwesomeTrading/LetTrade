@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from lettrade.account import Account
 
@@ -47,7 +47,7 @@ class BackTestAccount(Account):
             equity += sum(position.pl for position in self._exchange.positions.values())
         return equity
 
-    def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
+    def pl(self, size, entry_price: float, exit_price: float | None = None) -> float:
         if exit_price is None:
             exit_price = self._exchange.data.l.open[0]
 
@@ -71,5 +71,5 @@ class ForexBackTestAccount(BackTestAccount):
     def __repr__(self):
         return "<ForexBackTestAccount " + str(self) + ">"
 
-    def pl(self, size, entry_price: float, exit_price: Optional[float] = None) -> float:
+    def pl(self, size, entry_price: float, exit_price: float | None = None) -> float:
         return super().pl(size, entry_price, exit_price) * 100_000

@@ -1,10 +1,9 @@
 import logging
 import re
-from typing import Optional
 
 import pandas as pd
 
-from lettrade.data import DataFeed, TimeFrame
+from lettrade.data import DataFeed
 
 logger = logging.getLogger(__name__)
 
@@ -16,10 +15,10 @@ class BackTestDataFeed(DataFeed):
         self,
         data: pd.DataFrame,
         name: str,
-        timeframe: Optional[str | int | pd.Timedelta] = None,
-        meta: Optional[dict] = None,
-        since: Optional[int | str | pd.Timestamp] = None,
-        to: Optional[int | str | pd.Timestamp] = None,
+        timeframe: str | int | pd.Timedelta | None = None,
+        meta: dict | None = None,
+        since: int | str | pd.Timestamp | None = None,
+        to: int | str | pd.Timestamp | None = None,
         **kwargs,
     ) -> None:
         """_summary_
@@ -27,10 +26,10 @@ class BackTestDataFeed(DataFeed):
         Args:
             data (pd.DataFrame): _description_
             name (str): _description_
-            timeframe (Optional[str  |  int  |  pd.Timedelta], optional): _description_. Defaults to None.
-            meta (Optional[dict], optional): _description_. Defaults to None.
-            since (Optional[int  |  str  |  pd.Timestamp], optional): Drop data before since. Defaults to None.
-            to (Optional[int  |  str  |  pd.Timestamp], optional): Drop data after to. Defaults to None.
+            timeframe (str | int | pd.Timedelta | None, optional): _description_. Defaults to None.
+            meta (dict | None, optional): _description_. Defaults to None.
+            since (int | str | pd.Timestamp | None, optional): Drop data before since. Defaults to None.
+            to (int | str | pd.Timestamp | None, optional): Drop data after to. Defaults to None.
         """
         if timeframe is None:
             timeframe = self._find_timeframe(data)
@@ -61,7 +60,7 @@ class BackTestDataFeed(DataFeed):
     def next(
         self,
         size: int = 1,
-        next: Optional[pd.Timestamp] = None,
+        next: pd.Timestamp | None = None,
         missing="bypass",
     ) -> bool:
         has_next = True
@@ -120,14 +119,14 @@ class CSVBackTestDataFeed(BackTestDataFeed):
 
     def __init__(
         self,
-        path: Optional[str] = None,
-        name: Optional[str] = None,
-        timeframe: Optional[str | int | pd.Timedelta] = None,
+        path: str | None = None,
+        name: str | None = None,
+        timeframe: str | int | pd.Timedelta | None = None,
         delimiter: str = ",",
         index_col: int = 0,
         header: int = 0,
-        meta: Optional[dict] = None,
-        data: Optional[DataFeed] = None,
+        meta: dict | None = None,
+        data: DataFeed | None = None,
         **kwargs: dict,
     ) -> None:
         """_summary_

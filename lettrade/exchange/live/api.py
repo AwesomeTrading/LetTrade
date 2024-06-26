@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .exchange import LiveExchange
@@ -50,8 +50,8 @@ class LiveAPI(ABC):
         self,
         symbol,
         timeframe,
-        since: Optional[int | datetime] = 0,
-        to: Optional[int | datetime] = 1_000,
+        since: int | datetime | None = 0,
+        to: int | datetime | None = 1_000,
     ) -> list[list]:
         """"""
 
@@ -70,8 +70,8 @@ class LiveAPI(ABC):
     @abstractmethod
     def orders_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """"""
@@ -79,8 +79,8 @@ class LiveAPI(ABC):
     @abstractmethod
     def orders_get(
         self,
-        id: Optional[str] = None,
-        symbol: Optional[str] = None,
+        id: str | None = None,
+        symbol: str | None = None,
         **kwargs,
     ):
         """"""
@@ -99,9 +99,9 @@ class LiveAPI(ABC):
 
     def orders_history_get(
         self,
-        id: Optional[str] = None,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        id: str | None = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> list[dict]:
         """"""
@@ -110,8 +110,8 @@ class LiveAPI(ABC):
     @abstractmethod
     def executions_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """"""
@@ -119,8 +119,8 @@ class LiveAPI(ABC):
     @abstractmethod
     def executions_get(
         self,
-        position_id: Optional[str] = None,
-        search: Optional[str] = None,
+        position_id: str | None = None,
+        search: str | None = None,
         **kwargs,
     ) -> list[dict]:
         """"""
@@ -133,8 +133,8 @@ class LiveAPI(ABC):
     @abstractmethod
     def positions_total(
         self,
-        since: Optional[datetime] = None,
-        to: Optional[datetime] = None,
+        since: datetime | None = None,
+        to: datetime | None = None,
         **kwargs,
     ) -> int:
         """"""
@@ -147,8 +147,8 @@ class LiveAPI(ABC):
     def position_update(
         self,
         position: "LivePosition",
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
         **kwargs,
     ) -> dict:
         """"""

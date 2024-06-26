@@ -1,6 +1,6 @@
 import logging
 from concurrent.futures import ProcessPoolExecutor
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING
 
 from lettrade.account import Account
 from lettrade.bot import LetTradeBot
@@ -20,25 +20,25 @@ logger = logging.getLogger(__name__)
 class LetTrade:
     """Building new bot object and handle multiprocessing"""
 
-    _plotter: Optional[Plotter] = None
+    _plotter: Plotter | None = None
     """Plot graphic results"""
-    _stats: Optional[BotStatistic] = None
-    _bot: Optional[LetTradeBot] = None
+    _stats: BotStatistic | None = None
+    _bot: LetTradeBot | None = None
 
     _kwargs: dict
 
     def __init__(
         self,
-        strategy: Type[Strategy],
+        strategy: type[Strategy],
         datas: DataFeed | list[DataFeed] | str | list[str],
-        feeder: Type[DataFeeder],
-        exchange: Type[Exchange],
-        account: Type[Account],
-        commander: Optional[Type[Commander]] = None,
-        plotter: Optional[Type[Plotter]] = None,
-        stats: Optional[Type[BotStatistic]] = None,
-        name: Optional[str] = None,
-        bot: Optional[Type[LetTradeBot]] = LetTradeBot,
+        feeder: type[DataFeeder],
+        exchange: type[Exchange],
+        account: type[Account],
+        commander: type[Commander] | None = None,
+        plotter: type[Plotter] | None = None,
+        stats: type[BotStatistic] | None = None,
+        name: str | None = None,
+        bot: type[LetTradeBot] | None = LetTradeBot,
         **kwargs,
     ) -> None:
         self._kwargs = kwargs
@@ -97,11 +97,11 @@ class LetTrade:
 
         self._bot = self._bot_cls.start_bot(bot=self._bot, **self._kwargs)
 
-    def run(self, worker: Optional[int] = None, **kwargs):
+    def run(self, worker: int | None = None, **kwargs):
         """Run strategy in single or multiple processing
 
         Args:
-            worker (Optional[int], optional): Number of processing. Defaults to None.
+            worker (int | None, optional): Number of processing. Defaults to None.
         """
         if worker or isinstance(self.data, list):
             if not isinstance(self.data, list):
@@ -174,7 +174,7 @@ class LetTrade:
             self.stats.stop()
 
     @property
-    def stats(self) -> Optional[BotStatistic]:
+    def stats(self) -> BotStatistic | None:
         if self._stats:
             return self._stats
         if self._bot is not None:
@@ -183,14 +183,14 @@ class LetTrade:
 
     # Plotter
     @property
-    def plotter(self) -> "Optional[Plotter | BotPlotter | OptimizePlotter]":
+    def plotter(self) -> "Plotter | BotPlotter | OptimizePlotter | None":
         if self._plotter is not None:
             return self._plotter
         if self._bot is not None:
             return self._bot.plotter
         raise RuntimeError("Plotter is not defined")
 
-    def plot(self, *args, jump: Optional[dict] = None, **kwargs):
+    def plot(self, *args, jump: dict | None = None, **kwargs):
         """Plot strategy/optimize result
 
         BotPlotter:
@@ -198,7 +198,7 @@ class LetTrade:
             Plotly implement [PlotlyBotPlotter.plot()](site:/reference/plot/plotly/plotly/#lettrade.plot.plotly.plotly.PlotlyBotPlotter.plot).
 
             Args:
-                `jump` (Optional[dict], optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)
+                `jump` (dict | None, optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)
 
             Example:
                 - Jump to position_id
@@ -229,7 +229,7 @@ class LetTrade:
 
     # Bot kwargs properties
     @property
-    def name(self) -> Type[LetTradeBot]:
+    def name(self) -> type[LetTradeBot]:
         return self._kwargs.get("name", None)
 
     @property
@@ -245,7 +245,7 @@ class LetTrade:
         return self.datas[0]
 
     @property
-    def _bot_cls(self) -> Type[LetTradeBot]:
+    def _bot_cls(self) -> type[LetTradeBot]:
         return self._kwargs.get("bot_cls", None)
 
     # @bot_cls.setter
@@ -253,7 +253,7 @@ class LetTrade:
     #     self._kwargs["bot_cls"] = value
 
     @property
-    def _commander_cls(self) -> Type[Commander]:
+    def _commander_cls(self) -> type[Commander]:
         return self._kwargs.get("commander_cls", None)
 
     @_commander_cls.setter
@@ -261,7 +261,7 @@ class LetTrade:
         self._kwargs["commander_cls"] = value
 
     @property
-    def _stats_cls(self) -> Type[BotStatistic]:
+    def _stats_cls(self) -> type[BotStatistic]:
         return self._kwargs.get("stats_cls", None)
 
     # @_stats_cls.setter
@@ -269,7 +269,7 @@ class LetTrade:
     #     self._kwargs["stats_cls"] = value
 
     @property
-    def _plotter_cls(self) -> Type["Plotter"]:
+    def _plotter_cls(self) -> type["Plotter"]:
         return self._kwargs.get("plotter_cls", None)
 
     @_plotter_cls.setter

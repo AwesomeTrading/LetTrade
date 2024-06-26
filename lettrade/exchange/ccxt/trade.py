@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Optional
+from typing import Any
 
 import pandas as pd
 
@@ -108,21 +108,21 @@ class CCXTOrder(LiveOrder):
 
     def update(
         self,
-        limit_price: Optional[float] = None,
-        stop_price: Optional[float] = None,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        caller: Optional[float] = None,
+        limit_price: float | None = None,
+        stop_price: float | None = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        caller: float | None = None,
         **kwargs,
     ) -> OrderResult:
         """_summary_
 
         Args:
-            limit_price (Optional[float], optional): _description_. Defaults to None.
-            stop_price (Optional[float], optional): _description_. Defaults to None.
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            caller (Optional[float], optional): _description_. Defaults to None.
+            limit_price (float | None, optional): _description_. Defaults to None.
+            stop_price (float | None, optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            caller (float | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_
@@ -183,14 +183,14 @@ class CCXTOrder(LiveOrder):
         cls,
         raw: Any,
         exchange: "LiveExchange",
-        api: Optional[CCXTAPI] = None,
-    ) -> Optional["CCXTOrder"]:
+        api: CCXTAPI | None = None,
+    ) -> "CCXTOrder | None":
         """_summary_
 
         Args:
             raw (Any): _description_.
             exchange (LiveExchange): _description_.
-            api (Optional[CCXTAPI], optional): _description_. Defaults to None.
+            api (CCXTAPI | None, optional): _description_. Defaults to None.
 
         Raises:
             NotImplementedError: _description_
@@ -306,15 +306,15 @@ class CCXTOrder(LiveOrder):
     def from_position(
         cls,
         position: "CCXTPosition",
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
     ) -> "CCXTOrder":
         """_summary_
 
         Args:
             position (CCXTPosition): _description_
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_
@@ -346,17 +346,17 @@ class CCXTPosition(LivePosition):
 
     def update(
         self,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
-        caller: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
+        caller: float | None = None,
         **kwargs,
     ) -> PositionResult:
         """_summary_
 
         Args:
-            sl (Optional[float], optional): _description_. Defaults to None.
-            tp (Optional[float], optional): _description_. Defaults to None.
-            caller (Optional[float], optional): _description_. Defaults to None.
+            sl (float | None, optional): _description_. Defaults to None.
+            tp (float | None, optional): _description_. Defaults to None.
+            caller (float | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_

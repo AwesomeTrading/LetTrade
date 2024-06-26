@@ -1,6 +1,5 @@
 import logging
 from datetime import datetime
-from typing import Optional, Type
 
 import pandas as pd
 
@@ -14,16 +13,16 @@ logger = logging.getLogger(__name__)
 class LiveDataFeed(DataFeed):
     """Live trading DataFeed"""
 
-    _api_cls: Type[LiveAPI] = LiveAPI
+    _api_cls: type[LiveAPI] = LiveAPI
     _bar_datetime_unit: str = "ms"
 
     def __init__(
         self,
         symbol: str,
         timeframe: str | int | pd.Timedelta,
-        name: Optional[str] = None,
-        api: Optional[LiveAPI] = None,
-        columns: Optional[list[str]] = None,
+        name: str | None = None,
+        api: LiveAPI | None = None,
+        columns: list[str] | None = None,
         **kwargs,
     ) -> None:
         """_summary_
@@ -31,9 +30,9 @@ class LiveDataFeed(DataFeed):
         Args:
             symbol (str): Symbol of DataFeed
             timeframe (str | int | pd.Timedelta): TimeFrame of DataFeed
-            name (Optional[str], optional): Name of DataFeed, auto generate `{symbol}_{timeframe}` if none. Defaults to None.
-            api (Optional[LiveAPI], optional): Live trading API. Defaults to None.
-            columns (Optional[list[str]], optional): List of DataFeed columns. Defaults to None.
+            name (str | None, optional): Name of DataFeed, auto generate `{symbol}_{timeframe}` if none. Defaults to None.
+            api (LiveAPI | None, optional): Live trading API. Defaults to None.
+            columns (list[str] | None, optional): List of DataFeed columns. Defaults to None.
         """
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
@@ -137,17 +136,17 @@ class LiveDataFeed(DataFeed):
     ### Extend
     def dump_csv(
         self,
-        path: Optional[str] = None,
-        since: Optional[int | str | datetime] = 0,
-        to: Optional[int | str | datetime] = 1_000,
+        path: str | None = None,
+        since: int | str | datetime | None = 0,
+        to: int | str | datetime | None = 1_000,
         **kwargs,
     ):
         """_summary_
 
         Args:
-            path (Optional[str], optional): _description_. Defaults to None.
-            since (Optional[int  |  str  |  datetime], optional): _description_. Defaults to 0.
-            to (Optional[int  |  str  |  datetime], optional): _description_. Defaults to 1_000.
+            path (str | None, optional): _description_. Defaults to None.
+            since (int  |  str  |  datetime | None, optional): _description_. Defaults to 0.
+            to (int  |  str  |  datetime | None, optional): _description_. Defaults to 1_000.
         """
         if self.empty:
             if isinstance(since, str):
@@ -167,8 +166,8 @@ class LiveDataFeed(DataFeed):
     @classmethod
     def instance(
         cls,
-        api: Optional[LiveAPI] = None,
-        api_kwargs: Optional[dict] = None,
+        api: LiveAPI | None = None,
+        api_kwargs: dict | None = None,
         **kwargs,
     ) -> "LiveDataFeed":
         """_summary_

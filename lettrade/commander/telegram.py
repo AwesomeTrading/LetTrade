@@ -11,12 +11,12 @@ Example:
 import asyncio
 import logging
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Coroutine
 from functools import partial, wraps
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import BaseManager
 from threading import Thread
-from typing import Any, Coroutine, Dict, List, Literal, Optional, Union
+from typing import Any
 
 from telegram import (
     CallbackQuery,
@@ -116,7 +116,7 @@ class TelegramAPI:
         self._init_keyboard()
         self._start_thread()
 
-    def _action(self, action: str, pname: Optional[str] = None):
+    def _action(self, action: str, pname: str | None = None):
         if pname is None:
             pname = list(self._bots_queue.keys())
         elif isinstance(pname, str):
@@ -162,7 +162,7 @@ class TelegramAPI:
         Validates the keyboard configuration from telegram config
         section.
         """
-        self._keyboard: List[List[Union[str, KeyboardButton]]] = [
+        self._keyboard: list[list[str | KeyboardButton]] = [
             ["/help", "/bots", "/bot"],
             ["/stats", "/plot", "/status"],
             ["/count"],
@@ -280,10 +280,10 @@ class TelegramAPI:
         msg: str,
         parse_mode: str = ParseMode.MARKDOWN,
         disable_notification: bool = False,
-        keyboard: Optional[List[List[InlineKeyboardButton]]] = None,
+        keyboard: list[list[InlineKeyboardButton]] | None = None,
         callback_path: str = "",
         reload_able: bool = False,
-        query: Optional[CallbackQuery] = None,
+        query: CallbackQuery | None = None,
     ) -> None:
         """
         Send given markdown message
@@ -292,7 +292,7 @@ class TelegramAPI:
         :param parse_mode: telegram parse mode
         :return: None
         """
-        reply_markup: Union[InlineKeyboardMarkup, ReplyKeyboardMarkup]
+        reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup
         # if query:
         #     await self._update_msg(
         #         query=query,
@@ -539,7 +539,7 @@ class TelegramCommander(Commander):
         self,
         token: str,
         chat_id: int,
-        api: Optional[TelegramAPI] = None,
+        api: TelegramAPI | None = None,
         *args,
         **kwargs,
     ) -> None:

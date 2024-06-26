@@ -1,5 +1,5 @@
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
@@ -40,14 +40,14 @@ class BackTestExecution(Execution):
         order: "BackTestOrder",
         price: float,
         at: object,
-        size: Optional[float] = None,
+        size: float | None = None,
     ) -> "BackTestExecution":
         """Method help to build Execution object from Order object
 
         Args:
             price (float): Executed price
             at (object): Executed bar
-            size (Optional[float], optional): Executed size. Defaults to None.
+            size (float | None, optional): Executed size. Defaults to None.
 
         Returns:
             BackTestExecution: Execution object
@@ -70,7 +70,7 @@ class BackTestOrder(Order):
 
     def cancel(
         self,
-        caller: Optional[Order | Position] = None,
+        caller: Order | Position | None = None,
         **kwargs,
     ) -> "OrderResult":
         """Cancel the Order and notify Exchange"""
@@ -150,8 +150,8 @@ class BackTestPosition(Position):
 
     def update(
         self,
-        sl: Optional[float] = None,
-        tp: Optional[float] = None,
+        sl: float | None = None,
+        tp: float | None = None,
         **kwargs,
     ) -> PositionResult:
         if not sl and not tp:
@@ -178,9 +178,9 @@ class BackTestPosition(Position):
 
     def exit(
         self,
-        price: Optional[float] = None,
-        at: Optional[pd.Timestamp] = None,
-        caller: Optional[Order | Position] = None,
+        price: float | None = None,
+        at: pd.Timestamp | None = None,
+        caller: Order | Position | None = None,
         **kwargs,
     ) -> PositionResult:
         """Exit Position
@@ -270,7 +270,7 @@ class BackTestPosition(Position):
     def from_order(
         cls,
         order: "BackTestOrder",
-        size: Optional[float] = None,
+        size: float | None = None,
         state: PositionState = PositionState.Open,
         **kwargs,
     ) -> "BackTestPosition":

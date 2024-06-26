@@ -1,5 +1,4 @@
 import logging
-from typing import Optional, Type
 
 from lettrade import BotStatistic, Commander, Plotter, Strategy
 from lettrade.exchange.live import (
@@ -21,7 +20,7 @@ logger = logging.getLogger(__name__)
 class MetaTraderDataFeed(LiveDataFeed):
     """DataFeed for MetaTrader"""
 
-    _api_cls: Type[MetaTraderAPI] = MetaTraderAPI
+    _api_cls: type[MetaTraderAPI] = MetaTraderAPI
     _bar_datetime_unit: str = "s"
 
     # def push(self, rows: list):
@@ -54,8 +53,8 @@ class MetaTraderDataFeed(LiveDataFeed):
 class MetaTraderDataFeeder(LiveDataFeeder):
     """DataFeeder for MetaTrader"""
 
-    _api_cls: Type[MetaTraderAPI] = MetaTraderAPI
-    _data_cls: Type[MetaTraderDataFeed] = MetaTraderDataFeed
+    _api_cls: type[MetaTraderAPI] = MetaTraderAPI
+    _data_cls: type[MetaTraderDataFeed] = MetaTraderDataFeed
 
 
 class MetaTraderAccount(LiveAccount):
@@ -65,14 +64,14 @@ class MetaTraderAccount(LiveAccount):
 class MetaTraderExchange(LiveExchange):
     """MetaTrade 5 exchange module for `lettrade`"""
 
-    _execution_cls: Type[MetaTraderExecution] = MetaTraderExecution
-    _order_cls: Type[MetaTraderOrder] = MetaTraderOrder
-    _position_cls: Type[MetaTraderPosition] = MetaTraderPosition
+    _execution_cls: type[MetaTraderExecution] = MetaTraderExecution
+    _order_cls: type[MetaTraderOrder] = MetaTraderOrder
+    _position_cls: type[MetaTraderPosition] = MetaTraderPosition
 
     def on_order(
         self,
         order: MetaTraderOrder,
-        broadcast: Optional[bool] = True,
+        broadcast: bool | None = True,
         **kwargs,
     ) -> None:
         if not order.is_real:
@@ -89,13 +88,13 @@ class LetTradeMetaTraderBot(LetTradeLiveBot):
 class LetTradeMetaTrader(LetTradeLive):
     """Help to maintain MetaTrader bots"""
 
-    _data_cls: Type[MetaTraderDataFeed] = MetaTraderDataFeed
+    _data_cls: type[MetaTraderDataFeed] = MetaTraderDataFeed
 
     def __init__(
         self,
-        feeder: Type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
-        exchange: Type[MetaTraderExchange] = MetaTraderExchange,
-        account: Type[MetaTraderAccount] = MetaTraderAccount,
+        feeder: type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
+        exchange: type[MetaTraderExchange] = MetaTraderExchange,
+        account: type[MetaTraderAccount] = MetaTraderAccount,
         **kwargs,
     ) -> None:
         """_summary_
@@ -114,42 +113,41 @@ class LetTradeMetaTrader(LetTradeLive):
 
 
 def let_metatrader(
-    strategy: Type[Strategy],
+    strategy: type[Strategy],
     datas: set[set[str]],
     mt5_login: int,
     mt5_password: str,
     mt5_server: str,
-    mt5_wine: Optional[str] = None,
-    feeder: Type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
-    exchange: Type[MetaTraderExchange] = MetaTraderExchange,
-    account: Type[MetaTraderAccount] = MetaTraderAccount,
-    commander: Optional[Type[Commander]] = None,
-    plotter: Optional[Type[Plotter]] = None,
-    stats: Optional[Type[BotStatistic]] = BotStatistic,
-    bot: Optional[Type[LetTradeMetaTraderBot]] = LetTradeMetaTraderBot,
-    lettrade: Optional[Type[LetTradeMetaTrader]] = LetTradeMetaTrader,
-    api: Optional[Type[MetaTraderAPI]] = MetaTraderAPI,
+    mt5_wine: str | None = None,
+    feeder: type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
+    exchange: type[MetaTraderExchange] = MetaTraderExchange,
+    account: type[MetaTraderAccount] = MetaTraderAccount,
+    commander: type[Commander] | None = None,
+    stats: type[BotStatistic] = BotStatistic,
+    plotter: type[Plotter] | None = None,
+    bot: type[LetTradeMetaTraderBot] = LetTradeMetaTraderBot,
+    lettrade: type[LetTradeMetaTrader] = LetTradeMetaTrader,
+    api: type[MetaTraderAPI] = MetaTraderAPI,
     **kwargs,
 ) -> LetTradeMetaTrader:
     """Help to build `LetTradeMetaTrader`
 
     Args:
-        strategy (Type[Strategy]): _description_
+        strategy (type[Strategy]): _description_
         datas (set[set[str]]): _description_
         mt5_login (int): _description_
         mt5_password (str): _description_
         mt5_server (str): _description_
-        mt5_wine (Optional[str], optional): WineHQ execute path. Defaults to None.
-        feeder (Type[MetaTraderDataFeeder], optional): _description_. Defaults to MetaTraderDataFeeder.
-        exchange (Type[MetaTraderExchange], optional): _description_. Defaults to MetaTraderExchange.
-        account (Type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
-        commander (Optional[Type[Commander]], optional): _description_. Defaults to None.
-        plotter (Optional[Type[Plotter]], optional): _description_. Defaults to None.
-        stats (Optional[Type[BotStatistic]], optional): _description_. Defaults to BotStatistic.
-        bot (Optional[Type[LetTradeMetaTraderBot]], optional): _description_. Defaults to LetTradeMetaTraderBot.
-        lettrade (Optional[Type[LetTradeMetaTrader]], optional): _description_. Defaults to LetTradeMetaTrader.
-        api (Optional[Type[MetaTraderAPI]], optional): _description_. Defaults to MetaTraderAPI.
-        **kwargs (dict): All remaining properties are passed to the constructor of `LetTradeLive`
+        mt5_wine (str | None, optional): WineHQ execute path. Defaults to None.
+        feeder (type[MetaTraderDataFeeder], optional): _description_. Defaults to MetaTraderDataFeeder.
+        exchange (type[MetaTraderExchange], optional): _description_. Defaults to MetaTraderExchange.
+        account (type[MetaTraderAccount], optional): _description_. Defaults to MetaTraderAccount.
+        commander (type[Commander] | None, optional): _description_. Defaults to None.
+        stats (type[BotStatistic], optional): _description_. Defaults to BotStatistic.
+        plotter (type[Plotter] | None, optional): _description_. Defaults to None.
+        bot (type[LetTradeMetaTraderBot], optional): _description_. Defaults to LetTradeMetaTraderBot.
+        lettrade (type[LetTradeMetaTrader], optional): _description_. Defaults to LetTradeMetaTrader.
+        api (type[MetaTraderAPI], optional): _description_. Defaults to MetaTraderAPI.
 
     Returns:
         LetTradeMetaTrader: _description_
@@ -169,8 +167,8 @@ def let_metatrader(
         exchange=exchange,
         account=account,
         commander=commander,
-        plotter=plotter,
         stats=stats,
+        plotter=plotter,
         bot=bot,
         lettrade=lettrade,
         api=api,

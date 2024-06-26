@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
@@ -27,7 +27,7 @@ class BotPlotter(Plotter):
     datas: list[DataFeed]
     """All plotting datafeeds"""
 
-    _datas_stored: Optional[list[DataFeed]] = None
+    _datas_stored: list[DataFeed] | None = None
 
     def __init__(self, bot: "LetTradeBot") -> None:
         self.bot = bot
@@ -57,20 +57,20 @@ class BotPlotter(Plotter):
 
     def jump(
         self,
-        since: Optional[int | str | pd.Timestamp] = None,
-        order_id: Optional[str] = None,
-        position_id: Optional[str] = None,
+        since: int | str | pd.Timestamp | None = None,
+        order_id: str | None = None,
+        position_id: str | None = None,
         range: int = 300,
-        name: Optional[str] = None,
+        name: str | None = None,
     ):
         """Jump to place on datefeed
 
         Args:
-            since (Optional[int | str | pd.Timestamp], optional): Jump to index/datetime. Defaults to None.
-            order_id (Optional[str], optional): Jump to order id. Defaults to None.
-            position_id (Optional[str], optional): Jump to position id. Defaults to None.
+            since (int | str | pd.Timestamp | None, optional): Jump to index/datetime. Defaults to None.
+            order_id (str | None, optional): Jump to order id. Defaults to None.
+            position_id (str | None, optional): Jump to position id. Defaults to None.
             range (int, optional): number of candle plot. Defaults to 300.
-            name (Optional[str], optional): _description_. Defaults to None.
+            name (str | None, optional): _description_. Defaults to None.
 
         Raises:
             RuntimeError: _description_

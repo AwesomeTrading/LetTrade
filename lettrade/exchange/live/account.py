@@ -61,9 +61,9 @@ class LiveAccount(Account):
         self._balance = self._account.balance
         self._equity = self._account.equity
 
-    def on_positions(self, positions: list[LivePosition]):
+    def _on_positions(self, positions: list[LivePosition]):
         self.account_refresh()
-        return super().on_positions(positions)
+        return super()._on_positions(positions)
 
     @property
     def equity(self) -> float:

@@ -12,7 +12,7 @@ if __name__ == "__main__":
         description="Lightweight trading framwork",
         long_description=long_description,
         long_description_content_type="text/markdown",
-        url="https://github.com/AwesomeTrading/lettrade",
+        url="https://github.com/AwesomeTrading/LetTrade",
         classifiers=[
             "Intended Audience :: Financial and Insurance Industry",
             "Intended Audience :: Science/Research",
@@ -31,11 +31,12 @@ if __name__ == "__main__":
         python_requires=">=3.8.0,<3.13",
         install_requires=["pandas", "numpy", "numexpr"],
         extras_require={
-            "plot": ["plotly", "nbformat"],
+            "plot": ["plotly"],
+            "jupyter": ["nbformat", "rich[jupyter]"],
             "commander": ["lettrade[plot]"],
             "commander-telegram": ["lettrade[commander]", "python-telegram-bot"],
-            "backtest": ["lettrade[plot]", "tqdm"],
-            "backtest-extra": ["lettrade[backtest]", "yfinance"],
+            "backtest": ["lettrade[plot]", "rich"],
+            "backtest-extra": ["lettrade[backtest]", "lettrade[jupyter]", "yfinance"],
             "live": ["lettrade[plot]"],
             "exchange-metatrader": [
                 "lettrade[live]",

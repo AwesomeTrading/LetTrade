@@ -5,7 +5,6 @@ yfinance
 pytz
 python-dotenv
 python-telegram-bot
-tqdm
 ccxt
 numba
 rich[jupyter]

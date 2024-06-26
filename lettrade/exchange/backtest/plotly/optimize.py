@@ -1,30 +1,39 @@
+from typing import TYPE_CHECKING
+
 import pandas as pd
-import plotly.graph_objects as go
+
+# import plotly.graph_objects as go
 from plotly import express as px
 
 from lettrade.plot.optimize import OptimizePlotter
 
+if TYPE_CHECKING:
+    from rich.progress import Progress
+
 
 class PlotlyOptimizePlotter(OptimizePlotter):
-    _process_bar: "tqdm" = None
+    _process_bar: "Progress" = None
 
-    def __init__(self, total=None, process_bar=True) -> None:
+    def __init__(self, total=None, process_bar: bool = True) -> None:
         super().__init__()
 
         self._total = total
 
         if process_bar:
-            from tqdm import tqdm
+            from rich.progress import Progress
 
-            self._process_bar = tqdm(total=total)
+            self._process_bar = Progress()
+            self._process_bar.add_task("[red]Optimizing", total=total)
+            self._process_bar.start()
 
     def on_result(self, result):
         if self._process_bar is not None:
-            self._process_bar.update(1)
+            task = self._process_bar.task_ids[0]
+            self._process_bar.update(task, advance=1)
 
     def on_done(self):
         if self._process_bar is not None:
-            self._process_bar.close()
+            self._process_bar.stop()
 
     def load(self):
         raise NotImplementedError

@@ -69,8 +69,8 @@ lt = let_backtest(
 
 # lt.run()
 lt.optimize(
-    ema1_period=range(8, 11),
-    ema2_period=range(20, 25),
+    ema1_period=range(5, 50),
+    ema2_period=range(5, 100),
     # worker=1,
 )
 lt.plot()

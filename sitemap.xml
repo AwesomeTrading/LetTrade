@@ -16,6 +16,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/backtest/performance/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/indicator/1.talib/</loc>
          <lastmod>2024-06-26</lastmod>
          <changefreq>daily</changefreq>
@@ -52,6 +57,61 @@
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/install/metatrader/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/live/ccxt/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/live/metatrader/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/live/metatrader/feeder/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/live/metatrader/trade/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/optimize/0.lettrade/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/optimize/1.optuna/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/optimize/2.hyperopt/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/optimize/3.ray/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/optimize/7.bayesopt/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/optimize/8.blackbox/</loc>
+         <lastmod>2024-06-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://AwesomeTrading.github.io/LetTrade/optimize/9.hyperactive/</loc>
          <lastmod>2024-06-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -547,61 +607,6 @@
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/tut-001/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/ccxt/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/metatrader/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/metatrader/feeder/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/metatrader/trade/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/0.lettrade/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/1.optuna/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/2.hyperopt/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/3.ray/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/7.bayesopt/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/8.blackbox/</loc>
-         <lastmod>2024-06-26</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/optimize/9.hyperactive/</loc>
          <lastmod>2024-06-26</lastmod>
          <changefreq>daily</changefreq>
     </url>

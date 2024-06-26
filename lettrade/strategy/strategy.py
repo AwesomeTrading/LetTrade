@@ -38,7 +38,7 @@ class Strategy:
             exchange (Exchange): Trading exchange
             account (Account): Account manager
             commander (Commander): Event/Command manager
-            is_optimize (bool | None, optional): flag validate optimize condiction. Defaults to False.
+            is_optimize (bool, optional): flag validate optimize condiction. Defaults to False.
 
         Raises:
             RuntimeError: Validate valid is_optimize flag

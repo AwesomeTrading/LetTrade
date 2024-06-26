@@ -36,17 +36,20 @@ class BackTestStrategy(Strategy):
 
 
 @pytest.fixture
-def lt():
-    lt = let_backtest(
-        strategy=BackTestStrategy,
-        datas="example/data/data/EURUSD_5m_0_1000.csv",
-        account=ForexBackTestAccount,
-    )
+def lt() -> BackTestStrategy:
+    def get():
+        lt = let_backtest(
+            strategy=BackTestStrategy,
+            datas="example/data/data/EURUSD_5m_0_1000.csv",
+            account=ForexBackTestAccount,
+        )
+        return lt
 
-    return lt
+    return get
 
 
 def test_run(lt: LetTradeBackTest):
+    lt = lt()
     lt.run()
     result = lt.stats.result
     assert result.positions == 15

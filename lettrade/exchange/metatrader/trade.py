@@ -41,7 +41,7 @@ class MetaTraderExecution(LiveExecution):
         super().__init__(**kwargs)
         self.pl: float = pl
         self.fee: float = fee
-        self.tag: str = tag
+        self.tag: Optional[str] = tag
 
     @classmethod
     def from_raw(

@@ -25,13 +25,13 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         data: "DataFeed",
         size: float,
         parent: "Order",
-        tag: object = "",
         state: PositionState = PositionState.Open,
         entry_price: Optional[float] = None,
         entry_fee: float = 0.0,
         entry_at: Optional[pd.Timestamp] = None,
         sl_order: Optional[Order] = None,
         tp_order: Optional[Order] = None,
+        tag: Optional[str] = None,
         **kwargs,
     ):
         super().__init__(
@@ -44,8 +44,8 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         self._account: "Account" = self.exchange._account
 
         self.state: PositionState = state
-        self.tag: object = tag
         self.parent: "Order" = parent
+        self.tag: Optional[str] = tag
 
         self.entry_price: Optional[float] = entry_price
         self.entry_fee: float = entry_fee
@@ -59,11 +59,34 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         self.sl_order: Optional[Order] = sl_order
         self.tp_order: Optional[Order] = tp_order
 
-    def __repr__(self):
-        return (
-            f"<{self.__class__.__name__} id={self.id} state={self.state} size={self.size} "
-            f"sl={self.sl} tp={self.tp}, pl={round(self.pl, 5)} tag='{self.tag}' >"
+    def _repr_params(self):
+        data = (
+            f"id='{self.id}'"
+            f", state='{self.state}'"
+            f", size={round(self.size, 5)}"
+            f", entry_price={self.entry_price}"
+            f", exit_fee={self.exit_fee}"
+            f", entry_at={self.entry_at}"
         )
+
+        if self.sl_order:
+            data += f", sl_order={self.sl_order}"
+        if self.tp_order:
+            data += f", tp_order={self.tp_order}"
+
+        if self.is_exited:
+            data += (
+                f", exit_price={self.exit_price}"
+                f", exit_fee={self.exit_fee}"
+                f", exit_at={self.exit_at}"
+                f", exit_pl={round(self.exit_pl,5)}"
+            )
+
+        data += f", tag='{self.tag}'"
+        return data
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self._repr_params()}>"
 
     def entry(
         self,
@@ -231,6 +254,12 @@ class PositionResult:
         self.position: Optional["Position"] = position
         self.raw: Optional[object] = raw
 
+    def _repr_params(self):
+        return f"ok={self.ok} position={self.position} raw='{self.raw}'"
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self._repr_params()}>"
+
 
 class PositionResultOk(PositionResult):
     """Result of a success `Position`"""
@@ -267,3 +296,6 @@ class PositionResultError(PositionResult):
         """
         super().__init__(ok=False, position=position, raw=raw)
         self.error: str = error
+
+    def _repr_params(self):
+        return f"error={self.error} {super()._repr_params()}"

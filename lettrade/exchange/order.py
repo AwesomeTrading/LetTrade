@@ -26,7 +26,7 @@ class Order(BaseTransaction):
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
         parent: Optional["Position"] = None,
-        tag: Optional[object] = None,
+        tag: Optional[str] = None,
         placed_at: Optional[pd.Timestamp] = None,
         **kwargs,
     ):
@@ -45,14 +45,14 @@ class Order(BaseTransaction):
         self.sl_price: Optional[float] = sl_price
         self.tp_price: Optional[float] = tp_price
         self.parent: Optional["Position"] = parent
-        self.tag: Optional[object] = tag
+        self.tag: Optional[str] = tag
         self.placed_at: Optional[pd.Timestamp] = placed_at
         self.filled_at: Optional[pd.Timestamp] = None
         self.filled_price: Optional[float] = None
 
         self.validate()
 
-    def __repr__(self):
+    def _repr_params(self):
         data = (
             f"id='{self.id}'"
             f", type='{self.type}'"
@@ -76,7 +76,10 @@ class Order(BaseTransaction):
             )
 
         data += f", tag='{self.tag}'"
-        return f"<{self.__class__.__name__} {data}>"
+        return data
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self._repr_params()}>"
 
     def validate(self):
         # Validate
@@ -360,6 +363,12 @@ class OrderResult:
         self.order: Optional["Order"] = order
         self.raw: Optional[object] = raw
 
+    def _repr_params(self):
+        return f"ok={self.ok} order={self.order} raw='{self.raw}'"
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self._repr_params()}>"
+
 
 class OrderResultOk(OrderResult):
     """Result of a success `Order`"""
@@ -396,3 +405,6 @@ class OrderResultError(OrderResult):
         """
         super().__init__(ok=False, order=order, raw=raw)
         self.error: str = error
+
+    def _repr_params(self):
+        return f"error={self.error} {super()._repr_params()}"

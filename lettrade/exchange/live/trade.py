@@ -52,7 +52,7 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
         order: Optional["Order"] = None,
         position_id: Optional[str] = None,
         position: Optional["Position"] = None,
-        # tag: Optional[str] = "",
+        # tag: Optional[str] = None,
         api: Optional[LiveAPI] = None,
         raw: Optional[object] = None,
         **kwargs,
@@ -72,7 +72,7 @@ class LiveExecution(_LiveTrade, Execution, metaclass=ABCMeta):
             raw=raw,
             **kwargs,
         )
-        # self.tag: str = tag
+        # self.tag: Optional[str] = tag
 
     @classmethod
     @abstractmethod
@@ -103,7 +103,7 @@ class LiveOrder(_LiveTrade, Order, metaclass=ABCMeta):
         sl_price: Optional[float] = None,
         tp_price: Optional[float] = None,
         parent: Optional["Position"] = None,
-        tag: Optional[str] = "",
+        tag: Optional[str] = None,
         api: Optional[LiveAPI] = None,
         raw: Optional[object] = None,
         **kwargs,
@@ -227,7 +227,7 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         data: "LiveDataFeed",
         size: float,
         parent: Order,
-        tag: str = "",
+        tag: Optional[str] = None,
         state: PositionState = PositionState.Open,
         entry_price: Optional[float] = None,
         entry_fee: float = 0.0,

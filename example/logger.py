@@ -6,8 +6,8 @@ if rich:
     from rich.logging import RichHandler
 
     logging.basicConfig(
-        level=logging.root.level,
-        format="%(funcName)16s(): %(message)s",
+        level=logging.INFO,
+        format="%(name)-50s %(funcName)32s():\n%(message)s",
         datefmt="[%x %X.%f]",
         handlers=[RichHandler(rich_tracebacks=True)],
     )

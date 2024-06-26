@@ -159,7 +159,7 @@ class Strategy:
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: Optional[object] = None,
+        tag: Optional[str] = None,
         **kwargs,
     ) -> OrderResult:
         """Place a new long order.
@@ -170,7 +170,7 @@ class Strategy:
             stop (Optional[float], optional): _description_. Defaults to None.
             sl (Optional[float], optional): _description_. Defaults to None.
             tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[object], optional): _description_. Defaults to None.
+            tag (Optional[str], optional): _description_. Defaults to None.
             **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`
 
         Returns:
@@ -197,7 +197,7 @@ class Strategy:
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: Optional[object] = None,
+        tag: Optional[str] = None,
         **kwargs,
     ) -> OrderResult:
         """Place a new short order.
@@ -208,7 +208,7 @@ class Strategy:
             stop (Optional[float], optional): _description_. Defaults to None.
             sl (Optional[float], optional): _description_. Defaults to None.
             tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[object], optional): _description_. Defaults to None.
+            tag (Optional[str], optional): _description_. Defaults to None.
             **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`
 
         Returns:
@@ -236,10 +236,23 @@ class Strategy:
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: Optional[object] = None,
+        tag: Optional[str] = None,
         **kwargs,
     ) -> OrderResult:
+        """_summary_
 
+        Args:
+            side (TradeSide): _description_
+            size (Optional[float], optional): _description_. Defaults to None.
+            limit (Optional[float], optional): _description_. Defaults to None.
+            stop (Optional[float], optional): _description_. Defaults to None.
+            sl (Optional[float], optional): _description_. Defaults to None.
+            tp (Optional[float], optional): _description_. Defaults to None.
+            tag (Optional[str], optional): _description_. Defaults to None.
+
+        Returns:
+            OrderResult: _description_
+        """
         params = dict(
             size=size,
             limit=limit,

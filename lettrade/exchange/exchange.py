@@ -293,7 +293,7 @@ class Exchange(metaclass=ABCMeta):
         stop: Optional[float] = None,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        tag: Optional[object] = None,
+        tag: Optional[str] = None,
         *args,
         **kwargs,
     ) -> OrderResult:
@@ -305,7 +305,7 @@ class Exchange(metaclass=ABCMeta):
             stop (Optional[float], optional): _description_. Defaults to None.
             sl (Optional[float], optional): _description_. Defaults to None.
             tp (Optional[float], optional): _description_. Defaults to None.
-            tag (Optional[object], optional): _description_. Defaults to None.
+            tag (Optional[str], optional): _description_. Defaults to None.
 
         Returns:
             OrderResult: _description_

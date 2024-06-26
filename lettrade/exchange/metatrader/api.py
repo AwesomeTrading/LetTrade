@@ -464,7 +464,7 @@ class MetaTraderAPI(LiveAPI):
         price: float,
         sl: float = None,
         tp: float = None,
-        tag: str = "",
+        tag: Optional[str] = None,
         deviation: int = 10,
         **kwargs,
     ) -> dict:

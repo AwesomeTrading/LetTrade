@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import pandas as pd
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class PlotlyOptimizePlotter(OptimizePlotter):
-    _process_bar: "Progress" = None
+    _process_bar: Optional["Progress"]
 
     def __init__(self, total=None, process_bar: bool = True) -> None:
         super().__init__()
@@ -20,19 +20,38 @@ class PlotlyOptimizePlotter(OptimizePlotter):
         self._total = total
 
         if process_bar:
-            from rich.progress import Progress
+            from rich.progress import (
+                Console,
+                Progress,
+                SpinnerColumn,
+                TimeElapsedColumn,
+            )
 
-            self._process_bar = Progress()
-            self._process_bar.add_task("[red]Optimizing", total=total)
+            console = Console(record=True, force_jupyter=False)
+            self._process_bar = Progress(
+                SpinnerColumn(),
+                *Progress.get_default_columns(),
+                TimeElapsedColumn(),
+                console=console,
+                # transient=False,
+            )
+            self._process_bar.add_task("[cyan2]Optimizing", total=total)
             self._process_bar.start()
+        else:
+            self._process_bar = None
 
     def on_result(self, result):
         if self._process_bar is not None:
-            task = self._process_bar.task_ids[0]
-            self._process_bar.update(task, advance=1)
+            task_id = next(iter(self._process_bar._tasks))
+            self._process_bar.update(
+                task_id,
+                advance=1,
+                refresh=True,
+            )
 
     def on_done(self):
         if self._process_bar is not None:
+            self._process_bar.refresh()
             self._process_bar.stop()
 
     def load(self):

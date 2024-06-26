@@ -2599,6 +2599,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../reference/exchange/backtest/plot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -2607,10 +2628,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_10" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_9_2_9" id="__nav_7_1_9_2_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_9_2_10" id="__nav_7_1_9_2_10_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2621,8 +2642,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_9_2_9">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_9_2_10">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -4047,27 +4068,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/plot/optimize/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> optimize
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../reference/plot/plot/" class="md-nav__link">
         
   
@@ -4096,10 +4096,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_5" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_12_6" id="__nav_7_1_12_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_12_5" id="__nav_7_1_12_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -4110,8 +4110,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_12_6">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_12_5">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -4624,7 +4624,8 @@
 <span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
 
 <span class="kn">import</span> <span class="nn">example.logger</span>
-<span class="kn">from</span> <span class="nn">lettrade.all</span> <span class="kn">import</span> <span class="n">DataFeed</span><span class="p">,</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">crossover</span><span class="p">,</span> <span class="n">crossunder</span><span class="p">,</span> <span class="n">let_metatrader</span>
+<span class="kn">from</span> <span class="nn">lettrade</span> <span class="kn">import</span> <span class="n">DataFeed</span><span class="p">,</span> <span class="n">Strategy</span>
+<span class="kn">from</span> <span class="nn">lettrade.exchange.metatrader</span> <span class="kn">import</span> <span class="n">let_metatrader</span>
 
 <span class="n">load_dotenv</span><span class="p">()</span>
 
@@ -4637,8 +4638,8 @@
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_period</span><span class="p">)</span>
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">df</span>
 
     <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>

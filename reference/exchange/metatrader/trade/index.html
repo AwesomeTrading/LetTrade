@@ -2534,6 +2534,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../backtest/plot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -2542,10 +2563,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_10" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_9_2_9" id="__nav_7_1_9_2_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_9_2_10" id="__nav_7_1_9_2_10_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2556,8 +2577,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_9_2_9">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_9_2_10">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -4393,27 +4414,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../plot/optimize/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> optimize
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../plot/plot/" class="md-nav__link">
         
   
@@ -4442,10 +4442,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_5" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_12_6" id="__nav_7_1_12_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_12_5" id="__nav_7_1_12_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -4456,8 +4456,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_12_6">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_12_5">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -5337,8 +5337,7 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
-<span class="normal">34</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
@@ -5347,7 +5346,8 @@
 <span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">pl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5357,7 +5357,7 @@
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pl</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">fee</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -5537,8 +5537,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 45</span>
-<span class="normal"> 46</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 46</span>
 <span class="normal"> 47</span>
 <span class="normal"> 48</span>
 <span class="normal"> 49</span>
@@ -5592,7 +5591,8 @@
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
-<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">100</span>
+<span class="normal">101</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_raw</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">,</span>
@@ -5751,11 +5751,11 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
-<span class="normal">109</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
-<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_real</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">112</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_real</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">is_real</span>
@@ -6247,9 +6247,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
 <span class="normal">205</span>
@@ -6260,7 +6258,9 @@
 <span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
-<span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancel order</span>
 
 <span class="sd">    Returns:</span>
@@ -6348,11 +6348,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/order.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
@@ -6375,7 +6371,11 @@ Send event to <code>Exchange</code></p>
 <span class="normal">198</span>
 <span class="normal">199</span>
 <span class="normal">200</span>
-<span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
@@ -6491,9 +6491,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">342</span>
 <span class="normal">343</span>
 <span class="normal">344</span>
 <span class="normal">345</span>
@@ -6525,7 +6523,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">371</span>
 <span class="normal">372</span>
 <span class="normal">373</span>
-<span class="normal">374</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_position</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">position</span><span class="p">:</span> <span class="s2">&quot;MetaTraderPosition&quot;</span><span class="p">,</span>
@@ -6647,9 +6647,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span>
@@ -6770,7 +6768,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">335</span>
 <span class="normal">336</span>
 <span class="normal">337</span>
-<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_raw</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -6942,11 +6942,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/order.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
 <span class="normal">228</span>
@@ -6974,7 +6970,11 @@ Send event to <code>Exchange</code></p>
 <span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
-<span class="normal">253</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span><span class="p">):</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update current `Order` variables by other `Order`</span>
 
 <span class="sd">    Args:</span>
@@ -7054,8 +7054,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
-<span class="normal">115</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
@@ -7081,7 +7080,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">place</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">place</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Raises:</span>
@@ -7093,22 +7094,23 @@ Send event to <code>Exchange</code></p>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">OrderState</span><span class="o">.</span><span class="n">Pending</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> state </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="si">}</span><span class="s2"> is not Pending&quot;</span><span class="p">)</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">order_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">result</span>
-    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">code</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Place order </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">order_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">order</span>
+
+        <span class="c1"># TODO: get current order time</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">LiveOrder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">raw</span><span class="o">=</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">LetLiveOrderInvalidException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">OrderResultError</span><span class="p">(</span>
-            <span class="n">error</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">error</span><span class="p">,</span>
-            <span class="n">code</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">code</span><span class="p">,</span>
+            <span class="n">error</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
             <span class="n">order</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-            <span class="n">raw</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
+            <span class="n">raw</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Place order </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">on_notify</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">error</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">order</span>
-    <span class="c1"># TODO: get current order time</span>
-    <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">LiveOrder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">raw</span><span class="o">=</span><span class="n">result</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -7218,9 +7220,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
@@ -7273,7 +7273,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">195</span>
 <span class="normal">196</span>
 <span class="normal">197</span>
-<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">limit_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stop_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -7358,7 +7360,7 @@ Send event to <code>Exchange</code></p>
     <span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.data.LiveDataFeed" href="../../live/data/#lettrade.exchange.live.data.LiveDataFeed">LiveDataFeed</a></span><span class="p">,</span>
     <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.PositionState" href="../../base/#lettrade.exchange.base.PositionState">PositionState</a></span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
     <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -7421,7 +7423,7 @@ Send event to <code>Exchange</code></p>
     <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;LiveDataFeed&quot;</span><span class="p">,</span>
     <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n">Order</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n">PositionState</span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
     <span class="n">entry_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -7738,9 +7740,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">441</span>
 <span class="normal">442</span>
 <span class="normal">443</span>
 <span class="normal">444</span>
@@ -7767,7 +7767,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">465</span>
 <span class="normal">466</span>
 <span class="normal">467</span>
-<span class="normal">468</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PositionResult</span><span class="p">:</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PositionResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Returns:</span>
@@ -7895,9 +7897,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">470</span>
-<span class="normal">471</span>
-<span class="normal">472</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">472</span>
 <span class="normal">473</span>
 <span class="normal">474</span>
 <span class="normal">475</span>
@@ -7985,7 +7985,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">557</span>
 <span class="normal">558</span>
 <span class="normal">559</span>
-<span class="normal">560</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_raw</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">,</span>
@@ -8236,9 +8238,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">382</span>
-<span class="normal">383</span>
-<span class="normal">384</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">384</span>
 <span class="normal">385</span>
 <span class="normal">386</span>
 <span class="normal">387</span>
@@ -8291,7 +8291,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">434</span>
 <span class="normal">435</span>
 <span class="normal">436</span>
-<span class="normal">437</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

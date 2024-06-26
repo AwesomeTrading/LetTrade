@@ -2532,6 +2532,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../exchange/backtest/plot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -2540,10 +2561,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_10" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_9_2_9" id="__nav_7_1_9_2_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_9_2_10" id="__nav_7_1_9_2_10_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2554,8 +2575,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_9_2_9">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_9_2_10">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -3980,27 +4001,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../plot/optimize/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> optimize
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../plot/plot/" class="md-nav__link">
         
   
@@ -4029,10 +4029,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_5" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_12_6" id="__nav_7_1_12_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_12_5" id="__nav_7_1_12_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -4043,8 +4043,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_12_6">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_12_5">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -4563,6 +4563,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lettrade.strategy.strategy.Strategy.order_place" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;order_place
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lettrade.strategy.strategy.Strategy.order_sell" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;order_sell
@@ -5009,6 +5018,15 @@
   <a href="#lettrade.strategy.strategy.Strategy.order_buy" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;order_buy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.strategy.strategy.Strategy.order_place" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;order_place
     </span>
   </a>
   
@@ -5954,15 +5972,15 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_executions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">executions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Execution</span><span class="p">]):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_executions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">executions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Execution</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Listen for `Execution` event</span>
 
 <span class="sd">    Args:</span>
@@ -6006,12 +6024,12 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Listen for `notify` event</span>
 
 <span class="sd">    Returns:</span>
@@ -6053,15 +6071,15 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">423</span>
-<span class="normal">424</span>
-<span class="normal">425</span>
-<span class="normal">426</span>
-<span class="normal">427</span>
-<span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Order</span><span class="p">]):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Order</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Listen for `Order` event</span>
 
 <span class="sd">    Args:</span>
@@ -6106,15 +6124,15 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Position</span><span class="p">]):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Position</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Listen for `Position` event</span>
 
 <span class="sd">    Args:</span>
@@ -6159,15 +6177,15 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">403</span>
-<span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
-<span class="normal">408</span>
-<span class="normal">409</span>
-<span class="normal">410</span>
-<span class="normal">411</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_transactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Execution</span> <span class="o">|</span> <span class="n">Order</span> <span class="o">|</span> <span class="n">Position</span><span class="p">]):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_transactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Execution</span> <span class="o">|</span> <span class="n">Order</span> <span class="o">|</span> <span class="n">Position</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Listen for transaction events</span>
 
 <span class="sd">    Args:</span>
@@ -6196,7 +6214,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
     <span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
@@ -6260,7 +6278,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
         </li>
         <li class="doc-section-item field-body">
           <b><code>tag</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
                   <code>None</code>
 )
           –
@@ -6336,7 +6354,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
     <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Place a new long order.</span>
@@ -6347,7 +6365,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 <span class="sd">        stop (Optional[float], optional): _description_. Defaults to None.</span>
 <span class="sd">        sl (Optional[float], optional): _description_. Defaults to None.</span>
 <span class="sd">        tp (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        tag (Optional[object], optional): _description_. Defaults to None.</span>
+<span class="sd">        tag (Optional[str], optional): _description_. Defaults to None.</span>
 <span class="sd">        **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`</span>
 
 <span class="sd">    Returns:</span>
@@ -6372,6 +6390,196 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 <div class="doc doc-object doc-function">
 
 
+<h3 id="lettrade.strategy.strategy.Strategy.order_place" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">order_place</span>
+
+
+<a href="#lettrade.strategy.strategy.Strategy.order_place" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">order_place</span><span class="p">(</span>
+    <span class="n">side</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.TradeSide" href="../../exchange/base/#lettrade.exchange.base.TradeSide">TradeSide</a></span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p><em>summary</em></p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>side</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.TradeSide" href="../../exchange/base/#lettrade.exchange.base.TradeSide">TradeSide</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>size</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>limit</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>stop</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>sl</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>tp</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>tag</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>OrderResult</code></b> (              <code><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></code>
+)          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">def</span> <span class="nf">order_place</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">side</span><span class="p">:</span> <span class="n">TradeSide</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        side (TradeSide): _description_</span>
+<span class="sd">        size (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        limit (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        stop (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        sl (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        tp (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        tag (Optional[str], optional): _description_. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        OrderResult: _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+        <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span>
+        <span class="n">sl</span><span class="o">=</span><span class="n">sl</span><span class="p">,</span>
+        <span class="n">tp</span><span class="o">=</span><span class="n">tp</span><span class="p">,</span>
+        <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">side</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__account</span><span class="o">.</span><span class="n">risk</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">side</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">))</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exchange</span><span class="o">.</span><span class="n">new_order</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="lettrade.strategy.strategy.Strategy.order_sell" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">order_sell</span>
 
@@ -6383,7 +6591,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
     <span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../exchange/order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
@@ -6447,7 +6655,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
         </li>
         <li class="doc-section-item field-body">
           <b><code>tag</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
                   <code>None</code>
 )
           –
@@ -6523,7 +6731,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
     <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Place a new short order.</span>
@@ -6534,7 +6742,7 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 <span class="sd">        stop (Optional[float], optional): _description_. Defaults to None.</span>
 <span class="sd">        sl (Optional[float], optional): _description_. Defaults to None.</span>
 <span class="sd">        tp (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        tag (Optional[object], optional): _description_. Defaults to None.</span>
+<span class="sd">        tag (Optional[str], optional): _description_. Defaults to None.</span>
 <span class="sd">        **kwargs (Optional[dict], optional): Extra-parameters send to `Exchange.new_order`</span>
 
 <span class="sd">    Returns:</span>
@@ -6665,17 +6873,17 @@ Because of <code>lettrade</code> will cache/pre-load all <code>DataFeed</code>.<
 
             <details class="quote">
               <summary>Source code in <code>lettrade/strategy/strategy.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
-<span class="normal">454</span>
-<span class="normal">455</span>
-<span class="normal">456</span>
-<span class="normal">457</span>
-<span class="normal">458</span>
-<span class="normal">459</span>
-<span class="normal">460</span>
-<span class="normal">461</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Send message to commander</span>
 

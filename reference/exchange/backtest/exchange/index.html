@@ -2744,6 +2744,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../plot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -2752,10 +2773,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_9_2_10" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_9_2_9" id="__nav_7_1_9_2_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_9_2_10" id="__nav_7_1_9_2_10_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2766,8 +2787,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_9_2_9">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_7_1_9_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_9_2_10">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -4192,27 +4213,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../plot/optimize/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> optimize
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../plot/plot/" class="md-nav__link">
         
   
@@ -4241,10 +4241,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_12_5" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_12_6" id="__nav_7_1_12_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_1_12_5" id="__nav_7_1_12_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -4255,8 +4255,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_12_6">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_1_12_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_12_5">
             <span class="md-nav__icon md-icon"></span>
             <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> plotly
           </label>
@@ -6006,7 +6006,9 @@ Then send order events to <code>Brain</code></p>
 <span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
-<span class="normal">281</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Position</span><span class="p">],</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -6046,6 +6048,8 @@ Then send order events to <code>Brain</code></p>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">position</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span>
                 <span class="c1"># self._account._on_position_entry(position)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">on_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">!=</span> <span class="n">ExchangeState</span><span class="o">.</span><span class="n">Run</span><span class="p">:</span>
         <span class="k">return</span>

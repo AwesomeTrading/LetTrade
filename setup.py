@@ -19,8 +19,6 @@ if __name__ == "__main__":
             "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
             "Operating System :: OS Independent",
             "Programming Language :: Python :: 3 :: Only",
-            "Programming Language :: Python :: 3.8",
-            "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
@@ -28,7 +26,7 @@ if __name__ == "__main__":
             "Topic :: Scientific/Engineering :: Visualization",
         ],
         packages=find_packages(),
-        python_requires=">=3.8.0,<3.13",
+        python_requires=">=3.10,<3.13",
         install_requires=["pandas", "numpy", "numexpr"],
         extras_require={
             "plot": ["plotly"],

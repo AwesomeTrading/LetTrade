@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-from typing import Any, Optional, Sequence, final
+from typing import Any, Optional, final
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -334,11 +334,11 @@ class Strategy:
 
     @final
     @property
-    def datas(self) -> Sequence[DataFeed]:
+    def datas(self) -> list[DataFeed]:
         """Getter of all DataFeed
 
         Returns:
-            Sequence[DataFeed]: _description_
+            list[DataFeed]: _description_
         """
         return self.__datas
 

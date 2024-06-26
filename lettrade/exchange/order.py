@@ -50,8 +50,6 @@ class Order(BaseTransaction):
         self.filled_at: pd.Timestamp | None = None
         self.filled_price: float | None = None
 
-        self.validate()
-
     def _repr_params(self):
         params = (
             f"id='{self.id}'"
@@ -91,27 +89,29 @@ class Order(BaseTransaction):
             if self.sl_price is not None:
                 if self.sl_price >= price:
                     raise LetOrderValidateException(
-                        f"Order buy sl {self.sl_price} >= price {price}"
+                        f"Order {self.id} BUY sl {self.sl_price} >= price {price}"
                     )
             if self.tp_price is not None:
                 if self.tp_price <= price:
                     raise LetOrderValidateException(
-                        f"Order buy tp {self.tp_price} <= price {price}"
+                        f"Order {self.id} BUY tp {self.tp_price} <= price {price}"
                     )
         # Sell side
         elif self.size < 0:
             if self.sl_price is not None:
                 if self.sl_price <= price:
                     raise LetOrderValidateException(
-                        f"Order sell sl {self.sl_price} <= price {price}"
+                        f"Order {self.id} SELL sl {self.sl_price} <= price {price}"
                     )
             if self.tp_price is not None:
                 if self.tp_price >= price:
                     raise LetOrderValidateException(
-                        f"Order sell tp {self.tp_price} >= price {price}"
+                        f"Order {self.id} SELL tp {self.tp_price} >= price {price}"
                     )
         else:
-            raise LetOrderValidateException(f"Order side {self.size} is invalid")
+            raise LetOrderValidateException(
+                f"Order {self.id} side {self.size} is invalid"
+            )
 
     def place(
         self,
@@ -128,6 +128,8 @@ class Order(BaseTransaction):
         Returns:
             OrderResult: result of `Order`
         """
+        self.validate()
+
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")
 

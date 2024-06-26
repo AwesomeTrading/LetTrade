@@ -61,7 +61,7 @@ class BackTestAccount(Account):
     def on_positions(self, positions: list["BackTestPosition"]):
         for position in positions:
             if position.is_exited:
-                self._balance += position.pl - position.fee
+                self._balance += position.pl
         super().on_positions(positions)
 
 

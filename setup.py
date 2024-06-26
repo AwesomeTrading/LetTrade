@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     setup(
         name="lettrade",
-        version="0.0.7-beta-0",
+        version="0.0.7-beta-1",
         author="Santatic",
         # author_email = "author@example.com",
         description="Lightweight trading framwork",

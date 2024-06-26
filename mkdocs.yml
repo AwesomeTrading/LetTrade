@@ -10,6 +10,9 @@ nav:
   - Home: index.md
   - Install: install/
   - Tutorials: tutorial/
+  - BackTesting: backtest/
+  - Optimization: optimize/
+  - Live Trading: live/
   - Indicator: indicator/
   - Docker: docker.md
   - Development: dev.md

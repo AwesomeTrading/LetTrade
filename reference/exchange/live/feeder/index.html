@@ -4814,7 +4814,8 @@ tick &gt; 0: sleep tick time (in seconds) then update
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/live/feeder.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
+<span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
@@ -4835,8 +4836,7 @@ tick &gt; 0: sleep tick time (in seconds) then update
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span>
     <span class="n">tick</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
@@ -4910,8 +4910,8 @@ tick &gt; 0: sleep tick time (in seconds) then update
 
 <a href="#lettrade.exchange.live.feeder.LiveDataFeeder.instance" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">instance</span><span class="p">(</span>
-    <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">api_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.data.LiveDataFeed" href="../data/#lettrade.exchange.live.data.LiveDataFeed">LiveDataFeed</a></span>
 </code></pre></div>
@@ -4971,7 +4971,8 @@ tick &gt; 0: sleep tick time (in seconds) then update
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/live/feeder.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">74</span>
+<span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
@@ -4994,12 +4995,11 @@ tick &gt; 0: sleep tick time (in seconds) then update
 <span class="normal">95</span>
 <span class="normal">96</span>
 <span class="normal">97</span>
-<span class="normal">98</span>
-<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
-    <span class="n">api</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LiveAPI</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">api_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LiveDataFeed&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>

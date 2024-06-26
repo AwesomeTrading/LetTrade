@@ -4962,12 +4962,12 @@
     <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.base.PositionState" href="../base/#lettrade.exchange.base.PositionState">PositionState</a></span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
-    <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">entry_at</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -5029,12 +5029,12 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
     <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n">PositionState</span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
-    <span class="n">entry_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">entry_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -5048,19 +5048,19 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
 
     <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">:</span> <span class="n">PositionState</span> <span class="o">=</span> <span class="n">state</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span> <span class="o">=</span> <span class="n">parent</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tag</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">entry_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry_price</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">entry_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">entry_price</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">entry_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">entry_fee</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">entry_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry_at</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">entry_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">entry_at</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">exit_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exit_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">exit_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">exit_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">exit_pl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exit_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exit_pl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">sl_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="n">sl_order</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tp_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="n">tp_order</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sl_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">sl_order</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tp_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tp_order</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -5485,8 +5485,8 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
 <a href="#lettrade.exchange.position.PositionResult" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">PositionResult</span><span class="p">(</span>
     <span class="n">ok</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -5501,7 +5501,7 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
     <ul>
         <li class="doc-section-item field-body">
           <b><code>ok</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a> | None</code>, default:
                   <code>True</code>
 )
           –
@@ -5511,7 +5511,7 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
         </li>
         <li class="doc-section-item field-body">
           <b><code>position</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a>]</code>, default:
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5521,7 +5521,7 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
         </li>
         <li class="doc-section-item field-body">
           <b><code>raw</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5551,19 +5551,19 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
 <span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ok (Optional[bool], optional): Flag to check `Position` is success or not. Defaults to True.</span>
-<span class="sd">        position (Optional[Position], optional): Position own the result. Defaults to None.</span>
-<span class="sd">        raw (Optional[object], optional): Raw object of `Position`. Defaults to None.</span>
+<span class="sd">        ok (bool | None, optional): Flag to check `Position` is success or not. Defaults to True.</span>
+<span class="sd">        position (Position | None, optional): Position own the result. Defaults to None.</span>
+<span class="sd">        raw (object | None, optional): Raw object of `Position`. Defaults to None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">ok</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="n">position</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">raw</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -5598,8 +5598,8 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
 <a href="#lettrade.exchange.position.PositionResultError" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">PositionResultError</span><span class="p">(</span>
     <span class="n">error</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -5624,7 +5624,7 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
         </li>
         <li class="doc-section-item field-body">
           <b><code>position</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a>]</code>, default:
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5634,7 +5634,7 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
         </li>
         <li class="doc-section-item field-body">
           <b><code>raw</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5663,15 +5663,15 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
 <span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">error</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        error (str): Error message</span>
-<span class="sd">        position (Optional[Position], optional): Position own the result. Defaults to None.</span>
-<span class="sd">        raw (Optional[object], optional): Raw object of `Position`. Defaults to None.</span>
+<span class="sd">        position (Position | None, optional): Position own the result. Defaults to None.</span>
+<span class="sd">        raw (object | None, optional): Raw object of `Position`. Defaults to None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ok</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">error</span>
@@ -5708,8 +5708,8 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
 
 <a href="#lettrade.exchange.position.PositionResultOk" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">PositionResultOk</span><span class="p">(</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -5726,7 +5726,7 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
     <ul>
         <li class="doc-section-item field-body">
           <b><code>position</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a>]</code>, default:
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="#lettrade.exchange.position.Position">Position</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5736,7 +5736,7 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
         </li>
         <li class="doc-section-item field-body">
           <b><code>raw</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5761,14 +5761,14 @@ Find active positions in <code>Strategy.positions</code> and closed, settled pos
 <span class="normal">282</span>
 <span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        position (Optional[Position], optional): Position own the result. Defaults to None.</span>
-<span class="sd">        raw (Optional[object], optional): Raw object of `Position`. Defaults to None.</span>
+<span class="sd">        position (Position | None, optional): Position own the result. Defaults to None.</span>
+<span class="sd">        raw (object | None, optional): Raw object of `Position`. Defaults to None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>

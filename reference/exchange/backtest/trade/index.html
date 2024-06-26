@@ -5560,7 +5560,7 @@
     <span class="n">order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.trade.BackTestOrder" href="#lettrade.exchange.backtest.trade.BackTestOrder">BackTestOrder</a></span><span class="p">,</span>
     <span class="n">price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
     <span class="n">at</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">,</span>
-    <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.trade.BackTestExecution" href="#lettrade.exchange.backtest.trade.BackTestExecution">BackTestExecution</a></span>
 </code></pre></div>
 
@@ -5589,7 +5589,7 @@
         </li>
         <li class="doc-section-item field-body">
           <b><code>size</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5645,14 +5645,14 @@
     <span class="n">order</span><span class="p">:</span> <span class="s2">&quot;BackTestOrder&quot;</span><span class="p">,</span>
     <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">at</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
-    <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BackTestExecution&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Method help to build Execution object from Order object</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        price (float): Executed price</span>
 <span class="sd">        at (object): Executed bar</span>
-<span class="sd">        size (Optional[float], optional): Executed size. Defaults to None.</span>
+<span class="sd">        size (float | None, optional): Executed size. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        BackTestExecution: Execution object</span>
@@ -5764,13 +5764,13 @@
     <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.base.OrderState" href="../../base/#lettrade.exchange.base.OrderState">OrderState</a></span> <span class="o">=</span> <span class="n">OrderState</span><span class="o">.</span><span class="n">Pending</span><span class="p">,</span>
     <span class="nb">type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.base.OrderType" href="../../base/#lettrade.exchange.base.OrderType">OrderType</a></span> <span class="o">=</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">,</span>
-    <span class="n">limit_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">placed_at</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">placed_at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -5829,13 +5829,13 @@
     <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n">OrderState</span> <span class="o">=</span> <span class="n">OrderState</span><span class="o">.</span><span class="n">Pending</span><span class="p">,</span>
     <span class="nb">type</span><span class="p">:</span> <span class="n">OrderType</span> <span class="o">=</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">,</span>
-    <span class="n">limit_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">placed_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">placed_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -5848,15 +5848,15 @@
 
     <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span> <span class="n">OrderType</span> <span class="o">=</span> <span class="nb">type</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">:</span> <span class="n">OrderState</span> <span class="o">=</span> <span class="n">state</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">limit_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit_price</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">stop_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">stop_price</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">sl_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">sl_price</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tp_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">tp_price</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">placed_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="n">placed_at</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">filled_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">filled_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">limit_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">limit_price</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stop_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">stop_price</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sl_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">sl_price</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tp_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tp_price</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="n">parent</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">placed_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">placed_at</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">filled_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">filled_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -6095,7 +6095,7 @@
   </span>
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.limit" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6106,10 +6106,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6130,7 +6130,7 @@
   </span>
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.place_price" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">place_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">place_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6141,10 +6141,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6200,7 +6200,7 @@
   </span>
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.sl" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6211,10 +6211,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6235,7 +6235,7 @@
   </span>
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.stop" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6246,10 +6246,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6270,7 +6270,7 @@
   </span>
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.tp" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6281,10 +6281,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6303,7 +6303,7 @@
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.cancel" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">cancel</span><span class="p">(</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
 
@@ -6330,7 +6330,7 @@
 <span class="normal">85</span>
 <span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span> <span class="o">|</span> <span class="n">Position</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="n">Position</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrderResult&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancel the Order and notify Exchange&quot;&quot;&quot;</span>
@@ -6609,7 +6609,7 @@
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.place" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">place</span><span class="p">(</span>
-    <span class="n">at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.OrderResult" href="../../order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
 
@@ -6672,7 +6672,7 @@ Send event to <code>Exchange</code></p>
 <span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">place</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrderResult&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Place `Order`</span>
 <span class="sd">    Set `status` to `OrderState.Placed`.</span>
@@ -6709,11 +6709,11 @@ Send event to <code>Exchange</code></p>
 
 <a href="#lettrade.exchange.backtest.trade.BackTestOrder.update" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">update</span><span class="p">(</span>
-    <span class="n">limit_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.OrderResult" href="../../order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
 
@@ -6816,11 +6816,11 @@ Send event to <code>Exchange</code></p>
 <span class="normal">175</span>
 <span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">limit_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrderResult&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update Order</span>
 
@@ -6879,12 +6879,12 @@ Send event to <code>Exchange</code></p>
     <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.base.PositionState" href="../../base/#lettrade.exchange.base.PositionState">PositionState</a></span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
-    <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">entry_at</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -6945,12 +6945,12 @@ Send event to <code>Exchange</code></p>
     <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n">PositionState</span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
-    <span class="n">entry_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">entry_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -6964,19 +6964,19 @@ Send event to <code>Exchange</code></p>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">:</span> <span class="n">PositionState</span> <span class="o">=</span> <span class="n">state</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span> <span class="o">=</span> <span class="n">parent</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tag</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">entry_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry_price</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">entry_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">entry_price</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">entry_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">entry_fee</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">entry_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry_at</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">entry_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">entry_at</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">exit_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exit_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">exit_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">exit_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">exit_pl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exit_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exit_pl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">sl_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="n">sl_order</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tp_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="n">tp_order</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sl_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">sl_order</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tp_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tp_order</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -7246,9 +7246,9 @@ Send event to <code>Exchange</code></p>
 
 <a href="#lettrade.exchange.backtest.trade.BackTestPosition.exit" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">exit</span><span class="p">(</span>
-    <span class="n">price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">at</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.PositionResult" href="../../position/#lettrade.exchange.position.PositionResult">PositionResult</a></span>
 </code></pre></div>
@@ -7355,9 +7355,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">237</span>
 <span class="normal">238</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">exit</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span> <span class="o">|</span> <span class="n">Position</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="n">Position</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PositionResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Exit Position</span>
@@ -7433,7 +7433,7 @@ Send event to <code>Exchange</code></p>
 <a href="#lettrade.exchange.backtest.trade.BackTestPosition.from_order" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">from_order</span><span class="p">(</span>
     <span class="n">order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.trade.BackTestOrder" href="#lettrade.exchange.backtest.trade.BackTestOrder">BackTestOrder</a></span><span class="p">,</span>
-    <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.PositionState" href="../../base/#lettrade.exchange.base.PositionState">PositionState</a></span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.trade.BackTestPosition" href="#lettrade.exchange.backtest.trade.BackTestPosition">BackTestPosition</a></span>
@@ -7516,7 +7516,7 @@ Send event to <code>Exchange</code></p>
 <span class="k">def</span> <span class="nf">from_order</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">order</span><span class="p">:</span> <span class="s2">&quot;BackTestOrder&quot;</span><span class="p">,</span>
-    <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n">PositionState</span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BackTestPosition&quot;</span><span class="p">:</span>

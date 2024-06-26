@@ -5470,7 +5470,7 @@
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">MetaTraderExecution</span><span class="p">(</span>
     <span class="n">pl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">fee</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -5498,13 +5498,13 @@
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">pl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pl</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">fee</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tag</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -5642,7 +5642,7 @@
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LiveExchange" href="../../live/exchange/#lettrade.exchange.live.exchange.LiveExchange">LiveExchange</a></span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LiveDataFeed" href="../../live/data/#lettrade.exchange.live.data.LiveDataFeed">LiveDataFeed</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.api.MetaTraderAPI" href="../api/#lettrade.exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderExecution" href="#lettrade.exchange.metatrader.trade.MetaTraderExecution">MetaTraderExecution</a></span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderExecution" href="#lettrade.exchange.metatrader.trade.MetaTraderExecution">MetaTraderExecution</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5674,7 +5674,7 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<b><code>MetaTraderExecution</code></b> (              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderExecution" href="#lettrade.exchange.metatrader.trade.MetaTraderExecution">MetaTraderExecution</a>]</code>
+<b><code>MetaTraderExecution</code></b> (              <code><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderExecution" href="#lettrade.exchange.metatrader.trade.MetaTraderExecution">MetaTraderExecution</a> | None</code>
 )          –
           <div class="doc-md-description">
             <p><em>description</em></p>
@@ -5746,7 +5746,7 @@
     <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;LiveExchange&quot;</span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;LiveDataFeed&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">api</span><span class="p">:</span> <span class="n">MetaTraderAPI</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;MetaTraderExecution&quot;</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MetaTraderExecution | None&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Building new MetaTraderExecution from live api raw object</span>
 
 <span class="sd">    Args:</span>
@@ -6166,7 +6166,7 @@
   </span>
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.limit" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6177,10 +6177,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6201,7 +6201,7 @@
   </span>
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.place_price" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">place_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">place_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6212,10 +6212,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6271,7 +6271,7 @@
   </span>
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.sl" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6282,10 +6282,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6306,7 +6306,7 @@
   </span>
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.stop" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6317,10 +6317,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6341,7 +6341,7 @@
   </span>
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.tp" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6352,10 +6352,10 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>
           –
           <div class="doc-md-description">
-            <p>Optional[float]: <code>float</code> or <code>None</code></p>
+            <p>float | None: <code>float</code> or <code>None</code></p>
           </div>
         </li>
     </ul>
@@ -6436,9 +6436,7 @@
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.fill" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">fill</span><span class="p">(</span>
-    <span class="n">price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
-    <span class="n">at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.OrderResult" href="../../order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
 
@@ -6526,7 +6524,7 @@ Send event to <code>Exchange</code></p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrderResult&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill `Order`.</span>
 <span class="sd">    Set `status` to `OrderState.Executed`.</span>
@@ -6570,8 +6568,8 @@ Send event to <code>Exchange</code></p>
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.from_position" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">from_position</span><span class="p">(</span>
     <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderPosition" href="#lettrade.exchange.metatrader.trade.MetaTraderPosition">MetaTraderPosition</a></span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderOrder" href="#lettrade.exchange.metatrader.trade.MetaTraderOrder">MetaTraderOrder</a></span>
 </code></pre></div>
 
@@ -6592,7 +6590,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>sl</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -6602,7 +6600,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>tp</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -6638,8 +6636,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">342</span>
-<span class="normal">343</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">343</span>
 <span class="normal">344</span>
 <span class="normal">345</span>
 <span class="normal">346</span>
@@ -6672,19 +6669,20 @@ Send event to <code>Exchange</code></p>
 <span class="normal">373</span>
 <span class="normal">374</span>
 <span class="normal">375</span>
-<span class="normal">376</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">376</span>
+<span class="normal">377</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_position</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">position</span><span class="p">:</span> <span class="s2">&quot;MetaTraderPosition&quot;</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MetaTraderOrder&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        position (MetaTraderPosition): _description_</span>
-<span class="sd">        sl (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        tp (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        sl (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        tp (float | None, optional): _description_. Defaults to None.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: _description_</span>
@@ -6729,8 +6727,8 @@ Send event to <code>Exchange</code></p>
     <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LiveExchange" href="../../live/exchange/#lettrade.exchange.live.exchange.LiveExchange">LiveExchange</a></span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LiveDataFeed" href="../../live/data/#lettrade.exchange.live.data.LiveDataFeed">LiveDataFeed</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.api.MetaTraderAPI" href="../api/#lettrade.exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderOrder" href="#lettrade.exchange.metatrader.trade.MetaTraderOrder">MetaTraderOrder</a></span><span class="p">]</span>
+    <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.api.MetaTraderAPI" href="../api/#lettrade.exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderOrder" href="#lettrade.exchange.metatrader.trade.MetaTraderOrder">MetaTraderOrder</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6745,7 +6743,7 @@ Send event to <code>Exchange</code></p>
               (<code><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></code>)
           –
           <div class="doc-md-description">
-            <p><em>description</em>.</p>
+            <p><em>description</em></p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -6753,12 +6751,22 @@ Send event to <code>Exchange</code></p>
               (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LiveExchange" href="../../live/exchange/#lettrade.exchange.live.exchange.LiveExchange">LiveExchange</a></code>)
           –
           <div class="doc-md-description">
-            <p><em>description</em>.</p>
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>data</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LiveDataFeed" href="../../live/data/#lettrade.exchange.live.data.LiveDataFeed">LiveDataFeed</a></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
           <b><code>api</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.api.MetaTraderAPI" href="../api/#lettrade.exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</a>]</code>, default:
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.api.MetaTraderAPI" href="../api/#lettrade.exchange.metatrader.api.MetaTraderAPI">MetaTraderAPI</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -6784,10 +6792,10 @@ Send event to <code>Exchange</code></p>
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<b><code>MetaTraderOrder</code></b> (              <code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderOrder" href="#lettrade.exchange.metatrader.trade.MetaTraderOrder">MetaTraderOrder</a>]</code>
-)          –
+              <code><a class="autorefs autorefs-internal" title="lettrade.exchange.metatrader.trade.MetaTraderOrder" href="#lettrade.exchange.metatrader.trade.MetaTraderOrder">MetaTraderOrder</a> | None</code>
+          –
           <div class="doc-md-description">
-            <p><em>description</em></p>
+            <p>MetaTraderOrder | None: <em>description</em></p>
           </div>
         </li>
     </ul>
@@ -6917,26 +6925,28 @@ Send event to <code>Exchange</code></p>
 <span class="normal">337</span>
 <span class="normal">338</span>
 <span class="normal">339</span>
-<span class="normal">340</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">340</span>
+<span class="normal">341</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_raw</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;LiveExchange&quot;</span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;LiveDataFeed&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">api</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MetaTraderAPI</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;MetaTraderOrder&quot;</span><span class="p">]:</span>
+    <span class="n">api</span><span class="p">:</span> <span class="n">MetaTraderAPI</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MetaTraderOrder | None&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        raw (Any): _description_.</span>
-<span class="sd">        exchange (LiveExchange): _description_.</span>
-<span class="sd">        api (Optional[MetaTraderAPI], optional): _description_. Defaults to None.</span>
+<span class="sd">        raw (Any): _description_</span>
+<span class="sd">        exchange (LiveExchange): _description_</span>
+<span class="sd">        data (LiveDataFeed, optional): _description_. Defaults to None.</span>
+<span class="sd">        api (MetaTraderAPI | None, optional): _description_. Defaults to None.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: _description_</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        MetaTraderOrder: _description_</span>
+<span class="sd">        MetaTraderOrder | None: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># DataFeed</span>
     <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -7273,11 +7283,11 @@ Send event to <code>Exchange</code></p>
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderOrder.update" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">update</span><span class="p">(</span>
-    <span class="n">limit_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.OrderResult" href="../../order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
@@ -7291,7 +7301,7 @@ Send event to <code>Exchange</code></p>
     <ul>
         <li class="doc-section-item field-body">
           <b><code>limit_price</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -7301,7 +7311,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>stop_price</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -7311,7 +7321,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>sl</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -7321,7 +7331,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>tp</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -7331,7 +7341,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>caller</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -7424,21 +7434,21 @@ Send event to <code>Exchange</code></p>
 <span class="normal">199</span>
 <span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">limit_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        limit_price (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        stop_price (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        sl (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        tp (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        caller (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        limit_price (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        stop_price (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        sl (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        tp (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        caller (float | None, optional): _description_. Defaults to None.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: _description_</span>
@@ -7507,15 +7517,15 @@ Send event to <code>Exchange</code></p>
     <span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.data.LiveDataFeed" href="../../live/data/#lettrade.exchange.live.data.LiveDataFeed">LiveDataFeed</a></span><span class="p">,</span>
     <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.PositionState" href="../../base/#lettrade.exchange.base.PositionState">PositionState</a></span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
-    <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">entry_at</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../../live/api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_at</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../../live/api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#object">object</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -7570,15 +7580,15 @@ Send event to <code>Exchange</code></p>
     <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;LiveDataFeed&quot;</span><span class="p">,</span>
     <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n">Order</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">state</span><span class="p">:</span> <span class="n">PositionState</span> <span class="o">=</span> <span class="n">PositionState</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span>
-    <span class="n">entry_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_fee</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">entry_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">api</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LiveAPI</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raw</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_at</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp_order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -7887,9 +7897,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">443</span>
 <span class="normal">444</span>
 <span class="normal">445</span>
 <span class="normal">446</span>
@@ -7916,7 +7924,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">467</span>
 <span class="normal">468</span>
 <span class="normal">469</span>
-<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PositionResult</span><span class="p">:</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PositionResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Returns:</span>
@@ -8044,9 +8054,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">472</span>
-<span class="normal">473</span>
-<span class="normal">474</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">474</span>
 <span class="normal">475</span>
 <span class="normal">476</span>
 <span class="normal">477</span>
@@ -8134,7 +8142,9 @@ Send event to <code>Exchange</code></p>
 <span class="normal">559</span>
 <span class="normal">560</span>
 <span class="normal">561</span>
-<span class="normal">562</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_raw</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">,</span>
@@ -8313,9 +8323,9 @@ Send event to <code>Exchange</code></p>
 
 <a href="#lettrade.exchange.metatrader.trade.MetaTraderPosition.update" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">update</span><span class="p">(</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.PositionResult" href="../../position/#lettrade.exchange.position.PositionResult">PositionResult</a></span>
 </code></pre></div>
@@ -8329,7 +8339,7 @@ Send event to <code>Exchange</code></p>
     <ul>
         <li class="doc-section-item field-body">
           <b><code>sl</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -8339,7 +8349,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>tp</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -8349,7 +8359,7 @@ Send event to <code>Exchange</code></p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>caller</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -8362,6 +8372,13 @@ Send event to <code>Exchange</code></p>
 
 <p><span class="doc-section-title">Raises:</span></p>
     <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError">RuntimeError</a></code>
+            –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
         <li class="doc-section-item field-body">
               <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError">RuntimeError</a></code>
             –
@@ -8385,8 +8402,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/metatrader/trade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">384</span>
-<span class="normal">385</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">385</span>
 <span class="normal">386</span>
 <span class="normal">387</span>
 <span class="normal">388</span>
@@ -8440,21 +8456,24 @@ Send event to <code>Exchange</code></p>
 <span class="normal">436</span>
 <span class="normal">437</span>
 <span class="normal">438</span>
-<span class="normal">439</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">caller</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">caller</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PositionResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sl (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        tp (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        caller (Optional[float], optional): _description_. Defaults to None.</span>
+<span class="sd">        sl (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        tp (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        caller (float | None, optional): _description_. Defaults to None.</span>
 
 <span class="sd">    Raises:</span>
+<span class="sd">        RuntimeError: _description_</span>
 <span class="sd">        RuntimeError: _description_</span>
 
 <span class="sd">    Returns:</span>

@@ -5129,7 +5129,8 @@
 
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/live/exchange.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
+<span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
@@ -5137,8 +5138,7 @@
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
@@ -5456,13 +5456,13 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <a href="#lettrade.exchange.live.exchange.LiveExchange.new_order" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">new_order</span><span class="p">(</span>
     <span class="n">size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
-    <span class="nb">type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderType" href="../../base/#lettrade.exchange.base.OrderType">OrderType</a></span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">,</span>
-    <span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderType" href="../../base/#lettrade.exchange.base.OrderType">OrderType</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderResult" href="../../order/#lettrade.exchange.order.OrderResult">OrderResult</a></span>
 </code></pre></div>
@@ -5484,7 +5484,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>type</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.OrderType" href="../../base/#lettrade.exchange.base.OrderType">OrderType</a>]</code>, default:
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderType" href="../../base/#lettrade.exchange.base.OrderType">OrderType</a> | None</code>, default:
                   <code><a class="autorefs autorefs-internal" title="lettrade.exchange.OrderType.Market" href="../../base/#lettrade.exchange.base.OrderType.Market">Market</a></code>
 )
           –
@@ -5494,7 +5494,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>limit</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5504,7 +5504,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>stop</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5514,7 +5514,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>sl</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5524,7 +5524,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>tp</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5534,7 +5534,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>tag</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5544,7 +5544,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>data</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../../data/data/#lettrade.data.data.DataFeed">DataFeed</a>]</code>, default:
+              (<code><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../../data/data/#lettrade.data.data.DataFeed">DataFeed</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5568,7 +5568,8 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/live/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
+<span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
 <span class="normal">45</span>
@@ -5619,30 +5620,29 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">90</span>
 <span class="normal">91</span>
 <span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">new_order</span><span class="p">(</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">new_order</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="nb">type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OrderType</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">,</span>
-    <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DataFeed</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">OrderType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stop</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">DataFeed</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Place new order to server</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        size (float): _description_</span>
-<span class="sd">        type (Optional[OrderType], optional): _description_. Defaults to OrderType.Market.</span>
-<span class="sd">        limit (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        stop (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        sl (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        tp (Optional[float], optional): _description_. Defaults to None.</span>
-<span class="sd">        tag (Optional[str], optional): _description_. Defaults to None.</span>
-<span class="sd">        data (Optional[DataFeed], optional): _description_. Defaults to None.</span>
+<span class="sd">        type (OrderType | None, optional): _description_. Defaults to OrderType.Market.</span>
+<span class="sd">        limit (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        stop (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        sl (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        tp (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        tag (str | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        data (DataFeed | None, optional): _description_. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        OrderResult: _description_</span>
@@ -5717,7 +5717,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <a href="#lettrade.exchange.live.exchange.LiveExchange.on_execution" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_execution</span><span class="p">(</span>
     <span class="n">execution</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.execution.Execution" href="../../execution/#lettrade.exchange.execution.Execution">Execution</a></span><span class="p">,</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
@@ -5739,7 +5739,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>broadcast</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a> | None</code>, default:
                   <code>True</code>
 )
           –
@@ -5766,14 +5766,14 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_execution</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">execution</span><span class="p">:</span> <span class="n">Execution</span><span class="p">,</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Receive Execution event from exchange then store and notify Brain</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        execution (Execution): _description_</span>
-<span class="sd">        broadcast (Optional[bool], optional): _description_. Defaults to True.</span>
+<span class="sd">        broadcast (bool | None, optional): _description_. Defaults to True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">on_executions</span><span class="p">(</span><span class="n">executions</span><span class="o">=</span><span class="p">[</span><span class="n">execution</span><span class="p">],</span> <span class="n">broadcast</span><span class="o">=</span><span class="n">broadcast</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5792,7 +5792,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <a href="#lettrade.exchange.live.exchange.LiveExchange.on_executions" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_executions</span><span class="p">(</span>
     <span class="n">executions</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.execution.Execution" href="../../execution/#lettrade.exchange.execution.Execution">Execution</a></span><span class="p">],</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
@@ -5832,7 +5832,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_executions</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">executions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Execution</span><span class="p">],</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -5871,7 +5871,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
 <a href="#lettrade.exchange.live.exchange.LiveExchange.on_order" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_order</span><span class="p">(</span>
-    <span class="n">order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="n">order</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
@@ -5892,7 +5892,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>broadcast</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a> | None</code>, default:
                   <code>True</code>
 )
           –
@@ -5919,14 +5919,14 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">172</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_order</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">order</span><span class="p">:</span> <span class="n">Order</span><span class="p">,</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Receive order event from exchange then store and notify Brain</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        order (Order): _description_</span>
-<span class="sd">        broadcast (Optional[bool], optional): _description_. Defaults to True.</span>
+<span class="sd">        broadcast (bool | None, optional): _description_. Defaults to True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">on_orders</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">broadcast</span><span class="o">=</span><span class="n">broadcast</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5945,7 +5945,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <a href="#lettrade.exchange.live.exchange.LiveExchange.on_orders" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_orders</span><span class="p">(</span>
     <span class="n">orders</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.order.Order" href="../../order/#lettrade.exchange.order.Order">Order</a></span><span class="p">],</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
@@ -5967,7 +5967,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>broadcast</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a> | None</code>, default:
                   <code>True</code>
 )
           –
@@ -6037,14 +6037,14 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_orders</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">orders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Order</span><span class="p">],</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Receive orders event from exchange then store and notify Brain</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        orders (list[Order]): _description_</span>
-<span class="sd">        broadcast (Optional[bool], optional): _description_. Defaults to True.</span>
+<span class="sd">        broadcast (bool | None, optional): _description_. Defaults to True.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: _description_</span>
@@ -6094,7 +6094,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <a href="#lettrade.exchange.live.exchange.LiveExchange.on_position" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_position</span><span class="p">(</span>
     <span class="n">position</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span><span class="p">,</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
@@ -6116,7 +6116,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>broadcast</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a> | None</code>, default:
                   <code>True</code>
 )
           –
@@ -6158,14 +6158,14 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_position</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">position</span><span class="p">:</span> <span class="n">Position</span><span class="p">,</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Receive Position event from exchange then store and notify Brain</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        position (Position): new comming `Position`</span>
-<span class="sd">        broadcast (Optional[bool], optional): Flag notify to Brain. Defaults to True.</span>
+<span class="sd">        broadcast (bool | None, optional): Flag notify to Brain. Defaults to True.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: validate `Position` instance</span>
@@ -6187,7 +6187,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <a href="#lettrade.exchange.live.exchange.LiveExchange.on_positions" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">on_positions</span><span class="p">(</span>
     <span class="n">positions</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.position.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span><span class="p">],</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
@@ -6209,7 +6209,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
         </li>
         <li class="doc-section-item field-body">
           <b><code>broadcast</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a> | None</code>, default:
                   <code>True</code>
 )
           –
@@ -6283,14 +6283,14 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Position</span><span class="p">],</span>
-    <span class="n">broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Receive Positions event from exchange then store and notify Brain</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        positions (list[Position]): list of new comming `Position`</span>
-<span class="sd">        broadcast (Optional[bool], optional): Flag notify to Brain. Defaults to True.</span>
+<span class="sd">        broadcast (bool | None, optional): Flag notify to Brain. Defaults to True.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: validate `Position` instance</span>
@@ -6351,10 +6351,10 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/live/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
+<span class="normal">33</span>
 <span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start Live exchange by: Sync positions from server&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_api</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>

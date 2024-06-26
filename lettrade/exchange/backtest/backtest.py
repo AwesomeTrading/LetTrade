@@ -116,41 +116,6 @@ class LetTradeBackTest(LetTrade):
 
         return super().run(worker, **kwargs)
 
-    def optimize(
-        self,
-        multiprocessing: Literal["auto", "fork"] = "auto",
-        workers: Optional[int] = None,
-        process_bar: bool = True,
-        cache: str = "data/optimize",
-        **kwargs,
-    ):
-        """Backtest optimization
-
-        Args:
-            multiprocessing (Optional[str], optional): _description_. Defaults to "auto".
-        """
-        if self.data.l.pointer != 0:
-            # TODO: Can drop unnecessary columns by snapshort data.columns from init time
-            raise RuntimeError(
-                "Optimize datas is not clean, don't run() backtest before optimize()"
-            )
-
-        # optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
-        optimizes = list(
-            dict(zip(kwargs.keys(), values)) for values in product(*kwargs.values())
-        )
-
-        self._optimize_init(cache=cache, total=len(optimizes), process_bar=process_bar)
-
-        # Run optimize in multiprocessing
-        self._optimizes_multiproccess(
-            optimizes=optimizes,
-            multiprocessing=multiprocessing,
-            workers=workers,
-        )
-
-        self.optimize_done()
-
     def _optimize_init(self, cache: str, total: int, process_bar: bool):
         # Disable logging
         logging_filter_optimize()
@@ -190,6 +155,42 @@ class LetTradeBackTest(LetTrade):
         if cache is not None:
             cache = _optimize_cache_dir(cache, self._strategy_cls)
             self._kwargs["cache"] = cache
+
+    ### Optimize: Grid search
+    def optimize(
+        self,
+        multiprocessing: Literal["auto", "fork"] = "auto",
+        workers: Optional[int] = None,
+        process_bar: bool = True,
+        cache: str = "data/optimize",
+        **kwargs,
+    ):
+        """Backtest optimization
+
+        Args:
+            multiprocessing (Optional[str], optional): _description_. Defaults to "auto".
+        """
+        if self.data.l.pointer != 0:
+            # TODO: Can drop unnecessary columns by snapshort data.columns from init time
+            raise RuntimeError(
+                "Optimize datas is not clean, don't run() backtest before optimize()"
+            )
+
+        # optimizes = list(product(*(zip(repeat(k), v) for k, v in kwargs.items())))
+        optimizes = list(
+            dict(zip(kwargs.keys(), values)) for values in product(*kwargs.values())
+        )
+
+        self._optimize_init(cache=cache, total=len(optimizes), process_bar=process_bar)
+
+        # Run optimize in multiprocessing
+        self._optimizes_multiproccess(
+            optimizes=optimizes,
+            multiprocessing=multiprocessing,
+            workers=workers,
+        )
+
+        self.optimize_done()
 
     def _optimizes_multiproccess(
         self,
@@ -237,6 +238,37 @@ class LetTradeBackTest(LetTrade):
                 **self._kwargs,
             )
 
+    @classmethod
+    def _optimizes_run(
+        cls,
+        datas: list[DataFeed],
+        optimizes: list[dict[str, Any]],
+        index: int = 0,
+        **kwargs,
+    ):
+        """Run optimize in class method to not copy whole LetTradeBackTest self object
+
+        Args:
+            datas (list[DataFeed]): _description_
+            optimizes (list[dict]): _description_
+            index (int, optional): _description_. Defaults to 0.
+
+        Returns:
+            _type_: _description_
+        """
+        results = []
+        for i, optimize in enumerate(optimizes):
+            result = cls._optimize_run(
+                datas=[d.copy(deep=True) for d in datas],
+                optimize=optimize,
+                index=index + i,
+                **kwargs,
+            )
+            if result is not None:
+                results.append(result)
+        return results
+
+    ### Optimize: model for external optimizer
     # Create optimize model environment
     _opt_main_pid: int = None
     _opt_params_parser: Callable[[Any], list[set[str, Any]]] = None
@@ -362,6 +394,7 @@ class LetTradeBackTest(LetTrade):
 
         return result
 
+    ### Optimize: load cached optimize result
     def optimize_cache(self, cache: str = "data/optimize"):
         """Load optimize results from cache
 
@@ -400,36 +433,7 @@ class LetTradeBackTest(LetTrade):
         """Clean and close optimize handlers"""
         self._stats.done()
 
-    @classmethod
-    def _optimizes_run(
-        cls,
-        datas: list[DataFeed],
-        optimizes: list[dict[str, Any]],
-        index: int = 0,
-        **kwargs,
-    ):
-        """Run optimize in class method to not copy whole LetTradeBackTest self object
-
-        Args:
-            datas (list[DataFeed]): _description_
-            optimizes (list[dict]): _description_
-            index (int, optional): _description_. Defaults to 0.
-
-        Returns:
-            _type_: _description_
-        """
-        results = []
-        for i, optimize in enumerate(optimizes):
-            result = cls._optimize_run(
-                datas=[d.copy(deep=True) for d in datas],
-                optimize=optimize,
-                index=index + i,
-                **kwargs,
-            )
-            if result is not None:
-                results.append(result)
-        return results
-
+    ### Optimize: run
     @classmethod
     def _optimize_run(
         cls,

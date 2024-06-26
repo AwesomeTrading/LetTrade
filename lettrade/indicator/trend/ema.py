@@ -4,7 +4,7 @@ import talib.abstract as ta
 
 def ema(
     series: pd.Series | str = "close",
-    period: int = 21,
+    period: int = None,
     dataframe: pd.DataFrame = None,
     prefix: str = "",
     inplace: bool = False,
@@ -26,6 +26,9 @@ def ema(
         pd.Series | pd.DataFrame: _description_
     """
     if __debug__:
+        if period is None or period <= 0:
+            raise RuntimeError(f"Period {period} is invalid")
+
         if dataframe is None:
             if not isinstance(series, pd.Series):
                 raise RuntimeError(

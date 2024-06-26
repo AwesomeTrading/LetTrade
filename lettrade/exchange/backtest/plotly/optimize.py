@@ -21,16 +21,25 @@ class PlotlyOptimizePlotter(OptimizePlotter):
 
         if process_bar:
             from rich.progress import (
+                BarColumn,
                 Console,
                 Progress,
                 SpinnerColumn,
+                TaskProgressColumn,
+                TextColumn,
                 TimeElapsedColumn,
+                TimeRemainingColumn,
             )
 
             console = Console(record=True, force_jupyter=False)
             self._process_bar = Progress(
                 SpinnerColumn(),
-                *Progress.get_default_columns(),
+                # *Progress.get_default_columns(),
+                TextColumn("[progress.description]{task.description}"),
+                BarColumn(),
+                TaskProgressColumn(),
+                TextColumn("[bold blue][{task.completed}/{task.total}]"),
+                TimeRemainingColumn(),
                 TimeElapsedColumn(),
                 console=console,
                 # transient=False,

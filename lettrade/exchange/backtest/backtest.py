@@ -149,12 +149,7 @@ class LetTradeBackTest(LetTrade):
             workers=workers,
         )
 
-        # queue None mean Done
-        try:
-            queue = self._kwargs["queue"]
-            queue.put(None)
-        except Exception:
-            pass
+        self.optimize_done()
 
     def _optimize_init(self, cache: str, total: int, process_bar: bool):
         # Disable logging

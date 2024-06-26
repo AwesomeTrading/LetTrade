@@ -62,10 +62,6 @@ class OptimizeStatistic:
                     break
                 continue
 
-            # Done
-            if result is None:
-                break
-
             self.results.append(result)
 
             done += 1

@@ -5,7 +5,7 @@ import pandas as pd
 # import plotly.graph_objects as go
 from plotly import express as px
 
-from lettrade.plot.optimize import OptimizePlotter
+from ..plot import OptimizePlotter
 
 if TYPE_CHECKING:
     from rich.progress import Progress
@@ -60,7 +60,7 @@ class PlotlyOptimizePlotter(OptimizePlotter):
 
     def on_done(self):
         if self._process_bar is not None:
-            self._process_bar.refresh()
+            # self._process_bar.refresh()
             self._process_bar.stop()
 
     def load(self):

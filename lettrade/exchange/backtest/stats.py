@@ -8,7 +8,7 @@ from typing import Optional
 
 import pandas as pd
 
-from lettrade.plot import OptimizePlotter
+from .plot import OptimizePlotter
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-from .plot import Plotter
+from lettrade.plot.plot import Plotter
 
 
 class OptimizePlotter(Plotter):

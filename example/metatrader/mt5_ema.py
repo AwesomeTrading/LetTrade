@@ -4,7 +4,8 @@ import talib.abstract as ta
 from dotenv import load_dotenv
 
 import example.logger
-from lettrade.all import DataFeed, Strategy, crossover, crossunder, let_metatrader
+from lettrade import DataFeed, Strategy
+from lettrade.exchange.metatrader import let_metatrader
 
 load_dotenv()
 
@@ -17,8 +18,8 @@ class SmaCross(Strategy):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
         df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
 
-        df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
-        df["signal_ema_crossunder"] = crossunder(df.ema1, df.ema2)
+        df["signal_ema_crossover"] = df.i.crossover(df.ema1, df.ema2)
+        df["signal_ema_crossunder"] = df.i.crossunder(df.ema1, df.ema2)
         return df
 
     def next(self, df: DataFeed):

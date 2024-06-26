@@ -4,4 +4,5 @@ from .commander import BackTestCommander
 from .data import BackTestDataFeed, CSVBackTestDataFeed, YFBackTestDataFeed
 from .exchange import BackTestExchange
 from .feeder import BackTestDataFeeder
+from .plot import OptimizePlotter
 from .trade import BackTestExecution, BackTestOrder, BackTestPosition

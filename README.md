@@ -26,7 +26,7 @@ pip install lettrade
 Developing version
 
 ```sh
-pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
+pip install git+https://git@github.com/AwesomeTrading/LetTrade.git@main
 ```
 
 ## Example

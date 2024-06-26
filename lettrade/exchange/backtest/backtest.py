@@ -19,7 +19,6 @@ from lettrade import (
     Exchange,
     LetTrade,
     LetTradeBot,
-    OptimizePlotter,
     Strategy,
 )
 
@@ -28,6 +27,7 @@ from .commander import BackTestCommander
 from .data import BackTestDataFeed, CSVBackTestDataFeed
 from .exchange import BackTestExchange
 from .feeder import BackTestDataFeeder
+from .plot import OptimizePlotter
 from .stats import OptimizeStatistic
 
 logger = logging.getLogger(__name__)

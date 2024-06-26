@@ -1,15 +1,18 @@
 import logging
 from concurrent.futures import ProcessPoolExecutor
-from typing import Optional, Type
+from typing import TYPE_CHECKING, Optional, Type
 
 from lettrade.account import Account
 from lettrade.bot import LetTradeBot
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
 from lettrade.exchange import Exchange
-from lettrade.plot import BotPlotter, OptimizePlotter, Plotter
+from lettrade.plot import BotPlotter, Plotter
 from lettrade.stats import BotStatistic
 from lettrade.strategy import Strategy
+
+if TYPE_CHECKING:
+    from lettrade.exchange.backtest import OptimizePlotter
 
 logger = logging.getLogger(__name__)
 
@@ -180,7 +183,7 @@ class LetTrade:
 
     # Plotter
     @property
-    def plotter(self) -> Optional[Plotter | BotPlotter | OptimizePlotter]:
+    def plotter(self) -> "Optional[Plotter | BotPlotter | OptimizePlotter]":
         if self._plotter is not None:
             return self._plotter
         if self._bot is not None:

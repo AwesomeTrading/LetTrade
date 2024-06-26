@@ -1,10 +1,13 @@
+import functools
 import logging
+import time
 from datetime import datetime
 from multiprocessing.managers import BaseManager
 from typing import TYPE_CHECKING, Literal, Optional
 
 import ccxt
 from box import Box
+from ccxt.base.errors import RequestTimeout
 
 from lettrade.exchange.live import LetLiveOrderInvalidException, LiveAPI
 
@@ -14,6 +17,23 @@ if TYPE_CHECKING:
 
 
 logger = logging.getLogger(__name__)
+
+
+def ccxt_connection(api_function):
+    @functools.wraps(api_function)
+    def wrapper(self: "CCXTAPIExchange", *args, api_retry: int = 3, **kwargs):
+        while api_retry > 0:
+            try:
+                return api_function(self, *args, **kwargs)
+            except RequestTimeout:
+                pass
+
+            logger.warning("Retry functon %s", api_function)
+
+            time.sleep(1)
+            api_retry -= 1
+
+    return wrapper
 
 
 class CCXTAPIExchange:
@@ -98,9 +118,11 @@ class CCXTAPIExchange:
         return self._exchange.markets
 
     # Bar
+    @ccxt_connection
     def fetch_ohlcv(self, *args, **kwargs):
         return self._exchange.fetch_ohlcv(*args, **kwargs)
 
+    @ccxt_connection
     def watch_ohlcv(self, *args, **kwargs):
         return self._exchange.watch_ohlcv(*args, **kwargs)
 

@@ -118,16 +118,6 @@ class Account(metaclass=ABCMeta):
             if self._do_equity_snapshot:
                 self._do_equity_snapshot = False
 
-    # def _on_position_entry(self, position: "Position"):
-    #     # TODO: refresh balance
-    #     if not self._do_equity_snapshot:
-    #         self._do_equity_snapshot = True
-
-    # def _on_position_exit(self, position: "Position"):
-    #     # TODO: refresh balance
-    #     if not self._do_equity_snapshot:
-    #         self._do_equity_snapshot = True
-
     def on_positions(self, positions: list["Position"]):
         """Event positions updated"""
         if not self._do_equity_snapshot:

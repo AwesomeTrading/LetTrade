@@ -43,20 +43,24 @@ TIMEFRAME_L2M = {
 }
 
 
+class _RetryException(Exception):
+    pass
+
+
 def mt5_connection(api_function):
     @functools.wraps(api_function)
     def wrapper(self: "MetaTraderAPI", *args, api_retry: int = 3, **kwargs):
         while api_retry > 0:
-            result = api_function(self, *args, api_retry=api_retry, **kwargs)
-
-            if result is not None:
-                return result
+            try:
+                return api_function(self, *args, **kwargs)
+            except _RetryException:
+                pass
 
             logger.warning(
                 "Retry to reconnect MetaTrader 5 RPC for functon %s", api_function
             )
             if not self._refresh_environments():
-                return result
+                return None
 
             time.sleep(1)
             api_retry -= 1
@@ -269,7 +273,10 @@ class MetaTraderAPI(LiveAPI):
         Returns:
             dict: _description_
         """
-        return self._mt5.symbol_info(symbol)
+        raw = self._mt5.symbol_info(symbol)
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     @mt5_connection
     def markets(self, search: Optional[str] = None, **kwargs) -> list[dict]:
@@ -286,7 +293,10 @@ class MetaTraderAPI(LiveAPI):
         Returns:
             list[dict]: _description_
         """
-        return self._mt5.symbols_get(search)
+        raw = self._mt5.symbols_get(search)
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     @mt5_connection
     def tick_get(self, symbol: str, **kwargs) -> dict:
@@ -298,7 +308,10 @@ class MetaTraderAPI(LiveAPI):
         Returns:
             dict: _description_
         """
-        return self._mt5.symbol_info_tick(symbol)
+        raw = self._mt5.symbol_info_tick(symbol)
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     @mt5_connection
     def bars(
@@ -323,12 +336,16 @@ class MetaTraderAPI(LiveAPI):
         timeframe = TIMEFRAME_L2M[timeframe]
 
         if isinstance(since, int):
-            return self._mt5.copy_rates_from_pos(symbol, timeframe, since, to)
+            raw = self._mt5.copy_rates_from_pos(symbol, timeframe, since, to)
 
-        if isinstance(to, int):
-            return self._mt5.copy_rates_from(symbol, timeframe, since, to)
+        elif isinstance(to, int):
+            raw = self._mt5.copy_rates_from(symbol, timeframe, since, to)
+        else:
+            raw = self._mt5.copy_rates_range(symbol, timeframe, since, to)
 
-        return self._mt5.copy_rates_range(symbol, timeframe, since, to)
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     ### Private
     # Account
@@ -339,7 +356,10 @@ class MetaTraderAPI(LiveAPI):
         Returns:
             dict: _description_
         """
-        return self._mt5.account_info()
+        raw = self._mt5.account_info()
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     # Order
     @mt5_connection
@@ -347,7 +367,6 @@ class MetaTraderAPI(LiveAPI):
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -364,14 +383,17 @@ class MetaTraderAPI(LiveAPI):
         if to is not None:
             kwargs["date_to"] = to
 
-        return self._mt5.orders_total(**kwargs)
+        raw = self._mt5.orders_total(**kwargs)
+        if raw is None:
+            raise _RetryException()
+
+        return raw
 
     @mt5_connection
     def orders_get(
         self,
         id: Optional[str] = None,
         symbol: Optional[str] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> list[dict]:
         """_summary_
@@ -392,7 +414,7 @@ class MetaTraderAPI(LiveAPI):
 
         # Return None to retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         return [self._order_parse_response(raw) for raw in raws]
 
@@ -473,9 +495,9 @@ class MetaTraderAPI(LiveAPI):
         )
         raw = self._mt5.order_send(request)
 
-        # Return None to retry
+        # Retry
         if raw is None:
-            return None
+            raise _RetryException()
 
         raw = self._parse_trade_send_response(raw)
         if raw.code != 0:
@@ -570,7 +592,6 @@ class MetaTraderAPI(LiveAPI):
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -587,7 +608,10 @@ class MetaTraderAPI(LiveAPI):
         if to is not None:
             kwargs["date_to"] = to
 
-        return self._mt5.history_orders_get(**kwargs)
+        raw = self._mt5.history_orders_get(**kwargs)
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     @mt5_connection
     def orders_history_get(
@@ -596,7 +620,6 @@ class MetaTraderAPI(LiveAPI):
         position_id: Optional[str] = None,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> list[dict]:
         """_summary_
@@ -623,7 +646,7 @@ class MetaTraderAPI(LiveAPI):
 
         # Retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         return [self._order_parse_response(raw) for raw in raws]
 
@@ -637,7 +660,6 @@ class MetaTraderAPI(LiveAPI):
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -654,14 +676,16 @@ class MetaTraderAPI(LiveAPI):
         if to is not None:
             kwargs["date_to"] = to
 
-        return self._mt5.history_deals_total(**kwargs)
+        raw = self._mt5.history_deals_total(**kwargs)
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     @mt5_connection
     def executions_get(
         self,
         position_id: Optional[str] = None,
         search: Optional[str] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> list[dict]:
         """_summary_
@@ -682,19 +706,17 @@ class MetaTraderAPI(LiveAPI):
 
         # Retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         # May be wrong account when position exist but no execution
         if not raws and position_id is not None:
             logger.warning(
-                "Execution retry %s check connection when position=%s exist but no execution",
-                api_retry,
+                "Execution retry check connection when position=%s exist but no execution",
                 position_id,
             )
 
             # Retry check mt5 connection
-            if api_retry > 0:
-                return None
+            raise _RetryException()
 
         if __debug__:
             logger.debug("Raw executions: %s", raws)
@@ -702,7 +724,7 @@ class MetaTraderAPI(LiveAPI):
         return [self._execution_parse_response(raw) for raw in raws]
 
     @mt5_connection
-    def execution_get(self, id: str, api_retry: int = 1, **kwargs) -> dict:
+    def execution_get(self, id: str, **kwargs) -> dict:
         """_summary_
 
         Args:
@@ -718,7 +740,7 @@ class MetaTraderAPI(LiveAPI):
 
         # Retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         if __debug__:
             logger.debug("Raw execution: %s", raws)
@@ -738,7 +760,6 @@ class MetaTraderAPI(LiveAPI):
         self,
         since: Optional[datetime] = None,
         to: Optional[datetime] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> int:
         """_summary_
@@ -755,14 +776,16 @@ class MetaTraderAPI(LiveAPI):
         if to is not None:
             kwargs["date_to"] = to
 
-        return self._mt5.positions_total(**kwargs)
+        raw = self._mt5.positions_total(**kwargs)
+        if raw is None:
+            raise _RetryException()
+        return raw
 
     @mt5_connection
     def positions_get(
         self,
         id: str = None,
         symbol: str = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> list[dict]:
         """_summary_
@@ -783,7 +806,7 @@ class MetaTraderAPI(LiveAPI):
 
         # Retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         return [self._position_parse_response(raw) for raw in raws]
 
@@ -792,7 +815,6 @@ class MetaTraderAPI(LiveAPI):
         position: "MetaTraderPosition",
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> dict:
         """_summary_
@@ -820,7 +842,6 @@ class MetaTraderAPI(LiveAPI):
         # symbol: str,
         sl: Optional[float] = None,
         tp: Optional[float] = None,
-        api_retry: int = 1,
         **kwargs,
     ) -> dict:
         """_summary_
@@ -845,7 +866,7 @@ class MetaTraderAPI(LiveAPI):
 
         # Retry
         if raw is None:
-            return None
+            raise _RetryException()
 
         return self._parse_trade_send_response(raw)
 
@@ -881,7 +902,6 @@ class MetaTraderAPI(LiveAPI):
         type: int,
         price: float,
         size: float,
-        api_retry: int = 1,
         **kwargs,
     ) -> dict:
         request = self._parse_trade_request(
@@ -896,7 +916,7 @@ class MetaTraderAPI(LiveAPI):
 
         # Retry
         if raw is None:
-            return None
+            raise _RetryException()
 
         return self._parse_trade_send_response(raw)
 
@@ -908,9 +928,11 @@ class MetaTraderAPI(LiveAPI):
         to = datetime.now()  # + timedelta(days=1)
 
         # History orders
-        orders = self._mt5.history_orders_get(self._load_history_since, to)
-        if orders:
-            self._exchange.on_orders_event(old=orders)
+        raws = self._mt5.history_orders_get(self._load_history_since, to)
+        if raws is None:
+            raise _RetryException()
+
+        self._exchange.on_orders_event(old=raws)
 
         # # Positions
         # positions = self._mt5.positions_get(self._load_history_since, to)
@@ -948,9 +970,9 @@ class MetaTraderAPI(LiveAPI):
 
         deal_total = self._mt5.history_deals_total(self._deal_time_checked, to)
 
-        # Re-connect
+        # Retry
         if deal_total is None:
-            return None
+            raise _RetryException()
 
         # No thing new in deal
         if deal_total <= 0:
@@ -958,9 +980,9 @@ class MetaTraderAPI(LiveAPI):
 
         raws = self._mt5.history_deals_get(self._deal_time_checked, to)
 
-        # Re-connect
+        # Retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         if len(raws) > 0:
             # Update last check time +1 second
@@ -977,9 +999,9 @@ class MetaTraderAPI(LiveAPI):
     def _check_orders(self, **kwargs) -> tuple | None:
         order_total = self._mt5.orders_total()
 
-        # Re-connect
+        # Retry
         if order_total is None:
-            return None
+            raise _RetryException()
 
         # No thing new in order
         if order_total <= 0 and len(self._orders_stored) == 0:
@@ -987,9 +1009,9 @@ class MetaTraderAPI(LiveAPI):
 
         raws = self._mt5.orders_get()
 
-        # Re-connect
+        # Retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         tickets = [raw.ticket for raw in raws]
 
@@ -1019,9 +1041,9 @@ class MetaTraderAPI(LiveAPI):
     def _check_positions(self, **kwargs) -> tuple | None:
         positions_total = self._mt5.positions_total()
 
-        # Re-connect
+        # Retry
         if positions_total is None:
-            return None
+            raise _RetryException()
 
         # No thing new in trade
         if positions_total <= 0 and not bool(self._positions_stored):
@@ -1029,9 +1051,9 @@ class MetaTraderAPI(LiveAPI):
 
         raws = self._mt5.positions_get()
 
-        # Re-connect
+        # Retry
         if raws is None:
-            return None
+            raise _RetryException()
 
         # May be wrong account when position exist but no execution
         if not raws and bool(self._positions_stored):
@@ -1048,7 +1070,7 @@ class MetaTraderAPI(LiveAPI):
                     "Positions retry check connection when position=%s exited but no execution",
                     position_exit.ticket,
                 )
-                return None
+            raise _RetryException()
 
         tickets = [raw.ticket for raw in raws]
         raws = {raw.ticket: self._position_parse_response(raw) for raw in raws}

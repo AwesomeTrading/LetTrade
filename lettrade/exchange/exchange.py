@@ -274,6 +274,8 @@ class Exchange(metaclass=ABCMeta):
                     self.positions[position.id] = position
                     # self._account._on_position_entry(position)
 
+        self._account.on_positions(positions)
+
         if self._state != ExchangeState.Run:
             return
 

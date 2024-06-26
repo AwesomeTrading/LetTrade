@@ -190,7 +190,7 @@ class BackTestPosition(Position):
             at (object): Exit bar
             caller (Order | Position, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
         """
-        if self.state != PositionState.Open:
+        if self.state == PositionState.Exit:
             if caller is None:
                 # Call by user
                 raise RuntimeError(f"Call exited position {self}")

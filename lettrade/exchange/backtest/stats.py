@@ -4,6 +4,7 @@ import threading
 import time
 from multiprocessing import Manager, Queue
 from multiprocessing.managers import SyncManager
+from typing import Optional
 
 import pandas as pd
 
@@ -20,6 +21,7 @@ class OptimizeStatistic:
     _q: Queue
     _total: int = 0
     _manager: SyncManager
+    _result_thread: Optional[threading.Thread]
 
     results: list
     result: pd.Series
@@ -27,23 +29,25 @@ class OptimizeStatistic:
 
     def __init__(self, plotter: OptimizePlotter = None, total: int = 0) -> None:
         self.plotter = plotter
-        self.results = []
         self._total = total
+
+        self.results = []
+        self._result_thread = None
 
         if self.plotter is not None:
             self.plotter.init(self.results)
 
-        self._t_wait_done()
+        self._t_wait_result()
 
     @property
     def queue(self) -> Queue:
         return self._q
 
-    def _t_wait_done(self):
+    def _t_wait_result(self):
         self._manager = Manager()
         self._q = self._manager.Queue(maxsize=1_000)
-        t = threading.Thread(target=self._wait_done)
-        t.start()
+        self._result_thread = threading.Thread(target=self._wait_done)
+        self._result_thread.start()
 
     def _wait_done(self, retry=10):
         done = 0
@@ -62,6 +66,9 @@ class OptimizeStatistic:
                     break
                 continue
 
+            if result is None:
+                return
+
             self.results.append(result)
 
             done += 1
@@ -73,9 +80,14 @@ class OptimizeStatistic:
             if self._total > 0 and done == self._total:
                 break
 
-        self.done()
+        # self.done()
 
     def done(self):
+        if self._result_thread is not None:
+            self._q.put(None)
+            self._result_thread.join()
+            self._result_thread = None
+
         if self.plotter:
             self.plotter.on_done()
 

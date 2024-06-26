@@ -53,7 +53,7 @@ class Order(BaseTransaction):
         self.validate()
 
     def _repr_params(self):
-        data = (
+        params = (
             f"id='{self.id}'"
             f", type='{self.type}'"
             f", state='{self.state}'"
@@ -62,21 +62,22 @@ class Order(BaseTransaction):
             f", size={round(self.size, 5)}"
         )
         if self.limit:
-            data += f", limit={round(self.limit, 5)}"
+            params += f", limit={round(self.limit, 5)}"
         if self.stop:
-            data += f", stop={round(self.stop, 5)}"
+            params += f", stop={round(self.stop, 5)}"
         if self.sl:
-            data += f", sl={round(self.sl, 5)}"
+            params += f", sl={round(self.sl, 5)}"
         if self.tp:
-            data += f", tp={round(self.tp, 5)}"
+            params += f", tp={round(self.tp, 5)}"
 
         if self.filled_at:
-            data += (
+            params += (
                 f", filled_at={self.filled_at}" f", filled_price={self.filled_price}"
             )
+        if self.tag:
+            params += f", tag='{self.tag}'"
 
-        data += f", tag='{self.tag}'"
-        return data
+        return params
 
     def __repr__(self):
         return f"<{self.__class__.__name__} {self._repr_params()}>"
@@ -364,7 +365,10 @@ class OrderResult:
         self.raw: Optional[object] = raw
 
     def _repr_params(self):
-        return f"ok={self.ok} order={self.order} raw='{self.raw}'"
+        params = f"ok={self.ok} order={self.order}"
+        if self.raw is not None:
+            params += f"raw='{self.raw}'"
+        return params
 
     def __repr__(self):
         return f"<{self.__class__.__name__} {self._repr_params()}>"

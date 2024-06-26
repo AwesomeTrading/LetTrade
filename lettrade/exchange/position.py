@@ -60,7 +60,7 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         self.tp_order: Optional[Order] = tp_order
 
     def _repr_params(self):
-        data = (
+        params = (
             f"id='{self.id}'"
             f", state='{self.state}'"
             f", size={round(self.size, 5)}"
@@ -70,20 +70,22 @@ class Position(BaseTransaction, metaclass=ABCMeta):
         )
 
         if self.sl_order:
-            data += f", sl_order={self.sl_order}"
+            params += f", sl_order={self.sl_order}"
         if self.tp_order:
-            data += f", tp_order={self.tp_order}"
+            params += f", tp_order={self.tp_order}"
 
         if self.is_exited:
-            data += (
+            params += (
                 f", exit_price={self.exit_price}"
                 f", exit_fee={self.exit_fee}"
                 f", exit_at={self.exit_at}"
                 f", exit_pl={round(self.exit_pl,5)}"
             )
 
-        data += f", tag='{self.tag}'"
-        return data
+        if self.tag:
+            params += f", tag='{self.tag}'"
+
+        return params
 
     def __repr__(self):
         return f"<{self.__class__.__name__} {self._repr_params()}>"
@@ -255,7 +257,10 @@ class PositionResult:
         self.raw: Optional[object] = raw
 
     def _repr_params(self):
-        return f"ok={self.ok} position={self.position} raw='{self.raw}'"
+        params = f"ok={self.ok} position={self.position}"
+        if self.raw is not None:
+            params += f"raw='{self.raw}'"
+        return params
 
     def __repr__(self):
         return f"<{self.__class__.__name__} {self._repr_params()}>"

@@ -6,10 +6,9 @@ from subprocess import Popen
 from typing import TYPE_CHECKING
 
 from box import Box
-from mt5linux import MetaTrader5 as MT5
-
 from lettrade.exchange import OrderType
 from lettrade.exchange.live import LetLiveOrderInvalidException, LiveAPI
+from mt5linux import MetaTrader5 as MT5
 
 if TYPE_CHECKING:
     from .metatrader import MetaTraderExchange
@@ -210,14 +209,6 @@ class MetaTraderAPI(LiveAPI):
             if retry == 0:
                 raise RuntimeError(f"Cannot login {account}")
 
-            # Preload trading data
-            now = datetime.now()
-            self._mt5.history_deals_get(self._deal_time_checked, now)
-            self._mt5.history_orders_get(self._load_history_since, now)
-            self._mt5.orders_get()
-            self._mt5.positions_get()
-            time.sleep(5)
-
             # Terminal
             terminal = self._mt5.terminal_info()
             logger.info("Terminal: %s", str(terminal))
@@ -231,6 +222,14 @@ class MetaTraderAPI(LiveAPI):
                 server,
                 self._mt5.version(),
             )
+
+            # Preload trading data
+            now = datetime.now()
+            self._mt5.history_deals_get(self._deal_time_checked, now)
+            self._mt5.history_orders_get(self._load_history_since, now)
+            self._mt5.orders_get()
+            self._mt5.positions_get()
+            time.sleep(3)
 
         return True
 

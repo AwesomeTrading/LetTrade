@@ -20,13 +20,13 @@ Find more at [**Documentation**](https://AwesomeTrading.github.io/LetTrade/)
 Stable version
 
 ```sh
-pip install lettrade
+pip install lettrade[all]
 ```
 
 Developing version
 
 ```sh
-pip install git+https://git@github.com/AwesomeTrading/LetTrade.git@main
+pip install 'lettrade[all] @ git+https://git@github.com/AwesomeTrading/LetTrade.git@main'
 ```
 
 ## Example

@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     setup(
         name="lettrade",
-        version="0.0.8-beta-0",
+        version="0.0.8-beta-1",
         author="Santatic",
         # author_email = "author@example.com",
         description="Lightweight trading framwork",
@@ -44,5 +44,12 @@ if __name__ == "__main__":
             ],
             "exchange-ccxt": ["lettrade[live]", "ccxt"],
             "test": ["pytest"],
+            "all": [
+                "lettrade[backtest-extra]",
+                "lettrade[exchange-metatrader]",
+                "lettrade[exchange-ccxt]",
+                "lettrade[commander-telegram]",
+                "lettrade[test]",
+            ],
         },
     )

@@ -33,12 +33,48 @@ class BotStatistic:
         pass
 
     def compute(self):
-        """
-        Calculate strategy report
-        """
+        """Calculate strategy report"""
         data = self.feeder.data
 
-        equities = list(self.account._equities.values())
+        ### Stats
+        self.result = result = pd.Series(dtype=object)
+
+        result.loc["strategy"] = str(self.strategy.__class__)
+        result.loc["start"] = data.index[0]
+        result.loc["end"] = data.index[-1]
+        result.loc["duration"] = result.end - result.start
+
+        ### Equity
+        equties_index = pd.DatetimeIndex(self.account._equities.keys())
+        equities = pd.Series(self.account._equities.values(), index=equties_index)
+        dd = 1 - equities / np.maximum.accumulate(equities)
+        dd_dur, dd_peaks = _compute_drawdown_duration_peaks(
+            pd.Series(dd, index=equties_index)
+        )
+
+        result.loc["start_balance"] = round(equities.iloc[0], 2)
+        result.loc["equity"] = round(equities.iloc[-1], 2)
+        result.loc["equity_peak"] = round(equities.max(), 2)
+
+        pl = equities.iloc[-1] - equities.iloc[0]
+        result.loc["pl"] = round(pl, 2)
+        result.loc["pl_percent"] = round(pl / equities.iloc[0] * 100, 2)
+
+        c = data.close.values
+        result.loc["buy_hold_pl_percent"] = round(
+            (c[-1] - c[0]) / c[0] * 100, 2
+        )  # long-only return
+
+        max_dd = -np.nan_to_num(dd.max())
+        result.loc["max_drawdown_percent"] = round(max_dd * 100, 2)
+        result.loc["avg_drawdown_percent"] = round(-dd_peaks.mean() * 100, 2)
+        result.loc["max_drawdown_duration"] = data.timeframe.ceil(dd_dur.max())
+        result.loc["avg_drawdown_duration"] = data.timeframe.ceil(dd_dur.mean())
+
+        # Separator
+        result.loc[""] = ""
+
+        ### Positions
         positions = list(self.exchange.history_positions.values()) + list(
             self.exchange.positions.values()
         )
@@ -63,33 +99,6 @@ class BotStatistic:
                 position.fee,
             )
         positions_df["duration"] = positions_df["entry_at"] - positions_df["exit_at"]
-
-        self.result = result = pd.Series(dtype=object)
-
-        result.loc["strategy"] = str(self.strategy.__class__)
-        result.loc["start"] = data.index[0]
-        result.loc["end"] = data.index[-1]
-        result.loc["duration"] = result.end - result.start
-
-        # Equity
-        result.loc["start_balance"] = round(equities[0], 2)
-        result.loc["equity"] = round(equities[-1], 2)
-
-        pl = equities[-1] - equities[0]
-        result.loc["pl"] = round(pl, 2)
-        result.loc["pl_percent"] = round(pl / equities[0] * 100, 2)
-
-        # TODO
-        # result.loc["buy_hold_pl_percent"] = 2.0
-        # result.loc["max_drawdown_percent"] = -33.08
-        # result.loc["avg_drawdown_percent"] = -5.58
-        # result.loc["max_drawdown_duration"] = "688 days 00:00:00"
-        # result.loc["avg_drawdown_duration"] = "41 days 00:00:00"
-
-        # Separator
-        result.loc[""] = ""
-
-        # Trades
         positions_total = len(positions)
         pl = positions_df["pl"]
 
@@ -97,9 +106,9 @@ class BotStatistic:
 
         win_rate = np.nan if not positions_total else (pl > 0).mean()
         result.loc["win_rate"] = round(win_rate, 2)
-        result.loc["fee"] = positions_df.fee.sum()
-        result.loc["best_trade_percent"] = pl.max()
-        result.loc["worst_trade_percent"] = pl.min()
+        result.loc["fee"] = round(positions_df.fee.sum(), 2)
+        result.loc["best_trade_percent"] = round(pl.max(), 2)
+        result.loc["worst_trade_percent"] = round(pl.min(), 2)
         result.loc["sqn"] = round(
             np.sqrt(positions_total) * pl.mean() / (pl.std() or np.nan),
             2,
@@ -107,7 +116,6 @@ class BotStatistic:
         result.loc["kelly_criterion"] = win_rate - (1 - win_rate) / (
             pl[pl > 0].mean() / -pl[pl < 0].mean()
         )
-        # TODO
         result.loc["profit_factor"] = pl[pl > 0].sum() / (
             abs(pl[pl < 0].sum()) or np.nan
         )
@@ -123,14 +131,15 @@ class BotStatistic:
                 "duration": "Duration",
                 "start_balance": "Start Balance",
                 "equity": "Equity [$]",
+                "equity_peak": "Equity Peak [$]",
                 "pl": "PL [$]",
                 "pl_percent": "PL [%]",
-                # "buy_hold_pl_percent": "Buy & Hold PL [%]",
-                # "max_drawdown_percent": "Max. Drawdown [%]",
-                # "avg_drawdown_percent": "Avg. Drawdown [%]",
-                # "max_drawdown_duration": "Max. Drawdown Duration",
-                # "avg_drawdown_duration": "Avg. Drawdown Duration",
-                "positions": "# Trades",
+                "buy_hold_pl_percent": "Buy & Hold PL [%]",
+                "max_drawdown_percent": "Max. Drawdown [%]",
+                "avg_drawdown_percent": "Avg. Drawdown [%]",
+                "max_drawdown_duration": "Max. Drawdown Duration",
+                "avg_drawdown_duration": "Avg. Drawdown Duration",
+                "positions": "# Positions",
                 "win_rate": "Win Rate [%]",
                 "fee": "Fee [$]",
                 "best_trade_percent": "Best Trade [%]",
@@ -162,3 +171,23 @@ class BotStatistic:
             "\n============= Statistic result =============\n%s\n",
             str(self),
         )
+
+
+def _compute_drawdown_duration_peaks(dd: pd.Series):
+    iloc = np.unique(np.r_[(dd == 0).values.nonzero()[0], len(dd) - 1])
+    iloc = pd.Series(iloc, index=dd.index[iloc])
+    df = iloc.to_frame("iloc").assign(prev=iloc.shift())
+    df = df[df["iloc"] > df["prev"] + 1].astype(int)
+
+    # If no drawdown since no trade, avoid below for pandas sake and return nan series
+    if not len(df):
+        return (dd.replace(0, np.nan),) * 2
+
+    df["duration"] = df["iloc"].map(dd.index.__getitem__) - df["prev"].map(
+        dd.index.__getitem__
+    )
+    df["peak_dd"] = df.apply(
+        lambda row: dd.iloc[row["prev"] : row["iloc"] + 1].max(), axis=1
+    )
+    df = df.reindex(dd.index)
+    return df["duration"], df["peak_dd"]

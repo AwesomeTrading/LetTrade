@@ -3,11 +3,14 @@ from typing import Any
 import pandas as pd
 
 
-def pandas_inject():
-    from pandas.core.base import PandasObject
+def pandas_inject(obj: object | None = None):
+    if obj is None:
+        from pandas.core.base import PandasObject
 
-    PandasObject.signal_direction = signal_direction
-    PandasObject.signal_condiction = signal_condiction
+        obj = PandasObject
+
+    obj.signal_direction = signal_direction
+    obj.signal_condiction = signal_condiction
 
 
 def signal_direction(

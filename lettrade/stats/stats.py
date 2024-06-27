@@ -174,6 +174,7 @@ class BotStatistic:
 
 
 def _compute_drawdown_duration_peaks(dd: pd.Series):
+    # TODO: clean
     iloc = np.unique(np.r_[(dd == 0).values.nonzero()[0], len(dd) - 1])
     iloc = pd.Series(iloc, index=dd.index[iloc])
     df = iloc.to_frame("iloc").assign(prev=iloc.shift())

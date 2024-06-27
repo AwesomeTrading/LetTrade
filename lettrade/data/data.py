@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 import pandas as pd
 
@@ -167,7 +167,6 @@ class DataFeed(pd.DataFrame):
 
         Raises:
             RuntimeError: _description_
-            RuntimeError: _description_
         """
         if since is None and to is None:
             super().drop(*args, **kwargs)
@@ -238,10 +237,34 @@ class DataFeed(pd.DataFrame):
     @property
     def i(self) -> "indicator":
         """Alias to `lettrade.indicator` and using in DataFeed by call: `DataFeed.i.indicator_name()`"""
+        if not hasattr(self, "_lt_indicators_injector"):
+            object.__setattr__(
+                self,
+                "_lt_indicators_injector",
+                _LetIndicatorsInjector(self),
+            )
+        return self._lt_indicators_injector
+
+
+class _LetIndicatorsInjector:
+    """Class to inject indicator to pandas.DataFrame with prefix `_lt_i_`.
+    Help to skip config with pandas.DataFrame column name and indicator function name
+    """
+
+    def __init__(self, df: DataFeed) -> None:
+        self.__dict__["df"] = df
+
         from lettrade import indicator
 
-        indicator.indicators_inject_pandas()
-        return self
+        indicator.indicators_inject_pandas(self)
+
+    def __setattr__(self, name: str, value: Callable) -> None:
+        from pandas.core.base import PandasObject
+
+        setattr(PandasObject, f"_lt_i_{name}", value)
+
+    def __getattr__(self, name: str) -> Callable:
+        return getattr(self.__dict__["df"], f"_lt_i_{name}")
 
 
 if __debug__:

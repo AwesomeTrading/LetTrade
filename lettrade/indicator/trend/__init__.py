@@ -3,8 +3,11 @@ from .ema import ema
 from .ichimoku import ichimoku
 
 
-def pandas_inject():
-    from pandas.core.base import PandasObject
+def pandas_inject(obj: object | None = None):
+    if obj is None:
+        from pandas.core.base import PandasObject
 
-    PandasObject.ema = series_indicator_inject(ema)
-    PandasObject.ichimoku = ichimoku
+        obj = PandasObject
+
+    obj.ema = series_indicator_inject(ema)
+    obj.ichimoku = ichimoku

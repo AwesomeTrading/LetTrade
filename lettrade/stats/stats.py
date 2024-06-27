@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from lettrade.account import Account
-from lettrade.data import DataFeeder
+from lettrade.data import DataFeeder, TimeFrame
 from lettrade.exchange import Exchange
 from lettrade.strategy import Strategy
 
@@ -45,11 +45,11 @@ class BotStatistic:
         result.loc["duration"] = result.end - result.start
 
         ### Equity
-        equties_index = pd.DatetimeIndex(self.account._equities.keys())
-        equities = pd.Series(self.account._equities.values(), index=equties_index)
+        equities_index = pd.DatetimeIndex(self.account._equities.keys())
+        equities = pd.Series(self.account._equities.values(), index=equities_index)
         dd = 1 - equities / np.maximum.accumulate(equities)
         dd_dur, dd_peaks = _compute_drawdown_duration_peaks(
-            pd.Series(dd, index=equties_index)
+            pd.Series(dd, index=equities_index)
         )
 
         result.loc["start_balance"] = round(equities.iloc[0], 2)
@@ -68,8 +68,12 @@ class BotStatistic:
         max_dd = -np.nan_to_num(dd.max())
         result.loc["max_drawdown_percent"] = round(max_dd * 100, 2)
         result.loc["avg_drawdown_percent"] = round(-dd_peaks.mean() * 100, 2)
-        result.loc["max_drawdown_duration"] = data.timeframe.ceil(dd_dur.max())
-        result.loc["avg_drawdown_duration"] = data.timeframe.ceil(dd_dur.mean())
+        result.loc["max_drawdown_duration"] = _round_timedelta(
+            dd_dur.max(), data.timeframe
+        )
+        result.loc["avg_drawdown_duration"] = _round_timedelta(
+            dd_dur.mean(), data.timeframe
+        )
 
         # Separator
         result.loc[""] = ""
@@ -171,6 +175,12 @@ class BotStatistic:
             "\n============= Statistic result =============\n%s\n",
             str(self),
         )
+
+
+def _round_timedelta(value, timeframe: TimeFrame):
+    if not isinstance(value, pd.Timedelta):
+        return value
+    return timeframe.ceil(value)
 
 
 def _compute_drawdown_duration_peaks(dd: pd.Series):

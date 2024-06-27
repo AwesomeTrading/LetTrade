@@ -6,9 +6,10 @@ from subprocess import Popen
 from typing import TYPE_CHECKING
 
 from box import Box
+from mt5linux import MetaTrader5 as MT5
+
 from lettrade.exchange import OrderType
 from lettrade.exchange.live import LetLiveOrderInvalidException, LiveAPI
-from mt5linux import MetaTrader5 as MT5
 
 if TYPE_CHECKING:
     from .metatrader import MetaTraderExchange
@@ -260,7 +261,7 @@ class MetaTraderAPI(LiveAPI):
         """
         return True
 
-    ### Public
+    # Public
     @mt5_connection
     def market(self, symbol: str, **kwargs) -> dict:
         """_summary_
@@ -345,7 +346,7 @@ class MetaTraderAPI(LiveAPI):
             raise _RetryException()
         return raw
 
-    ### Private
+    # Private
     # Account
     @mt5_connection
     def account(self, **kwargs) -> dict:

@@ -1,5 +1,6 @@
 import talib.abstract as ta
 
+from lettrade import indicator as i
 from lettrade.all import DataFeed, ForexBackTestAccount, Strategy, let_backtest
 
 
@@ -9,9 +10,9 @@ class SmaCross(Strategy):
 
     def indicators(self, df: DataFeed):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema2"] = df.i.ema(period=self.ema2_period)
 
-        df["crossover"] = df.i.crossover(df.ema1, df.ema2)
+        df["crossover"] = i.crossover(df.ema1, df.ema2)
         df["crossunder"] = df.i.crossunder(df.ema1, df.ema2)
 
     def next(self, df: DataFeed):

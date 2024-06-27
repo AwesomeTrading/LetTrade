@@ -44,10 +44,10 @@ class SmaCross(Strategy):
 
     def indicators(self, df: DataFeed):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema2"] = df.i.ema(period=self.ema2_period)
 
         df["crossover"] = i.crossover(df.ema1, df.ema2)
-        df["crossunder"] = i.crossunder(df.ema1, df.ema2)
+        df["crossunder"] = df.i.crossunder(df.ema1, df.ema2)
 
     def next(self, df: DataFeed):
         if df.l.crossover[-1]:
@@ -69,25 +69,29 @@ lt.plot()
 ```
 
 ```text
-# Strategy                       <class 'SmaCross'>
-Start                     2024-05-13 21:15:00+00:00
-End                       2024-05-17 08:30:00+00:00
-Duration                            3 days 11:15:00
-Start Balance [$]                             10000
-Equity [$]                                  10000.0
-PL [$]                                          0.0
-PL [%]                                          0.0
-Buy & Hold PL [%]                               2.0
-Max. Drawdown [%]                            -33.08
-Avg. Drawdown [%]                             -5.58
-Max. Drawdown Duration            688 days 00:00:00
-Avg. Drawdown Duration             41 days 00:00:00
-
-# Trades                                         34
-Best Trade [%]                               0.0007
-Worst Trade [%]                           -0.000732
-Profit Factor                                  2.13
-SQN                                            1.78
+# Strategy                <class '__main__.SmaCross'>
+Start                       2024-05-13 21:15:00+00:00
+End                         2024-05-17 08:30:00+00:00
+Duration                              3 days 11:15:00
+Start Balance                                  1000.0
+Equity [$]                                    1003.16
+Equity Peak [$]                               1013.54
+PL [$]                                           3.16
+PL [%]                                           0.32
+Buy & Hold PL [%]                                0.63
+Max. Drawdown [%]                               -4.98
+Avg. Drawdown [%]                                -1.5
+Max. Drawdown Duration                1 days 16:15:00
+Avg. Drawdown Duration                0 days 12:30:00
+                                                     
+# Positions                                        34
+Win Rate [%]                                     0.38
+Fee [$]                                         -1.34
+Best Trade [%]                                  29.36
+Worst Trade [%]                                -18.14
+SQN                                              0.07
+Kelly Criterion                               0.01392
+Profit Factor                                1.037781
 ```
 
 ![Plot](https://raw.githubusercontent.com/AwesomeTrading/lettrade/main/docs/image/plot.png)
@@ -113,23 +117,25 @@ python -m example.strategy.backtest_sma_cross
 Start                       2023-01-02 00:00:00+00:00
 End                         2023-12-29 21:00:00+00:00
 Duration                            361 days 21:00:00
-Start Balance                                    1000
+Start Balance                                  1000.0
 Equity [$]                                    1497.29
+Equity Peak [$]                               1593.65
 PL [$]                                         497.29
 PL [%]                                          49.73
-Buy & Hold PL [%]                                 2.0
-Max. Drawdown [%]                              -33.08
-Avg. Drawdown [%]                               -5.58
-Max. Drawdown Duration              688 days 00:00:00
-Avg. Drawdown Duration               41 days 00:00:00
-
-# Trades                                          248
-Win Rate [%]                                     50.0
+Buy & Hold PL [%]                                3.09
+Max. Drawdown [%]                              -34.95
+Avg. Drawdown [%]                               -4.22
+Max. Drawdown Duration              155 days 11:00:00
+Avg. Drawdown Duration               10 days 20:00:00
+                                                     
+# Positions                                       248
+Win Rate [%]                                      0.5
 Fee [$]                                         -4.96
-Best Trade [%]                             554.825333
-Worst Trade [%]                           -525.077316
-Profit Factor                                    2.13
-SQN                                              1.78
+Best Trade [%]                                 554.83
+Worst Trade [%]                               -525.08
+SQN                                              0.11
+Kelly Criterion                              0.008346
+Profit Factor                                1.016976
 ```
 
 ## Live Trading

@@ -248,7 +248,7 @@ class DataFeed(pd.DataFrame):
 
 class _LetIndicatorsInjector:
     """Class to inject indicator to pandas.DataFrame with prefix `_lt_i_`.
-    Help to skip config with pandas.DataFrame column name and indicator function name
+    Avoid conflic between pandas.DataFrame column name and indicator function name
     """
 
     def __init__(self, df: DataFeed) -> None:

@@ -14,14 +14,17 @@ def series_indicator_inject(fn):
     return __call
 
 
-def pandas_inject():
-    from pandas.core.base import PandasObject
+def pandas_inject(obj: object | None = None):
+    if obj is None:
+        from pandas.core.base import PandasObject
 
-    PandasObject.diff = series_indicator_inject(diff)
-    PandasObject.above = series_indicator_inject(above)
-    PandasObject.below = series_indicator_inject(below)
-    PandasObject.crossover = series_indicator_inject(crossover)
-    PandasObject.crossunder = series_indicator_inject(crossunder)
+        obj = PandasObject
+
+    obj.diff = series_indicator_inject(diff)
+    obj.above = series_indicator_inject(above)
+    obj.below = series_indicator_inject(below)
+    obj.crossover = series_indicator_inject(crossover)
+    obj.crossunder = series_indicator_inject(crossunder)
 
 
 def diff(series1: pd.Series, series2: pd.Series, **kwargs) -> pd.Series:

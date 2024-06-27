@@ -40,7 +40,7 @@ def lt() -> BackTestStrategy:
     def get():
         lt = let_backtest(
             strategy=BackTestStrategy,
-            datas="example/data/data/EURUSD_5m_0_1000.csv",
+            datas="example/data/data/EURUSD_5m-0_1000.csv",
             account=ForexBackTestAccount,
         )
         return lt

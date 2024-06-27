@@ -107,35 +107,8 @@ python -m example.data.yfinance
 ```
 
 #### Backtest strategy
-<!-- ```bash exec="true" source="above" result="ansi" -->
 ```bash
 python -m example.strategy.backtest_sma_cross
-```
-
-```text
-# Strategy                <class '__main__.SmaCross'>
-Start                       2023-01-02 00:00:00+00:00
-End                         2023-12-29 21:00:00+00:00
-Duration                            361 days 21:00:00
-Start Balance                                  1000.0
-Equity [$]                                    1497.29
-Equity Peak [$]                               1593.65
-PL [$]                                         497.29
-PL [%]                                          49.73
-Buy & Hold PL [%]                                3.09
-Max. Drawdown [%]                              -34.95
-Avg. Drawdown [%]                               -4.22
-Max. Drawdown Duration              155 days 11:00:00
-Avg. Drawdown Duration               10 days 20:00:00
-                                                     
-# Positions                                       248
-Win Rate [%]                                      0.5
-Fee [$]                                         -4.96
-Best Trade [%]                                 554.83
-Worst Trade [%]                               -525.08
-SQN                                              0.11
-Kelly Criterion                              0.008346
-Profit Factor                                1.016976
 ```
 
 ## Live Trading

@@ -1,10 +1,7 @@
-import logging
-
 import talib.abstract as ta
 
 from example.logger import logging_filter_necessary_only
 from lettrade.all import (
-    CSVBackTestDataFeed,
     DataFeed,
     ForexBackTestAccount,
     Strategy,
@@ -29,8 +26,10 @@ class SmaCross(Strategy):
 
     def next(self, df: DataFeed):
         if df.l.signal_ema_crossover[-1]:
+            self.positions_exit()
             self.buy(size=0.1)
         elif df.l.signal_ema_crossunder[-1]:
+            self.positions_exit()
             self.sell(size=0.1)
 
     # def stop(self, df: DataFeed):
@@ -56,7 +55,7 @@ class SmaCross(Strategy):
 
 
 lt = let_backtest(
-    datas=CSVBackTestDataFeed("example/data/data/EURUSD_1h.csv", name="EURUSD_1h"),
+    datas="example/data/data/EURUSD_1h_YF_2023-01-01_2023-12-31.csv",
     strategy=SmaCross,
     account=ForexBackTestAccount,
 )

@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from enum import Enum
 from typing import TYPE_CHECKING
 
 from .error import LetAccountInsufficientException
@@ -7,13 +8,21 @@ if TYPE_CHECKING:
     from lettrade.exchange import Exchange, Position, TradeSide
 
 
+class AccountType(str, Enum):
+    """"""
+
+    Hedging = "hedging"
+    """"""
+    Speculation = "speculation"
+    """"""
+
+
 class Account(metaclass=ABCMeta):
-    """
-    Manage account balance, leverage, commission. Risk calculate and control
-    """
+    """Manage account balance, leverage, commission. Risk calculate and control"""
 
     _exchange: "Exchange"
     _config: dict
+    _type: str
 
     _risk: float
     _balance: float
@@ -29,6 +38,7 @@ class Account(metaclass=ABCMeta):
         balance: float = 10_000,
         margin: float = 1.0,
         leverage: float = 1.0,
+        type: AccountType = AccountType.Hedging,
         **kwargs,
     ) -> None:
         """_summary_
@@ -44,6 +54,7 @@ class Account(metaclass=ABCMeta):
         self._balance = balance
         self._margin = margin
         self._leverage = leverage
+        self._type = type
         self._config = kwargs
 
         self._equities = dict()

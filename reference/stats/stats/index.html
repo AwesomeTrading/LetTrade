@@ -4938,13 +4938,57 @@
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
-<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate strategy report</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate strategy report&quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">data</span>
 
-    <span class="n">equities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">_equities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="c1">### Stats</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;strategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="n">result</span><span class="o">.</span><span class="n">start</span>
+
+    <span class="c1">### Equity</span>
+    <span class="n">equties_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">_equities</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">equities</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">_equities</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="n">equties_index</span><span class="p">)</span>
+    <span class="n">dd</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">equities</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">equities</span><span class="p">)</span>
+    <span class="n">dd_dur</span><span class="p">,</span> <span class="n">dd_peaks</span> <span class="o">=</span> <span class="n">_compute_drawdown_duration_peaks</span><span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">equties_index</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;start_balance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">equities</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;equity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">equities</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;equity_peak&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">equities</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">pl</span> <span class="o">=</span> <span class="n">equities</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">equities</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;pl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pl</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;pl_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pl</span> <span class="o">/</span> <span class="n">equities</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;buy_hold_pl_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span>
+    <span class="p">)</span>  <span class="c1"># long-only return</span>
+
+    <span class="n">max_dd</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">dd</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;max_drawdown_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">max_dd</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;avg_drawdown_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="o">-</span><span class="n">dd_peaks</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;max_drawdown_duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">dd_dur</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;avg_drawdown_duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">dd_dur</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+    <span class="c1"># Separator</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1">### Positions</span>
     <span class="n">positions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">history_positions</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
     <span class="p">)</span>
@@ -4969,33 +5013,6 @@
             <span class="n">position</span><span class="o">.</span><span class="n">fee</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;entry_at&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;exit_at&quot;</span><span class="p">]</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
-
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;strategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="n">result</span><span class="o">.</span><span class="n">start</span>
-
-    <span class="c1"># Equity</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;start_balance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">equities</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;equity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">equities</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="n">pl</span> <span class="o">=</span> <span class="n">equities</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">equities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;pl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pl</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;pl_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pl</span> <span class="o">/</span> <span class="n">equities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="c1"># TODO</span>
-    <span class="c1"># result.loc[&quot;buy_hold_pl_percent&quot;] = 2.0</span>
-    <span class="c1"># result.loc[&quot;max_drawdown_percent&quot;] = -33.08</span>
-    <span class="c1"># result.loc[&quot;avg_drawdown_percent&quot;] = -5.58</span>
-    <span class="c1"># result.loc[&quot;max_drawdown_duration&quot;] = &quot;688 days 00:00:00&quot;</span>
-    <span class="c1"># result.loc[&quot;avg_drawdown_duration&quot;] = &quot;41 days 00:00:00&quot;</span>
-
-    <span class="c1"># Separator</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-    <span class="c1"># Trades</span>
     <span class="n">positions_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
     <span class="n">pl</span> <span class="o">=</span> <span class="n">positions_df</span><span class="p">[</span><span class="s2">&quot;pl&quot;</span><span class="p">]</span>
 
@@ -5003,9 +5020,9 @@
 
     <span class="n">win_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">positions_total</span> <span class="k">else</span> <span class="p">(</span><span class="n">pl</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;win_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">win_rate</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;fee&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">positions_df</span><span class="o">.</span><span class="n">fee</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;best_trade_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;worst_trade_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;fee&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">positions_df</span><span class="o">.</span><span class="n">fee</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;best_trade_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;worst_trade_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;sqn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">positions_total</span><span class="p">)</span> <span class="o">*</span> <span class="n">pl</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
         <span class="mi">2</span><span class="p">,</span>
@@ -5013,7 +5030,6 @@
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;kelly_criterion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">win_rate</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">win_rate</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
         <span class="n">pl</span><span class="p">[</span><span class="n">pl</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="o">-</span><span class="n">pl</span><span class="p">[</span><span class="n">pl</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="p">)</span>
-    <span class="c1"># TODO</span>
     <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;profit_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pl</span><span class="p">[</span><span class="n">pl</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span>
         <span class="nb">abs</span><span class="p">(</span><span class="n">pl</span><span class="p">[</span><span class="n">pl</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="p">)</span>
@@ -5042,16 +5058,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/stats/stats.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
@@ -5061,7 +5068,16 @@
 <span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
-<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Show statistic report</span>
 <span class="sd">    &quot;&quot;&quot;</span>

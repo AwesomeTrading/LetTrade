@@ -4900,10 +4900,10 @@ LetTrade is under heavy construction, features and functions may be changed.</p>
 
     <span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_period</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
 
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">crossover</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -4916,32 +4916,36 @@ LetTrade is under heavy construction, features and functions may be changed.</p>
 
 <span class="n">lt</span> <span class="o">=</span> <span class="n">let_backtest</span><span class="p">(</span>
     <span class="n">strategy</span><span class="o">=</span><span class="n">SmaCross</span><span class="p">,</span>
-    <span class="n">datas</span><span class="o">=</span><span class="s2">&quot;example/data/data/EURUSD_5m_0_1000.csv&quot;</span><span class="p">,</span>
+    <span class="n">datas</span><span class="o">=</span><span class="s2">&quot;example/data/data/EURUSD_5m-0_1000.csv&quot;</span><span class="p">,</span>
     <span class="n">account</span><span class="o">=</span><span class="n">ForexBackTestAccount</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">lt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code># Strategy                       &lt;class &#39;SmaCross&#39;&gt;
-Start                     2024-05-13 21:15:00+00:00
-End                       2024-05-17 08:30:00+00:00
-Duration                            3 days 11:15:00
-Start Balance [$]                             10000
-Equity [$]                                  10000.0
-PL [$]                                          0.0
-PL [%]                                          0.0
-Buy &amp; Hold PL [%]                               2.0
-Max. Drawdown [%]                            -33.08
-Avg. Drawdown [%]                             -5.58
-Max. Drawdown Duration            688 days 00:00:00
-Avg. Drawdown Duration             41 days 00:00:00
+<div class="highlight"><pre><span></span><code># Strategy                &lt;class &#39;__main__.SmaCross&#39;&gt;
+Start                       2024-05-13 21:15:00+00:00
+End                         2024-05-17 08:30:00+00:00
+Duration                              3 days 11:15:00
+Start Balance                                  1000.0
+Equity [$]                                    1003.16
+Equity Peak [$]                               1013.54
+PL [$]                                           3.16
+PL [%]                                           0.32
+Buy &amp; Hold PL [%]                                0.63
+Max. Drawdown [%]                               -4.98
+Avg. Drawdown [%]                                -1.5
+Max. Drawdown Duration                1 days 16:15:00
+Avg. Drawdown Duration                0 days 12:30:00
 
-# Trades                                         34
-Best Trade [%]                               0.0007
-Worst Trade [%]                           -0.000732
-Profit Factor                                  2.13
-SQN                                            1.78
+# Positions                                        34
+Win Rate [%]                                     0.38
+Fee [$]                                         -1.34
+Best Trade [%]                                  29.36
+Worst Trade [%]                                -18.14
+SQN                                              0.07
+Kelly Criterion                               0.01392
+Profit Factor                                1.037781
 </code></pre></div>
 <p><img alt="Plot" src="https://raw.githubusercontent.com/AwesomeTrading/lettrade/main/docs/image/plot.png" /></p>
 <h3 id="start-a-strategy">Start a strategy<a class="headerlink" href="#start-a-strategy" title="Permanent link">¤</a></h3>
@@ -4957,23 +4961,25 @@ SQN                                            1.78
 Start                       2023-01-02 00:00:00+00:00
 End                         2023-12-29 21:00:00+00:00
 Duration                            361 days 21:00:00
-Start Balance                                    1000
+Start Balance                                  1000.0
 Equity [$]                                    1497.29
+Equity Peak [$]                               1593.65
 PL [$]                                         497.29
 PL [%]                                          49.73
-Buy &amp; Hold PL [%]                                 2.0
-Max. Drawdown [%]                              -33.08
-Avg. Drawdown [%]                               -5.58
-Max. Drawdown Duration              688 days 00:00:00
-Avg. Drawdown Duration               41 days 00:00:00
+Buy &amp; Hold PL [%]                                3.09
+Max. Drawdown [%]                              -34.95
+Avg. Drawdown [%]                               -4.22
+Max. Drawdown Duration              155 days 11:00:00
+Avg. Drawdown Duration               10 days 20:00:00
 
-# Trades                                          248
-Win Rate [%]                                     50.0
+# Positions                                       248
+Win Rate [%]                                      0.5
 Fee [$]                                         -4.96
-Best Trade [%]                             554.825333
-Worst Trade [%]                           -525.077316
-Profit Factor                                    2.13
-SQN                                              1.78
+Best Trade [%]                                 554.83
+Worst Trade [%]                               -525.08
+SQN                                              0.11
+Kelly Criterion                              0.008346
+Profit Factor                                1.016976
 </code></pre></div>
 <h2 id="live-trading">Live Trading<a class="headerlink" href="#live-trading" title="Permanent link">¤</a></h2>
 <h3 id="official">Official<a class="headerlink" href="#official" title="Permanent link">¤</a></h3>

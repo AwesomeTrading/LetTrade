@@ -16,7 +16,7 @@ nav:
   - Indicator: indicator/
   - Docker: docker.md
   - Development: dev.md
-  - API reference:
+  - API Reference:
       - LetTrade: reference/
       - SUMMARY: reference/SUMMARY.md
   # - FAQ: faq.md

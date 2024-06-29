@@ -8,6 +8,16 @@ pip install lettrade[exchange-ccxt]
 
 ## Default config
 
+Example `.env` file
+
+```bash
+CCXT_EXCHANGE=binance
+CCXT_VERBOSE=false
+CCXT_TYPE=spot
+CCXT_KEY=___YOUR_KEY___
+CCXT_SECRET=___YOUR_SECRET___
+```
+
 ```python
 from lettrade.exchange.ccxt import let_ccxt
 

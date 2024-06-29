@@ -27,7 +27,7 @@ if __name__ == "__main__":
         ],
         packages=find_packages(),
         python_requires=">=3.10,<3.13",
-        install_requires=["pandas", "numpy", "numexpr"],
+        install_requires=["pandas", "numpy<2.0", "numexpr"],
         extras_require={
             "plot": ["plotly"],
             "jupyter": ["nbformat", "rich[jupyter]"],
@@ -42,7 +42,7 @@ if __name__ == "__main__":
                 "mt5linux",
                 # "mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master"
             ],
-            "exchange-ccxt": ["lettrade[live]", "ccxt"],
+            "exchange-ccxt": ["lettrade[live]", "ccxt", "python-box"],
             "test": ["pytest"],
             "all": [
                 "lettrade[backtest-extra]",

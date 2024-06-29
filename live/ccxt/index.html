@@ -1393,7 +1393,7 @@
             
   
   <span class="md-ellipsis">
-    API reference
+    API Reference
   </span>
   
 
@@ -1403,7 +1403,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
-            API reference
+            API Reference
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -4752,6 +4752,13 @@
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>lettrade<span class="o">[</span>exchange-ccxt<span class="o">]</span>
 </code></pre></div>
 <h2 id="default-config">Default config<a class="headerlink" href="#default-config" title="Permanent link">¤</a></h2>
+<p>Example <code>.env</code> file</p>
+<div class="highlight"><pre><span></span><code><span class="nv">CCXT_EXCHANGE</span><span class="o">=</span>binance
+<span class="nv">CCXT_VERBOSE</span><span class="o">=</span><span class="nb">false</span>
+<span class="nv">CCXT_TYPE</span><span class="o">=</span>spot
+<span class="nv">CCXT_KEY</span><span class="o">=</span>___YOUR_KEY___
+<span class="nv">CCXT_SECRET</span><span class="o">=</span>___YOUR_SECRET___
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lettrade.exchange.ccxt</span> <span class="kn">import</span> <span class="n">let_ccxt</span>
 
 <span class="n">lt</span> <span class="o">=</span> <span class="n">let_ccxt</span><span class="p">(</span>

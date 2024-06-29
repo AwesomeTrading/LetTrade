@@ -1324,7 +1324,7 @@
             
   
   <span class="md-ellipsis">
-    API reference
+    API Reference
   </span>
   
 
@@ -1334,7 +1334,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
-            API reference
+            API Reference
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3462,6 +3462,15 @@
   <a href="#lettrade.exchange.ccxt.ccxt.LetTradeCCXT.run" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.ccxt.ccxt.LetTradeCCXT.start" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;start
     </span>
   </a>
   
@@ -5674,6 +5683,15 @@
   <a href="#lettrade.exchange.ccxt.ccxt.LetTradeCCXT.run" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.ccxt.ccxt.LetTradeCCXT.start" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;start
     </span>
   </a>
   
@@ -9047,26 +9065,7 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 </details>
             <details class="quote">
               <summary>Source code in <code>lettrade/lettrade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
@@ -9082,7 +9081,26 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
-<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot strategy/optimize result</span>
 
 <span class="sd">    BotPlotter:</span>
@@ -9137,7 +9155,7 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
     <div class="doc doc-contents ">
 
-      <p>Run strategy in single or multiple processing</p>
+      <p>Run LetTrade in single or multiple processing</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -9156,26 +9174,7 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
             <details class="quote">
               <summary>Source code in <code>lettrade/lettrade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
@@ -9192,8 +9191,27 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run strategy in single or multiple processing</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run LetTrade in single or multiple processing</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        worker (int | None, optional): Number of processing. Defaults to None.</span>
@@ -9238,6 +9256,63 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <div class="doc doc-object doc-function">
 
 
+<h3 id="lettrade.exchange.ccxt.ccxt.LetTradeCCXT.start" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">start</span>
+
+
+<a href="#lettrade.exchange.ccxt.ccxt.LetTradeCCXT.start" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">(</span><span class="n">force</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p>Start LetTrade by init bot object and loading datafeeds</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>force</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to False.</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/lettrade.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start LetTrade by init bot object and loading datafeeds</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        force (bool, optional): _description_. Defaults to False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">force</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bot</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_bot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bot_cls</span><span class="o">.</span><span class="n">start_bot</span><span class="p">(</span><span class="n">bot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bot</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="lettrade.exchange.ccxt.ccxt.LetTradeCCXT.stop" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">stop</span>
 
@@ -9248,17 +9323,17 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
     <div class="doc doc-contents ">
 
-      <p>Stop strategy</p>
+      <p>Stop LetTrade</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/lettrade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop strategy&quot;&quot;&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop LetTrade&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bot</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">:</span>
@@ -9291,16 +9366,30 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="lettrade.exchange.live.LetTradeLiveBot">LetTradeLiveBot</span></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.LetTradeLiveBot" href="../../live/live/#lettrade.exchange.live.live.LetTradeLiveBot">LetTradeLiveBot</a></code></p>
 
 
       <p>LetTradeBot for CCXT</p>
 
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>api</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../../live/api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a> | None</code>, default:
+                  <code><a class="autorefs autorefs-internal" title="lettrade.exchange.live.api.LiveAPI" href="../../live/api/#lettrade.exchange.live.api.LiveAPI">LiveAPI</a></code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to LiveAPI.</p>
+          </div>
+        </li>
+    </ul>
+
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/live/live.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -9315,11 +9404,15 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">LiveAPI</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="n">LiveAPI</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">LiveAPI</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        api (LiveAPI | None, optional): _description_. Defaults to LiveAPI.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">LiveAPI</span><span class="p">):</span>
@@ -9350,8 +9443,9 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
 <a href="#lettrade.exchange.ccxt.ccxt.let_ccxt" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">let_ccxt</span><span class="p">(</span>
-    <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">],</span>
     <span class="n">datas</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]],</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">ccxt_exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
     <span class="n">ccxt_key</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
     <span class="n">ccxt_secret</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
@@ -9361,8 +9455,8 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.ccxt.ccxt.CCXTExchange" href="#lettrade.exchange.ccxt.ccxt.CCXTExchange">CCXTExchange</a></span><span class="p">]</span> <span class="o">=</span> <span class="n">CCXTExchange</span><span class="p">,</span>
     <span class="n">account</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.ccxt.ccxt.CCXTAccount" href="#lettrade.exchange.ccxt.ccxt.CCXTAccount">CCXTAccount</a></span><span class="p">]</span> <span class="o">=</span> <span class="n">CCXTAccount</span><span class="p">,</span>
     <span class="n">commander</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">plotter</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Plotter" href="../../../plot/plot/#lettrade.plot.plot.Plotter">Plotter</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.BotStatistic" href="../../../stats/stats/#lettrade.stats.stats.BotStatistic">BotStatistic</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">BotStatistic</span><span class="p">,</span>
+    <span class="n">plotter</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Plotter" href="../../../plot/plot/#lettrade.plot.plot.Plotter">Plotter</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">bot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.ccxt.ccxt.LetTradeCCXTBot" href="#lettrade.exchange.ccxt.ccxt.LetTradeCCXTBot">LetTradeCCXTBot</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">LetTradeCCXTBot</span><span class="p">,</span>
     <span class="n">lettrade</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.ccxt.ccxt.LetTradeCCXT" href="#lettrade.exchange.ccxt.ccxt.LetTradeCCXT">LetTradeCCXT</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">LetTradeCCXT</span><span class="p">,</span>
     <span class="n">api</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.ccxt.api.CCXTAPI" href="../api/#lettrade.exchange.ccxt.api.CCXTAPI">CCXTAPI</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">CCXTAPI</span><span class="p">,</span>
@@ -9378,16 +9472,16 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <p><span class="doc-section-title">Parameters:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-          <b><code>strategy</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a>]</code>)
+          <b><code>datas</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]]</code>)
           –
           <div class="doc-md-description">
             <p><em>description</em></p>
           </div>
         </li>
         <li class="doc-section-item field-body">
-          <b><code>datas</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]]</code>)
+          <b><code>strategy</code></b>
+              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a>]</code>)
           –
           <div class="doc-md-description">
             <p><em>description</em></p>
@@ -9478,16 +9572,6 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
           </div>
         </li>
         <li class="doc-section-item field-body">
-          <b><code>plotter</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Plotter" href="../../../plot/plot/#lettrade.plot.plot.Plotter">Plotter</a>] | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em>. Defaults to None.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
           <b><code>stats</code></b>
               (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.BotStatistic" href="../../../stats/stats/#lettrade.stats.stats.BotStatistic">BotStatistic</a>] | None</code>, default:
                   <code><a class="autorefs autorefs-internal" title="lettrade.BotStatistic" href="../../../stats/stats/#lettrade.stats.stats.BotStatistic">BotStatistic</a></code>
@@ -9495,6 +9579,16 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
           –
           <div class="doc-md-description">
             <p><em>description</em>. Defaults to BotStatistic.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>plotter</code></b>
+              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Plotter" href="../../../plot/plot/#lettrade.plot.plot.Plotter">Plotter</a>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -9618,9 +9712,11 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
-<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_ccxt</span><span class="p">(</span>
-    <span class="n">strategy</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Strategy</span><span class="p">],</span>
+<span class="normal">149</span>
+<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_ccxt</span><span class="p">(</span>
     <span class="n">datas</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Strategy</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">ccxt_exchange</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">ccxt_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">ccxt_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -9630,8 +9726,8 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
     <span class="n">exchange</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">CCXTExchange</span><span class="p">]</span> <span class="o">=</span> <span class="n">CCXTExchange</span><span class="p">,</span>
     <span class="n">account</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">CCXTAccount</span><span class="p">]</span> <span class="o">=</span> <span class="n">CCXTAccount</span><span class="p">,</span>
     <span class="n">commander</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Commander</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">plotter</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Plotter</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BotStatistic</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">BotStatistic</span><span class="p">,</span>
+    <span class="n">plotter</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Plotter</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">bot</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">LetTradeCCXTBot</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">LetTradeCCXTBot</span><span class="p">,</span>
     <span class="n">lettrade</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">LetTradeCCXT</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">LetTradeCCXT</span><span class="p">,</span>
     <span class="n">api</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">CCXTAPI</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">CCXTAPI</span><span class="p">,</span>
@@ -9640,8 +9736,8 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Help to build `LetTradeCCXT`</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        strategy (Type[Strategy]): _description_</span>
 <span class="sd">        datas (set[set[str]]): _description_</span>
+<span class="sd">        strategy (Type[Strategy]): _description_</span>
 <span class="sd">        ccxt_exchange (str): _description_</span>
 <span class="sd">        ccxt_key (str): _description_</span>
 <span class="sd">        ccxt_secret (str): _description_</span>
@@ -9651,8 +9747,8 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="sd">        exchange (Type[CCXTExchange], optional): _description_. Defaults to CCXTExchange.</span>
 <span class="sd">        account (Type[CCXTAccount], optional): _description_. Defaults to CCXTAccount.</span>
 <span class="sd">        commander (Type[Commander] | None, optional): _description_. Defaults to None.</span>
-<span class="sd">        plotter (Type[Plotter] | None, optional): _description_. Defaults to None.</span>
 <span class="sd">        stats (Type[BotStatistic] | None, optional): _description_. Defaults to BotStatistic.</span>
+<span class="sd">        plotter (Type[Plotter] | None, optional): _description_. Defaults to None.</span>
 <span class="sd">        bot (Type[LetTradeCCXTBot] | None, optional): _description_. Defaults to LetTradeCCXTBot.</span>
 <span class="sd">        lettrade (Type[LetTradeCCXT] | None, optional): _description_. Defaults to LetTradeCCXT.</span>
 <span class="sd">        api (Type[CCXTAPI] | None, optional): _description_. Defaults to CCXTAPI.</span>

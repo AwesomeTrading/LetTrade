@@ -443,7 +443,7 @@ class LetTradeBackTest(LetTrade):
         optimize: dict[str, Any],
         bot_cls: type[LetTradeBot],
         index: int = 0,
-        queue: Queue | None = None,
+        queue: "Queue | None" = None,
         cache: str = None,
         **kwargs,
     ):

@@ -6,15 +6,18 @@ from .data import LiveDataFeed
 
 
 class LetTradeLiveBot(LetTradeBot):
+    """Live bot object"""
+
     datas: list[LiveDataFeed]
 
     _api: LiveAPI = None
 
-    def __init__(
-        self,
-        api: LiveAPI | None = LiveAPI,
-        **kwargs,
-    ) -> None:
+    def __init__(self, api: LiveAPI | None = LiveAPI, **kwargs) -> None:
+        """_summary_
+
+        Args:
+            api (LiveAPI | None, optional): _description_. Defaults to LiveAPI.
+        """
         super().__init__(**kwargs)
 
         if issubclass(api, LiveAPI):
@@ -80,8 +83,9 @@ class LetTradeLive(LetTrade):
 
 
 def let_live(
-    strategy: type[Strategy],
     datas: set[set[str]],
+    strategy: type[Strategy],
+    *,
     commander: Commander | None = None,
     stats: type[BotStatistic] = BotStatistic,
     plotter: type[Plotter] | None = None,
@@ -93,8 +97,8 @@ def let_live(
     """Help to build `LetTradeLive`
 
     Args:
-        strategy (type[Strategy]): _description_
         datas (set[set[str]]): _description_
+        strategy (type[Strategy]): _description_
         commander (Commander | None, optional): _description_. Defaults to None.
         stats (type[BotStatistic], optional): _description_. Defaults to BotStatistic.
         plotter (type[Plotter] | None, optional): _description_. Defaults to None.

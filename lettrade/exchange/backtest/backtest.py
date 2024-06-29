@@ -43,6 +43,8 @@ def logging_filter_optimize():
 
 
 class LetTradeBackTestBot(LetTradeBot):
+    """LetTradeBot for backtest"""
+
     def init(self, optimize: dict[str, Any] = None, **kwargs):
         strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
         strategy_kwargs.update(is_optimize=optimize is not None)
@@ -156,7 +158,7 @@ class LetTradeBackTest(LetTrade):
             cache = _optimize_cache_dir(cache, self._strategy_cls)
             self._kwargs["cache"] = cache
 
-    ### Optimize: Grid search
+    # --- Optimize: Grid search
     def optimize(
         self,
         multiprocessing: Literal["auto", "fork"] = "auto",
@@ -268,7 +270,7 @@ class LetTradeBackTest(LetTrade):
                 results.append(result)
         return results
 
-    ### Optimize: model for external optimizer
+    # --- Optimize: model for external optimizer
     # Create optimize model environment
     _opt_main_pid: int = None
     _opt_params_parser: Callable[[Any], list[set[str, Any]]] = None
@@ -394,7 +396,7 @@ class LetTradeBackTest(LetTrade):
 
         return result
 
-    ### Optimize: load cached optimize result
+    # --- Optimize: load cached optimize result
     def optimize_cache(self, cache: str = "data/optimize"):
         """Load optimize results from cache
 
@@ -407,7 +409,7 @@ class LetTradeBackTest(LetTrade):
         cache_dir = self._kwargs["cache"]
         queue = self._kwargs["queue"]
 
-        logger.warning("Load caches from: %s", cache)
+        logger.info("Load caches from: %s", cache)
 
         for cache_file in os.listdir(cache_dir):
             if cache_file == "info.json":
@@ -427,13 +429,13 @@ class LetTradeBackTest(LetTrade):
             except Exception as e:
                 logger.warning("Loading cache %s error %s", cache_path, e)
 
-        logger.warning("Loaded %s caches", len(self._stats.results))
+        logger.info("Loaded %s caches", len(self._stats.results))
 
     def optimize_done(self):
         """Clean and close optimize handlers"""
         self._stats.done()
 
-    ### Optimize: run
+    # --- Optimize: run
     @classmethod
     def _optimize_run(
         cls,
@@ -441,7 +443,7 @@ class LetTradeBackTest(LetTrade):
         optimize: dict[str, Any],
         bot_cls: type[LetTradeBot],
         index: int = 0,
-        queue: "Queue | None" = None,
+        queue: Queue | None = None,
         cache: str = None,
         **kwargs,
     ):
@@ -573,8 +575,9 @@ def _optimize_cache_set(dir: str, optimize: dict, result: pd.Series):
 
 
 def let_backtest(
-    strategy: type[Strategy],
     datas: DataFeed | list[DataFeed] | str | list[str],
+    strategy: type[Strategy],
+    *,
     feeder: type[DataFeeder] = BackTestDataFeeder,
     exchange: type[Exchange] = BackTestExchange,
     account: type[Account] = BackTestAccount,
@@ -585,7 +588,7 @@ def let_backtest(
     optimize_plotter: type[OptimizePlotter] | None = "PlotlyOptimizePlotter",
     bot: type[LetTradeBackTestBot] | None = LetTradeBackTestBot,
     # Account kwargs
-    balance: float | None = 1_000,
+    balance: float | None = 10_000,
     commission: float | None = 0.2,
     leverage: float | None = 20,
     **kwargs,
@@ -593,8 +596,8 @@ def let_backtest(
     """Complete `lettrade` backtest depenencies
 
     Args:
-        strategy (Type[Strategy]): The Strategy implement class
         datas (DataFeed | list[DataFeed] | str | list[str]): _description_
+        strategy (Type[Strategy]): The Strategy implement class
         feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
         exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
         account (Type[Account], optional): _description_. Defaults to BackTestAccount.

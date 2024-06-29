@@ -113,8 +113,9 @@ class LetTradeMetaTrader(LetTradeLive):
 
 
 def let_metatrader(
-    strategy: type[Strategy],
     datas: set[set[str]],
+    strategy: type[Strategy],
+    *,
     mt5_login: int,
     mt5_password: str,
     mt5_server: str,
@@ -133,8 +134,8 @@ def let_metatrader(
     """Help to build `LetTradeMetaTrader`
 
     Args:
-        strategy (type[Strategy]): _description_
         datas (set[set[str]]): _description_
+        strategy (type[Strategy]): _description_
         mt5_login (int): _description_
         mt5_password (str): _description_
         mt5_server (str): _description_

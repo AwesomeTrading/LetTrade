@@ -29,8 +29,8 @@ class LetTrade:
 
     def __init__(
         self,
-        strategy: type[Strategy],
         datas: DataFeed | list[DataFeed] | str | list[str],
+        strategy: type[Strategy],
         feeder: type[DataFeeder],
         exchange: type[Exchange],
         account: type[Account],
@@ -41,6 +41,20 @@ class LetTrade:
         bot: type[LetTradeBot] | None = LetTradeBot,
         **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            datas (DataFeed | list[DataFeed] | str | list[str]): _description_
+            strategy (type[Strategy]): _description_
+            feeder (type[DataFeeder]): _description_
+            exchange (type[Exchange]): _description_
+            account (type[Account]): _description_
+            commander (type[Commander] | None, optional): _description_. Defaults to None.
+            plotter (type[Plotter] | None, optional): _description_. Defaults to None.
+            stats (type[BotStatistic] | None, optional): _description_. Defaults to None.
+            name (str | None, optional): _description_. Defaults to None.
+            bot (type[LetTradeBot] | None, optional): _description_. Defaults to LetTradeBot.
+        """
         self._kwargs = kwargs
         self._kwargs["strategy_cls"] = strategy
         self._kwargs["feeder_cls"] = feeder
@@ -92,13 +106,18 @@ class LetTrade:
         return feeds
 
     def start(self, force: bool = False):
+        """Start LetTrade by init bot object and loading datafeeds
+
+        Args:
+            force (bool, optional): _description_. Defaults to False.
+        """
         if force and self._bot is not None:
             self._bot = None
 
         self._bot = self._bot_cls.start_bot(bot=self._bot, **self._kwargs)
 
     def run(self, worker: int | None = None, **kwargs):
-        """Run strategy in single or multiple processing
+        """Run LetTrade in single or multiple processing
 
         Args:
             worker (int | None, optional): Number of processing. Defaults to None.
@@ -167,7 +186,7 @@ class LetTrade:
     #     self.data = self.datas[0]
 
     def stop(self):
-        """Stop strategy"""
+        """Stop LetTrade"""
         if self._bot is not None:
             return self._bot.stop()
         if self.stats:

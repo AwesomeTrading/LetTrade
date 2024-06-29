@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class LetTradeBot:
+    """Bot object helps to manage actions of bot"""
 
     datas: list[DataFeed]
     """DataFeed list for bot"""
@@ -49,8 +50,8 @@ class LetTradeBot:
 
     def __init__(
         self,
+        datas: DataFeed | list[DataFeed] | list[str] | str,
         strategy: type[Strategy],
-        datas: DataFeed | list[DataFeed] | str | list[str],
         feeder: type[DataFeeder],
         exchange: type[Exchange],
         account: type[Account],
@@ -60,6 +61,19 @@ class LetTradeBot:
         name: str | None = None,
         **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            datas (DataFeed | list[DataFeed] | list[str] | str): _description_
+            strategy (type[Strategy]): _description_
+            feeder (type[DataFeeder]): _description_
+            exchange (type[Exchange]): _description_
+            account (type[Account]): _description_
+            commander (type[Commander] | None, optional): _description_. Defaults to None.
+            plotter (type[Plotter] | None, optional): _description_. Defaults to None.
+            stats (type[BotStatistic] | None, optional): _description_. Defaults to None.
+            name (str | None, optional): _description_. Defaults to None.
+        """
         logger.info("New bot: %s", name)
 
         self._strategy_cls = strategy
@@ -78,6 +92,7 @@ class LetTradeBot:
         self.data = self.datas[0]
 
     def init(self):
+        """Init objects from classes"""
         # Feeder
         self.feeder = self._feeder_cls(**self._kwargs.get("feeder_kwargs", {}))
         self.feeder.init(self.datas)
@@ -146,6 +161,7 @@ class LetTradeBot:
             logger.debug("Bot %s inited with %d datas", self._name, len(self.datas))
 
     def start(self):
+        """Start bot"""
         if not hasattr(self, "brain"):
             self.init()
 
@@ -155,6 +171,7 @@ class LetTradeBot:
             logger.debug("Bot %s started with %d datas", self._name, len(self.datas))
 
     def run(self):
+        """Run bot"""
         if self.commander:
             self.commander.start()
 
@@ -167,7 +184,7 @@ class LetTradeBot:
             self.stats.compute()
 
     def plot(self, *args, **kwargs):
-        """Plot strategy result"""
+        """Plot bot result"""
         if __debug__:
             from .utils.docs import is_docs_session
 
@@ -177,7 +194,7 @@ class LetTradeBot:
         self.plotter.plot(*args, **kwargs)
 
     def stop(self):
-        """Stop strategy"""
+        """Stop bot"""
         self.brain.stop()
         if self.plotter is not None:
             self.plotter.stop()
@@ -196,6 +213,22 @@ class LetTradeBot:
         name: str | None = None,
         **kwargs,
     ) -> "LetTradeBot":
+        """Create new bot object
+
+        Args:
+            datas (list[DataFeed]): _description_
+            strategy_cls (type[Strategy]): _description_
+            feeder_cls (type[DataFeeder]): _description_
+            exchange_cls (type[Exchange]): _description_
+            account_cls (type[Account]): _description_
+            commander_cls (type[Commander]): _description_
+            plotter_cls (type[Plotter]): _description_
+            stats_cls (type[BotStatistic]): _description_
+            name (str | None, optional): _description_. Defaults to None.
+
+        Returns:
+            LetTradeBot: _description_
+        """
         bot = cls(
             strategy=strategy_cls,
             datas=datas,
@@ -215,7 +248,15 @@ class LetTradeBot:
         cls,
         bot: "LetTradeBot | None" = None,
         **kwargs,
-    ):
+    ) -> "LetTradeBot":
+        """Init and start bot object
+
+        Args:
+            bot (LetTradeBot | None, optional): _description_. Defaults to None.
+
+        Returns:
+            LetTradeBot: _description_
+        """
         if bot is None:
             bot = cls.new_bot(**kwargs)
         bot.init(**kwargs.get("init_kwargs", {}))
@@ -231,7 +272,20 @@ class LetTradeBot:
         name: str | None = None,
         result: Literal["str", "stats", "bot", None] = "str",
         **kwargs,
-    ):
+    ) -> "LetTradeBot | BotStatistic | str | None":
+        """Run bot object
+
+        Args:
+            bot (LetTradeBot | None, optional): _description_. Defaults to None.
+            datas (list[DataFeed] | None, optional): _description_. Defaults to None.
+            id (int | None, optional): _description_. Defaults to None.
+            name (str | None, optional): _description_. Defaults to None.
+            result (Literal["str", "stats", "bot", None], optional): _description_. Defaults to "str".
+
+        Returns:
+            LetTradeBot | BotStatistic | str | None: Return value will be pickle across multiprocessing.
+                The cost higher from `str`, `stats` object, `bot` object
+        """
         # Set name for current processing
         if name is None:
             d = datas[0] if datas else bot.data

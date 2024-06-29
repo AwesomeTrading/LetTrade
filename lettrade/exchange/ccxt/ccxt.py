@@ -82,8 +82,9 @@ class LetTradeCCXT(LetTradeLive):
 
 
 def let_ccxt(
-    strategy: type[Strategy],
     datas: set[set[str]],
+    strategy: type[Strategy],
+    *,
     ccxt_exchange: str,
     ccxt_key: str,
     ccxt_secret: str,
@@ -93,8 +94,8 @@ def let_ccxt(
     exchange: type[CCXTExchange] = CCXTExchange,
     account: type[CCXTAccount] = CCXTAccount,
     commander: type[Commander] | None = None,
-    plotter: type[Plotter] | None = None,
     stats: type[BotStatistic] | None = BotStatistic,
+    plotter: type[Plotter] | None = None,
     bot: type[LetTradeCCXTBot] | None = LetTradeCCXTBot,
     lettrade: type[LetTradeCCXT] | None = LetTradeCCXT,
     api: type[CCXTAPI] | None = CCXTAPI,
@@ -103,8 +104,8 @@ def let_ccxt(
     """Help to build `LetTradeCCXT`
 
     Args:
-        strategy (Type[Strategy]): _description_
         datas (set[set[str]]): _description_
+        strategy (Type[Strategy]): _description_
         ccxt_exchange (str): _description_
         ccxt_key (str): _description_
         ccxt_secret (str): _description_
@@ -114,8 +115,8 @@ def let_ccxt(
         exchange (Type[CCXTExchange], optional): _description_. Defaults to CCXTExchange.
         account (Type[CCXTAccount], optional): _description_. Defaults to CCXTAccount.
         commander (Type[Commander] | None, optional): _description_. Defaults to None.
-        plotter (Type[Plotter] | None, optional): _description_. Defaults to None.
         stats (Type[BotStatistic] | None, optional): _description_. Defaults to BotStatistic.
+        plotter (Type[Plotter] | None, optional): _description_. Defaults to None.
         bot (Type[LetTradeCCXTBot] | None, optional): _description_. Defaults to LetTradeCCXTBot.
         lettrade (Type[LetTradeCCXT] | None, optional): _description_. Defaults to LetTradeCCXT.
         api (Type[CCXTAPI] | None, optional): _description_. Defaults to CCXTAPI.

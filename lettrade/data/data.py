@@ -247,7 +247,7 @@ class DataFeed(pd.DataFrame):
 
 
 class _LetIndicatorsInjector:
-    """Class to inject indicator to pandas.DataFrame with prefix `_lt_i_`.
+    """Class help to inject indicator into pandas.DataFrame with prefix `_lt_i_`.
     Avoid conflic between pandas.DataFrame column name and indicator function name
     """
 
@@ -261,7 +261,11 @@ class _LetIndicatorsInjector:
     def __setattr__(self, name: str, value: Callable) -> None:
         from pandas.core.base import PandasObject
 
-        setattr(PandasObject, f"_lt_i_{name}", value)
+        i_name = f"_lt_i_{name}"
+        if hasattr(PandasObject, i_name):
+            raise RuntimeError(f"Indicator {i_name} existed")
+
+        setattr(PandasObject, i_name, value)
 
     def __getattr__(self, name: str) -> Callable:
         return getattr(self.__dict__["df"], f"_lt_i_{name}")
@@ -291,9 +295,9 @@ if __debug__:
                         self.__class__,
                         value,
                     )
-                return self.__my__getitem__(value)
+                return self.__lt__getitem__(value)
 
-            cls.__my__getitem__ = cls.__getitem__
+            cls.__lt__getitem__ = cls.__getitem__
             cls.__getitem__ = data_getitem
 
         inject_data_validator(DataFeed)

@@ -7,11 +7,11 @@ Guide to quick install `lettrade`
 Stable version
 
 ```sh
-pip install lettrade
+pip install lettrade[all]
 ```
 
 Developing version
 
 ```sh
-pip install git+https://git@github.com/AwesomeTrading/lettrade.git@main
+pip install 'lettrade[all] @ git+https://git@github.com/AwesomeTrading/LetTrade.git@main'
 ```

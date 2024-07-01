@@ -414,7 +414,7 @@ class Strategy:
 
     # Events
     def on_transactions(self, trans: list[Execution | Order | Position]):
-        """Listen for transaction events
+        """Listen for transaction events since `next()` begin
 
         Args:
             trans (list[Execution  |  Order  |  Position]): _description_
@@ -424,7 +424,7 @@ class Strategy:
                 self.on_transaction(tran)
 
     def on_executions(self, executions: list[Execution]):
-        """Listen for `Execution` event
+        """Listen for `Execution` event since `next()` begin
 
         Args:
             executions (list[Execution]): _description_
@@ -444,7 +444,7 @@ class Strategy:
                 self.on_order(order)
 
     def on_positions(self, positions: list[Position]):
-        """Listen for `Position` event
+        """Listen for `Position` event since `next()` begin
 
         Args:
             positions (list[Position]): _description_
@@ -454,7 +454,7 @@ class Strategy:
                 self.on_position(position)
 
     def on_notify(self, *args, **kwargs) -> None:
-        """Listen for `notify` event
+        """Listen for `notify` event since `next()` begin
 
         Returns:
             _type_: `None`

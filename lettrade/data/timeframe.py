@@ -1,6 +1,7 @@
 import logging
+import math
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
 from typing_extensions import Self
@@ -129,34 +130,64 @@ class TimeFrame:
         """TimeFrame as pandas string"""
         return f"{self.value}{self.unit_pandas}"
 
-    def floor(self, at: datetime | pd.Timestamp) -> pd.Timestamp:
+    def floor(
+        self, at: datetime | timedelta | pd.Timestamp | pd.Timedelta
+    ) -> pd.Timestamp | pd.Timedelta:
         """Get floor of TimeFrame
 
         Args:
-            at (datetime | pd.Timestamp): _description_
+            at (datetime | timedelta | pd.Timestamp | pd.Timedelta): _description_
+
+        Raises:
+            RuntimeError: _description_
 
         Returns:
-            pd.Timestamp: _description_
+            pd.Timestamp | pd.Timedelta: _description_
         """
         if isinstance(at, datetime):
             at = pd.Timestamp(at)
+        elif isinstance(at, timedelta):
+            at = pd.Timedelta(at)
 
-        freq = self.string_pandas
-        if self.unit == "m":
-            freq += "in"
-        return at.floor(freq=freq)
+        if self.unit in ["h", "m", "s"]:
+            freq = self.string_pandas
+            if self.unit == "m":
+                freq += "in"
+            return at.floor(freq=freq)
 
-    def ceil(self, at: datetime | pd.Timestamp) -> pd.Timestamp:
+        if isinstance(at, pd.Timestamp):
+            if self.unit == "d":
+                return pd.Timestamp(at.date())
+            if self.unit == "w":
+                return pd.Timestamp(at.date() - pd.Timedelta(days=at.day_of_week))
+
+        elif isinstance(at, pd.Timedelta):
+            if self.unit == "d":
+                return pd.Timedelta(days=at.days)
+            if self.unit == "w":
+                weeks = math.floor(at.days / 7)
+                return pd.Timedelta(weeks=weeks)
+
+        raise RuntimeError(f"Unit {self.unit} is not implement yet for {at}")
+
+    def ceil(
+        self, at: datetime | timedelta | pd.Timestamp | pd.Timedelta
+    ) -> pd.Timestamp | pd.Timedelta:
         """Get ceil of TimeFrame
 
         Args:
-            at (datetime | pd.Timestamp): _description_
+            at (datetime | timedelta | pd.Timestamp | pd.Timedelta): _description_
+
+        Raises:
+            RuntimeError: _description_
 
         Returns:
             pd.Timestamp: _description_
         """
         if isinstance(at, datetime):
             at = pd.Timestamp(at)
+        elif isinstance(at, timedelta):
+            at = pd.Timedelta(at)
 
         if self.unit in ["h", "m", "s"]:
             freq = self.string_pandas
@@ -164,10 +195,17 @@ class TimeFrame:
                 freq += "in"
             return at.ceil(freq=freq)
 
-        if self.unit == "d":
-            return pd.Timestamp(at.date() + pd.Timedelta(days=1))
+        if isinstance(at, pd.Timestamp):
+            if self.unit == "d":
+                return pd.Timestamp(at.date() + pd.Timedelta(days=1))
+            if self.unit == "w":
+                return pd.Timestamp(at.date() + pd.Timedelta(days=7 - at.day_of_week))
 
-        if self.unit == "w":
-            return pd.Timestamp(at.date() + pd.Timedelta(days=7 - at.day_of_week))
+        elif isinstance(at, pd.Timedelta):
+            if self.unit == "d":
+                return pd.Timedelta(days=at.days + (0 if at.seconds == 0 else 1))
+            if self.unit == "w":
+                weeks = math.ceil(at.days / 7)
+                return pd.Timedelta(weeks=weeks)
 
-        raise RuntimeError(f"Unit {self.unit} is not implement yet")
+        raise RuntimeError(f"Unit {self.unit} is not implement yet for {at}")

@@ -3,11 +3,15 @@ from typing import Literal
 import pandas as pd
 import talib.abstract as ta
 
+from ..utils import talib_ma
+
 
 def keltner_channel(
     dataframe: pd.DataFrame,
     ma: int = 20,
-    ma_mode: Literal["ema", "sma"] = "ema",
+    ma_mode: Literal[
+        "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"
+    ] = "ema",
     atr: int = 20,
     shift: float = 1.6,
     prefix: str = "kc_",
@@ -18,7 +22,7 @@ def keltner_channel(
     Args:
         dataframe (pd.DataFrame): _description_
         ma (int, optional): _description_. Defaults to 20.
-        ma_mode (Literal[&quot;ema&quot;, &quot;sma&quot;], optional): _description_. Defaults to "ema".
+        ma_mode (Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"], optional): _description_. Defaults to "ema".
         atr (int, optional): _description_. Defaults to 20.
         shift (float, optional): _description_. Defaults to 1.6.
         prefix (str, optional): _description_. Defaults to "kc_".
@@ -34,8 +38,8 @@ def keltner_channel(
                 "is not instance of pandas.DataFrame"
             )
 
-    ma_fn = ta.SMA if ma_mode == "sma" else ta.EMA
     i_atr = ta.ATR(dataframe, timeperiod=atr)
+    ma_fn = talib_ma(ma_mode)
 
     i_basis = ma_fn(dataframe, timeperiod=ma)
     i_upper = i_basis + shift * i_atr

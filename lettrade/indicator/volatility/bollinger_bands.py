@@ -3,6 +3,7 @@ from typing import Literal
 import pandas as pd
 import talib.abstract as ta
 
+from ..series import series_init
 from ..utils import talib_ma_mode
 
 
@@ -20,35 +21,14 @@ def bollinger_bands(
     if __debug__:
         if window is None or window <= 0:
             raise RuntimeError(f"Window {window} is invalid")
-
-        if dataframe is None:
-            if not isinstance(series, pd.Series):
-                raise RuntimeError(
-                    f"series type '{type(series)}' is not instance of pandas.Series"
-                )
-
-            if inplace:
-                raise RuntimeError("dataframe isnot set when inplace=True")
-        else:
-            if not isinstance(dataframe, pd.DataFrame):
-                raise RuntimeError(
-                    f"dataframe type '{type(dataframe)}' "
-                    "is not instance of pandas.DataFrame"
-                )
-
-            if not isinstance(series, str):
-                raise RuntimeError(
-                    f"Series type {type(series)} is not string of column name"
-                )
-
-            series = dataframe[series]
+    series = series_init(series=series, dataframe=dataframe, inplace=inplace)
 
     i_upper, i_basis, i_lower = ta.BBANDS(
         series,
-        window,
-        std,
-        std,
-        talib_ma_mode(ma_mode),
+        timeperiod=window,
+        nbdevup=std,
+        nbdevdn=std,
+        matype=talib_ma_mode(ma_mode),
     )
 
     # Result is inplace or new dict

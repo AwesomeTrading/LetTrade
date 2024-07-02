@@ -18,6 +18,7 @@ def indicators_inject_pandas(obj: object | None = None):
 
     from .candlestick import pandas_inject as candlestick_pandas_inject
     from .dataframe import pandas_inject as dataframe_pandas_inject
+    from .momentum import pandas_inject as momentum_pandas_inject
     from .series import pandas_inject as series_pandas_inject
     from .trend import pandas_inject as trend_pandas_inject
     from .volatility import pandas_inject as volatility_pandas_inject
@@ -28,6 +29,7 @@ def indicators_inject_pandas(obj: object | None = None):
     candlestick_pandas_inject(obj)
     trend_pandas_inject(obj)
     volatility_pandas_inject(obj)
+    momentum_pandas_inject(obj)
 
     # Flag to mark indicators injected
     obj._lt_indicators_injected = True

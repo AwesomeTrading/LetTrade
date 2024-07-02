@@ -158,7 +158,16 @@ class TimeFrame:
         if isinstance(at, datetime):
             at = pd.Timestamp(at)
 
-        freq = self.string_pandas
-        if self.unit == "m":
-            freq += "in"
-        return at.ceil(freq=freq)
+        if self.unit in ["h", "m", "s"]:
+            freq = self.string_pandas
+            if self.unit == "m":
+                freq += "in"
+            return at.ceil(freq=freq)
+
+        if self.unit == "d":
+            return pd.Timestamp(at.date() + pd.Timedelta(days=1))
+
+        if self.unit == "w":
+            return pd.Timestamp(at.date() + pd.Timedelta(days=7 - at.day_of_week))
+
+        raise RuntimeError(f"Unit {self.unit} is not implement yet")

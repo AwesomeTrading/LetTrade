@@ -8,7 +8,7 @@ from ..utils import talib_ma_mode
 
 def bollinger_bands(
     series: pd.Series | str = "close",
-    period: int = None,
+    window: int = None,
     std: int | float = None,
     dataframe: pd.DataFrame = None,
     ma_mode: Literal["ema", "sma"] = "sma",
@@ -18,8 +18,8 @@ def bollinger_bands(
 ) -> dict[str, pd.Series] | pd.DataFrame:
 
     if __debug__:
-        if period is None or period <= 0:
-            raise RuntimeError(f"Period {period} is invalid")
+        if window is None or window <= 0:
+            raise RuntimeError(f"Window {window} is invalid")
 
         if dataframe is None:
             if not isinstance(series, pd.Series):
@@ -45,7 +45,7 @@ def bollinger_bands(
 
     i_upper, i_basis, i_lower = ta.BBANDS(
         series,
-        period,
+        window,
         std,
         std,
         talib_ma_mode(ma_mode),

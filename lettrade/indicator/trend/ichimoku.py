@@ -3,8 +3,8 @@ import pandas as pd
 
 def ichimoku(
     dataframe: pd.DataFrame,
-    conversion_line_period: int = 9,
-    base_line_periods: int = 26,
+    conversion_line_window: int = 9,
+    base_line_windows: int = 26,
     laggin_span: int = 52,
     displacement: int = 26,
     cloud: bool = False,
@@ -20,9 +20,9 @@ def ichimoku(
 
     Args:
         dataframe (pd.DataFrame): Dataframe containing OHLCV data
-        conversion_line_period (int, optional): Conversion line Period. Defaults to 9.
-        base_line_periods (int, optional): Base line Periods. Defaults to 26.
-        laggin_span (int, optional): Lagging span period. Defaults to 52.
+        conversion_line_window (int, optional): Conversion line Window. Defaults to 9.
+        base_line_windows (int, optional): Base line Windows. Defaults to 26.
+        laggin_span (int, optional): Lagging span window. Defaults to 52.
         displacement (int, optional): Displacement (shift). Defaults to 26.
         cloud (bool, optional): Add cloud direction. Defaults to False.
         prefix (str, optional): _description_. Defaults to "ichimoku_".
@@ -40,13 +40,13 @@ def ichimoku(
             )
 
     tenkan_sen = (
-        dataframe["high"].rolling(window=conversion_line_period).max()
-        + dataframe["low"].rolling(window=conversion_line_period).min()
+        dataframe["high"].rolling(window=conversion_line_window).max()
+        + dataframe["low"].rolling(window=conversion_line_window).min()
     ) / 2
 
     kijun_sen = (
-        dataframe["high"].rolling(window=base_line_periods).max()
-        + dataframe["low"].rolling(window=base_line_periods).min()
+        dataframe["high"].rolling(window=base_line_windows).max()
+        + dataframe["low"].rolling(window=base_line_windows).min()
     ) / 2
 
     leading_senkou_span_a = (tenkan_sen + kijun_sen) / 2

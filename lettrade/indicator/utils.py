@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Callable, Literal
 
 import talib as ta
 import talib.abstract as taa
@@ -6,7 +6,7 @@ import talib.abstract as taa
 
 def talib_ma_mode(
     name: Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"]
-):
+) -> int:
     """Helper Function that returns the Enum value for TA Lib's MA Type"""
     if isinstance(name, str) and len(name) > 1:
         name = name.lower()
@@ -33,7 +33,7 @@ def talib_ma_mode(
 
 def talib_ma(
     name: Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"]
-):
+) -> Callable:
     """Helper Function that returns the Enum value for TA Lib's MA Type"""
     if isinstance(name, str) and len(name) > 1:
         name = name.lower()

@@ -78,11 +78,11 @@ class Strategy:
 
             # This function will load indicators for df_eurusd
             def indicators(self, df: DataFeed):
-                df['ema'] = df.i.ema(period=21)
+                df['ema'] = df.i.ema(window=21)
 
             # This function will load indicators for df_gbpusd
             def indicators_gbpusd(self, df: DataFeed):
-                df['ema'] = df.i.ema(period=25)
+                df['ema'] = df.i.ema(window=25)
             ```
 
         Args:

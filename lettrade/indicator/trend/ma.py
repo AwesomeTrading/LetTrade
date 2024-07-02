@@ -9,7 +9,7 @@ from ..utils import talib_ma
 
 def ema(
     series: pd.Series | str = "close",
-    period: int = None,
+    window: int = None,
     dataframe: pd.DataFrame = None,
     prefix: str = "",
     inplace: bool = False,
@@ -19,7 +19,7 @@ def ema(
 
     Args:
         series (pd.Series | str): _description_
-        period (int): _description_
+        window (int): _description_
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
@@ -32,7 +32,7 @@ def ema(
     """
     return ma(
         series=series,
-        period=period,
+        window=window,
         mode="ema",
         dataframe=dataframe,
         prefix=prefix,
@@ -43,7 +43,7 @@ def ema(
 
 def ma(
     series: pd.Series | str = "close",
-    period: int = None,
+    window: int = None,
     mode: Literal[
         "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"
     ] = None,
@@ -56,7 +56,7 @@ def ma(
 
     Args:
         series (pd.Series | str, optional): _description_. Defaults to "close".
-        period (int, optional): _description_. Defaults to None.
+        window (int, optional): _description_. Defaults to None.
         mode (Literal[ "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3" ], optional): _description_. Defaults to None.
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
@@ -70,15 +70,15 @@ def ma(
     """
     # Validation & init
     if __debug__:
-        if period is None or period <= 0:
-            raise RuntimeError(f"Period {period} is invalid")
+        if window is None or window <= 0:
+            raise RuntimeError(f"Window {window} is invalid")
         if mode is None:
-            raise RuntimeError(f"Mode {period} is invalid")
+            raise RuntimeError(f"Mode {window} is invalid")
     series = series_init(series=series, dataframe=dataframe, inplace=inplace)
 
     # Indicator
     ma_fn = talib_ma(mode)
-    i = ma_fn(series, timeperiod=period, **kwargs)
+    i = ma_fn(series, timeperiod=window, **kwargs)
 
     if inplace:
         dataframe[f"{prefix}{mode}"] = i

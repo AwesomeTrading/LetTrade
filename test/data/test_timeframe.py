@@ -120,6 +120,15 @@ class DataFeedInjectTestCase(unittest.TestCase):
         # floor = tf.floor(pd.Timestamp("2020-01-01 15:12:23"))
         # self.assertEqual(floor, pd.Timestamp("2020-01-01 14:00:00"))
 
+        # Week
+        tf = TimeFrame("1w")
+
+        floor = tf.floor(pd.Timestamp("2020-01-01 11:11:03"))
+        self.assertEqual(floor, pd.Timestamp("2019-12-30 00:00:00"))
+
+        floor = tf.floor(pd.Timestamp("2020-03-03 21:12:23"))
+        self.assertEqual(floor, pd.Timestamp("2020-03-02 00:00:00"))
+
     def test_ceil(self):
         # Second
         tf = TimeFrame("5s")

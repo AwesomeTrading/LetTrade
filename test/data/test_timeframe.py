@@ -148,6 +148,24 @@ class DataFeedInjectTestCase(unittest.TestCase):
         ceil = tf.ceil(pd.Timestamp("2020-01-01 21:12:23"))
         self.assertEqual(ceil, pd.Timestamp("2020-01-02 00:00:00"))
 
+        # Day
+        tf = TimeFrame("1d")
+
+        ceil = tf.ceil(pd.Timestamp("2020-01-01 11:11:03"))
+        self.assertEqual(ceil, pd.Timestamp("2020-01-02 00:00:00"))
+
+        ceil = tf.ceil(pd.Timestamp("2020-03-03 21:12:23"))
+        self.assertEqual(ceil, pd.Timestamp("2020-03-04 00:00:00"))
+
+        # Week
+        tf = TimeFrame("1w")
+
+        ceil = tf.ceil(pd.Timestamp("2020-01-01 11:11:03"))
+        self.assertEqual(ceil, pd.Timestamp("2020-01-06 00:00:00"))
+
+        ceil = tf.ceil(pd.Timestamp("2020-03-03 21:12:23"))
+        self.assertEqual(ceil, pd.Timestamp("2020-03-09 00:00:00"))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

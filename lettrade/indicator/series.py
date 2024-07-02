@@ -1,6 +1,38 @@
 import pandas as pd
 
 
+def series_init(
+    series: pd.Series | str = "close",
+    dataframe: pd.DataFrame = None,
+    inplace: bool = False,
+):
+
+    if dataframe is None:
+        if __debug__:
+            if not isinstance(series, pd.Series):
+                raise RuntimeError(
+                    f"Series type '{type(series)}' is not instance of pandas.Series"
+                )
+
+            if inplace:
+                raise RuntimeError("DataFrame isnot set when inplace=True")
+    else:
+        if __debug__:
+            if not isinstance(dataframe, pd.DataFrame):
+                raise RuntimeError(
+                    f"DataFrame type '{type(dataframe)}' "
+                    "is not instance of pandas.DataFrame"
+                )
+
+            if not isinstance(series, str):
+                raise RuntimeError(
+                    f"Series type {type(series)} is not string of column name"
+                )
+
+        series = dataframe[series]
+    return series
+
+
 def series_indicator_inject(fn):
     def __call(data, *args, **kwargs):
         if isinstance(data, pd.DataFrame):

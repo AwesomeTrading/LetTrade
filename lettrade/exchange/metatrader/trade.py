@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pandas as pd
 from mt5linux import MetaTrader5 as MT5
@@ -17,13 +17,15 @@ from lettrade.exchange import PositionResult
 from lettrade.exchange.live import (
     LetLiveOrderInvalidException,
     LiveDataFeed,
-    LiveExchange,
     LiveExecution,
     LiveOrder,
     LivePosition,
 )
 
 from .api import MetaTraderAPI
+
+if TYPE_CHECKING:
+    from .metatrader import MetaTraderExchange
 
 logger = logging.getLogger(__name__)
 
@@ -47,15 +49,15 @@ class MetaTraderExecution(LiveExecution):
     def from_raw(
         cls,
         raw,
-        exchange: "LiveExchange",
-        data: "LiveDataFeed" = None,
-        api: MetaTraderAPI = None,
+        exchange: "MetaTraderExchange",
+        data: "LiveDataFeed | None" = None,
+        api: MetaTraderAPI | None = None,
     ) -> "MetaTraderExecution | None":
         """Building new MetaTraderExecution from live api raw object
 
         Args:
             raw (_type_): _description_
-            exchange (LiveExchange): _description_
+            exchange (MetaTraderExchange): _description_
 
         Returns:
             MetaTraderExecution: _description_
@@ -104,7 +106,7 @@ class MetaTraderExecution(LiveExecution):
 class MetaTraderOrder(LiveOrder):
     """Order for MetaTrader"""
 
-    exchange: "LiveExchange"
+    exchange: "MetaTraderExchange"
 
     def __init__(self, is_real: bool = True, **kwargs):
         super().__init__(**kwargs)
@@ -218,16 +220,16 @@ class MetaTraderOrder(LiveOrder):
     def from_raw(
         cls,
         raw: Any,
-        exchange: "LiveExchange",
-        data: "LiveDataFeed" = None,
+        exchange: "MetaTraderExchange",
+        data: "LiveDataFeed | None" = None,
         api: MetaTraderAPI | None = None,
     ) -> "MetaTraderOrder | None":
         """_summary_
 
         Args:
             raw (Any): _description_
-            exchange (LiveExchange): _description_
-            data (LiveDataFeed, optional): _description_. Defaults to None.
+            exchange (MetaTraderExchange): _description_
+            data (LiveDataFeed | None, optional): _description_. Defaults to None.
             api (MetaTraderAPI | None, optional): _description_. Defaults to None.
 
         Raises:
@@ -380,7 +382,7 @@ class MetaTraderOrder(LiveOrder):
 class MetaTraderPosition(LivePosition):
     """Position for MetaTrader"""
 
-    exchange: "LiveExchange"
+    exchange: "MetaTraderExchange"
 
     def update(
         self,
@@ -413,7 +415,6 @@ class MetaTraderPosition(LivePosition):
             logger.error("Update position %s", str(result))
             error = PositionResultError(
                 error=result.error,
-                code=result.code,
                 position=self,
                 raw=result,
             )
@@ -451,7 +452,6 @@ class MetaTraderPosition(LivePosition):
             logger.error("Update position %s", str(result))
             error = PositionResultError(
                 error=result.error,
-                code=result.code,
                 position=self,
                 raw=result,
             )
@@ -475,16 +475,16 @@ class MetaTraderPosition(LivePosition):
     def from_raw(
         cls,
         raw,
-        exchange: "LiveExchange",
+        exchange: "MetaTraderExchange",
         state: PositionState = PositionState.Open,
-        data: "LiveDataFeed" = None,
+        data: "LiveDataFeed | None" = None,
         api: MetaTraderAPI = None,
     ) -> "MetaTraderPosition":
         """_summary_
 
         Args:
             raw (_type_): _description_
-            exchange (LiveExchange): _description_
+            exchange (MetaTraderExchange): _description_
             data (LiveDataFeed, optional): _description_. Defaults to None.
             api (MetaTraderAPI, optional): _description_. Defaults to None.
 
@@ -567,7 +567,7 @@ class MetaTraderPosition(LivePosition):
     # def from_id(
     #     cls,
     #     id: str,
-    #     exchange: "LiveExchange",
+    #     exchange: "MetaTraderExchange",
     #     data: LiveDataFeed = None,
     #     api: MetaTraderAPI = None,
     # ) -> "MetaTraderPosition":

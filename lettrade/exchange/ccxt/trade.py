@@ -374,7 +374,6 @@ class CCXTPosition(LivePosition):
             logger.error("Update position %s", str(result))
             error = PositionResultError(
                 error=result.error,
-                code=result.code,
                 position=self,
                 raw=result,
             )
@@ -412,7 +411,6 @@ class CCXTPosition(LivePosition):
             logger.error("Update position %s", str(result))
             error = PositionResultError(
                 error=result.error,
-                code=result.code,
                 position=self,
                 raw=result,
             )

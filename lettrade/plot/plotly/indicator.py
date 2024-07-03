@@ -1,5 +1,4 @@
 import pandas as pd
-import plotly.graph_objects as go
 
 from .helper import plot_merge
 
@@ -38,45 +37,45 @@ def plot_ichimoku(
         dict: _description_
     """
     return dict(
-        scatters=[
+        items=[
             dict(
+                type="scatter",
                 x=dataframe.index,
                 y=dataframe[tenkan_sen],
                 name=tenkan_sen,
-                type="scatter",
                 mode="lines",
                 line=dict(color=tenkan_sen_color, width=width),
             ),
             dict(
+                type="scatter",
                 x=dataframe.index,
                 y=dataframe[kijun_sen],
                 name=kijun_sen,
-                type="scatter",
                 mode="lines",
                 line=dict(color=kijun_sen_color, width=width),
             ),
             dict(
+                type="scatter",
                 x=dataframe.index,
                 y=dataframe[senkou_span_a],
                 name=senkou_span_a,
-                type="scatter",
                 mode="lines",
                 line=dict(color=senkou_span_a_color, width=width),
             ),
             dict(
+                type="scatter",
                 x=dataframe.index,
                 y=dataframe[senkou_span_b],
                 name=senkou_span_b,
-                type="scatter",
                 mode="lines",
                 fill="tonexty",
                 line=dict(color=senkou_span_b_color, width=width),
             ),
             dict(
+                type="scatter",
                 x=dataframe.index,
                 y=dataframe[chikou_span],
                 name=chikou_span,
-                type="scatter",
                 mode="lines",
                 line=dict(color=chikou_span_color, width=width),
             ),
@@ -105,8 +104,9 @@ def plot_line(
         dict: _description_
     """
     return dict(
-        scatters=[
+        items=[
             dict(
+                type="scatter",
                 x=series.index,
                 y=series,
                 line=dict(color=color, width=width),
@@ -183,12 +183,14 @@ def plot_mark(
     )
 
 
-def plot_candle_highlight(
+def plot_candlestick(
     dataframe: pd.DataFrame,
-    name: str = "Candle highlight",
+    name: str = "Candlestick",
     width: int = 1,
     increasing_line_color="#26c6da",
     decreasing_line_color="#ab47bc",
+    row: int = 1,
+    col: int = 1,
     **kwargs,
 ) -> dict:
     """_summary_
@@ -204,8 +206,9 @@ def plot_candle_highlight(
         dict: _description_
     """
     return dict(
-        traces=[
-            go.Candlestick(
+        items=[
+            dict(
+                type="candlestick",
                 x=dataframe.index,
                 open=dataframe["open"],
                 high=dataframe["high"],
@@ -217,6 +220,8 @@ def plot_candle_highlight(
                 decreasing_line_color=decreasing_line_color,
                 hoverinfo="text",
                 hovertext=name,
+                row=row,
+                col=col,
                 **kwargs,
             ),
         ]

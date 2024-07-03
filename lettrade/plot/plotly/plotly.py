@@ -1,13 +1,13 @@
+import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+from lettrade.data import DataFeed
 from lettrade.plot import BotPlotter, PlotColor
 
 
 class PlotlyBotPlotter(BotPlotter):
-    """
-    Class help to plot `lettrade`
-    """
+    """Class help to plot `lettrade`"""
 
     figure: go.Figure = None
 
@@ -16,75 +16,56 @@ class PlotlyBotPlotter(BotPlotter):
     def stop(self):
         """stop plotter"""
 
-    def load(self):
-        """Load plot config from `Strategy.plot()` and setup candlestick/equity"""
+    def default_config(self):
+        # --- Data
+        groups = []
+        for data in self.datas:
+            groups.append(
+                dict(
+                    id=data.name,
+                    type="data",
+                    data=data,
+                    height=1,
+                    items=[
+                        dict(
+                            type="candlestick",
+                            show_orders=data is self.data,
+                            show_positions=data is self.data,
+                            update_xaxes=dict(
+                                title_text=data.name,
+                                rangeslider_visible=False,
+                                # showspikes=True,
+                                # spikemode="across",
+                                mirror=True,
+                                ticks="outside",
+                                showline=True,
+                                # linecolor="",
+                            ),
+                            update_yaxes=dict(
+                                title_text="Price $",
+                                # autorange=True,
+                                # fixedrange=False,
+                                # showspikes=True,
+                                # spikemode="across",
+                                mirror=True,
+                                ticks="outside",
+                                showline=True,
+                            ),
+                        )
+                    ],
+                )
+            )
 
-        # Strategy plot
-        config: dict = self.strategy.plot(*self.datas)
-
-        # Params
-        plot_rows = max(config.get("rows", 2), len(self.datas) + 1)
-        params = dict(
-            rows=plot_rows,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
-            # row_width=[0.2, 0.7],
-            # 0.3 for equity
-            row_heights=[1] * (plot_rows - 1) + [0.5],
+        # --- Equity
+        groups.append(
+            dict(
+                id="equity",
+                type="equity",
+                height=0.5,
+            )
         )
-        if "params" in config:
-            params.update(**config["params"])
 
-        # Init
-        self.figure = make_subplots(**params)
-
-        # Plot candles
-        self._data_shape = dict()
-        for i, data in enumerate(self.datas):
-            shape = dict(
-                row=1 + i,
-                col=1,
-            )
-            self._data_shape[data.name] = shape
-            self.figure.add_trace(
-                go.Candlestick(
-                    x=data.index,
-                    open=data["open"],
-                    high=data["high"],
-                    low=data["low"],
-                    close=data["close"],
-                    name=f"Price {data.name}",
-                    # hoverinfo="x+y",
-                ),
-                **shape,
-            )
-            self.figure.update_yaxes(
-                title_text="Price $",
-                # autorange=True,
-                # fixedrange=False,
-                # showspikes=True,
-                # spikemode="across",
-                mirror=True,
-                ticks="outside",
-                showline=True,
-                # linecolor="",
-                **shape,
-            )
-            self.figure.update_xaxes(
-                title_text=data.name,
-                rangeslider_visible=False,
-                # showspikes=True,
-                # spikemode="across",
-                mirror=True,
-                ticks="outside",
-                showline=True,
-                # linecolor="",
-                **shape,
-            )
-
-        self._load_extend(config)
-
-        # Buttons
+        # --- Buttons
         buttons = [dict(step="all")]
         match self.data.timeframe.unit:
             case "m":
@@ -118,101 +99,195 @@ class PlotlyBotPlotter(BotPlotter):
                 ),
             ]
         )
-
-        # Layout
-        layout_params = dict(
-            xaxis=dict(
-                rangeselector=dict(
-                    bgcolor="#282a36",
-                    activecolor="#5b5b66",
-                    buttons=buttons,
+        return dict(
+            groups=groups,
+            # --- Params
+            params=dict(
+                shared_xaxes=True,
+                vertical_spacing=0.03,
+            ),
+            # --- Layout
+            layout=dict(
+                xaxis=dict(
+                    rangeselector=dict(
+                        bgcolor="#282a36",
+                        activecolor="#5b5b66",
+                        buttons=buttons,
+                    ),
                 ),
+                yaxis=dict(
+                    autorange=True,
+                    fixedrange=False,
+                ),
+                title=dict(
+                    text=str(self.strategy),
+                    font=dict(size=24),
+                    x=0.5,
+                    xref="paper",
+                ),
+                # autosize=False,
+                # width=800,
+                # height=1_000 * plot_rows,
+                modebar_add=[
+                    "v1hovermode",
+                    "hoverclosest",
+                    "hovercompare",
+                    "togglehover",
+                    "togglespikelines",
+                    "drawline",
+                    "drawopenpath",
+                    "drawclosedpath",
+                    "drawcircle",
+                    "drawrect",
+                    "eraseshape",
+                ],
+                # template="plotly_dark",
+                hovermode="x unified",
             ),
-            yaxis=dict(
-                autorange=True,
-                fixedrange=False,
-            ),
-            title=dict(
-                text=str(self.strategy),
-                font=dict(size=24),
-                x=0.5,
-                xref="paper",
-            ),
-            # autosize=False,
-            # width=800,
-            height=1_000 * plot_rows,
-            modebar_add=[
-                "v1hovermode",
-                "hoverclosest",
-                "hovercompare",
-                "togglehover",
-                "togglespikelines",
-                "drawline",
-                "drawopenpath",
-                "drawclosedpath",
-                "drawcircle",
-                "drawrect",
-                "eraseshape",
-            ],
-            # template="plotly_dark",
-            hovermode="x unified",
         )
-        if "layout" in config:
-            layout_params.update(config["layout"])
-        self.figure.update_layout(**layout_params)
 
-    def _load_extend(self, config: dict):
+    def _config_standard(self, config: dict):
+        shapes = dict()
+        for i, group in enumerate(config["groups"]):
+            if group["type"] == "data":
+                rows = max(item.get("row", 1) for item in group["items"])
+                cols = max(item.get("col", 1) for item in group["items"])
+            else:
+                rows = group.get("row", 1)
+                cols = group.get("col", 1)
+
+            shapes[group["id"]] = dict(group_index=i, rows=rows, cols=cols)
+
+        rows_total = sum(shape["rows"] for shape in shapes.values())
+        cols_total = sum(shape["cols"] for shape in shapes.values())
+
+        params: dict = config.setdefault("params", dict())
+        params.update(
+            rows=rows_total,
+            row_heights=[1] * (rows_total - 1) + [0.5],
+        )
+
+        config.update(
+            params=params,
+            shapes=shapes,
+            rows_total=rows_total,
+            cols_total=cols_total,
+        )
+        return config
+
+    def _strategy_config(self, config: dict):
+        strategy_config: dict = self.strategy.plot(*self.datas)
+
         # Plot scatter/trace
-        if "scatters" in config:
-            pname = f"data_{self.data.name}"
-            data_config = config.setdefault(pname, {})
-            data_scatters: list = data_config.setdefault("scatters", [])
-            data_scatters.extend(config["scatters"])
-        if "traces" in config:
-            pname = f"data_{self.data.name}"
-            data_config = config.setdefault(pname, {})
-            data_traces: list = data_config.setdefault("traces", [])
-            data_traces.extend(config["traces"])
+        if "items" in strategy_config:
+            shape = config["shapes"][self.data.name]
+            data_group = config["groups"][shape["group_index"]]
+            data_items: list = data_group.setdefault("items", [])
+            data_items.extend(strategy_config["items"])
 
         for data in self.datas:
-            pname = f"data_{data.name}"
-            if pname not in config:
+            dname = data.name
+            if dname not in strategy_config:
                 continue
 
-            data_config = config[pname]
-            data_shape = self._data_shape[data.name]
+            data_shape = config["shapes"][data.name]
+            data_group = config["groups"][data_shape["group_index"]]
+            data_config = strategy_config[dname]
 
-            if "scatters" in data_config:
-                for scatter in data_config["scatters"]:
-                    scatter.setdefault("row", data_shape["row"])
-                    scatter.setdefault("col", data_shape["col"])
-                    self.figure.add_scatter(**scatter)
+            data_items: list = data_group.setdefault("items", [])
+            data_items.extend(data_config["items"])
 
-            if "traces" in data_config:
-                for trace in data_config["traces"]:
-                    self.figure.add_trace(trace, **data_shape)
+        return config
 
-    def plot(self, jump: dict | None = None, **kwargs):
-        """Plot `equity`, `orders`, and `positions` then show"""
-        if jump is not None:
-            self.jump(**jump)
-        elif self.figure is None:
-            self.load()
-        else:
-            if self.jump_reset():
-                self.load()
+    def _config_render(self, config: dict):
+        rows = 0
+        for group in config["groups"]:
+            group_shape = config["shapes"][group["id"]]
 
-        self._plot_equity()
-        self._plot_orders()
-        self._plot_positions()
+            if group["type"] == "data":
+                for item in group["items"]:
+                    row = rows + item.pop("row", 1)
+                    col = item.pop("col", 1)
+                    match item["type"]:
+                        case "candlestick":
+                            self._plot_candlestick(
+                                data=group["data"],
+                                row=row,
+                                col=col,
+                                **item,
+                            )
+                        case "scatter":
+                            self._plot_scatter(
+                                data=group["data"],
+                                row=row,
+                                col=col,
+                                **item,
+                            )
+            elif group["type"] == "equity":
+                row = rows + group.pop("row", 1)
+                col = group.pop("col", 1)
 
-        params = dict(layout_xaxis_rangeslider_visible=False)
-        params.update(**kwargs)
-        self.figure.update(**params)
+                self._plot_equity(row=row, col=col, **group)
 
-        self.figure.show()
+            rows += group_shape["rows"]
 
-    def _plot_equity(self):
+    def _plot_candlestick(
+        self,
+        data: DataFeed,
+        x=None,
+        open=None,
+        high=None,
+        low=None,
+        close=None,
+        update_xaxes: dict | None = None,
+        update_yaxes: dict | None = None,
+        show_orders: bool = False,
+        show_positions: bool = False,
+        row: int = 1,
+        col: int = 1,
+        type: str | None = None,
+        **kwargs,
+    ):
+        self.figure.add_trace(
+            go.Candlestick(
+                x=x or data.index,
+                open=open or data["open"],
+                high=high or data["high"],
+                low=low or data["low"],
+                close=close or data["close"],
+                **kwargs,
+            ),
+            row=row,
+            col=col,
+        )
+        if update_xaxes is not None:
+            self.figure.update_xaxes(row=row, col=col, **update_xaxes)
+        if update_yaxes is not None:
+            self.figure.update_yaxes(row=row, col=col, **update_yaxes)
+        if show_orders:
+            self._plot_orders(data=data, row=row, col=col)
+        if show_positions:
+            self._plot_positions(data=data, row=row, col=col)
+
+    def _plot_scatter(
+        self,
+        data: DataFeed,
+        x: pd.Series,
+        y: pd.Series,
+        row: int = 1,
+        col: int = 1,
+        type: str | None = None,
+        **kwargs,
+    ):
+        self.figure.add_scatter(x=x, y=y, row=row, col=col, **kwargs)
+
+    def _plot_equity(
+        self,
+        row: int = 1,
+        col: int = 1,
+        type: str | None = None,
+        **kwargs,
+    ):
         equities = self.account._equities
 
         # Filter equities in data range only
@@ -224,9 +299,6 @@ class PlotlyBotPlotter(BotPlotter):
         x = list(equities.keys())
         y = list(equities.values())
 
-        # Get figure rows size
-        row_length = len(self.figure._get_subplot_rows_columns()[0])
-
         self.figure.add_trace(
             go.Scatter(
                 x=x,
@@ -236,23 +308,28 @@ class PlotlyBotPlotter(BotPlotter):
                 name="Equity",
                 # fill="toself",
             ),
-            row=row_length,
-            col=1,
+            row=row,
+            col=col,
         )
         self.figure.update_yaxes(
             title_text="Equity",
-            row=row_length,
-            col=1,
+            row=row,
+            col=col,
         )
 
-    def _plot_orders(self):
+    def _plot_orders(
+        self,
+        data: DataFeed,
+        row: int = 1,
+        col: int = 1,
+    ):
         orders = list(self.exchange.history_orders.values()) + list(
             self.exchange.orders.values()
         )
 
         # Filter order in data range only
-        start_dt = self.data.index[0]
-        stop_dt = self.data.index[-1]
+        start_dt = data.index[0]
+        stop_dt = data.index[-1]
         orders = [o for o in orders if o.placed_at > start_dt and o.placed_at < stop_dt]
 
         # TODO: test using order/sl/tp line for performance
@@ -285,16 +362,23 @@ class PlotlyBotPlotter(BotPlotter):
                     color=(PlotColor.GREEN if order.is_long else PlotColor.RED),
                 ),
                 showlegend=False,
+                row=row,
+                col=col,
             )
 
-    def _plot_positions(self):
+    def _plot_positions(
+        self,
+        data: DataFeed,
+        row: int = 1,
+        col: int = 1,
+    ):
         positions = list(self.exchange.history_positions.values()) + list(
             self.exchange.positions.values()
         )
 
         # Filter equities in data range only
-        start_dt = self.data.index[0]
-        stop_dt = self.data.index[-1]
+        start_dt = data.index[0]
+        stop_dt = data.index[-1]
         _positions = []
         for p in positions:
             if p.entry_at < start_dt or p.entry_at > stop_dt:
@@ -341,4 +425,37 @@ class PlotlyBotPlotter(BotPlotter):
                     dash="dash",
                 ),
                 showlegend=False,
+                row=row,
+                col=col,
             )
+
+    def load(self):
+        """Load plot config from `Strategy.plot()` and setup candlestick/equity"""
+
+        config = self.default_config()
+        config = self._config_standard(config)
+        config = self._strategy_config(config)
+
+        # Init
+        params: dict = config.setdefault("params", dict())
+        self.figure = make_subplots(**params)
+
+        self._config_render(config=config)
+
+        self.figure.update_layout(**config["layout"])
+
+    def plot(self, jump: dict | None = None, **kwargs):
+        """Plot `equity`, `orders`, and `positions` then show"""
+        if jump is not None:
+            self.jump(**jump)
+        elif self.figure is None:
+            self.load()
+        else:
+            if self.jump_reset():
+                self.load()
+
+        params = dict(layout_xaxis_rangeslider_visible=False)
+        params.update(**kwargs)
+        self.figure.update(**params)
+
+        self.figure.show()

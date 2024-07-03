@@ -190,7 +190,7 @@ class PlotlyBotPlotter(BotPlotter):
             if dname not in strategy_config:
                 continue
 
-            data_shape = config["shapes"][data.name]
+            data_shape = config["shapes"][dname]
             data_group = config["groups"][data_shape["group_index"]]
             data_config = strategy_config[dname]
 
@@ -250,11 +250,11 @@ class PlotlyBotPlotter(BotPlotter):
     ):
         self.figure.add_trace(
             go.Candlestick(
-                x=x or data.index,
-                open=open or data["open"],
-                high=high or data["high"],
-                low=low or data["low"],
-                close=close or data["close"],
+                x=x if x is not None else data.index,
+                open=open if open is not None else data["open"],
+                high=high if high is not None else data["high"],
+                low=low if low is not None else data["low"],
+                close=close if close is not None else data["close"],
                 **kwargs,
             ),
             row=row,

@@ -35,10 +35,10 @@ class LetTrade:
         exchange: type[Exchange],
         account: type[Account],
         commander: type[Commander] | None = None,
+        stats: type[BotStatistic] = BotStatistic,
         plotter: type[Plotter] | None = None,
-        stats: type[BotStatistic] | None = None,
         name: str | None = None,
-        bot: type[LetTradeBot] | None = LetTradeBot,
+        bot: type[LetTradeBot] = LetTradeBot,
         **kwargs,
     ) -> None:
         """_summary_
@@ -50,10 +50,10 @@ class LetTrade:
             exchange (type[Exchange]): _description_
             account (type[Account]): _description_
             commander (type[Commander] | None, optional): _description_. Defaults to None.
+            stats (type[BotStatistic], optional): _description_. Defaults to BotStatistic.
             plotter (type[Plotter] | None, optional): _description_. Defaults to None.
-            stats (type[BotStatistic] | None, optional): _description_. Defaults to None.
             name (str | None, optional): _description_. Defaults to None.
-            bot (type[LetTradeBot] | None, optional): _description_. Defaults to LetTradeBot.
+            bot (type[LetTradeBot], optional): _description_. Defaults to LetTradeBot.
         """
         self._kwargs = kwargs
         self._kwargs["strategy_cls"] = strategy
@@ -61,8 +61,8 @@ class LetTrade:
         self._kwargs["exchange_cls"] = exchange
         self._kwargs["account_cls"] = account
         self._kwargs["commander_cls"] = commander
-        self._kwargs["plotter_cls"] = plotter
         self._kwargs["stats_cls"] = stats
+        self._kwargs["plotter_cls"] = plotter
         self._kwargs["bot_cls"] = bot
         self._kwargs["name"] = name
 
@@ -168,22 +168,17 @@ class LetTrade:
 
     def _multiprocess(self, **kwargs):
         if self._bot is not None:
-            logger.warning("Remove exist bot when running in multiprocessing")
+            logger.warning("Removed exist bot when running in multiprocessing")
             self._bot = None
 
         if self._commander_cls:
-            # Impletement commander dependencies and save to commander_kwargs
+            # Implement commander dependencies and save to commander_kwargs
             commander_kwargs = self._kwargs.setdefault("commander_kwargs", {})
             self._commander_cls.multiprocess(
                 kwargs=commander_kwargs,
                 # self_kwargs=self._kwargs,
                 **kwargs,
             )
-
-    # def reset(self):
-    #     self._bot = None
-    #     self.datas = self._init_datafeeds(datas)
-    #     self.data = self.datas[0]
 
     def stop(self):
         """Stop LetTrade"""
@@ -220,7 +215,7 @@ class LetTrade:
                 `jump` (dict | None, optional): Miror of [BotPlotter.jump()](site:/reference/plot/bot/#lettrade.plot.bot.BotPlotter.jump)
 
             Example:
-                - Jump to position_id
+                Jump to position_id
                     ```python
                     lt.plot(
                         jump=dict(position_id=1, range=300),
@@ -233,7 +228,6 @@ class LetTrade:
             Plotly implement [PlotlyOptimizePlotter.plot()](site:/reference/exchange/backtest/plotly/optimize/#lettrade.exchange.backtest.plotly.optimize.PlotlyOptimizePlotter.plot).
 
             Example:
-                -
                     ```python
                     lt.plot(layout=dict(height=2000))
                     ```
@@ -267,10 +261,6 @@ class LetTrade:
     def _bot_cls(self) -> type[LetTradeBot]:
         return self._kwargs.get("bot_cls", None)
 
-    # @bot_cls.setter
-    # def bot_cls(self, value):
-    #     self._kwargs["bot_cls"] = value
-
     @property
     def _commander_cls(self) -> type[Commander]:
         return self._kwargs.get("commander_cls", None)
@@ -282,10 +272,6 @@ class LetTrade:
     @property
     def _stats_cls(self) -> type[BotStatistic]:
         return self._kwargs.get("stats_cls", None)
-
-    # @_stats_cls.setter
-    # def _stats_cls(self, value):
-    #     self._kwargs["stats_cls"] = value
 
     @property
     def _plotter_cls(self) -> type["Plotter"]:

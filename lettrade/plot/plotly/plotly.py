@@ -567,12 +567,11 @@ class PlotlyBotPlotter(BotPlotter):
 
         self.figure.update_layout(**config["layout"])
 
-    def plot(self, jump: dict | None = None, layout: dict | None = None, **kwargs):
+    def plot(self, jump: dict | None = None, **kwargs):
         """Plotly show figure
 
         Args:
             jump (dict | None, optional): _description_. Defaults to None.
-            layout (dict | None, optional): _description_. Defaults to None.
         """
         if jump is not None:
             self.jump(**jump)
@@ -581,9 +580,6 @@ class PlotlyBotPlotter(BotPlotter):
         else:
             if self.jump_reset():
                 self.load()
-
-        if layout is not None:
-            self.figure.update_layout(**layout)
 
         params = dict(layout_xaxis_rangeslider_visible=False)
         params.update(**kwargs)

@@ -396,13 +396,21 @@ class PlotlyBotPlotter(BotPlotter):
     def _plot_scatter(
         self,
         data: DataFeed,
-        x: pd.Series,
+        x: pd.Index,
         y: pd.Series,
         row: int = 1,
         col: int = 1,
+        fullfill: bool = False,
         type: str | None = None,
         **kwargs,
     ):
+        # Fill None
+        if fullfill and x is not data.index:
+            s = pd.Series(None, index=data.index)
+            s.loc[x] = y
+            x = s.index
+            y = s
+
         self.figure.add_scatter(x=x, y=y, row=row, col=col, **kwargs)
 
     def _plot_equity(

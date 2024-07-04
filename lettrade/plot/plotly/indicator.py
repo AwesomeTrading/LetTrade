@@ -89,6 +89,7 @@ def plot_line(
     width: int = 1,
     name=None,
     mode="lines",
+    fullfill: bool = False,
     **kwargs,
 ) -> dict:
     """_summary_
@@ -99,6 +100,7 @@ def plot_line(
         width (int, optional): _description_. Defaults to 1.
         name (_type_, optional): _description_. Defaults to None.
         mode (str, optional): _description_. Defaults to "lines".
+        fullfill (bool, optional): _description_. Defaults to False.
 
     Returns:
         dict: _description_
@@ -112,6 +114,7 @@ def plot_line(
                 line=dict(color=color, width=width),
                 name=name or series.name,
                 mode=mode,
+                fullfill=fullfill,
                 **kwargs,
             )
         ]

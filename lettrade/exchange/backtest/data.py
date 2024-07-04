@@ -2,7 +2,6 @@ import logging
 import re
 
 import pandas as pd
-
 from lettrade.data import DataFeed
 
 logger = logging.getLogger(__name__)
@@ -120,11 +119,9 @@ class CSVBackTestDataFeed(BackTestDataFeed):
     def __init__(
         self,
         path: str | None = None,
+        csv: dict | None = None,
         name: str | None = None,
         timeframe: str | int | pd.Timedelta | None = None,
-        delimiter: str = ",",
-        index_col: int = 0,
-        header: int = 0,
         meta: dict | None = None,
         data: DataFeed | None = None,
         **kwargs: dict,
@@ -142,13 +139,17 @@ class CSVBackTestDataFeed(BackTestDataFeed):
             name = _path_to_name(path)
 
         if data is None:
-            data = pd.read_csv(
-                path,
-                index_col=index_col,
+            csv_params = dict(
+                index_col=0,
                 parse_dates=["datetime"],
-                delimiter=delimiter,
-                header=header,
+                delimiter=",",
+                header=0,
             )
+            if csv is not None:
+                csv_params.update(**csv)
+
+            data = pd.read_csv(path, **csv_params)
+
             if not isinstance(data.index, pd.DatetimeIndex):
                 data.index = data.index.astype("datetime64[ns, UTC]")
 

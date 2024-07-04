@@ -143,6 +143,33 @@ class Strategy:
     def plot(self, df: DataFeed, *others: list[DataFeed]) -> dict:
         """Custom config of plot
 
+        Example:
+            ```json
+            {
+                # Global items is main datafeed item
+                "items": [],
+
+                # DataFeed plot config
+                "datafeed_name_eurusd": {
+                    "items": [
+                        {
+                            "type": "scatter",
+                            "x": dataframe.index,
+                            "y": dataframe["close"],
+                            "name": "EMA",
+                            "mode": "lines",
+                            "line": { "color": '#00bad6', "width": 1 },
+                        }
+                    ]
+                },
+
+                # Layout config
+                {
+                    "hovermode": "x unified"
+                }
+            }
+            ```
+
         Args:
             df (DataFeed): plot DataFeed
 

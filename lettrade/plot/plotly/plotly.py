@@ -16,7 +16,125 @@ class PlotlyBotPlotter(BotPlotter):
     def stop(self):
         """stop plotter"""
 
-    def default_config(self):
+    def _config_default(self):
+        """Generate default config
+
+        Example:
+            ```json
+            {
+                "groups": [
+                    {
+                    "id": "EURUSD_5m",
+                    "type": "data",
+                    "data": pandas.DataFrame,
+                    "height": 1,
+                    "items": [
+                        {
+                            "type": "candlestick",
+                            "show_orders": True,
+                            "show_positions": True,
+                            "update_xaxes": {
+                                "title_text": "EURUSD_5m",
+                                "rangeslider_visible": False,
+                                "mirror": True,
+                                "ticks": "outside",
+                                "showline": True
+                            },
+                            "update_yaxes": {
+                                "title_text": "Price $",
+                                "mirror": True,
+                                "ticks": "outside",
+                                "showline": True
+                            }
+                        },
+                        {
+                            "type": "scatter",
+                            "x": pandas.DatetimeIndex,
+                            "y": pandas.Series,
+                            "line": { "color": <PlotColor.AMBER: '#fa0'>, "width": 1 },
+                            "name": "ema1",
+                            "mode": "lines"
+                        },
+                        {
+                            "type": "scatter",
+                            "x": pandas.DatetimeIndex,
+                            "y": pandas.Series,
+                            "line": { "color": <PlotColor.CYAN: '#00bad6'>, "width": 1 },
+                            "name": "ema2",
+                            "mode": "lines"
+                        }
+                    ]
+                    },
+                    { "id": "equity", "type": "equity", "height": 0.5 }
+                ],
+                "params": {
+                    "shared_xaxes": True,
+                    "vertical_spacing": 0.03,
+                    "rows": 2,
+                    "row_heights": [1, 0.5]
+                },
+                "layout": {
+                    "xaxis": {
+                        "rangeselector": {
+                            "bgcolor": "#282a36",
+                            "activecolor": "#5b5b66",
+                            "buttons": [
+                            { "step": "all" },
+                            {
+                                "count": 6,
+                                "label": "6 day",
+                                "step": "day",
+                                "stepmode": "backward"
+                            },
+                            {
+                                "count": 3,
+                                "label": "3 day",
+                                "step": "day",
+                                "stepmode": "backward"
+                            },
+                            {
+                                "count": 1,
+                                "label": "1 day",
+                                "step": "day",
+                                "stepmode": "backward"
+                            }
+                            ]
+                        }
+                    },
+                    "yaxis": { "autorange": True, "fixedrange": False },
+                    "title": {
+                        "text": "<__main__.SmaCross object at 0x709c53ee4d70>",
+                        "font": { "size": 24 },
+                        "x": 0.5,
+                        "xref": "paper"
+                    },
+                    "modebar_add": [
+                        "v1hovermode",
+                        "hoverclosest",
+                        "hovercompare",
+                        "togglehover",
+                        "togglespikelines",
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape"
+                    ],
+                    "hovermode": "x unified"
+                },
+                "shapes": {
+                    "EURUSD_5m": { "group_index": 0, "rows": 1, "cols": 1 },
+                    "equity": { "group_index": 1, "rows": 1, "cols": 1 }
+                },
+                "rows_total": 2,
+                "cols_total": 2
+            }
+            ```
+
+        Returns:
+            _type_: _description_
+        """
         # --- Data
         groups = []
         for data in self.datas:
@@ -147,6 +265,7 @@ class PlotlyBotPlotter(BotPlotter):
         )
 
     def _config_standard(self, config: dict):
+        """Calculate shapes/heights"""
         shapes = dict()
         for i, group in enumerate(config["groups"]):
             if group["type"] == "data":
@@ -175,10 +294,11 @@ class PlotlyBotPlotter(BotPlotter):
         )
         return config
 
-    def _strategy_config(self, config: dict):
+    def _config_strategy(self, config: dict):
+        """Merge strategy plot config"""
         strategy_config: dict = self.strategy.plot(*self.datas)
 
-        # Plot scatter/trace
+        # Move global items to main data items
         if "items" in strategy_config:
             shape = config["shapes"][self.data.name]
             data_group = config["groups"][shape["group_index"]]
@@ -197,9 +317,13 @@ class PlotlyBotPlotter(BotPlotter):
             data_items: list = data_group.setdefault("items", [])
             data_items.extend(data_config["items"])
 
+        if "layout" in strategy_config:
+            config["layout"].update(strategy_config["layout"])
+
         return config
 
-    def _config_render(self, config: dict):
+    def _plot_config(self, config: dict):
+        """Apply config to figure"""
         rows = 0
         for group in config["groups"]:
             group_shape = config["shapes"][group["id"]]
@@ -432,15 +556,14 @@ class PlotlyBotPlotter(BotPlotter):
     def load(self):
         """Load plot config from `Strategy.plot()` and setup candlestick/equity"""
 
-        config = self.default_config()
+        config = self._config_default()
         config = self._config_standard(config)
-        config = self._strategy_config(config)
+        config = self._config_strategy(config)
 
-        # Init
         params: dict = config.setdefault("params", dict())
         self.figure = make_subplots(**params)
 
-        self._config_render(config=config)
+        self._plot_config(config)
 
         self.figure.update_layout(**config["layout"])
 

@@ -5,12 +5,12 @@ from lettrade.all import DataFeed, ForexBackTestAccount, Strategy, let_backtest
 
 
 class SmaCross(Strategy):
-    ema1_period = 9
-    ema2_period = 21
+    ema1_window = 9
+    ema2_window = 21
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = df.i.ema(period=self.ema2_period)
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
+        df["ema2"] = df.i.ema(window=self.ema2_window)
 
         df["crossover"] = i.crossover(df.ema1, df.ema2)
         df["crossunder"] = df.i.crossunder(df.ema1, df.ema2)

@@ -13,14 +13,14 @@ load_dotenv()
 
 
 class SmaCross(Strategy):
-    ema1_period = 9
-    ema2_period = 21
+    ema1_window = 9
+    ema2_window = 21
 
     _now: datetime
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
+        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_window)
 
         df["signal_ema_crossover"] = i.crossover(df.ema1, df.ema2)
         df["signal_ema_crossunder"] = i.crossunder(df.ema1, df.ema2)

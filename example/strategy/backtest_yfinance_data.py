@@ -6,13 +6,13 @@ from lettrade.all import DataFeed, Strategy, YFBackTestDataFeed, crossover, let_
 
 
 class SmaCross(Strategy):
-    ema1_period = 9
-    ema2_period = 21
+    ema1_window = 9
+    ema2_window = 21
 
     def indicators(self, df: DataFeed):
         # EMA
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
+        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_window)
 
         # EMA Cross
         df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)

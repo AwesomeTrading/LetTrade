@@ -7,12 +7,12 @@ from lettrade.exchange.backtest import ForexBackTestAccount, let_backtest
 
 
 class SmaCross(Strategy):
-    ema1_period = 9
-    ema2_period = 21
+    ema1_window = 9
+    ema2_window = 21
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
+        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_window)
 
         df["signal_ema_crossover"] = i.crossover(df.ema1, df.ema2)
         df["signal_ema_crossunder"] = i.crossunder(df.ema1, df.ema2)
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     )
 
     def params_parser(args):
-        return {"ema1_period": int(args[0]), "ema2_period": int(args[1])}
+        return {"ema1_window": int(args[0]), "ema2_window": int(args[1])}
 
     def result_parser(result):
         return -result["equity"]
@@ -53,4 +53,4 @@ if __name__ == "__main__":
     )
     lt.optimize_done()
 
-    lt.plotter.heatmap(x="ema1_period", y="ema2_period")
+    lt.plotter.heatmap(x="ema1_window", y="ema2_window")

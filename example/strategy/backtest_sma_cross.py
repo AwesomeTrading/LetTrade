@@ -13,12 +13,12 @@ logging_filter_necessary_only()
 
 
 class SmaCross(Strategy):
-    ema1_period = 9
-    ema2_period = 21
+    ema1_window = 9
+    ema2_window = 21
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_period)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_period)
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
+        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_window)
 
         df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
         df["signal_ema_crossunder"] = crossover(df.ema2, df.ema1)

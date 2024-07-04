@@ -74,18 +74,19 @@ class SmaCross(Strategy):
         )
 
 
-lt = let_backtest(
-    strategy=SmaCross,
-    datas=[
-        YFBackTestDataFeed(
-            name="EURUSD",
-            ticker="EURUSD=X",
-            start="2023-01-01",
-            end="2023-02-01",
-            interval="1h",
-        )
-    ],
-)
+if __name__ == "__main__":
+    lt = let_backtest(
+        strategy=SmaCross,
+        datas=[
+            YFBackTestDataFeed(
+                name="EURUSD",
+                ticker="EURUSD=X",
+                start="2023-01-01",
+                end="2023-02-01",
+                interval="1h",
+            )
+        ],
+    )
 
-lt.run()
-lt.plot()
+    lt.run()
+    lt.plot()

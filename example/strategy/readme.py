@@ -24,11 +24,12 @@ class SmaCross(Strategy):
             self.sell(size=0.1)
 
 
-lt = let_backtest(
-    strategy=SmaCross,
-    datas="example/data/data/EURUSD_5m-0_1000.csv",
-    account=ForexBackTestAccount,
-)
+if __name__ == "__main__":
+    lt = let_backtest(
+        strategy=SmaCross,
+        datas="example/data/data/EURUSD_5m-0_1000.csv",
+        account=ForexBackTestAccount,
+    )
 
-lt.run()
-lt.plot()
+    lt.run()
+    lt.plot()

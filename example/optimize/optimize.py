@@ -25,21 +25,22 @@ class SmaCross(Strategy):
             self.sell(size=0.1, sl=price + 0.001, tp=price - 0.001)
 
 
-lt = let_backtest(
-    strategy=SmaCross,
-    datas="example/data/data/EURUSD_5m-0_10000.csv",
-    account=ForexBackTestAccount,
-)
+if __name__ == "__main__":
+    lt = let_backtest(
+        strategy=SmaCross,
+        datas="example/data/data/EURUSD_5m-0_10000.csv",
+        account=ForexBackTestAccount,
+    )
 
-# lt.run()
-lt.optimize(
-    ema1_period=range(5, 50),
-    ema2_period=range(5, 50),
-    # multiprocessing=None,
-    # workers=1,
-    # cache=None,
-)
+    # lt.run()
+    lt.optimize(
+        ema1_period=range(5, 50),
+        ema2_period=range(5, 50),
+        # multiprocessing=None,
+        # workers=1,
+        # cache=None,
+    )
 
-lt.plot()
-lt.plotter.heatmap()
-lt.plotter.contour()
+    lt.plot()
+    lt.plotter.heatmap()
+    lt.plotter.contour()

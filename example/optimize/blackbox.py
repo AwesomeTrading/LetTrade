@@ -29,30 +29,28 @@ class SmaCross(Strategy):
             self.sell(size=0.1, sl=price + 0.001, tp=price - 0.001)
 
 
-lt = let_backtest(
-    strategy=SmaCross,
-    datas="example/data/data/EURUSD_5m-0_10000.csv",
-    account=ForexBackTestAccount,
-)
+if __name__ == "__main__":
+    lt = let_backtest(
+        strategy=SmaCross,
+        datas="example/data/data/EURUSD_5m-0_10000.csv",
+        account=ForexBackTestAccount,
+    )
 
+    def params_parser(args):
+        return {"ema1_period": int(args[0]), "ema2_period": int(args[1])}
 
-def params_parser(args):
-    return {"ema1_period": int(args[0]), "ema2_period": int(args[1])}
+    def result_parser(result):
+        return -result["equity"]
 
+    result = bb.minimize(
+        f=lt.optimize_model(
+            params_parser=params_parser,
+            result_parser=result_parser,
+        ),
+        domain=[[5, 25, 1], [10, 50, 1]],  # ranges of each parameter
+        budget=300,  # total number of function calls available
+        batch=12,  # number of calls that will be evaluated in parallel
+    )
+    lt.optimize_done()
 
-def result_parser(result):
-    return -result["equity"]
-
-
-result = bb.minimize(
-    f=lt.optimize_model(
-        params_parser=params_parser,
-        result_parser=result_parser,
-    ),
-    domain=[[5, 25, 1], [10, 50, 1]],  # ranges of each parameter
-    budget=300,  # total number of function calls available
-    batch=12,  # number of calls that will be evaluated in parallel
-)
-lt.optimize_done()
-
-lt.plotter.heatmap(x="ema1_period", y="ema2_period")
+    lt.plotter.heatmap(x="ema1_period", y="ema2_period")

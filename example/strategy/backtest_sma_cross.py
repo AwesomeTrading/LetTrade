@@ -54,11 +54,12 @@ class SmaCross(Strategy):
         )
 
 
-lt = let_backtest(
-    datas="example/data/data/EURUSD_1h_YF_2023-01-01_2023-12-31.csv",
-    strategy=SmaCross,
-    account=ForexBackTestAccount,
-)
+if __name__ == "__main__":
+    lt = let_backtest(
+        datas="example/data/data/EURUSD_1h_YF_2023-01-01_2023-12-31.csv",
+        strategy=SmaCross,
+        account=ForexBackTestAccount,
+    )
 
-lt.run()
-lt.plot()
+    lt.run()
+    lt.plot()

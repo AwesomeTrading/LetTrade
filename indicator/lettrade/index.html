@@ -4865,12 +4865,12 @@
 
 
 <span class="k">class</span> <span class="nc">SmaCross</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
-    <span class="n">ema1_period</span> <span class="o">=</span> <span class="mi">9</span>
-    <span class="n">ema2_period</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">ema1_window</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">ema2_window</span> <span class="o">=</span> <span class="mi">21</span>
 
     <span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_period</span><span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_period</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_window</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_window</span><span class="p">)</span>
 
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
         <span class="n">df</span><span class="p">[</span><span class="s2">&quot;signal_ema_crossunder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">crossunder</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
@@ -4894,14 +4894,15 @@
         <span class="k">return</span> <span class="n">plot_merge</span><span class="p">(</span><span class="n">plot_ema1</span><span class="p">,</span> <span class="n">plot_ema2</span><span class="p">)</span>
 
 
-<span class="n">lt</span> <span class="o">=</span> <span class="n">let_backtest</span><span class="p">(</span>
-    <span class="n">strategy</span><span class="o">=</span><span class="n">SmaCross</span><span class="p">,</span>
-    <span class="n">datas</span><span class="o">=</span><span class="s2">&quot;example/data/data/EURUSD_5m-0_1000.csv&quot;</span><span class="p">,</span>
-    <span class="n">account</span><span class="o">=</span><span class="n">ForexBackTestAccount</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">lt</span> <span class="o">=</span> <span class="n">let_backtest</span><span class="p">(</span>
+        <span class="n">strategy</span><span class="o">=</span><span class="n">SmaCross</span><span class="p">,</span>
+        <span class="n">datas</span><span class="o">=</span><span class="s2">&quot;example/data/data/EURUSD_5m-0_1000.csv&quot;</span><span class="p">,</span>
+        <span class="n">account</span><span class="o">=</span><span class="n">ForexBackTestAccount</span><span class="p">,</span>
+    <span class="p">)</span>
 
-<span class="n">lt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-<span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">lt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">lt</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div>
 
 

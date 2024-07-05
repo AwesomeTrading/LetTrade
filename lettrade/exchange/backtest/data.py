@@ -2,6 +2,7 @@ import logging
 import re
 
 import pandas as pd
+
 from lettrade.data import DataFeed
 
 logger = logging.getLogger(__name__)
@@ -129,10 +130,12 @@ class CSVBackTestDataFeed(BackTestDataFeed):
         """_summary_
 
         Args:
-            name (str): Path to csv file
-            delimiter (str, optional): _description_. Defaults to ",".
-            index_col (int, optional): _description_. Defaults to 0.
-            header (int, optional): _description_. Defaults to 0.
+            path (str | None, optional): Path to csv file. Defaults to None.
+            csv (dict | None, optional): Reflect of `pandas.read_csv()` parameters. Defaults to None.
+            name (str | None, optional): _description_. Defaults to None.
+            timeframe (str | int | pd.Timedelta | None, optional): _description_. Defaults to None.
+            meta (dict | None, optional): _description_. Defaults to None.
+            data (DataFeed | None, optional): _description_. Defaults to None.
             **kwargs (dict): [DataFeed](../../data/data.md#lettrade.data.data.DataFeed) dict parameters
         """
         if name is None:
@@ -163,20 +166,31 @@ class CSVBackTestDataFeed(BackTestDataFeed):
 
 
 class YFBackTestDataFeed(BackTestDataFeed):
+    """YahooFinance DataFeed"""
 
     def __init__(
         self,
-        name,
-        ticker,
-        start,
-        end=None,
-        period=None,
-        interval="1d",
+        name: str,
+        ticker: str,
+        since: str,
+        to: str | None = None,
+        period: str | None = None,
+        interval: str = "1d",
         **kwargs,
     ) -> None:
+        """_summary_
+
+        Args:
+            name (str): _description_
+            ticker (str): _description_
+            since (str): _description_
+            to (str | None, optional): _description_. Defaults to None.
+            period (str | None, optional): _description_. Defaults to None.
+            interval (str, optional): _description_. Defaults to "1d".
+        """
         params = dict(
-            start=start,
-            end=end,
+            start=since,
+            end=to,
             period=period,
             interval=interval,
         )

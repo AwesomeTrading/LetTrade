@@ -81,8 +81,8 @@ if __name__ == "__main__":
             YFBackTestDataFeed(
                 name="EURUSD",
                 ticker="EURUSD=X",
-                start="2023-01-01",
-                end="2023-02-01",
+                since="2023-01-01",
+                to="2023-02-01",
                 interval="1h",
             )
         ],

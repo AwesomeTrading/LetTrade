@@ -44,7 +44,7 @@ class SmaCross(Strategy):
 
     def indicators(self, df: DataFeed):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
-        df["ema2"] = df.i.ema(period=self.ema2_window)
+        df["ema2"] = df.i.ema(window=self.ema2_window)
 
         df["crossover"] = i.crossover(df.ema1, df.ema2)
         df["crossunder"] = df.i.crossunder(df.ema1, df.ema2)
@@ -58,14 +58,15 @@ class SmaCross(Strategy):
             self.sell(size=0.1)
 
 
-lt = let_backtest(
-    strategy=SmaCross,
-    datas="example/data/data/EURUSD_5m-0_1000.csv",
-    account=ForexBackTestAccount,
-)
+if __name__ == "__main__":
+    lt = let_backtest(
+        strategy=SmaCross,
+        datas="example/data/data/EURUSD_5m-0_1000.csv",
+        account=ForexBackTestAccount,
+    )
 
-lt.run()
-lt.plot()
+    lt.run()
+    lt.plot()
 ```
 
 ```text

@@ -95,7 +95,7 @@ plugins:
 extra_css:
   - css/material.css
   - css/jupyter.css
-  # - css/mkdocstrings.css
+  - css/mkdocstrings.css
 
 draft_docs: |
   draft/

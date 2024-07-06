@@ -1,5 +1,6 @@
 from .candlestick import *
 from .dataframe import *
+from .momentum import *
 from .series import *
 from .trend import *
 from .volatility import *

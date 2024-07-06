@@ -58,9 +58,7 @@ class BackTestDataFeeder(DataFeeder):
         for data in self.datas:
             if not data.next(next=next):
                 if data is self.data:
-                    # Always end
-                    no_next += 1000
-                    break
+                    raise LetNoMoreDataFeedException()
                 no_next += 1
 
         if no_next >= len(self.datas):

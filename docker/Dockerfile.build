@@ -21,6 +21,7 @@ RUN mkdir /lettrade \
 
 WORKDIR /lettrade
 
+### python-deps
 # Install dependencies
 FROM base as python-deps
 RUN  apt-get update \
@@ -37,6 +38,7 @@ COPY --chown=letuser:letuser requirements.txt /lettrade/
 USER letuser
 RUN pip install --user --no-cache-dir -r requirements.txt
 
+### runtime-image
 # Copy dependencies to runtime-image
 FROM base as runtime-image
 COPY --from=python-deps /usr/local/lib /usr/local/lib

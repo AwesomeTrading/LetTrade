@@ -15,8 +15,8 @@ class SmaCross(Strategy):
     ema2_window = 21
 
     def indicators(self, df: DataFeed):
-        df["ema1"] = ta.EMA(df, timewindow=self.ema1_window)
-        df["ema2"] = ta.EMA(df, timewindow=self.ema2_window)
+        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
+        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_window)
 
         df["signal_ema_crossover"] = df.i.crossover(df.ema1, df.ema2)
         df["signal_ema_crossunder"] = df.i.crossunder(df.ema1, df.ema2)

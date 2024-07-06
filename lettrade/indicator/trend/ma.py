@@ -1,7 +1,6 @@
 from typing import Literal
 
 import pandas as pd
-import talib.abstract as ta
 
 from ..series import series_init
 from ..utils import talib_ma
@@ -13,19 +12,20 @@ def ema(
     dataframe: pd.DataFrame = None,
     prefix: str = "",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """Exponential Moving Average
 
     Args:
-        series (pd.Series | str): _description_
-        window (int): _description_
+        series (pd.Series | str, optional): _description_. Defaults to "close".
+        window (int, optional): _description_. Defaults to None.
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
-
-    Raises:
-        RuntimeError: _description_
+        plot (bool | list, optional): _description_. Defaults to False.
+        plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Returns:
         pd.Series | pd.DataFrame: _description_
@@ -37,6 +37,8 @@ def ema(
         dataframe=dataframe,
         prefix=prefix,
         inplace=inplace,
+        plot=plot,
+        plot_kwargs=plot_kwargs,
         **kwargs,
     )
 
@@ -50,6 +52,8 @@ def ma(
     dataframe: pd.DataFrame = None,
     prefix: str = "",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """Moving Average
@@ -61,6 +65,8 @@ def ma(
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
+        plot (bool | list, optional): _description_. Defaults to False.
+        plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Raises:
         RuntimeError: _description_
@@ -81,7 +87,21 @@ def ma(
     i = ma_fn(series, timeperiod=window, **kwargs)
 
     if inplace:
-        dataframe[f"{prefix}{mode}"] = i
+        column = f"{prefix}{mode}"
+        dataframe[column] = i
+
+        # Plot
+        if plot:
+            if plot_kwargs is None:
+                plot_kwargs = dict()
+
+            plot_kwargs.update(series=dataframe[column])
+
+            from lettrade.indicator.plot import indicator_add_plotter
+            from lettrade.plot.plotly import plot_line
+
+            indicator_add_plotter(dataframe=dataframe, plotter=plot_line, **plot_kwargs)
+
         return dataframe
 
     return i

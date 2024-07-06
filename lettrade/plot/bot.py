@@ -12,6 +12,8 @@ from .plot import Plotter
 if TYPE_CHECKING:
     from lettrade.bot import LetTradeBot
 
+DATAFRAME_PLOTTERS_NAME = "_lt_plotters"
+
 
 class BotPlotter(Plotter):
     """
@@ -145,6 +147,12 @@ class BotPlotter(Plotter):
                     ],
                     name=data.name,
                     timeframe=data.timeframe,
+                )
+
+            if hasattr(data, DATAFRAME_PLOTTERS_NAME):
+                object.__setattr__(
+                    self.datas[i],
+                    getattr(data, DATAFRAME_PLOTTERS_NAME),
                 )
 
         # Reload data

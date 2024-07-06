@@ -1,4 +1,9 @@
-def plot_merge(source: dict, *updates: list[dict]) -> dict:
+def plot_merge(
+    source: dict,
+    *updates: list[dict],
+    recursive: int = 0,
+    recursive_max: int = 1,
+) -> dict:
     """Merge multiple update plot config to source config
 
     Args:
@@ -9,16 +14,25 @@ def plot_merge(source: dict, *updates: list[dict]) -> dict:
         dict: Merged config
     """
     for update in updates:
-        for k, v in update.items():
-            if k not in source:
-                source[k] = v
+        for key, value in update.items():
+            if key not in source:
+                source[key] = value
                 continue
-            if isinstance(source[k], list):
-                source[k].extend(v)
+
+            if isinstance(source[key], list):
+                source[key].extend(value)
                 continue
-            if isinstance(source[k], list):
-                s = source[k]
-                for k1, v1 in v:
-                    s[k1] = v1
+            if isinstance(source[key], dict):
+                if recursive >= recursive_max:
+                    source[key] = value
+                    continue
+
+                sub = source[key]
+                plot_merge(
+                    sub,
+                    value,
+                    recursive=recursive + 1,
+                    recursive_max=recursive_max,
+                )
                 continue
     return source

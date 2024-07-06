@@ -10,6 +10,8 @@ def ichimoku(
     cloud: bool = False,
     prefix: str = "",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_kwargs: dict | None = None,
 ) -> dict[str, pd.Series] | pd.DataFrame:
     """Ichimoku cloud indicator
 
@@ -27,6 +29,8 @@ def ichimoku(
         cloud (bool, optional): Add cloud direction. Defaults to False.
         prefix (str, optional): _description_. Defaults to "ichimoku_".
         inplace (bool, optional): _description_. Defaults to False.
+        plot (bool | list, optional): _description_. Defaults to False.
+        plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Returns:
         dict[str, pd.Series] | pd.DataFrame: {tenkan_sen, kijun_sen, senkou_span_a, senkou_span_b, leading_senkou_span_a,
@@ -81,4 +85,31 @@ def ichimoku(
         result[f"{prefix}cloud_white"] = cloud_white
         result[f"{prefix}cloud_black"] = cloud_black
 
+    if plot:
+        if plot_kwargs is None:
+            plot_kwargs = dict()
+
+        if isinstance(plot, list):
+            if f"{prefix}tenkan_sen" in plot:
+                plot_kwargs.update(tenkan_sen=f"{prefix}tenkan_sen")
+            if f"{prefix}kijun_sen" in plot:
+                plot_kwargs.update(kijun_sen=f"{prefix}kijun_sen")
+            if f"{prefix}senkou_span_a" in plot:
+                plot_kwargs.update(senkou_span_a=f"{prefix}senkou_span_a")
+            if f"{prefix}senkou_span_b" in plot:
+                plot_kwargs.update(senkou_span_b=f"{prefix}senkou_span_b")
+            if f"{prefix}chikou_span" in plot:
+                plot_kwargs.update(chikou_span=f"{prefix}chikou_span")
+        else:
+            plot_kwargs.update(
+                tenkan_sen=f"{prefix}tenkan_sen",
+                kijun_sen=f"{prefix}kijun_sen",
+                senkou_span_a=f"{prefix}senkou_span_a",
+                senkou_span_b=f"{prefix}senkou_span_b",
+                chikou_span=f"{prefix}chikou_span",
+            )
+        from lettrade.indicator.plot import indicator_add_plotter
+        from lettrade.plot.plotly import plot_ichimoku
+
+        indicator_add_plotter(dataframe=dataframe, plotter=plot_ichimoku, **plot_kwargs)
     return result

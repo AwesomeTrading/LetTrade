@@ -36,8 +36,10 @@ def plot_ichimoku(
     Returns:
         dict: _description_
     """
-    return dict(
-        items=[
+    items = []
+
+    if tenkan_sen is not None:
+        items.append(
             dict(
                 type="scatter",
                 x=dataframe.index,
@@ -45,7 +47,10 @@ def plot_ichimoku(
                 name=tenkan_sen,
                 mode="lines",
                 line=dict(color=tenkan_sen_color, width=width),
-            ),
+            )
+        )
+    if kijun_sen is not None:
+        items.append(
             dict(
                 type="scatter",
                 x=dataframe.index,
@@ -53,7 +58,10 @@ def plot_ichimoku(
                 name=kijun_sen,
                 mode="lines",
                 line=dict(color=kijun_sen_color, width=width),
-            ),
+            )
+        )
+    if senkou_span_a is not None:
+        items.append(
             dict(
                 type="scatter",
                 x=dataframe.index,
@@ -61,7 +69,10 @@ def plot_ichimoku(
                 name=senkou_span_a,
                 mode="lines",
                 line=dict(color=senkou_span_a_color, width=width),
-            ),
+            )
+        )
+    if senkou_span_b is not None:
+        items.append(
             dict(
                 type="scatter",
                 x=dataframe.index,
@@ -70,7 +81,10 @@ def plot_ichimoku(
                 mode="lines",
                 fill="tonexty",
                 line=dict(color=senkou_span_b_color, width=width),
-            ),
+            )
+        )
+    if chikou_span is not None:
+        items.append(
             dict(
                 type="scatter",
                 x=dataframe.index,
@@ -78,9 +92,10 @@ def plot_ichimoku(
                 name=chikou_span,
                 mode="lines",
                 line=dict(color=chikou_span_color, width=width),
-            ),
-        ]
-    )
+            )
+        )
+
+    return {f"{dataframe.name}": dict(items=items)}
 
 
 def plot_line(
@@ -90,6 +105,7 @@ def plot_line(
     name=None,
     mode="lines",
     fullfill: bool = False,
+    dataframe: pd.DataFrame | None = None,
     **kwargs,
 ) -> dict:
     """_summary_
@@ -105,7 +121,7 @@ def plot_line(
     Returns:
         dict: _description_
     """
-    return dict(
+    config = dict(
         items=[
             dict(
                 type="scatter",
@@ -119,6 +135,10 @@ def plot_line(
             )
         ]
     )
+    if dataframe is None:
+        return config
+
+    return {f"{dataframe.name}": config}
 
 
 def plot_lines(
@@ -127,6 +147,8 @@ def plot_lines(
     width: int = 1,
     name=None,
     mode="lines",
+    fullfill: bool = False,
+    dataframe: pd.DataFrame | None = None,
     **kwargs,
 ) -> dict:
     """_summary_
@@ -136,6 +158,8 @@ def plot_lines(
         width (int, optional): _description_. Defaults to 1.
         name (_type_, optional): _description_. Defaults to None.
         mode (str, optional): _description_. Defaults to "lines".
+        fullfill (bool, optional): _description_. Defaults to False.
+        dataframe (pd.DataFrame | None, optional): _description_. Defaults to None.
 
     Returns:
         dict: _description_
@@ -150,6 +174,8 @@ def plot_lines(
                 width=width,
                 name=name,
                 mode=mode,
+                fullfill=fullfill,
+                dataframe=dataframe,
                 **kwargs,
             ),
         )
@@ -160,8 +186,10 @@ def plot_mark(
     series: pd.Series,
     color: str = "#ffee58",
     width: int = 1,
-    mode="markers",
-    name=None,
+    mode: str = "markers",
+    name: str = None,
+    fullfill: bool = False,
+    dataframe: pd.DataFrame | None = None,
     **kwargs,
 ) -> dict:
     """_summary_
@@ -171,7 +199,9 @@ def plot_mark(
         color (str, optional): _description_. Defaults to "#ffee58".
         width (int, optional): _description_. Defaults to 1.
         mode (str, optional): _description_. Defaults to "markers".
-        name (_type_, optional): _description_. Defaults to None.
+        name (str, optional): _description_. Defaults to None.
+        fullfill (bool, optional): _description_. Defaults to False.
+        dataframe (pd.DataFrame | None, optional): _description_. Defaults to None.
 
     Returns:
         dict: _description_
@@ -182,6 +212,8 @@ def plot_mark(
         width=width,
         mode=mode,
         name=name,
+        fullfill=fullfill,
+        dataframe=dataframe,
         **kwargs,
     )
 
@@ -200,15 +232,17 @@ def plot_candlestick(
 
     Args:
         dataframe (pd.DataFrame): _description_
-        name (str, optional): _description_. Defaults to "Candle highlight".
+        name (str, optional): _description_. Defaults to "Candlestick".
         width (int, optional): _description_. Defaults to 1.
         increasing_line_color (str, optional): _description_. Defaults to "#26c6da".
         decreasing_line_color (str, optional): _description_. Defaults to "#ab47bc".
+        row (int, optional): _description_. Defaults to 1.
+        col (int, optional): _description_. Defaults to 1.
 
     Returns:
         dict: _description_
     """
-    return dict(
+    config = dict(
         items=[
             dict(
                 type="candlestick",
@@ -229,3 +263,5 @@ def plot_candlestick(
             ),
         ]
     )
+
+    return {f"{dataframe.name}": config}

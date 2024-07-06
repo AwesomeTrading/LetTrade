@@ -1,6 +1,11 @@
 from .candlestick import *
 from .dataframe import *
 from .momentum import *
+from .plot import (
+    DATAFRAME_PLOTTERS_NAME,
+    indicator_add_plotter,
+    indicator_load_plotters,
+)
 from .series import *
 from .trend import *
 from .volatility import *

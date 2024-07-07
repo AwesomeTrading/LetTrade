@@ -87,7 +87,7 @@ def ma(
         if mode is None:
             raise RuntimeError(f"Mode {window} is invalid")
         if plot and not inplace:
-            raise RuntimeError(f"Cannot plot when inplace=False")
+            raise RuntimeError("Cannot plot when inplace=False")
 
     series = series_init(series=series, dataframe=dataframe, inplace=inplace)
 
@@ -96,7 +96,7 @@ def ma(
     i = ma_fn(series, timeperiod=window, **kwargs)
 
     if inplace:
-        name = f"{prefix}{mode}"
+        name = name or f"{prefix}{mode}"
         dataframe[name] = i
 
         # Plot

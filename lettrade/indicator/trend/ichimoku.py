@@ -42,6 +42,8 @@ def ichimoku(
                 f"dataframe type '{type(dataframe)}' "
                 "is not instance of pandas.DataFrame"
             )
+        if plot and not inplace:
+            raise RuntimeError("Cannot plot when inplace=False")
 
     tenkan_sen = (
         dataframe["high"].rolling(window=conversion_line_window).max()

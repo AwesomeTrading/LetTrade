@@ -108,7 +108,7 @@ def signal_condiction(
                 "is not instance of pandas.DataFrame"
             )
         if plot and not inplace:
-            raise RuntimeError(f"Cannot plot when inplace=False")
+            raise RuntimeError("Cannot plot when inplace=False")
 
     s = pd.Series(value, index=dataframe.index, name=name, **kwargs)
     for condiction in condictions:

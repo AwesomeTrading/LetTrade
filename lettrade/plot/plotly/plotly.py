@@ -24,46 +24,46 @@ class PlotlyBotPlotter(BotPlotter):
             {
                 "groups": [
                     {
-                    "id": "EURUSD_5m",
-                    "type": "data",
-                    "data": pandas.DataFrame,
-                    "height": 1,
-                    "items": [
-                        {
-                            "type": "candlestick",
-                            "show_orders": True,
-                            "show_positions": True,
-                            "update_xaxes": {
-                                "title_text": "EURUSD_5m",
-                                "rangeslider_visible": False,
-                                "mirror": True,
-                                "ticks": "outside",
-                                "showline": True
+                        "id": "EURUSD_5m",
+                        "type": "data",
+                        "data": pandas.DataFrame,
+                        "height": 1,
+                        "items": [
+                            {
+                                "type": "candlestick",
+                                "show_orders": True,
+                                "show_positions": True,
+                                "update_xaxes": {
+                                    "title_text": "EURUSD_5m",
+                                    "rangeslider_visible": False,
+                                    "mirror": True,
+                                    "ticks": "outside",
+                                    "showline": True
+                                },
+                                "update_yaxes": {
+                                    "title_text": "Price $",
+                                    "mirror": True,
+                                    "ticks": "outside",
+                                    "showline": True
+                                }
                             },
-                            "update_yaxes": {
-                                "title_text": "Price $",
-                                "mirror": True,
-                                "ticks": "outside",
-                                "showline": True
+                            {
+                                "type": "scatter",
+                                "x": pandas.DatetimeIndex,
+                                "y": pandas.Series,
+                                "line": { "color": <PlotColor.AMBER: '#fa0'>, "width": 1 },
+                                "name": "ema1",
+                                "mode": "lines"
+                            },
+                            {
+                                "type": "scatter",
+                                "x": pandas.DatetimeIndex,
+                                "y": pandas.Series,
+                                "line": { "color": <PlotColor.CYAN: '#00bad6'>, "width": 1 },
+                                "name": "ema2",
+                                "mode": "lines"
                             }
-                        },
-                        {
-                            "type": "scatter",
-                            "x": pandas.DatetimeIndex,
-                            "y": pandas.Series,
-                            "line": { "color": <PlotColor.AMBER: '#fa0'>, "width": 1 },
-                            "name": "ema1",
-                            "mode": "lines"
-                        },
-                        {
-                            "type": "scatter",
-                            "x": pandas.DatetimeIndex,
-                            "y": pandas.Series,
-                            "line": { "color": <PlotColor.CYAN: '#00bad6'>, "width": 1 },
-                            "name": "ema2",
-                            "mode": "lines"
-                        }
-                    ]
+                        ]
                     },
                     { "id": "equity", "type": "equity", "height": 0.5 }
                 ],
@@ -179,7 +179,7 @@ class PlotlyBotPlotter(BotPlotter):
             dict(
                 id="equity",
                 type="equity",
-                height=0.5,
+                row_height=0.5,
             )
         )
 
@@ -264,44 +264,15 @@ class PlotlyBotPlotter(BotPlotter):
             ),
         )
 
-    def _config_standard(self, config: dict):
-        """Calculate shapes/heights"""
-        shapes = dict()
-        for i, group in enumerate(config["groups"]):
-            if group["type"] == "data":
-                rows = max(item.get("row", 1) for item in group["items"])
-                cols = max(item.get("col", 1) for item in group["items"])
-            else:
-                rows = group.get("row", 1)
-                cols = group.get("col", 1)
-
-            shapes[group["id"]] = dict(group_index=i, rows=rows, cols=cols)
-
-        rows_total = sum(shape["rows"] for shape in shapes.values())
-        cols_total = sum(shape["cols"] for shape in shapes.values())
-
-        params: dict = config.setdefault("params", dict())
-        params.update(
-            rows=rows_total,
-            row_heights=[1] * (rows_total - 1) + [0.5],
-        )
-
-        config.update(
-            params=params,
-            shapes=shapes,
-            rows_total=rows_total,
-            cols_total=cols_total,
-        )
-        return config
-
     def _config_strategy(self, config: dict):
         """Merge strategy plot config"""
         strategy_config: dict = self.strategy.plot(*self.datas)
 
         # Move global items to main data items
+        group_indexes = list(group["id"] for group in config["groups"])
         if "items" in strategy_config:
-            shape = config["shapes"][self.data.name]
-            data_group = config["groups"][shape["group_index"]]
+            group_index = group_indexes.index(self.data.name)
+            data_group = config["groups"][group_index]
             data_items: list = data_group.setdefault("items", [])
             data_items.extend(strategy_config["items"])
 
@@ -310,8 +281,8 @@ class PlotlyBotPlotter(BotPlotter):
             if dname not in strategy_config:
                 continue
 
-            data_shape = config["shapes"][dname]
-            data_group = config["groups"][data_shape["group_index"]]
+            group_index = group_indexes.index(self.data.name)
+            data_group = config["groups"][group_index]
             data_config = strategy_config[dname]
 
             data_items: list = data_group.setdefault("items", [])
@@ -320,6 +291,59 @@ class PlotlyBotPlotter(BotPlotter):
         if "layout" in strategy_config:
             config["layout"].update(strategy_config["layout"])
 
+        return config
+
+    def _config_standard(self, config: dict):
+        """Calculate shapes/heights"""
+        shapes = dict()
+        rows_total = 1
+        cols_total = 1
+        row_heights = []
+        for i, group in enumerate(config["groups"]):
+            if group["type"] == "data":
+                _rows = []
+                _cols = []
+                _heights = dict()
+                for item in group["items"]:
+                    row = item.get("row", 1)
+                    _rows.append(row)
+                    _cols.append(item.get("col", 1))
+                    _heights[row] = item.pop("row_height", 1)
+
+                rows = max(_rows)
+                cols = max(_cols)
+
+                for i in range(1, rows):
+                    if i not in _heights.values():
+                        _heights[i] = 1
+
+                row_heights += _heights.values()
+            else:
+                rows = group.get("row", 1)
+                cols = group.get("col", 1)
+                row_heights += [group.pop("row_height", 1)]
+
+            shapes[group["id"]] = dict(
+                group_index=i,
+                row=rows_total,
+                col=cols_total,
+                rows=rows,
+                cols=cols,
+            )
+            rows_total += rows
+            cols_total = cols
+
+        params: dict = config.setdefault("params", dict())
+
+        # rows -1: because row index start at 1
+        params.update(rows=rows_total - 1, row_heights=row_heights)
+
+        config.update(
+            params=params,
+            shapes=shapes,
+            rows_total=rows_total,
+            cols_total=cols_total,
+        )
         return config
 
     def _plot_config(self, config: dict):
@@ -568,8 +592,8 @@ class PlotlyBotPlotter(BotPlotter):
         """Load plot config from `Strategy.plot()` and setup candlestick/equity"""
 
         config = self._config_default()
-        config = self._config_standard(config)
         config = self._config_strategy(config)
+        config = self._config_standard(config)
 
         params: dict = config.setdefault("params", dict())
         self.figure = make_subplots(**params)

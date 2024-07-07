@@ -53,7 +53,7 @@ def cdl_pattern(
             from lettrade.indicator.plot import indicator_add_plotter
             from lettrade.plot.plotly import plot_candlestick, plot_mark
 
-            filter = lambda df: i > 0
+            filter = i > 0
             if plot_type == "mark":
                 plot_kwargs.update(series=i)
                 indicator_add_plotter(

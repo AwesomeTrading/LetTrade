@@ -8,14 +8,13 @@ DATAFRAME_PLOTTERS_NAME = "_lt_plotters"
 def indicator_add_plotter(
     dataframe: pd.DataFrame,
     plotter: Callable,
-    filter: Callable | None = None,
+    filter: pd.Series | None = None,
     **kwargs,
 ):
     def _indicator_plot(dataframe: pd.DataFrame) -> dict:
         name = dataframe.name
         if filter is not None:
-            dataframe = dataframe.loc[filter(dataframe)]
-            dataframe.name = name
+            kwargs.update(filter=filter)
 
         config = plotter(dataframe=dataframe, **kwargs)
 

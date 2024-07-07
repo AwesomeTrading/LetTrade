@@ -223,6 +223,7 @@ def plot_mark(
 
 def plot_candlestick(
     dataframe: pd.DataFrame,
+    filter: pd.Series | None = None,
     name: str = "Candlestick",
     width: int = 1,
     increasing_line_color="#26c6da",
@@ -245,6 +246,10 @@ def plot_candlestick(
     Returns:
         dict: _description_
     """
+    if filter is not None:
+        dataframe = dataframe.loc[filter]
+        dataframe.name = name
+
     config = dict(
         items=[
             dict(

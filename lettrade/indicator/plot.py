@@ -5,14 +5,24 @@ import pandas as pd
 DATAFRAME_PLOTTERS_NAME = "_lt_plotters"
 
 
-def indicator_add_plotter(dataframe: pd.DataFrame, plotter: Callable, **kwargs):
+def indicator_add_plotter(
+    dataframe: pd.DataFrame,
+    plotter: Callable,
+    filter: Callable | None = None,
+    **kwargs,
+):
     def _indicator_plot(dataframe: pd.DataFrame) -> dict:
+        name = dataframe.name
+        if filter is not None:
+            dataframe = dataframe.loc[filter(dataframe)]
+            dataframe.name = name
+
         config = plotter(dataframe=dataframe, **kwargs)
 
-        if dataframe.name in config:
+        if name in config:
             return config
 
-        return {f"{dataframe.name}": config}
+        return {f"{name}": config}
 
     if not hasattr(dataframe, DATAFRAME_PLOTTERS_NAME):
         object.__setattr__(dataframe, DATAFRAME_PLOTTERS_NAME, [])

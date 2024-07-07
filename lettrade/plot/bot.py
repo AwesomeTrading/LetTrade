@@ -152,6 +152,7 @@ class BotPlotter(Plotter):
             if hasattr(data, DATAFRAME_PLOTTERS_NAME):
                 object.__setattr__(
                     self.datas[i],
+                    DATAFRAME_PLOTTERS_NAME,
                     getattr(data, DATAFRAME_PLOTTERS_NAME),
                 )
 

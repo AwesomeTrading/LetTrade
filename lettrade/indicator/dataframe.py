@@ -120,7 +120,7 @@ def signal_condiction(
             if plot_kwargs is None:
                 plot_kwargs = dict()
 
-            plot_kwargs.update(series=dataframe[name])
+            plot_kwargs.update(series=name, name=name)
 
             from lettrade.indicator.plot import indicator_add_plotter
             from lettrade.plot.plotly import plot_line, plot_mark

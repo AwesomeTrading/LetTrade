@@ -427,6 +427,9 @@ class PlotlyBotPlotter(BotPlotter):
         stop_dt = self.data.index[-1]
         equities = {k: e for k, e in equities.items() if k > start_dt and k < stop_dt}
 
+        if len(equities) == 0:
+            return
+
         # Axis
         x = list(equities.keys())
         y = list(equities.values())

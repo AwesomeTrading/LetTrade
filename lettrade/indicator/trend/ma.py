@@ -87,15 +87,15 @@ def ma(
     i = ma_fn(series, timeperiod=window, **kwargs)
 
     if inplace:
-        column = f"{prefix}{mode}"
-        dataframe[column] = i
+        name = f"{prefix}{mode}"
+        dataframe[name] = i
 
         # Plot
         if plot:
             if plot_kwargs is None:
                 plot_kwargs = dict()
 
-            plot_kwargs.update(series=dataframe[column])
+            plot_kwargs.update(series=name, name=name)
 
             from lettrade.indicator.plot import indicator_add_plotter
             from lettrade.plot.plotly import plot_line

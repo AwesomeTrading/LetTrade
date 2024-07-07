@@ -99,11 +99,11 @@ def plot_ichimoku(
 
 
 def plot_line(
-    series: pd.Series,
+    series: pd.Series | str,
     color: str = "#ffee58",
     width: int = 1,
-    name=None,
-    mode="lines",
+    name: str | None = None,
+    mode: str = "lines",
     fullfill: bool = False,
     dataframe: pd.DataFrame | None = None,
     **kwargs,
@@ -121,6 +121,9 @@ def plot_line(
     Returns:
         dict: _description_
     """
+    if isinstance(series, str):
+        series = dataframe[series]
+
     config = dict(
         items=[
             dict(
@@ -142,11 +145,11 @@ def plot_line(
 
 
 def plot_lines(
-    *serieses: list[pd.Series],
+    *serieses: list[pd.Series | str],
     color: str = "#ffee58",
     width: int = 1,
-    name=None,
-    mode="lines",
+    name: str | None = None,
+    mode: str = "lines",
     fullfill: bool = False,
     dataframe: pd.DataFrame | None = None,
     **kwargs,
@@ -183,11 +186,11 @@ def plot_lines(
 
 
 def plot_mark(
-    series: pd.Series,
+    series: pd.Series | str,
     color: str = "#ffee58",
     width: int = 1,
+    name: str | None = None,
     mode: str = "markers",
-    name: str = None,
     fullfill: bool = False,
     dataframe: pd.DataFrame | None = None,
     **kwargs,

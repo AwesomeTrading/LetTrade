@@ -10,6 +10,8 @@ def rsi(
     dataframe: pd.DataFrame = None,
     prefix: str = "",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
@@ -20,6 +22,8 @@ def rsi(
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
+        plot (bool | list, optional): _description_. Defaults to False.
+        plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Raises:
         RuntimeError: _description_
@@ -37,7 +41,22 @@ def rsi(
     i = ta.RSI(series, timeperiod=window, **kwargs)
 
     if inplace:
-        dataframe[f"{prefix}rsi"] = i
+        name = f"{prefix}rsi"
+        dataframe[name] = i
+
+        # Plot
+        if plot:
+            if plot_kwargs is None:
+                plot_kwargs = dict()
+
+            plot_kwargs.update(series=name, name=name)
+            plot_kwargs.setdefault("row", 2)
+
+            from lettrade.indicator.plot import indicator_add_plotter
+            from lettrade.plot.plotly import plot_line
+
+            indicator_add_plotter(dataframe=dataframe, plotter=plot_line, **plot_kwargs)
+
         return dataframe
 
     return i

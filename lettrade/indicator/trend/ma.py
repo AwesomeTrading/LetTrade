@@ -10,6 +10,7 @@ def ema(
     series: pd.Series | str = "close",
     window: int = None,
     dataframe: pd.DataFrame = None,
+    name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
     plot: bool | list = False,
@@ -22,6 +23,7 @@ def ema(
         series (pd.Series | str, optional): _description_. Defaults to "close".
         window (int, optional): _description_. Defaults to None.
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
         plot (bool | list, optional): _description_. Defaults to False.
@@ -35,6 +37,7 @@ def ema(
         window=window,
         mode="ema",
         dataframe=dataframe,
+        name=name,
         prefix=prefix,
         inplace=inplace,
         plot=plot,
@@ -50,6 +53,7 @@ def ma(
         "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"
     ] = None,
     dataframe: pd.DataFrame = None,
+    name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
     plot: bool | list = False,
@@ -61,14 +65,16 @@ def ma(
     Args:
         series (pd.Series | str, optional): _description_. Defaults to "close".
         window (int, optional): _description_. Defaults to None.
-        mode (Literal[ "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3" ], optional): _description_. Defaults to None.
+        mode (Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"], optional): _description_. Defaults to None.
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
         plot (bool | list, optional): _description_. Defaults to False.
         plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Raises:
+        RuntimeError: _description_
         RuntimeError: _description_
 
     Returns:
@@ -80,6 +86,9 @@ def ma(
             raise RuntimeError(f"Window {window} is invalid")
         if mode is None:
             raise RuntimeError(f"Mode {window} is invalid")
+        if plot and not inplace:
+            raise RuntimeError(f"Cannot plot when inplace=False")
+
     series = series_init(series=series, dataframe=dataframe, inplace=inplace)
 
     # Indicator

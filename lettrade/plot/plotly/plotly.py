@@ -147,6 +147,7 @@ class PlotlyBotPlotter(BotPlotter):
                     items=[
                         dict(
                             type="candlestick",
+                            name=data.name,
                             show_orders=data is self.data,
                             show_positions=data is self.data,
                             update_xaxes=dict(

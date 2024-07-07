@@ -281,7 +281,7 @@ class PlotlyBotPlotter(BotPlotter):
             if dname not in strategy_config:
                 continue
 
-            group_index = group_indexes.index(self.data.name)
+            group_index = group_indexes.index(data.name)
             data_group = config["groups"][group_index]
             data_config = strategy_config[dname]
 
@@ -313,9 +313,9 @@ class PlotlyBotPlotter(BotPlotter):
                 rows = max(_rows)
                 cols = max(_cols)
 
-                for i in range(1, rows):
-                    if i not in _heights.values():
-                        _heights[i] = 1
+                for j in range(1, rows):
+                    if j not in _heights.values():
+                        _heights[j] = 1
 
                 row_heights += _heights.values()
             else:
@@ -356,6 +356,7 @@ class PlotlyBotPlotter(BotPlotter):
                 for item in group["items"]:
                     row = rows + item.pop("row", 1)
                     col = item.pop("col", 1)
+
                     match item["type"]:
                         case "candlestick":
                             self._plot_candlestick(

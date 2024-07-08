@@ -16,6 +16,8 @@ def parabolic_sar(
     max_af: float = 0.2,
     prefix: str = "psar_",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_kwargs: dict | None = None,
 ) -> dict[str, pd.Series] | pd.DataFrame:
     """Indicator: Parabolic Stop and Reverse (PSAR)
 
@@ -29,6 +31,8 @@ def parabolic_sar(
         max_af (float, optional): _description_. Defaults to 0.2.
         prefix (str, optional): _description_. Defaults to "psar_".
         inplace (bool, optional): _description_. Defaults to False.
+        plot (bool | list, optional): _description_. Defaults to False.
+        plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Raises:
         RuntimeError: _description_
@@ -117,5 +121,30 @@ def parabolic_sar(
     result[f"{prefix}short"] = i_short
     result[f"{prefix}af"] = i_af
     result[f"{prefix}reversal"] = i_reversal
+
+    # Plot
+    if plot:
+        if plot_kwargs is None:
+            plot_kwargs = dict()
+
+        if isinstance(plot, list):
+            if f"{prefix}long" in plot:
+                plot_kwargs.update(long=f"{prefix}long")
+            if f"{prefix}short" in plot:
+                plot_kwargs.update(short=f"{prefix}short")
+        else:
+            plot_kwargs.update(
+                long=f"{prefix}long",
+                short=f"{prefix}short",
+            )
+
+        from lettrade.indicator.plot import IndicatorPlotter
+        from lettrade.plot.plotly import plot_parabolic_sar
+
+        IndicatorPlotter(
+            dataframe=dataframe,
+            plotter=plot_parabolic_sar,
+            **plot_kwargs,
+        )
 
     return result

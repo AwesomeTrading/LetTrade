@@ -107,26 +107,26 @@ def plot_ichimoku(
 
 def plot_bollinger_bands(
     dataframe: pd.DataFrame,
-    upper="upper",
-    basis="basis",
-    lower="lower",
-    width=1,
-    upper_color="#33BDFF",
-    basis_color="#D105F5",
-    lower_color="#33BDFF",
+    upper: str | None = "upper",
+    basis: str | None = "basis",
+    lower: str | None = "lower",
+    width: int = 1,
+    upper_color: str = "#33BDFF",
+    basis_color: str = "#D105F5",
+    lower_color: str = "#33BDFF",
     filter: pd.Series | None = None,
 ) -> dict:
     """_summary_
 
     Args:
         dataframe (pd.DataFrame): _description_
-        upper (str, optional): _description_. Defaults to "upper".
-        basis (str, optional): _description_. Defaults to "basis".
-        lower (str, optional): _description_. Defaults to "lower".
+        upper (str, optional): Column name. `None` mean skip plot. Defaults to "upper".
+        basis (str, optional): Column name. `None` mean skip plot. Defaults to "basis".
+        lower (str, optional): Column name. `None` mean skip plot. Defaults to "lower".
         width (int, optional): _description_. Defaults to 1.
-        upper_color (str, optional): _description_. Defaults to "#33BDFF".
-        lower_color (str, optional): _description_. Defaults to "#33BDFF".
-        basis_color (str, optional): _description_. Defaults to "#D105F5".
+        upper_color (str, optional): Color code. Defaults to "#33BDFF".
+        lower_color (str, optional): Color code. Defaults to "#33BDFF".
+        basis_color (str, optional): Color code. Defaults to "#D105F5".
         filter (pd.Series | None, optional): _description_. Defaults to None.
 
     Returns:
@@ -176,6 +176,61 @@ def plot_bollinger_bands(
 
 
 plot_keltner_channel = plot_bollinger_bands
+
+
+def plot_parabolic_sar(
+    dataframe: pd.DataFrame,
+    long: str | None = "long",
+    short: str | None = "short",
+    width: int = 1,
+    long_color: str = "#33BDFF",
+    short_color: str = "#D105F5",
+    filter: pd.Series | None = None,
+) -> dict:
+    """_summary_
+
+    Args:
+        dataframe (pd.DataFrame): _description_
+        long (str | None, optional): _description_. Defaults to "long".
+        short (str | None, optional): _description_. Defaults to "short".
+        width (int, optional): _description_. Defaults to 1.
+        long_color (str, optional): _description_. Defaults to "#33BDFF".
+        short_color (str, optional): _description_. Defaults to "#D105F5".
+        filter (pd.Series | None, optional): _description_. Defaults to None.
+
+    Returns:
+        dict: _description_
+    """
+    if filter is not None:
+        df_name = dataframe.name
+        dataframe = dataframe.loc[filter]
+        object.__setattr__(dataframe, "name", df_name)
+
+    config = dict()
+
+    if long is not None:
+        plot_merge(
+            config,
+            plot_mark(
+                series=long,
+                color=long_color,
+                name="psar_long",
+                width=width,
+                dataframe=dataframe,
+            ),
+        )
+    if short is not None:
+        plot_merge(
+            config,
+            plot_mark(
+                series=short,
+                color=short_color,
+                name="psar_short",
+                width=width,
+                dataframe=dataframe,
+            ),
+        )
+    return config
 
 
 def plot_line(

@@ -175,6 +175,9 @@ def plot_bollinger_bands(
     return {f"{dataframe.name}": dict(items=items)}
 
 
+plot_keltner_channel = plot_bollinger_bands
+
+
 def plot_line(
     series: pd.Series | str,
     color: str = "#ffee58",

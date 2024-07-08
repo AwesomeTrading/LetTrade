@@ -4,7 +4,6 @@ import re
 from datetime import datetime, timedelta
 
 import pandas as pd
-from typing_extensions import Self
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +53,7 @@ class TimeFrame:
     unit_pandas: str
     value: int
 
-    def __init__(self, tf: int | str | list | pd.Timedelta | Self) -> None:
+    def __init__(self, tf: "int | str | list | pd.Timedelta | TimeFrame") -> None:
         """_summary_
 
         Args:

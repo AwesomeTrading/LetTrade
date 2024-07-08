@@ -52,7 +52,7 @@ class SmaCross(Strategy):
         print(df)
         print(self.orders)
 
-    def plot(self, df: DataFeed):
+    def plot(self, config: dict, df: DataFeed):
         return dict(
             scatters=[
                 dict(

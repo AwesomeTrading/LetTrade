@@ -29,6 +29,11 @@ def ema(
         plot (bool | list, optional): _description_. Defaults to False.
         plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
+    Example:
+        ```python
+        df.i.ema(window=21, name="ema", inplace=True, plot=True)
+        ```
+
     Returns:
         pd.Series | pd.DataFrame: _description_
     """
@@ -65,7 +70,7 @@ def ma(
     Args:
         series (pd.Series | str, optional): _description_. Defaults to "close".
         window (int, optional): _description_. Defaults to None.
-        mode (Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"], optional): _description_. Defaults to None.
+        mode (Literal[ &quot;sma&quot;, &quot;ema&quot;, &quot;wma&quot;, &quot;dema&quot;, &quot;tema&quot;, &quot;trima&quot;, &quot;kama&quot;, &quot;mama&quot;, &quot;t3&quot; ], optional): _description_. Defaults to None.
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
         name (str | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
@@ -73,8 +78,12 @@ def ma(
         plot (bool | list, optional): _description_. Defaults to False.
         plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
+    Example:
+        ```python
+        df.i.ma(window=21, name="sma", mode="sma", inplace=True, plot=True)
+        ```
+
     Raises:
-        RuntimeError: _description_
         RuntimeError: _description_
 
     Returns:

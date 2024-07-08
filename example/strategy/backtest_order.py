@@ -32,12 +32,12 @@ class SmaCross(Strategy):
         print(df.tail())
         print(self.orders)
 
-    def plot(self, df: DataFeed):
+    def plot(self, config: dict, df: DataFeed):
         from lettrade.plot.plotly import PlotColor, plot_line, plot_merge
 
         plot_ema1 = plot_line(df["ema1"], color=PlotColor.AMBER)
         plot_ema2 = plot_line(df["ema2"], color=PlotColor.CYAN)
-        return plot_merge(plot_ema1, plot_ema2)
+        return plot_merge(config, plot_ema1, plot_ema2)
 
 
 if __name__ == "__main__":

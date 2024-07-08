@@ -52,9 +52,9 @@ class SmaCross(Strategy):
         print(df.tail())
         print(self.orders)
 
-    def plot(self, df: DataFeed):
+    def plot(self, config: dict, df: DataFeed):
         return dict(
-            scatters=[
+            items=[
                 dict(
                     x=df.index,
                     y=df["ema1"],

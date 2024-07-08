@@ -1,8 +1,7 @@
 import pandas_ta as pta
-import talib.abstract as ta
 
 import example.logger
-from lettrade.all import DataFeed, Strategy, YFBackTestDataFeed, crossover, let_backtest
+from lettrade.all import DataFeed, Strategy, YFBackTestDataFeed, let_backtest
 
 
 class SmaCross(Strategy):
@@ -11,67 +10,37 @@ class SmaCross(Strategy):
 
     def indicators(self, df: DataFeed):
         # EMA
-        df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
-        df["ema2"] = ta.EMA(df, timeperiod=self.ema2_window)
+        df.i.ema(window=self.ema1_window, name="ema1", inplace=True, plot=True)
+        df.i.ema(window=self.ema2_window, name="ema2", inplace=True, plot=True)
 
-        # EMA Cross
-        df["signal_ema_crossover"] = crossover(df.ema1, df.ema2)
-        df["signal_ema_crossunder"] = crossover(df.ema2, df.ema1)
+        df.i.crossover(
+            "ema1",
+            "ema2",
+            name="signal_ema_crossover",
+            inplace=True,
+            plot=True,
+        )
+        df.i.crossunder(
+            "ema1",
+            "ema2",
+            name="signal_ema_crossunder",
+            inplace=True,
+            plot=True,
+        )
 
         # BBands
-        bb = pta.bbands(df.close, length=20, std=2.0)
-        df["bbands_low"] = bb.iloc[:, 0]
-        df["bbands_mid"] = bb.iloc[:, 1]
-        df["bbands_high"] = bb.iloc[:, 2]
+        df.i.bollinger_bands(window=20, std=2.0, inplace=True, plot=True)
 
         return df
 
     def next(self, df: DataFeed):
-        if df.signal_ema_crossover[0]:
+        if df.l.signal_ema_crossover[-1]:
             self.buy(size=0.1)
-        elif df.signal_ema_crossunder[0]:
+        elif df.l.signal_ema_crossunder[-1]:
             self.sell(size=0.1)
 
     def stop(self, df: DataFeed):
-        print(self.data.tail(10))
-
-    def plot(self, df: DataFeed):
-        return dict(
-            scatters=[
-                # EMA
-                dict(
-                    x=df.index,
-                    y=df["ema1"],
-                    line=dict(color="blue", width=1),
-                    name="ema1",
-                ),
-                dict(
-                    x=df.index,
-                    y=df["ema2"],
-                    line=dict(color="green", width=1),
-                    name="ema2",
-                ),
-                # BBands
-                dict(
-                    x=df.index,
-                    y=df["bbands_low"],
-                    line=dict(color="blue", width=1),
-                    name="bbands_low",
-                ),
-                dict(
-                    x=df.index,
-                    y=df["bbands_mid"],
-                    line=dict(color="green", width=1),
-                    name="bbands_mid",
-                ),
-                dict(
-                    x=df.index,
-                    y=df["bbands_high"],
-                    line=dict(color="blue", width=1),
-                    name="bbands_high",
-                ),
-            ]
-        )
+        print(df.tail())
 
 
 if __name__ == "__main__":

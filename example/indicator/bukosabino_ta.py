@@ -27,7 +27,7 @@ class SmaCross(Strategy):
             price = df.l.close[-1]
             self.sell(size=0.1, sl=price + 0.01, tp=price - 0.01)
 
-    def plot(self, df: DataFeed):
+    def plot(self, config: dict, df: DataFeed):
         from lettrade.plot.plotly import PlotColor, plot_line, plot_merge
 
         plot_ema1 = plot_line(df["ema1"], color=PlotColor.AMBER)

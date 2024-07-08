@@ -35,7 +35,7 @@ class SmaCross(Strategy):
     # def stop(self, df: DataFeed):
     #     print(df.tail(10))
 
-    def plot(self, df: DataFeed):
+    def plot(self, config: dict, df: DataFeed):
         return dict(
             scatters=[
                 dict(

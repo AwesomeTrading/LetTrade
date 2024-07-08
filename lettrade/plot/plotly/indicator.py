@@ -105,6 +105,76 @@ def plot_ichimoku(
     return {f"{dataframe.name}": dict(items=items)}
 
 
+def plot_bollinger_bands(
+    dataframe: pd.DataFrame,
+    upper="upper",
+    basis="basis",
+    lower="lower",
+    width=1,
+    upper_color="#33BDFF",
+    basis_color="#D105F5",
+    lower_color="#33BDFF",
+    filter: pd.Series | None = None,
+) -> dict:
+    """_summary_
+
+    Args:
+        dataframe (pd.DataFrame): _description_
+        upper (str, optional): _description_. Defaults to "upper".
+        basis (str, optional): _description_. Defaults to "basis".
+        lower (str, optional): _description_. Defaults to "lower".
+        width (int, optional): _description_. Defaults to 1.
+        upper_color (str, optional): _description_. Defaults to "#33BDFF".
+        lower_color (str, optional): _description_. Defaults to "#33BDFF".
+        basis_color (str, optional): _description_. Defaults to "#D105F5".
+        filter (pd.Series | None, optional): _description_. Defaults to None.
+
+    Returns:
+        dict: _description_
+    """
+    if filter is not None:
+        df_name = dataframe.name
+        dataframe = dataframe.loc[filter]
+        object.__setattr__(dataframe, "name", df_name)
+
+    items = []
+
+    if upper is not None:
+        items.append(
+            dict(
+                type="scatter",
+                x=dataframe.index,
+                y=dataframe[upper],
+                name=upper,
+                mode="lines",
+                line=dict(color=upper_color, width=width),
+            )
+        )
+    if basis is not None:
+        items.append(
+            dict(
+                type="scatter",
+                x=dataframe.index,
+                y=dataframe[basis],
+                name=basis,
+                mode="lines",
+                line=dict(color=basis_color, width=width),
+            )
+        )
+    if lower is not None:
+        items.append(
+            dict(
+                type="scatter",
+                x=dataframe.index,
+                y=dataframe[lower],
+                name=lower,
+                mode="lines",
+                line=dict(color=lower_color, width=width),
+            )
+        )
+    return {f"{dataframe.name}": dict(items=items)}
+
+
 def plot_line(
     series: pd.Series | str,
     color: str = "#ffee58",

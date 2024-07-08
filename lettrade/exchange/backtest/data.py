@@ -204,7 +204,6 @@ class YFBackTestDataFeed(BackTestDataFeed):
         from .extra.yfinance import yf_parse
 
         df = yf_parse(df)
-        df["date"] = pd.to_datetime(df["date"], unit="ms", utc=True)
 
         # Metadata
         meta = dict(yf=dict(ticker=ticker, **params))

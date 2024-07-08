@@ -10,10 +10,10 @@ class SmaCross(Strategy):
 
     def indicators(self, df: DataFeed):
         df["ema1"] = ta.EMA(df, timeperiod=self.ema1_window)
-        df["ema2"] = df.i.ema(window=self.ema2_window)
+        df.i.ema(name="ema2", window=self.ema2_window, inplace=True, plot=True)
 
         df["crossover"] = i.crossover(df.ema1, df.ema2)
-        df["crossunder"] = df.i.crossunder(df.ema1, df.ema2)
+        df.i.crossunder("ema1", "ema2", inplace=True, plot=True)
 
     def next(self, df: DataFeed):
         if df.l.crossover[-1]:
@@ -22,6 +22,19 @@ class SmaCross(Strategy):
         elif df.l.crossunder[-1]:
             self.positions_exit()
             self.sell(size=0.1)
+
+    def plot(self, config: dict, df: DataFeed) -> dict:
+        from lettrade.plot.plotly import PlotColor, plot_line, plot_mark, plot_merge
+
+        plot_ema1 = plot_line(df["ema1"], dataframe=df, color="green")
+        plot_crossover = plot_mark(
+            df["close"],
+            filter=df["crossover"] >= 100,
+            dataframe=df,
+            name="crossover",
+            color=PlotColor.BLUE,
+        )
+        return plot_merge(config, plot_ema1, plot_crossover)
 
 
 if __name__ == "__main__":

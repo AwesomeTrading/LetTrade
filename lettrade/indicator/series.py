@@ -55,13 +55,18 @@ def pandas_inject(obj: object | None = None):
     obj.diff = series_indicator_inject(diff)
     obj.above = series_indicator_inject(above)
     obj.below = series_indicator_inject(below)
+    obj.rolling_above = series_indicator_inject(rolling_above)
+    obj.rolling_below = series_indicator_inject(rolling_below)
+    obj.rolling_min = series_indicator_inject(rolling_min)
+    obj.rolling_max = series_indicator_inject(rolling_max)
+    obj.rolling_mean = series_indicator_inject(rolling_mean)
     obj.crossover = series_indicator_inject(crossover)
     obj.crossunder = series_indicator_inject(crossunder)
 
 
 def diff(
-    series1: pd.Series,
-    series2: pd.Series,
+    series1: pd.Series | str,
+    series2: pd.Series | str,
     dataframe: pd.DataFrame = None,
     name: str | None = None,
     prefix: str = "",
@@ -109,9 +114,17 @@ def diff(
     return i
 
 
+def s_above(series1: pd.Series, series2: pd.Series) -> pd.Series:
+    return (series1 - series2).apply(lambda v: 100 if v > 0 else 0)
+
+
+def s_below(series1: pd.Series, series2: pd.Series) -> pd.Series:
+    return (series1 - series2).apply(lambda v: -100 if v < 0 else 0)
+
+
 def above(
-    series1: pd.Series,
-    series2: pd.Series,
+    series1: pd.Series | str,
+    series2: pd.Series | str,
     dataframe: pd.DataFrame = None,
     name: str | None = None,
     prefix: str = "",
@@ -138,7 +151,7 @@ def above(
     if isinstance(series2, str):
         series2 = dataframe[series2]
 
-    i = (series1 - series2).apply(lambda v: 100 if v > 0 else 0)
+    i = s_above(series1=series1, series2=series2)
 
     if inplace:
         name = name or f"{prefix}above"
@@ -151,8 +164,8 @@ def above(
 
 
 def below(
-    series1: pd.Series,
-    series2: pd.Series,
+    series1: pd.Series | str,
+    series2: pd.Series | str,
     dataframe: pd.DataFrame = None,
     name: str | None = None,
     prefix: str = "",
@@ -168,7 +181,7 @@ def below(
         series2 (pd.Series): second Series
 
     Returns:
-        pd.Series: True series1 is below series2 else False
+        pd.Series: -100 series1 is below series2 else 0
     """
     if __debug__:
         if plot and not inplace:
@@ -179,7 +192,7 @@ def below(
     if isinstance(series2, str):
         series2 = dataframe[series2]
 
-    i = (series1 - series2).apply(lambda v: 100 if v < 0 else 0)
+    i = s_below(series1, series2)
 
     if inplace:
         name = name or f"{prefix}below"
@@ -187,6 +200,166 @@ def below(
 
         if plot:
             _plot_mark(dataframe=dataframe, name=name, plot_kwargs=plot_kwargs)
+
+    return i
+
+
+def rolling_above(
+    series1: pd.Series,
+    series2: pd.Series,
+    window: int = 20,
+    min_periods: int | None = None,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+    plot: bool | list = False,
+    plot_kwargs: dict | None = None,
+    # **kwargs,
+) -> pd.Series:
+    """Check a Series is rolling above another Series
+
+    Args:
+        series1 (pd.Series): first Series
+        series2 (pd.Series): second Series
+
+    Returns:
+        pd.Series: 100 mean series1 is rolling above series2 else 0
+    """
+    if __debug__:
+        if plot and not inplace:
+            raise RuntimeError("Cannot plot when inplace=False")
+
+    if isinstance(series1, str):
+        series1 = dataframe[series1]
+    if isinstance(series2, str):
+        series2 = dataframe[series2]
+
+    min_periods = window if min_periods is None else min_periods
+
+    i = s_above(series1, series2)
+    i = i.rolling(window=window, min_periods=min_periods).min()
+    i = i.apply(lambda v: 100 if v >= 100 else 0).astype(int)
+
+    if inplace:
+        name = name or f"{prefix}rolling_above"
+        dataframe[name] = i
+
+        if plot:
+            _plot_mark(dataframe=dataframe, name=name, plot_kwargs=plot_kwargs)
+
+    return i
+
+
+def rolling_below(
+    series1: pd.Series,
+    series2: pd.Series,
+    window: int = 20,
+    min_periods: int | None = None,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+    plot: bool | list = False,
+    plot_kwargs: dict | None = None,
+    # **kwargs,
+) -> pd.Series:
+    """Check a Series is rolling below another Series
+
+    Args:
+        series1 (pd.Series): first Series
+        series2 (pd.Series): second Series
+
+    Returns:
+        pd.Series: -100 mean series1 is rolling below series2 else 0
+    """
+    if __debug__:
+        if plot and not inplace:
+            raise RuntimeError("Cannot plot when inplace=False")
+
+    if isinstance(series1, str):
+        series1 = dataframe[series1]
+    if isinstance(series2, str):
+        series2 = dataframe[series2]
+
+    min_periods = window if min_periods is None else min_periods
+
+    i = s_below(series1, series2)
+    i = i.rolling(window=window, min_periods=min_periods).max()
+    i = i.apply(lambda v: 100 if v <= -100 else 0).astype(int)
+
+    if inplace:
+        name = name or f"{prefix}rolling_below"
+        dataframe[name] = i
+
+        if plot:
+            _plot_mark(dataframe=dataframe, name=name, plot_kwargs=plot_kwargs)
+
+    return i
+
+
+def rolling_min(
+    series: pd.Series,
+    window: int = 14,
+    min_periods: int | None = None,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+):
+    if isinstance(series, str):
+        series = dataframe[series]
+
+    min_periods = window if min_periods is None else min_periods
+    i = series.rolling(window=window, min_periods=min_periods).min()
+
+    if inplace:
+        name = name or f"{prefix}rolling_min"
+        dataframe[name] = i
+
+    return i
+
+
+def rolling_max(
+    series: pd.Series,
+    window: int = 14,
+    min_periods: int | None = None,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+):
+    if isinstance(series, str):
+        series = dataframe[series]
+
+    min_periods = window if min_periods is None else min_periods
+    i = series.rolling(window=window, min_periods=min_periods).max()
+
+    if inplace:
+        name = name or f"{prefix}rolling_max"
+        dataframe[name] = i
+
+    return i
+
+
+def rolling_mean(
+    series: pd.Series,
+    window: int = 14,
+    min_periods: int | None = None,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+):
+    if isinstance(series, str):
+        series = dataframe[series]
+
+    min_periods = window if min_periods is None else min_periods
+    i = series.rolling(window=window, min_periods=min_periods).mean()
+
+    if inplace:
+        name = name or f"{prefix}rolling_mean"
+        dataframe[name] = i
 
     return i
 
@@ -209,7 +382,7 @@ def crossover(
         series2 (pd.Series): second Series
 
     Returns:
-        pd.Series: True if series1 cross over series2 else False
+        pd.Series: 100 if series1 cross over series2 else 0
     """
     if __debug__:
         if plot and not inplace:
@@ -220,9 +393,9 @@ def crossover(
     if isinstance(series2, str):
         series2 = dataframe[series2]
 
-    below1 = below(series1, series2).shift(1)
-    above0 = above(series1, series2)
-    i = (below1 + above0).apply(lambda v: 100 if v >= 200 else 0)
+    below1 = s_below(series1, series2).shift(1)
+    above0 = s_above(series1, series2)
+    i = (-below1 + above0).apply(lambda v: 100 if v >= 200 else 0)
 
     if inplace:
         name = name or f"{prefix}crossover"
@@ -252,7 +425,7 @@ def crossunder(
         series2 (pd.Series): second Series
 
     Returns:
-        pd.Series: True if series1 cross under series2 else False
+        pd.Series: -100 if series1 cross under series2 else 0
     """
     if __debug__:
         if plot and not inplace:
@@ -263,9 +436,9 @@ def crossunder(
     if isinstance(series2, str):
         series2 = dataframe[series2]
 
-    above1 = above(series1, series2).shift(1)
-    below0 = below(series1, series2)
-    i = (below0 + above1).apply(lambda v: 100 if v >= 200 else 0)
+    above1 = s_above(series1, series2).shift(1)
+    below0 = s_below(series1, series2)
+    i = (below0 - above1).apply(lambda v: -100 if v <= -200 else 0)
 
     if inplace:
         name = name or f"{prefix}crossunder"

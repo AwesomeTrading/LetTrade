@@ -27,7 +27,7 @@ if __name__ == "__main__":
         ],
         packages=find_packages(),
         python_requires=">=3.10,<3.13",
-        install_requires=["pandas", "numpy<2.0", "numexpr"],
+        install_requires=["pandas>=2.0", "numpy<2.0", "numexpr", "TA-Lib>=0.4"],
         extras_require={
             "plot": ["plotly"],
             "jupyter": ["nbformat", "rich[jupyter]"],

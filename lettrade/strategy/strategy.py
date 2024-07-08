@@ -149,9 +149,9 @@ class Strategy:
         for data in datas:
             plot_merge(config, indicator_load_plotters(data))
 
-        return self.plot(config, *datas)
+        return plot_merge(config, self.plot(*datas))
 
-    def plot(self, config: dict, df: DataFeed, *others: list[DataFeed]) -> dict:
+    def plot(self, df: DataFeed, *others: list[DataFeed]) -> dict:
         """Custom config of plot
 
         Example:
@@ -187,7 +187,7 @@ class Strategy:
         Returns:
             dict: config
         """
-        return config
+        return dict()
 
     @final
     def order_buy(

@@ -23,7 +23,7 @@ class SmaCross(Strategy):
             self.positions_exit()
             self.sell(size=0.1)
 
-    def plot(self, config: dict, df: DataFeed) -> dict:
+    def plot(self, df: DataFeed) -> dict:
         from lettrade.plot.plotly import PlotColor, plot_line, plot_mark, plot_merge
 
         plot_ema1 = plot_line(df["ema1"], dataframe=df, color="green")
@@ -34,7 +34,7 @@ class SmaCross(Strategy):
             name="crossover",
             color=PlotColor.BLUE,
         )
-        return plot_merge(config, plot_ema1, plot_crossover)
+        return plot_merge(plot_ema1, plot_crossover)
 
 
 if __name__ == "__main__":

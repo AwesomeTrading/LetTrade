@@ -57,7 +57,7 @@ class SmaCross(Strategy):
             self.positions_exit()
             self.sell(size=0.1)
 
-    def plot(self, config: dict, df: DataFeed) -> dict:
+    def plot(self, df: DataFeed) -> dict:
         from lettrade.plot.plotly import PlotColor, plot_line, plot_mark, plot_merge
 
         plot_ema1 = plot_line(df["ema1"], dataframe=df, color="green")
@@ -68,7 +68,7 @@ class SmaCross(Strategy):
             name="crossover",
             color=PlotColor.BLUE,
         )
-        return plot_merge(config, plot_ema1, plot_crossover)
+        return plot_merge(plot_ema1, plot_crossover)
 
 
 if __name__ == "__main__":
@@ -87,14 +87,14 @@ if __name__ == "__main__":
 Start                       2024-05-13 21:15:00+00:00
 End                         2024-05-17 08:30:00+00:00
 Duration                              3 days 11:15:00
-Start Balance                                  1000.0
-Equity [$]                                    1003.16
-Equity Peak [$]                               1013.54
+Start Balance                                 10000.0
+Equity [$]                                   10003.16
+Equity Peak [$]                              10013.54
 PL [$]                                           3.16
-PL [%]                                           0.32
+PL [%]                                           0.03
 Buy & Hold PL [%]                                0.63
-Max. Drawdown [%]                               -4.98
-Avg. Drawdown [%]                                -1.5
+Max. Drawdown [%]                                -0.5
+Avg. Drawdown [%]                               -0.15
 Max. Drawdown Duration                1 days 16:15:00
 Avg. Drawdown Duration                0 days 12:30:00
                                                      

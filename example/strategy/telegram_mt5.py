@@ -52,7 +52,7 @@ class SmaCross(Strategy):
         print(df.tail())
         print(self.orders)
 
-    def plot(self, config: dict, df: DataFeed):
+    def plot(self, df: DataFeed):
         return dict(
             items=[
                 dict(

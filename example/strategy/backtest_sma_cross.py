@@ -35,16 +35,18 @@ class SmaCross(Strategy):
     # def stop(self, df: DataFeed):
     #     print(df.tail(10))
 
-    def plot(self, config: dict, df: DataFeed):
+    def plot(self, df: DataFeed):
         return dict(
-            scatters=[
+            items=[
                 dict(
+                    type="scatter",
                     x=df.index,
                     y=df["ema1"],
                     line=dict(color="blue", width=1),
                     name="ema1",
                 ),
                 dict(
+                    type="scatter",
                     x=df.index,
                     y=df["ema2"],
                     line=dict(color="green", width=1),

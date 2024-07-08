@@ -222,7 +222,7 @@ def crossover(
 
     below1 = below(series1, series2).shift(1)
     above0 = above(series1, series2)
-    i = (below1 + above0).apply(lambda v: -100 if v >= 200 else 0)
+    i = (below1 + above0).apply(lambda v: 100 if v >= 200 else 0)
 
     if inplace:
         name = name or f"{prefix}crossover"
@@ -265,7 +265,7 @@ def crossunder(
 
     above1 = above(series1, series2).shift(1)
     below0 = below(series1, series2)
-    i = (below0 + above1).apply(lambda v: -100 if v >= 200 else 0)
+    i = (below0 + above1).apply(lambda v: 100 if v >= 200 else 0)
 
     if inplace:
         name = name or f"{prefix}crossunder"

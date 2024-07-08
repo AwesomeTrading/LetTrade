@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-from typing import Any, final
+from typing import TYPE_CHECKING, Any, final
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -13,6 +13,9 @@ from lettrade.exchange import (
     Position,
     TradeSide,
 )
+
+if TYPE_CHECKING:
+    from lettrade.exchange.backtest import BackTestOrder, BackTestPosition
 
 logger = logging.getLogger(__name__)
 
@@ -382,7 +385,7 @@ class Strategy:
 
     @final
     @property
-    def orders(self) -> dict[str, Order]:
+    def orders(self) -> "dict[str, Order | BackTestOrder]":
         """Getter of `Order` dict
 
         Returns:
@@ -392,7 +395,7 @@ class Strategy:
 
     @final
     @property
-    def history_orders(self) -> dict[str, Order]:
+    def history_orders(self) -> "dict[str, Order | BackTestOrder]":
         """Getter of history `Order` dict
 
         Returns:
@@ -402,7 +405,7 @@ class Strategy:
 
     @final
     @property
-    def positions(self) -> dict[str, Position]:
+    def positions(self) -> "dict[str, Position | BackTestPosition]":
         """Getter of `Position` dict
 
         Returns:
@@ -412,7 +415,7 @@ class Strategy:
 
     @final
     @property
-    def history_positions(self) -> dict[str, Position]:
+    def history_positions(self) -> "dict[str, Position | BackTestPosition]":
         """Getter of history `Position` dict
 
         Returns:

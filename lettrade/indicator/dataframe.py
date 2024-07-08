@@ -124,11 +124,11 @@ def signal_condiction(
 
             plot_kwargs.update(series=name, name=name)
 
-            from lettrade.indicator.plot import indicator_add_plotter
+            from lettrade.indicator.plot import IndicatorPlotter
             from lettrade.plot.plotly import plot_line, plot_mark
 
             plotter = plot_mark if plot_type == "mark" else plot_line
-            indicator_add_plotter(dataframe=dataframe, plotter=plotter, **plot_kwargs)
+            IndicatorPlotter(dataframe=dataframe, plotter=plotter, **plot_kwargs)
 
         return dataframe
 

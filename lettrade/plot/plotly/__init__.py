@@ -1,6 +1,7 @@
 import plotly.io as pio
 
-from .helper import *
+from lettrade.plot.helper import plot_merge
+
 from .indicator import *
 from .plotly import *
 

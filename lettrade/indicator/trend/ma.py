@@ -106,10 +106,10 @@ def ma(
 
             plot_kwargs.update(series=name, name=name)
 
-            from lettrade.indicator.plot import indicator_add_plotter
+            from lettrade.indicator.plot import IndicatorPlotter
             from lettrade.plot.plotly import plot_line
 
-            indicator_add_plotter(dataframe=dataframe, plotter=plot_line, **plot_kwargs)
+            IndicatorPlotter(dataframe=dataframe, plotter=plot_line, **plot_kwargs)
 
         return dataframe
 

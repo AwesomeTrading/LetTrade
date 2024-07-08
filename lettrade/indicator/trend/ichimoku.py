@@ -110,8 +110,8 @@ def ichimoku(
                 senkou_span_b=f"{prefix}senkou_span_b",
                 chikou_span=f"{prefix}chikou_span",
             )
-        from lettrade.indicator.plot import indicator_add_plotter
+        from lettrade.indicator.plot import IndicatorPlotter
         from lettrade.plot.plotly import plot_ichimoku
 
-        indicator_add_plotter(dataframe=dataframe, plotter=plot_ichimoku, **plot_kwargs)
+        IndicatorPlotter(dataframe=dataframe, plotter=plot_ichimoku, **plot_kwargs)
     return result

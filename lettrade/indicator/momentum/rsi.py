@@ -55,10 +55,10 @@ def rsi(
             plot_kwargs.setdefault("row", 2)
             plot_kwargs.setdefault("row_height", 0.5)
 
-            from lettrade.indicator.plot import indicator_add_plotter
+            from lettrade.indicator.plot import IndicatorPlotter
             from lettrade.plot.plotly import plot_line
 
-            indicator_add_plotter(dataframe=dataframe, plotter=plot_line, **plot_kwargs)
+            IndicatorPlotter(dataframe=dataframe, plotter=plot_line, **plot_kwargs)
 
         return dataframe
 

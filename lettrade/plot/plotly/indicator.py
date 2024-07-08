@@ -1,6 +1,6 @@
 import pandas as pd
 
-from .helper import plot_merge
+from lettrade.plot.helper import plot_merge
 
 
 def plot_ichimoku(
@@ -16,6 +16,7 @@ def plot_ichimoku(
     senkou_span_a_color="#228B22",
     senkou_span_b_color="#FF3342",
     chikou_span_color="#F1F316",
+    filter: pd.Series | None = None,
 ) -> dict:
     """_summary_
 
@@ -32,10 +33,16 @@ def plot_ichimoku(
         senkou_span_a_color (str, optional): _description_. Defaults to "#228B22".
         senkou_span_b_color (str, optional): _description_. Defaults to "#FF3342".
         chikou_span_color (str, optional): _description_. Defaults to "#F1F316".
+        filter (pd.Series | None, optional): _description_. Defaults to None.
 
     Returns:
         dict: _description_
     """
+    if filter is not None:
+        df_name = dataframe.name
+        dataframe = dataframe.loc[filter]
+        object.__setattr__(dataframe, "name", df_name)
+
     items = []
 
     if tenkan_sen is not None:
@@ -106,23 +113,30 @@ def plot_line(
     mode: str = "lines",
     fullfill: bool = False,
     dataframe: pd.DataFrame | None = None,
+    filter: pd.Series | None = None,
     **kwargs,
 ) -> dict:
     """_summary_
 
     Args:
-        series (pd.Series): _description_
+        series (pd.Series | str): _description_
         color (str, optional): _description_. Defaults to "#ffee58".
         width (int, optional): _description_. Defaults to 1.
-        name (_type_, optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         mode (str, optional): _description_. Defaults to "lines".
         fullfill (bool, optional): _description_. Defaults to False.
+        dataframe (pd.DataFrame | None, optional): _description_. Defaults to None.
+        filter (pd.Series | None, optional): _description_. Defaults to None.
 
     Returns:
         dict: _description_
     """
     if isinstance(series, str):
         series = dataframe[series]
+
+    if filter is not None:
+        series = series.loc[filter]
+        print("series filter", filter, series)
 
     config = dict(
         items=[
@@ -159,7 +173,7 @@ def plot_lines(
     Args:
         color (str, optional): _description_. Defaults to "#ffee58".
         width (int, optional): _description_. Defaults to 1.
-        name (_type_, optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         mode (str, optional): _description_. Defaults to "lines".
         fullfill (bool, optional): _description_. Defaults to False.
         dataframe (pd.DataFrame | None, optional): _description_. Defaults to None.
@@ -189,26 +203,29 @@ def plot_mark(
     series: pd.Series | str,
     color: str = "#ffee58",
     width: int = 1,
-    name: str | None = None,
     mode: str = "markers",
+    name: str | None = None,
     fullfill: bool = False,
     dataframe: pd.DataFrame | None = None,
+    filter: pd.Series | None = None,
     **kwargs,
 ) -> dict:
     """_summary_
 
     Args:
-        series (pd.Series): _description_
+        series (pd.Series | str): _description_
         color (str, optional): _description_. Defaults to "#ffee58".
         width (int, optional): _description_. Defaults to 1.
         mode (str, optional): _description_. Defaults to "markers".
-        name (str, optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
         fullfill (bool, optional): _description_. Defaults to False.
         dataframe (pd.DataFrame | None, optional): _description_. Defaults to None.
+        filter (pd.Series | None, optional): _description_. Defaults to None.
 
     Returns:
         dict: _description_
     """
+
     return plot_line(
         series=series,
         color=color,
@@ -217,19 +234,20 @@ def plot_mark(
         name=name,
         fullfill=fullfill,
         dataframe=dataframe,
+        filter=filter,
         **kwargs,
     )
 
 
 def plot_candlestick(
     dataframe: pd.DataFrame,
-    filter: pd.Series | None = None,
     name: str = "Candlestick",
     width: int = 1,
     increasing_line_color="#26c6da",
     decreasing_line_color="#ab47bc",
     row: int = 1,
     col: int = 1,
+    filter: pd.Series | None = None,
     **kwargs,
 ) -> dict:
     """_summary_
@@ -242,13 +260,15 @@ def plot_candlestick(
         decreasing_line_color (str, optional): _description_. Defaults to "#ab47bc".
         row (int, optional): _description_. Defaults to 1.
         col (int, optional): _description_. Defaults to 1.
+        filter (pd.Series | None, optional): _description_. Defaults to None.
 
     Returns:
         dict: _description_
     """
     if filter is not None:
+        df_name = dataframe.name
         dataframe = dataframe.loc[filter]
-        dataframe.name = name
+        object.__setattr__(dataframe, "name", df_name)
 
     config = dict(
         items=[

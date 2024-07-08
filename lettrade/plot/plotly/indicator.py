@@ -136,7 +136,6 @@ def plot_line(
 
     if filter is not None:
         series = series.loc[filter]
-        print("series filter", filter, series)
 
     config = dict(
         items=[

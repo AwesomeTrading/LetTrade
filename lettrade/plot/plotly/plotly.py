@@ -267,7 +267,7 @@ class PlotlyBotPlotter(BotPlotter):
 
     def _config_strategy(self, config: dict):
         """Merge strategy plot config"""
-        strategy_config: dict = self.strategy.plot(*self.datas)
+        strategy_config: dict = self.strategy._plot(*self.datas)
 
         # Move global items to main data items
         group_indexes = list(group["id"] for group in config["groups"])

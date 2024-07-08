@@ -140,7 +140,18 @@ class Strategy:
             df (DataFeed): main data of strategy
         """
 
-    def plot(self, df: DataFeed, *others: list[DataFeed]) -> dict:
+    @final
+    def _plot(self, *datas: list[DataFeed]) -> dict:
+        from lettrade.indicator import indicator_load_plotters
+        from lettrade.plot import plot_merge
+
+        config = dict()
+        for data in datas:
+            plot_merge(config, indicator_load_plotters(data))
+
+        return self.plot(config, *datas)
+
+    def plot(self, config: dict, df: DataFeed, *others: list[DataFeed]) -> dict:
         """Custom config of plot
 
         Example:
@@ -176,7 +187,7 @@ class Strategy:
         Returns:
             dict: config
         """
-        return dict()
+        return config
 
     @final
     def order_buy(

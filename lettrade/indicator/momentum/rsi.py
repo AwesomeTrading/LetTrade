@@ -31,7 +31,7 @@ def rsi(
         RuntimeError: _description_
 
     Returns:
-        pd.Series | pd.DataFrame: _description_
+        pd.Series | pd.DataFrame: {rsi}
     """
     # Validation & init
     if __debug__:

@@ -68,10 +68,6 @@ def ichimoku(
 
     chikou_span = dataframe["close"].shift(-displacement + 1)
 
-    if cloud:
-        cloud_white = senkou_span_a > senkou_span_b
-        cloud_black = senkou_span_b > senkou_span_a
-
     # Result is inplace or new dict
     result = dataframe if inplace else {}
 
@@ -84,6 +80,8 @@ def ichimoku(
     result[f"{prefix}chikou_span"] = chikou_span
 
     if cloud:
+        cloud_white = senkou_span_a > senkou_span_b
+        cloud_black = senkou_span_b > senkou_span_a
         result[f"{prefix}cloud_white"] = cloud_white
         result[f"{prefix}cloud_black"] = cloud_black
 

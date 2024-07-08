@@ -5123,10 +5123,7 @@ LetTrade is under heavy construction, features and functions may be changed.</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;lettrade[all] @ git+https://git@github.com/AwesomeTrading/LetTrade.git@main&#39;</span>
 </code></pre></div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">¤</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">talib.abstract</span> <span class="k">as</span> <span class="nn">ta</span>
-
-<span class="kn">from</span> <span class="nn">lettrade</span> <span class="kn">import</span> <span class="n">indicator</span> <span class="k">as</span> <span class="n">i</span>
-<span class="kn">from</span> <span class="nn">lettrade.all</span> <span class="kn">import</span> <span class="n">DataFeed</span><span class="p">,</span> <span class="n">ForexBackTestAccount</span><span class="p">,</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">let_backtest</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lettrade.all</span> <span class="kn">import</span> <span class="n">DataFeed</span><span class="p">,</span> <span class="n">ForexBackTestAccount</span><span class="p">,</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">let_backtest</span>
 
 
 <span class="k">class</span> <span class="nc">SmaCross</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
@@ -5134,32 +5131,19 @@ LetTrade is under heavy construction, features and functions may be changed.</p>
     <span class="n">ema2_window</span> <span class="o">=</span> <span class="mi">21</span>
 
     <span class="k">def</span> <span class="nf">indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_window</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ema1&quot;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema1_window</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">ema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ema2&quot;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ema2_window</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ema1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ema2</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="s2">&quot;ema1&quot;</span><span class="p">,</span> <span class="s2">&quot;ema2&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">df</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">crossunder</span><span class="p">(</span><span class="s2">&quot;ema1&quot;</span><span class="p">,</span> <span class="s2">&quot;ema2&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">crossover</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">crossover</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">positions_exit</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">crossunder</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">crossunder</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">100</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">positions_exit</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFeed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">lettrade.plot.plotly</span> <span class="kn">import</span> <span class="n">PlotColor</span><span class="p">,</span> <span class="n">plot_line</span><span class="p">,</span> <span class="n">plot_mark</span><span class="p">,</span> <span class="n">plot_merge</span>
-
-        <span class="n">plot_ema1</span> <span class="o">=</span> <span class="n">plot_line</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ema1&quot;</span><span class="p">],</span> <span class="n">dataframe</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-        <span class="n">plot_crossover</span> <span class="o">=</span> <span class="n">plot_mark</span><span class="p">(</span>
-            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;close&quot;</span><span class="p">],</span>
-            <span class="nb">filter</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;crossover&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">,</span>
-            <span class="n">dataframe</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;crossover&quot;</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="n">PlotColor</span><span class="o">.</span><span class="n">BLUE</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">plot_merge</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">plot_ema1</span><span class="p">,</span> <span class="n">plot_crossover</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -5176,14 +5160,14 @@ LetTrade is under heavy construction, features and functions may be changed.</p>
 Start                       2024-05-13 21:15:00+00:00
 End                         2024-05-17 08:30:00+00:00
 Duration                              3 days 11:15:00
-Start Balance                                  1000.0
-Equity [$]                                    1003.16
-Equity Peak [$]                               1013.54
+Start Balance                                 10000.0
+Equity [$]                                   10003.16
+Equity Peak [$]                              10013.54
 PL [$]                                           3.16
-PL [%]                                           0.32
+PL [%]                                           0.03
 Buy &amp; Hold PL [%]                                0.63
-Max. Drawdown [%]                               -4.98
-Avg. Drawdown [%]                                -1.5
+Max. Drawdown [%]                                -0.5
+Avg. Drawdown [%]                               -0.15
 Max. Drawdown Duration                1 days 16:15:00
 Avg. Drawdown Duration                0 days 12:30:00
 

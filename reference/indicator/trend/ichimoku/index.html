@@ -5242,9 +5242,7 @@ It is only useful for visual analysis</p>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ichimoku</span><span class="p">(</span>
+<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ichimoku</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">conversion_line_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span>
     <span class="n">base_line_windows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">26</span><span class="p">,</span>
@@ -5311,10 +5309,6 @@ It is only useful for visual analysis</p>
 
     <span class="n">chikou_span</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="s2">&quot;close&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="n">displacement</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">cloud</span><span class="p">:</span>
-        <span class="n">cloud_white</span> <span class="o">=</span> <span class="n">senkou_span_a</span> <span class="o">&gt;</span> <span class="n">senkou_span_b</span>
-        <span class="n">cloud_black</span> <span class="o">=</span> <span class="n">senkou_span_b</span> <span class="o">&gt;</span> <span class="n">senkou_span_a</span>
-
     <span class="c1"># Result is inplace or new dict</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">dataframe</span> <span class="k">if</span> <span class="n">inplace</span> <span class="k">else</span> <span class="p">{}</span>
 
@@ -5327,6 +5321,8 @@ It is only useful for visual analysis</p>
     <span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">chikou_span&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chikou_span</span>
 
     <span class="k">if</span> <span class="n">cloud</span><span class="p">:</span>
+        <span class="n">cloud_white</span> <span class="o">=</span> <span class="n">senkou_span_a</span> <span class="o">&gt;</span> <span class="n">senkou_span_b</span>
+        <span class="n">cloud_black</span> <span class="o">=</span> <span class="n">senkou_span_b</span> <span class="o">&gt;</span> <span class="n">senkou_span_a</span>
         <span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">cloud_white&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud_white</span>
         <span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">cloud_black&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud_black</span>
 

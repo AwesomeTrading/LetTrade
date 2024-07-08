@@ -286,7 +286,7 @@ def rolling_below(
 
     i = s_below(series1, series2)
     i = i.rolling(window=window, min_periods=min_periods).max()
-    i = i.apply(lambda v: 100 if v <= -100 else 0).astype(int)
+    i = i.apply(lambda v: -100 if v <= -100 else 0).astype(int)
 
     if inplace:
         name = name or f"{prefix}rolling_below"

@@ -99,6 +99,9 @@ def cdl_3blackcrows(
     name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_type: Literal["candlestick", "mark"] = "candlestick",
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
@@ -118,6 +121,9 @@ def cdl_3blackcrows(
         name=name,
         prefix=prefix,
         inplace=inplace,
+        plot=plot,
+        plot_type=plot_type,
+        plot_kwargs=plot_kwargs,
         **kwargs,
     )
 
@@ -127,6 +133,9 @@ def cdl_3whitesoldiers(
     name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_type: Literal["candlestick", "mark"] = "candlestick",
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
@@ -146,6 +155,9 @@ def cdl_3whitesoldiers(
         name=name,
         prefix=prefix,
         inplace=inplace,
+        plot=plot,
+        plot_type=plot_type,
+        plot_kwargs=plot_kwargs,
         **kwargs,
     )
 
@@ -155,6 +167,9 @@ def cdl_eveningstar(
     name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_type: Literal["candlestick", "mark"] = "candlestick",
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
@@ -174,6 +189,9 @@ def cdl_eveningstar(
         name=name,
         prefix=prefix,
         inplace=inplace,
+        plot=plot,
+        plot_type=plot_type,
+        plot_kwargs=plot_kwargs,
         **kwargs,
     )
 
@@ -183,6 +201,9 @@ def cdl_morningstar(
     name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_type: Literal["candlestick", "mark"] = "candlestick",
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
@@ -202,6 +223,9 @@ def cdl_morningstar(
         name=name,
         prefix=prefix,
         inplace=inplace,
+        plot=plot,
+        plot_type=plot_type,
+        plot_kwargs=plot_kwargs,
         **kwargs,
     )
 
@@ -211,6 +235,9 @@ def cdl_doji(
     name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_type: Literal["candlestick", "mark"] = "candlestick",
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
@@ -230,6 +257,9 @@ def cdl_doji(
         name=name,
         prefix=prefix,
         inplace=inplace,
+        plot=plot,
+        plot_type=plot_type,
+        plot_kwargs=plot_kwargs,
         **kwargs,
     )
 
@@ -239,6 +269,9 @@ def cdl_3inside(
     name: str | None = None,
     prefix: str = "cdl_",
     inplace: bool = False,
+    plot: bool | list = False,
+    plot_type: Literal["candlestick", "mark"] = "candlestick",
+    plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
@@ -258,5 +291,42 @@ def cdl_3inside(
         name=name,
         prefix=prefix,
         inplace=inplace,
+        plot=plot,
+        plot_type=plot_type,
+        plot_kwargs=plot_kwargs,
+        **kwargs,
+    )
+
+
+def cdl_engulfing(
+    dataframe: pd.DataFrame,
+    name: str | None = None,
+    prefix: str = "cdl_",
+    inplace: bool = False,
+    plot: bool | list = False,
+    plot_type: Literal["candlestick", "mark"] = "candlestick",
+    plot_kwargs: dict | None = None,
+    **kwargs,
+) -> pd.Series | pd.DataFrame:
+    """_summary_
+
+    Args:
+        dataframe (pd.DataFrame): _description_
+        name (str | None, optional): _description_. Defaults to None.
+        prefix (str, optional): _description_. Defaults to "cdl_".
+        inplace (bool, optional): _description_. Defaults to False.
+
+    Returns:
+        pd.Series | pd.DataFrame: _description_
+    """
+    return cdl_pattern(
+        dataframe=dataframe,
+        pattern="engulfing",
+        name=name,
+        prefix=prefix,
+        inplace=inplace,
+        plot=plot,
+        plot_type=plot_type,
+        plot_kwargs=plot_kwargs,
         **kwargs,
     )

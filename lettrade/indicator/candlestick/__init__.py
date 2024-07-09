@@ -4,6 +4,7 @@ from .talib import (
     cdl_3inside,
     cdl_3whitesoldiers,
     cdl_doji,
+    cdl_engulfing,
     cdl_eveningstar,
     cdl_morningstar,
     cdl_pattern,
@@ -25,3 +26,4 @@ def pandas_inject(obj: object | None = None):
     obj.cdl_eveningstar = cdl_eveningstar
     obj.cdl_doji = cdl_doji
     obj.cdl_3inside = cdl_3inside
+    obj.cdl_engulfing = cdl_engulfing

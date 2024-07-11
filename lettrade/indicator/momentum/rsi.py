@@ -7,11 +7,11 @@ from ..series import series_init
 def rsi(
     series: pd.Series | str = "close",
     window: int = None,
-    dataframe: pd.DataFrame = None,
+    dataframe: pd.DataFrame | None = None,
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:

@@ -3,7 +3,7 @@ import pandas as pd
 
 def series_init(
     series: pd.Series | str = "close",
-    dataframe: pd.DataFrame = None,
+    dataframe: pd.DataFrame | None = None,
     inplace: bool = False,
 ):
 
@@ -71,7 +71,7 @@ def diff(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     # **kwargs,
 ) -> pd.Series:
@@ -129,7 +129,7 @@ def above(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     # **kwargs,
 ) -> pd.Series:
@@ -170,7 +170,7 @@ def below(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     # **kwargs,
 ) -> pd.Series:
@@ -213,7 +213,7 @@ def rolling_above(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     # **kwargs,
 ) -> pd.Series:
@@ -260,7 +260,7 @@ def rolling_below(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     # **kwargs,
 ) -> pd.Series:
@@ -371,7 +371,7 @@ def crossover(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     # **kwargs,
 ) -> pd.Series:
@@ -414,7 +414,7 @@ def crossunder(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     # **kwargs,
 ) -> pd.Series:

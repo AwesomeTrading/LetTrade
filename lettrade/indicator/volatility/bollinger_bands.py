@@ -15,7 +15,7 @@ def bollinger_bands(
     dataframe: pd.DataFrame = None,
     prefix: str = "bb_",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     **kwargs,
 ) -> dict[str, pd.Series] | pd.DataFrame:

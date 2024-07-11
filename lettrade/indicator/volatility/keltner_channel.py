@@ -16,7 +16,7 @@ def keltner_channel(
     shift: float = 1.6,
     prefix: str = "kc_",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
 ) -> dict[str, pd.Series] | pd.DataFrame:
     """_summary_

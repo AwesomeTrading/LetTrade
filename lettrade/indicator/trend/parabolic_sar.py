@@ -16,7 +16,7 @@ def parabolic_sar(
     max_af: float = 0.2,
     prefix: str = "psar_",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
 ) -> dict[str, pd.Series] | pd.DataFrame:
     """Indicator: Parabolic Stop and Reverse (PSAR)

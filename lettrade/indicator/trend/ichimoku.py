@@ -10,7 +10,7 @@ def ichimoku(
     cloud: bool = False,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
 ) -> dict[str, pd.Series] | pd.DataFrame:
     """Ichimoku cloud indicator

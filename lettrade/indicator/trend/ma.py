@@ -6,6 +6,51 @@ from ..series import series_init
 from ..utils import talib_ma
 
 
+def sma(
+    series: pd.Series | str = "close",
+    window: int = None,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+    plot: bool | list[str] = False,
+    plot_kwargs: dict | None = None,
+    **kwargs,
+) -> pd.Series | pd.DataFrame:
+    """Simple Moving Average
+
+    Args:
+        series (pd.Series | str, optional): _description_. Defaults to "close".
+        window (int, optional): _description_. Defaults to None.
+        dataframe (pd.DataFrame, optional): _description_. Defaults to None.
+        name (str | None, optional): _description_. Defaults to None.
+        prefix (str, optional): _description_. Defaults to "".
+        inplace (bool, optional): _description_. Defaults to False.
+        plot (bool | list[str], optional): _description_. Defaults to False.
+        plot_kwargs (dict | None, optional): _description_. Defaults to None.
+
+    Example:
+        ```python
+        df.i.sma(window=21, name="sma", inplace=True, plot=True)
+        ```
+
+    Returns:
+        pd.Series | pd.DataFrame: _description_
+    """
+    return ma(
+        series=series,
+        window=window,
+        mode="sma",
+        dataframe=dataframe,
+        name=name,
+        prefix=prefix,
+        inplace=inplace,
+        plot=plot,
+        plot_kwargs=plot_kwargs,
+        **kwargs,
+    )
+
+
 def ema(
     series: pd.Series | str = "close",
     window: int = None,
@@ -13,7 +58,7 @@ def ema(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
@@ -61,7 +106,7 @@ def ma(
     name: str | None = None,
     prefix: str = "",
     inplace: bool = False,
-    plot: bool | list = False,
+    plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
@@ -70,7 +115,7 @@ def ma(
     Args:
         series (pd.Series | str, optional): _description_. Defaults to "close".
         window (int, optional): _description_. Defaults to None.
-        mode (Literal[ &quot;sma&quot;, &quot;ema&quot;, &quot;wma&quot;, &quot;dema&quot;, &quot;tema&quot;, &quot;trima&quot;, &quot;kama&quot;, &quot;mama&quot;, &quot;t3&quot; ], optional): _description_. Defaults to None.
+        mode (Literal[ "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3" ], optional): _description_. Defaults to None.
         dataframe (pd.DataFrame, optional): _description_. Defaults to None.
         name (str | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".

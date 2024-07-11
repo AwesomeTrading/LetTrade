@@ -3720,6 +3720,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lettrade.indicator.candlestick.talib.cdl_engulfing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cdl_engulfing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#lettrade.indicator.candlestick.talib.cdl_eveningstar" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cdl_eveningstar
@@ -5014,6 +5023,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lettrade.indicator.candlestick.talib.cdl_engulfing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cdl_engulfing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#lettrade.indicator.candlestick.talib.cdl_eveningstar" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;cdl_eveningstar
@@ -5095,6 +5113,11 @@
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
 </code></pre></div>
@@ -5185,11 +5208,20 @@
 <span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
-<span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_3blackcrows</span><span class="p">(</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_3blackcrows</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
@@ -5209,6 +5241,9 @@
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
         <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+        <span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+        <span class="n">plot_kwargs</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5230,6 +5265,11 @@
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
 </code></pre></div>
@@ -5295,7 +5335,315 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_3inside</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
+    <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataframe (pd.DataFrame): _description_</span>
+<span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        prefix (str, optional): _description_. Defaults to &quot;cdl_&quot;.</span>
+<span class="sd">        inplace (bool, optional): _description_. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series | pd.DataFrame: _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cdl_pattern</span><span class="p">(</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;3inside&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
+        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+        <span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+        <span class="n">plot_kwargs</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.candlestick.talib.cdl_3whitesoldiers" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">cdl_3whitesoldiers</span>
+
+
+<a href="#lettrade.indicator.candlestick.talib.cdl_3whitesoldiers" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">cdl_3whitesoldiers</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
+    <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p><em>summary</em></p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>dataframe</code></b>
+              (<code><span title="pandas.DataFrame">DataFrame</span></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>prefix</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
+                  <code>&#39;cdl_&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to "cdl_".</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>inplace</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to False.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span> | <span title="pandas.DataFrame">DataFrame</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series | pd.DataFrame: <em>description</em></p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_3whitesoldiers</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
+    <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataframe (pd.DataFrame): _description_</span>
+<span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        prefix (str, optional): _description_. Defaults to &quot;cdl_&quot;.</span>
+<span class="sd">        inplace (bool, optional): _description_. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series | pd.DataFrame: _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cdl_pattern</span><span class="p">(</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;3whitesoldiers&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
+        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+        <span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+        <span class="n">plot_kwargs</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.candlestick.talib.cdl_doji" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">cdl_doji</span>
+
+
+<a href="#lettrade.indicator.candlestick.talib.cdl_doji" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">cdl_doji</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
+    <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p><em>summary</em></p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>dataframe</code></b>
+              (<code><span title="pandas.DataFrame">DataFrame</span></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>prefix</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
+                  <code>&#39;cdl_&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to "cdl_".</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>inplace</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to False.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span> | <span title="pandas.DataFrame">DataFrame</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series | pd.DataFrame: <em>description</em></p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
@@ -5320,281 +5668,16 @@
 <span class="normal">259</span>
 <span class="normal">260</span>
 <span class="normal">261</span>
-<span class="normal">262</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_3inside</span><span class="p">(</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_doji</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        dataframe (pd.DataFrame): _description_</span>
-<span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
-<span class="sd">        prefix (str, optional): _description_. Defaults to &quot;cdl_&quot;.</span>
-<span class="sd">        inplace (bool, optional): _description_. Defaults to False.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        pd.Series | pd.DataFrame: _description_</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cdl_pattern</span><span class="p">(</span>
-        <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
-        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;3inside&quot;</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-        <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
-        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="lettrade.indicator.candlestick.talib.cdl_3whitesoldiers" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">cdl_3whitesoldiers</span>
-
-
-<a href="#lettrade.indicator.candlestick.talib.cdl_3whitesoldiers" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">cdl_3whitesoldiers</span><span class="p">(</span>
-    <span class="n">dataframe</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
-    <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-      <p><em>summary</em></p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>dataframe</code></b>
-              (<code><span title="pandas.DataFrame">DataFrame</span></code>)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em></p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>name</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em>. Defaults to None.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>prefix</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;cdl_&#39;</code>
-)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em>. Defaults to "cdl_".</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>inplace</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
-                  <code>False</code>
-)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em>. Defaults to False.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><span title="pandas.Series">Series</span> | <span title="pandas.DataFrame">DataFrame</span></code>
-          –
-          <div class="doc-md-description">
-            <p>pd.Series | pd.DataFrame: <em>description</em></p>
-          </div>
-        </li>
-    </ul>
-
-            <details class="quote">
-              <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_3whitesoldiers</span><span class="p">(</span>
-    <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
-    <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        dataframe (pd.DataFrame): _description_</span>
-<span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
-<span class="sd">        prefix (str, optional): _description_. Defaults to &quot;cdl_&quot;.</span>
-<span class="sd">        inplace (bool, optional): _description_. Defaults to False.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        pd.Series | pd.DataFrame: _description_</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cdl_pattern</span><span class="p">(</span>
-        <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
-        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;3whitesoldiers&quot;</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-        <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
-        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="lettrade.indicator.candlestick.talib.cdl_doji" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">cdl_doji</span>
-
-
-<a href="#lettrade.indicator.candlestick.talib.cdl_doji" class="headerlink" title="Permanent link">¤</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">cdl_doji</span><span class="p">(</span>
-    <span class="n">dataframe</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
-    <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-      <p><em>summary</em></p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>dataframe</code></b>
-              (<code><span title="pandas.DataFrame">DataFrame</span></code>)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em></p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>name</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em>. Defaults to None.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>prefix</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;cdl_&#39;</code>
-)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em>. Defaults to "cdl_".</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>inplace</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
-                  <code>False</code>
-)
-          –
-          <div class="doc-md-description">
-            <p><em>description</em>. Defaults to False.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><span title="pandas.Series">Series</span> | <span title="pandas.DataFrame">DataFrame</span></code>
-          –
-          <div class="doc-md-description">
-            <p>pd.Series | pd.DataFrame: <em>description</em></p>
-          </div>
-        </li>
-    </ul>
-
-            <details class="quote">
-              <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_doji</span><span class="p">(</span>
-    <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
-    <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
@@ -5614,6 +5697,161 @@
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
         <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+        <span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+        <span class="n">plot_kwargs</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="lettrade.indicator.candlestick.talib.cdl_engulfing" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">cdl_engulfing</span>
+
+
+<a href="#lettrade.indicator.candlestick.talib.cdl_engulfing" class="headerlink" title="Permanent link">¤</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">cdl_engulfing</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
+    <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+      <p><em>summary</em></p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>dataframe</code></b>
+              (<code><span title="pandas.DataFrame">DataFrame</span></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>prefix</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
+                  <code>&#39;cdl_&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to "cdl_".</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>inplace</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to False.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.Series">Series</span> | <span title="pandas.DataFrame">DataFrame</span></code>
+          –
+          <div class="doc-md-description">
+            <p>pd.Series | pd.DataFrame: <em>description</em></p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_engulfing</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
+    <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataframe (pd.DataFrame): _description_</span>
+<span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        prefix (str, optional): _description_. Defaults to &quot;cdl_&quot;.</span>
+<span class="sd">        inplace (bool, optional): _description_. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series | pd.DataFrame: _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cdl_pattern</span><span class="p">(</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;engulfing&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
+        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+        <span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+        <span class="n">plot_kwargs</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5635,6 +5873,11 @@
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
 </code></pre></div>
@@ -5700,19 +5943,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
@@ -5725,11 +5956,32 @@
 <span class="normal">175</span>
 <span class="normal">176</span>
 <span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_eveningstar</span><span class="p">(</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_eveningstar</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
@@ -5749,6 +6001,9 @@
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
         <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+        <span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+        <span class="n">plot_kwargs</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5770,6 +6025,11 @@
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span>
 </code></pre></div>
@@ -5835,36 +6095,45 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/indicator/candlestick/talib.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
 <span class="normal">205</span>
-<span class="normal">206</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_morningstar</span><span class="p">(</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cdl_morningstar</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
@@ -5884,6 +6153,9 @@
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
         <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+        <span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+        <span class="n">plot_kwargs</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5906,7 +6178,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">plot_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
         <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span>
     <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
@@ -6055,7 +6327,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cdl_&quot;</span><span class="p">,</span>
     <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">plot_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;candlestick&quot;</span><span class="p">,</span> <span class="s2">&quot;mark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;candlestick&quot;</span><span class="p">,</span>
     <span class="n">plot_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>

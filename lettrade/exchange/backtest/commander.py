@@ -11,10 +11,10 @@ class BackTestCommander(Commander):
     """
 
     def start(self):
-        logger.info("BackTestCommander start")
+        logger.debug("BackTestCommander start")
 
     def stop(self):
-        logger.info("BackTestCommander stop")
+        logger.debug("BackTestCommander stop")
 
     def send_message(self, msg: str, **kwargs):
         logger.info("BackTestCommander send_message: %s, %s", msg, kwargs)

@@ -55,8 +55,10 @@ def pandas_inject(obj: object | None = None):
     obj.diff = series_indicator_inject(diff)
     obj.above = series_indicator_inject(above)
     obj.below = series_indicator_inject(below)
+    obj.direction = series_indicator_inject(direction)
     obj.rolling_above = series_indicator_inject(rolling_above)
     obj.rolling_below = series_indicator_inject(rolling_below)
+    obj.rolling_direction = series_indicator_inject(rolling_direction)
     obj.rolling_min = series_indicator_inject(rolling_min)
     obj.rolling_max = series_indicator_inject(rolling_max)
     obj.rolling_mean = series_indicator_inject(rolling_mean)
@@ -120,6 +122,10 @@ def s_above(series1: pd.Series, series2: pd.Series) -> pd.Series:
 
 def s_below(series1: pd.Series, series2: pd.Series) -> pd.Series:
     return (series1 - series2).apply(lambda v: -100 if v < 0 else 0)
+
+
+def s_direction(series1: pd.Series, series2: pd.Series) -> pd.Series:
+    return (series1 - series2).apply(lambda v: -100 if v < 0 else 100 if v > 0 else 0)
 
 
 def above(
@@ -196,6 +202,47 @@ def below(
 
     if inplace:
         name = name or f"{prefix}below"
+        dataframe[name] = i
+
+        if plot:
+            _plot_mark(dataframe=dataframe, name=name, plot_kwargs=plot_kwargs)
+
+    return i
+
+
+def direction(
+    series1: pd.Series | str,
+    series2: pd.Series | str,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+    plot: bool | list[str] = False,
+    plot_kwargs: dict | None = None,
+    # **kwargs,
+) -> pd.Series:
+    """Check a Series is direction another Series
+
+    Args:
+        series1 (pd.Series): first Series
+        series2 (pd.Series): second Series
+
+    Returns:
+        pd.Series: -100 if series1 < series2, 100 if series1 > series2, else 0
+    """
+    if __debug__:
+        if plot and not inplace:
+            raise RuntimeError("Cannot plot when inplace=False")
+
+    if isinstance(series1, str):
+        series1 = dataframe[series1]
+    if isinstance(series2, str):
+        series2 = dataframe[series2]
+
+    i = s_direction(series1, series2)
+
+    if inplace:
+        name = name or f"{prefix}direction"
         dataframe[name] = i
 
         if plot:
@@ -290,6 +337,53 @@ def rolling_below(
 
     if inplace:
         name = name or f"{prefix}rolling_below"
+        dataframe[name] = i
+
+        if plot:
+            _plot_mark(dataframe=dataframe, name=name, plot_kwargs=plot_kwargs)
+
+    return i
+
+
+def rolling_direction(
+    series1: pd.Series,
+    series2: pd.Series,
+    window: int = 20,
+    min_periods: int | None = None,
+    dataframe: pd.DataFrame = None,
+    name: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+    plot: bool | list[str] = False,
+    plot_kwargs: dict | None = None,
+    # **kwargs,
+) -> pd.Series:
+    """Check a Series is rolling on one side with another Series
+
+    Args:
+        series1 (pd.Series): first Series
+        series2 (pd.Series): second Series
+
+    Returns:
+        pd.Series: -100 mean series1 is rolling direction series2 else 0
+    """
+    if __debug__:
+        if plot and not inplace:
+            raise RuntimeError("Cannot plot when inplace=False")
+
+    if isinstance(series1, str):
+        series1 = dataframe[series1]
+    if isinstance(series2, str):
+        series2 = dataframe[series2]
+
+    min_periods = window if min_periods is None else min_periods
+
+    i = s_direction(series1, series2)
+    i = i.rolling(window=window, min_periods=min_periods).mean()
+    i = i.apply(lambda v: -100 if v <= -100 else 100 if v >= 100 else 0).astype(int)
+
+    if inplace:
+        name = name or f"{prefix}rolling_direction"
         dataframe[name] = i
 
         if plot:

@@ -263,7 +263,7 @@ class LivePosition(_LiveTrade, Position, metaclass=ABCMeta):
         tp: float | None = None,
         caller: float | None = None,
         **kwargs,
-    ):
+    ) -> PositionResult:
         """_summary_
 
         Args:

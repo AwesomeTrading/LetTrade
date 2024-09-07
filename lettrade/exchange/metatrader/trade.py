@@ -35,8 +35,8 @@ class MetaTraderExecution(LiveExecution):
 
     def __init__(
         self,
-        pl: float = None,
-        fee: float = None,
+        pl: float | None = None,
+        fee: float | None = None,
         tag: str | None = None,
         **kwargs,
     ):

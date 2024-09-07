@@ -120,6 +120,7 @@ def let_metatrader(
     mt5_password: str,
     mt5_server: str,
     mt5_wine: str | None = None,
+    mt5_path: str | None = None,
     feeder: type[MetaTraderDataFeeder] = MetaTraderDataFeeder,
     exchange: type[MetaTraderExchange] = MetaTraderExchange,
     account: type[MetaTraderAccount] = MetaTraderAccount,
@@ -159,6 +160,7 @@ def let_metatrader(
         password=mt5_password,
         server=mt5_server,
         wine=mt5_wine,
+        path=mt5_path,
     )
 
     return let_live(

@@ -70,6 +70,7 @@ if __name__ == "__main__":
         mt5_password=os.environ["MT5_PASSWORD"],
         mt5_server=os.environ["MT5_SERVER"],
         mt5_wine=os.getenv("MT5_WINE", None),
+        mt5_path=os.getenv("MT5_PATH", None),
     )
 
     lt.run()

@@ -120,6 +120,7 @@ class MetaTraderAPI(LiveAPI):
         host: str = "localhost",
         port: int = 18812,
         wine: str | None = None,
+        path: str | None = None,
         magic: int = 88888888,
         **kwargs,
     ):
@@ -158,6 +159,7 @@ class MetaTraderAPI(LiveAPI):
             password=password,
             server=server,
             wine=wine,
+            path=path,
             retry=retry,
         )
 
@@ -191,8 +193,10 @@ class MetaTraderAPI(LiveAPI):
             password = self._config.get("password")
             server = self._config.get("server")
             retry = self._config.get("retry")
+            path = self._config.get("path", None)
             while retry > 0:
                 login = self._mt5.initialize(
+                    path=path,
                     login=int(login),
                     password=password,
                     server=server,
@@ -208,7 +212,7 @@ class MetaTraderAPI(LiveAPI):
                 retry -= 1
 
             if retry == 0:
-                raise RuntimeError(f"Cannot login {account}")
+                raise RuntimeError(f"Cannot login {account}: {self._mt5.last_error()}")
 
             # Terminal
             terminal = self._mt5.terminal_info()

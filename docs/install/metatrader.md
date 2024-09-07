@@ -28,6 +28,7 @@ cd $HOME/.mt5/dosdevices/c:/users/$USER/AppData/Local/Programs/Python/Python310-
 
 wine python.exe -m pip install --upgrade pip
 wine python.exe -m pip install MetaTrader5
+wine python.exe -m pip install 'numpy<1.27'
 wine python.exe -m pip install https://github.com/AwesomeTrading/mt5linux/archive/master.zip
 ```
 

@@ -6,7 +6,7 @@ pytz
 python-dotenv
 python-telegram-bot
 ccxt
-numba
+# numba
 rich[jupyter]
 
 # Live
@@ -14,6 +14,8 @@ python-box
 mt5linux @ git+https://github.com/AwesomeTrading/mt5linux.git@master
 
 # Indicator
+# sudo apt-get install python3-dev
+# conda install -c conda-forge ta-lib
 TA-Lib
 pandas-ta
 technical

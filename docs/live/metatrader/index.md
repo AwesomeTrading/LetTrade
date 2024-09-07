@@ -2,6 +2,12 @@
 
 ## Installation
 
+### MetaTrader 5
+
+[MetaTrader 5](../../install/metatrader.md)
+
+### Python
+
 ```bash
 pip install lettrade[exchange-metatrader]
 ```

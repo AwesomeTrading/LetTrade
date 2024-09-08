@@ -24,9 +24,10 @@ class LiveDataFeeder(DataFeeder):
 
     def __init__(
         self,
-        api: LiveAPI,
+        api: LiveAPI | None = None,
         tick: bool = 5,
         start_size: int = 500,
+        api_kwargs: dict | None = None,
         **kwargs,
     ) -> None:
         """
@@ -36,6 +37,13 @@ class LiveDataFeeder(DataFeeder):
             tick > 0: sleep tick time (in seconds) then update
         """
         super().__init__()
+
+        # API init
+        if api is None:
+            if api_kwargs is None:
+                raise RuntimeError("api or api_kwargs cannot missing")
+            api = self._api_cls(**api_kwargs)
+
         self._api = api
         self._tick = tick
         self._start_size = start_size
@@ -71,28 +79,28 @@ class LiveDataFeeder(DataFeeder):
     def markets(self, search=None):
         return self._api.markets(search=search)
 
-    @classmethod
-    def instance(
-        cls,
-        api: LiveAPI | None = None,
-        api_kwargs: dict | None = None,
-        **kwargs,
-    ) -> "LiveDataFeed":
-        """_summary_
+    # @classmethod
+    # def instance(
+    #     cls,
+    #     api: LiveAPI | None = None,
+    #     api_kwargs: dict | None = None,
+    #     **kwargs,
+    # ) -> "LiveDataFeed":
+    #     """_summary_
 
-        Args:
-            api (LiveAPI, optional): _description_. Defaults to None.
-            api_kwargs (dict, optional): _description_. Defaults to None.
+    #     Args:
+    #         api (LiveAPI, optional): _description_. Defaults to None.
+    #         api_kwargs (dict, optional): _description_. Defaults to None.
 
-        Raises:
-            RuntimeError: Missing api requirement
+    #     Raises:
+    #         RuntimeError: Missing api requirement
 
-        Returns:
-            LiveDataFeed: DataFeed object
-        """
-        if api is None:
-            if api_kwargs is None:
-                raise RuntimeError("api or api_kwargs cannot missing")
-            api = cls._api_cls(**api_kwargs)
-        obj = cls(api=api, **kwargs)
-        return obj
+    #     Returns:
+    #         LiveDataFeed: DataFeed object
+    #     """
+    #     if api is None:
+    #         if api_kwargs is None:
+    #             raise RuntimeError("api or api_kwargs cannot missing")
+    #         api = cls._api_cls(**api_kwargs)
+    #     obj = cls(api=api, **kwargs)
+    #     return obj

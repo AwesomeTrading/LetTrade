@@ -190,18 +190,18 @@ class MetaTraderAPI(LiveAPI):
         account = self._mt5.account_info()
         login = self._config.get("login")
         if not account or account.login != login:
-            password = self._config.get("password")
-            server = self._config.get("server")
-            retry = self._config.get("retry")
+            kwargs = dict()
+            kwargs["login"] = int(login)
+            kwargs["password"] = self._config.get("password")
+            kwargs["server"] = self._config.get("server")
+
             path = self._config.get("path", None)
+            if path is not None:
+                kwargs["path"] = path
+
+            retry = self._config.get("retry")
             while retry > 0:
-                login = self._mt5.initialize(
-                    path=path,
-                    login=int(login),
-                    password=password,
-                    server=server,
-                    # timeout=timeout,
-                )
+                login = self._mt5.initialize(**kwargs)
                 if login:
                     break
 
@@ -221,12 +221,7 @@ class MetaTraderAPI(LiveAPI):
                 logger.warning("Terminal trading mode is not allowed")
 
             # Account
-            logger.info(
-                "Login success account=%s, server=%s, version=%s",
-                account,
-                server,
-                self._mt5.version(),
-            )
+            logger.info("Login success: %s %s", kwargs, self._mt5.version())
 
             # Preload trading data
             now = datetime.now()
@@ -265,7 +260,8 @@ class MetaTraderAPI(LiveAPI):
         """
         return True
 
-    # Public
+    # ----- Public
+    # --- Market
     @mt5_connection
     def market(self, symbol: str, **kwargs) -> dict:
         """_summary_
@@ -279,7 +275,7 @@ class MetaTraderAPI(LiveAPI):
         raw = self._mt5.symbol_info(symbol)
         if raw is None:
             raise _RetryException()
-        return raw
+        return self._market_parse_response(raw)
 
     @mt5_connection
     def markets(self, search: str | None = None, **kwargs) -> list[dict]:
@@ -296,11 +292,15 @@ class MetaTraderAPI(LiveAPI):
         Returns:
             list[dict]: _description_
         """
-        raw = self._mt5.symbols_get(search)
-        if raw is None:
+        raws = self._mt5.symbols_get(search)
+        if raws is None:
             raise _RetryException()
-        return raw
+        return [self._market_parse_response(raw) for raw in raws]
 
+    def _market_parse_response(self, raw):
+        return Box(dict(raw._asdict()))
+
+    # --- Tick
     @mt5_connection
     def tick_get(self, symbol: str, **kwargs) -> dict:
         """_summary_

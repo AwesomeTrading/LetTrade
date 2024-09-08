@@ -40,4 +40,6 @@ Start mkdocs local server
 
 ```bash
 mkdocs serve
+mkdocs build -d site
+mkdocs gh-deploy -d site -b docs
 ```

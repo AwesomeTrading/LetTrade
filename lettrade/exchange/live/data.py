@@ -21,8 +21,9 @@ class LiveDataFeed(DataFeed):
         symbol: str,
         timeframe: str | int | pd.Timedelta,
         name: str | None = None,
-        api: LiveAPI | None = None,
         columns: list[str] | None = None,
+        api: LiveAPI | None = None,
+        api_kwargs: dict | None = None,
         **kwargs,
     ) -> None:
         """_summary_
@@ -31,8 +32,8 @@ class LiveDataFeed(DataFeed):
             symbol (str): Symbol of DataFeed
             timeframe (str | int | pd.Timedelta): TimeFrame of DataFeed
             name (str | None, optional): Name of DataFeed, auto generate `{symbol}_{timeframe}` if none. Defaults to None.
-            api (LiveAPI | None, optional): Live trading API. Defaults to None.
             columns (list[str] | None, optional): List of DataFeed columns. Defaults to None.
+            api (LiveAPI | None, optional): Live trading API. Defaults to None.
         """
         super().__init__(
             name=name or f"{symbol}_{timeframe}",
@@ -45,6 +46,10 @@ class LiveDataFeed(DataFeed):
 
         if api is not None:
             self._api = api
+        elif api_kwargs is not None:
+            self._api = self._api_cls(**api_kwargs)
+        else:
+            raise RuntimeError("Parameter: api or api_kwargs cannot missing")
 
     # Properties
     @property
@@ -163,28 +168,28 @@ class LiveDataFeed(DataFeed):
 
         csv_export(dataframe=self, path=path, **kwargs)
 
-    @classmethod
-    def instance(
-        cls,
-        api: LiveAPI | None = None,
-        api_kwargs: dict | None = None,
-        **kwargs,
-    ) -> "LiveDataFeed":
-        """_summary_
+    # @classmethod
+    # def instance(
+    #     cls,
+    #     api: LiveAPI | None = None,
+    #     api_kwargs: dict | None = None,
+    #     **kwargs,
+    # ) -> "LiveDataFeed":
+    #     """_summary_
 
-        Args:
-            api (LiveAPI, optional): _description_. Defaults to None.
-            api_kwargs (dict, optional): _description_. Defaults to None.
+    #     Args:
+    #         api (LiveAPI, optional): _description_. Defaults to None.
+    #         api_kwargs (dict, optional): _description_. Defaults to None.
 
-        Raises:
-            RuntimeError: Missing api requirement
+    #     Raises:
+    #         RuntimeError: Missing api requirement
 
-        Returns:
-            LiveDataFeed: DataFeed object
-        """
-        if api is None:
-            if api_kwargs is None:
-                raise RuntimeError("api or api_kwargs cannot missing")
-            api = cls._api_cls(**api_kwargs)
-        obj = cls(api=api, **kwargs)
-        return obj
+    #     Returns:
+    #         LiveDataFeed: DataFeed object
+    #     """
+    #     if api is None:
+    #         if api_kwargs is None:
+    #             raise RuntimeError("api or api_kwargs cannot missing")
+    #         api = cls._api_cls(**api_kwargs)
+    #     obj = cls(api=api, **kwargs)
+    #     return obj

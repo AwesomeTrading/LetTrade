@@ -298,7 +298,16 @@ class MetaTraderAPI(LiveAPI):
         return [self._market_parse_response(raw) for raw in raws]
 
     def _market_parse_response(self, raw):
-        return Box(dict(raw._asdict()))
+        raw = Box(dict(raw._asdict()))
+        type = raw.path.split("\\", 1)[0]
+        return Box(
+            symbol=raw.name,
+            type=type,
+            description=raw.description,
+            currency_base=raw.currency_base,
+            currency_profit=raw.currency_profit,
+            raw=raw,
+        )
 
     # --- Tick
     @mt5_connection

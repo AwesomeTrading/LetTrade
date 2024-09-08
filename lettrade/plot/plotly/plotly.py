@@ -246,7 +246,7 @@ class PlotlyBotPlotter(BotPlotter):
                 ),
                 # autosize=False,
                 # width=800,
-                # height=1_000 * plot_rows,
+                height=1_000 * len(self.datas),
                 modebar_add=[
                     "v1hovermode",
                     "hoverclosest",

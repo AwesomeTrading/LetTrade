@@ -365,7 +365,9 @@ def rolling_direction(
         series2 (pd.Series): second Series
 
     Returns:
-        pd.Series: -100 mean series1 is rolling direction series2 else 0
+        pd.Series:  100 mean series1 keep consistences above series2 at least `window` bars
+                    -100 mean series1 keep consistences below series2 at least `window` bars
+                    0 else cases
     """
     if __debug__:
         if plot and not inplace:

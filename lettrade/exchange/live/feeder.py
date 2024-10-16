@@ -76,6 +76,9 @@ class LiveDataFeeder(DataFeeder):
     def data_new(self, **kwargs):
         return self._data_cls(api=self._api, **kwargs)
 
+    def market(self, symbol):
+        return self._api.market(symbol)
+
     def markets(self, search=None):
         return self._api.markets(search=search)
 

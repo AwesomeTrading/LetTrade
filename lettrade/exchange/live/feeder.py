@@ -57,9 +57,12 @@ class LiveDataFeeder(DataFeeder):
     def alive(self):
         return self._api.heartbeat()
 
-    def start(self):
+    def start(self, size: int = 0):
+        if not size:
+            size = self._start_size
+
         for data in self.datas:
-            data.next(size=self._start_size, tick=self._tick)
+            data.next(size=size, tick=self._tick)
 
     def next(self):
         if self._tick > 0:

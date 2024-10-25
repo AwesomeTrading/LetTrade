@@ -13,13 +13,21 @@ class BackTestDataFeeder(DataFeeder):
     datas: list[BackTestDataFeed]
     data: BackTestDataFeed
 
+    _start_size: int
+
+    def __init__(self, start_size: int = 500) -> None:
+        super().__init__()
+        self._start_size = start_size
+
     @property
     def is_continous(self):
         """Flag check is realtime continous datafeeder"""
         return False
 
-    def start(self, size=100):
+    def start(self, size: int = 0):
         # self._cleanup_data()
+        if not size:
+            size = self._start_size
 
         next = self.data.l.index[size]
         for data in self.datas:

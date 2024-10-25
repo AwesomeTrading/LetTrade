@@ -50,14 +50,26 @@ class Brain:
         # self.datas = self.feeder.datas
         self.data = self.feeder.data
 
-    def start(self):
-        self.data._set_main()
+    def start(
+        self,
+        feed_size: int = 0,
+        **kwargs,
+    ):
+        """_summary_
 
+        Args:
+            feed_size (int, optional): Init at main datafeeds size. Defaults to 1.
+        """
+        self.data._set_main()
         self.strategy.init()
 
-        self.feeder.start()
+        # Load init data
+        self.feeder.start(size=feed_size)
+
+        # Start exchange
         self.exchange.start()
 
+        # Start strategy
         self.strategy._start()
 
     def run(self):

@@ -42,7 +42,7 @@ class LetTradeBot:
     _feeder_cls: type[DataFeeder]
     _exchange_cls: type[Exchange]
     _account_cls: type[Account]
-    _commander_cls: type[Commander] | None
+    _commander_cls: type[Commander] | Commander | None
     _plotter_cls: type[Plotter] | None
     _stats_cls: type[BotStatistic] | None
     _kwargs: dict[str, Any]
@@ -105,9 +105,12 @@ class LetTradeBot:
 
         # Commander
         if self._commander_cls:
-            self.commander = self._commander_cls(
-                **self._kwargs.get("commander_kwargs", {})
-            )
+            if isinstance(self._commander_cls, Commander):
+                self.commander = self._commander_cls
+            else:
+                self.commander = self._commander_cls(
+                    **self._kwargs.get("commander_kwargs", {})
+                )
 
         # Strategy
         self.strategy = self._strategy_cls(
@@ -160,12 +163,12 @@ class LetTradeBot:
         if __debug__:
             logger.debug("Bot %s inited with %d datas", self._name, len(self.datas))
 
-    def start(self):
+    def start(self, **kwargs):
         """Start bot"""
         if not hasattr(self, "brain"):
             self.init()
 
-        self.brain.start()
+        self.brain.start(**kwargs)
 
         if __debug__:
             logger.debug("Bot %s started with %d datas", self._name, len(self.datas))
@@ -259,8 +262,8 @@ class LetTradeBot:
         """
         if bot is None:
             bot = cls.new_bot(**kwargs)
-        bot.init(**kwargs.get("init_kwargs", {}))
-        bot.start()
+        bot.init()
+        bot.start(**kwargs.get("start_kwargs", {}))
         return bot
 
     @classmethod

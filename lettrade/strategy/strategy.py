@@ -503,7 +503,7 @@ class Strategy:
 
     # Commander
     @final
-    def send(self, msg: str, **kwargs) -> Any:
+    def send_notify(self, msg: str, **kwargs) -> Any:
         """Send message to commander
 
         Args:

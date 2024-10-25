@@ -34,7 +34,7 @@ class LetTrade:
         feeder: type[DataFeeder],
         exchange: type[Exchange],
         account: type[Account],
-        commander: type[Commander] | None = None,
+        commander: type[Commander] | Commander | None = None,
         stats: type[BotStatistic] = BotStatistic,
         plotter: type[Plotter] | None = None,
         name: str | None = None,
@@ -49,7 +49,7 @@ class LetTrade:
             feeder (type[DataFeeder]): _description_
             exchange (type[Exchange]): _description_
             account (type[Account]): _description_
-            commander (type[Commander] | None, optional): _description_. Defaults to None.
+            commander (type[Commander] | Commander | None, optional): _description_. Defaults to None.
             stats (type[BotStatistic], optional): _description_. Defaults to BotStatistic.
             plotter (type[Plotter] | None, optional): _description_. Defaults to None.
             name (str | None, optional): _description_. Defaults to None.
@@ -140,6 +140,7 @@ class LetTrade:
                         id=i,
                         result="str",
                         **self._kwargs,
+                        **kwargs,
                     )
                     for i, datas in enumerate(datas_source)
                 ]
@@ -151,6 +152,7 @@ class LetTrade:
                 bot=self._bot,
                 result="bot",
                 **self._kwargs,
+                **kwargs,
             )
             print(str(self._bot.stats))
 
@@ -193,6 +195,12 @@ class LetTrade:
             return self._stats
         if self._bot is not None:
             return self._bot.stats
+        return None
+
+    @property
+    def commander(self) -> Commander | None:
+        if self._bot is not None:
+            return self._bot.commander
         return None
 
     # Plotter

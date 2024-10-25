@@ -19,8 +19,8 @@ class DataFeeder(metaclass=ABCMeta):
     def alive(self):
         pass
 
-    def start(self):
-        pass
+    def start(self, **kwargs):
+        """Load init datafeeds"""
 
     @abstractmethod
     def next(self):

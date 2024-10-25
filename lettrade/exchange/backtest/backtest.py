@@ -61,7 +61,6 @@ class LetTradeBackTestBot(LetTradeBot):
 
 
 class LetTradeBackTest(LetTrade):
-
     _stats: OptimizeStatistic = None
 
     @property
@@ -447,7 +446,6 @@ class LetTradeBackTest(LetTrade):
         cache: str = None,
         **kwargs,
     ):
-
         try:
             # Load cache
             # TODO: load cache at beginning of caller
@@ -581,7 +579,7 @@ def let_backtest(
     feeder: type[DataFeeder] = BackTestDataFeeder,
     exchange: type[Exchange] = BackTestExchange,
     account: type[Account] = BackTestAccount,
-    commander: type[Commander] | None = BackTestCommander,
+    commander: type[Commander] | Commander | None = BackTestCommander,
     stats: type[BotStatistic] | None = BotStatistic,
     optimize_stats: type[OptimizeStatistic] | None = OptimizeStatistic,
     plotter: type[BotPlotter] | None = "PlotlyBotPlotter",
@@ -601,7 +599,7 @@ def let_backtest(
         feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
         exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
         account (Type[Account], optional): _description_. Defaults to BackTestAccount.
-        commander (Type[Commander] | None, optional): _description_. Defaults to BackTestCommander.
+        commander (Type[Commander] | Commander | None, optional): _description_. Defaults to BackTestCommander.
         plotter (Type[Plotter] | None, optional): _description_. Defaults to PlotlyBotPlotter.
 
     Raises:

@@ -8,7 +8,7 @@ def ichimoku(
     laggin_span: int = 52,
     displacement: int = 26,
     cloud: bool = False,
-    prefix: str = "",
+    prefix: str = "ichimoku_",
     inplace: bool = False,
     plot: bool | list[str] = False,
     plot_kwargs: dict | None = None,
@@ -33,8 +33,7 @@ def ichimoku(
         plot_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Returns:
-        dict[str, pd.Series] | pd.DataFrame: {tenkan_sen, kijun_sen, senkou_span_a, senkou_span_b, leading_senkou_span_a,
-        leading_senkou_span_b, chikou_span, cloud_white, cloud_black}
+        dict[str, pd.Series] | pd.DataFrame: {tenkan_sen, kijun_sen, senkou_span_a, senkou_span_b, leading_senkou_span_a, leading_senkou_span_b, chikou_span, cloud_white, cloud_black}
     """
     if __debug__:
         if not isinstance(dataframe, pd.DataFrame):

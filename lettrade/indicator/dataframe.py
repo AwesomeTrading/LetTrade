@@ -112,7 +112,7 @@ def signal_condiction(
 
     s = pd.Series(value, index=dataframe.index, name=name, **kwargs)
     for condiction in condictions:
-        s.loc[condiction[0]] = condiction[1]
+        s.loc[condiction[0]] = pd.to_numeric(condiction[1], errors='coerce')
 
     if inplace:
         dataframe[name] = s

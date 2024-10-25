@@ -585,6 +585,7 @@ def let_backtest(
     plotter: type[BotPlotter] | None = "PlotlyBotPlotter",
     optimize_plotter: type[OptimizePlotter] | None = "PlotlyOptimizePlotter",
     bot: type[LetTradeBackTestBot] | None = LetTradeBackTestBot,
+    name: str | None = None,
     # Account kwargs
     balance: float | None = 10_000,
     commission: float | None = 0.2,
@@ -595,19 +596,25 @@ def let_backtest(
 
     Args:
         datas (DataFeed | list[DataFeed] | str | list[str]): _description_
-        strategy (Type[Strategy]): The Strategy implement class
-        feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
-        exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.
-        account (Type[Account], optional): _description_. Defaults to BackTestAccount.
-        commander (Type[Commander] | Commander | None, optional): _description_. Defaults to BackTestCommander.
-        plotter (Type[Plotter] | None, optional): _description_. Defaults to PlotlyBotPlotter.
-
-    Raises:
-        RuntimeError: The validate parameter error
+        strategy (type[Strategy]): The Strategy implement class
+        feeder (type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.
+        exchange (type[Exchange], optional): _description_. Defaults to BackTestExchange.
+        account (type[Account], optional): _description_. Defaults to BackTestAccount.
+        commander (type[Commander] | Commander | None, optional): _description_. Defaults to BackTestCommander.
+        stats (type[BotStatistic] | None, optional): _description_. Defaults to BotStatistic.
+        optimize_stats (type[OptimizeStatistic] | None, optional): _description_. Defaults to OptimizeStatistic.
+        plotter (type[BotPlotter] | None, optional): _description_. Defaults to "PlotlyBotPlotter".
+        optimize_plotter (type[OptimizePlotter] | None, optional): _description_. Defaults to "PlotlyOptimizePlotter".
+        bot (type[LetTradeBackTestBot] | None, optional): _description_. Defaults to LetTradeBackTestBot.
+        name (str | None, optional): _description_. Defaults to None.
+        balance (float | None, optional): _description_. Defaults to 10_000.
+        commission (float | None, optional): _description_. Defaults to 0.2.
+        leverage (float | None, optional): _description_. Defaults to 20.
 
     Returns:
         LetTradeBackTest: The LetTrade backtesting object
     """
+
     account_kwargs: dict = kwargs.setdefault("account_kwargs", {})
     account_kwargs.update(
         balance=balance,
@@ -625,6 +632,7 @@ def let_backtest(
         stats=stats,
         plotter=plotter,
         bot=bot,
+        name=name,
         # Backtest
         optimize_stats_cls=optimize_stats,
         optimize_plotter_cls=optimize_plotter,

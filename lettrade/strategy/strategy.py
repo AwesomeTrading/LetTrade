@@ -45,6 +45,11 @@ class Strategy:
 
         Raises:
             RuntimeError: Validate valid is_optimize flag
+
+        Example:
+            Set custom variable to strategy:
+                ```lt = let_backtest(strategy_kwargs=dict(custom_key=custom_value)```
+
         """
         self.__feeder: DataFeeder = feeder
         self.__exchange: Exchange = exchange

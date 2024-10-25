@@ -5815,7 +5815,10 @@
 <span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
-<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Init objects from classes&quot;&quot;&quot;</span>
     <span class="c1"># Feeder</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feeder_cls</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;feeder_kwargs&quot;</span><span class="p">,</span> <span class="p">{}))</span>
@@ -5829,9 +5832,12 @@
 
     <span class="c1"># Commander</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commander_cls</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">commander</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commander_cls</span><span class="p">(</span>
-            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;commander_kwargs&quot;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_commander_cls</span><span class="p">,</span> <span class="n">Commander</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">commander</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commander_cls</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">commander</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commander_cls</span><span class="p">(</span>
+                <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;commander_kwargs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="p">)</span>
 
     <span class="c1"># Strategy</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strategy_cls</span><span class="p">(</span>
@@ -6012,10 +6018,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
 <span class="normal">208</span>
@@ -6054,7 +6057,10 @@
 <span class="normal">241</span>
 <span class="normal">242</span>
 <span class="normal">243</span>
-<span class="normal">244</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">new_bot</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">datas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DataFeed</span><span class="p">],</span>
@@ -6120,15 +6126,15 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot bot result&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.utils.docs</span> <span class="kn">import</span> <span class="n">is_docs_session</span>
@@ -6160,10 +6166,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
@@ -6171,7 +6174,10 @@
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run bot&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">commander</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commander</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -6285,10 +6291,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
@@ -6329,7 +6332,10 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 <span class="normal">307</span>
 <span class="normal">308</span>
 <span class="normal">309</span>
-<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">run_bot</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6388,7 +6394,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
 
 <a href="#lettrade.bot.LetTradeBot.start" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">()</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6397,20 +6403,20 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start bot&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;brain&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Bot </span><span class="si">%s</span><span class="s2"> started with </span><span class="si">%d</span><span class="s2"> datas&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">))</span>
@@ -6470,10 +6476,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
 <span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
@@ -6488,7 +6491,10 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
-<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">start_bot</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6504,8 +6510,8 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">bot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">bot</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">new_bot</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">bot</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;init_kwargs&quot;</span><span class="p">,</span> <span class="p">{}))</span>
-    <span class="n">bot</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_kwargs&quot;</span><span class="p">,</span> <span class="p">{}))</span>
     <span class="k">return</span> <span class="n">bot</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -6530,11 +6536,11 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop bot&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

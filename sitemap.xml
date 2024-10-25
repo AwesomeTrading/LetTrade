@@ -2,526 +2,526 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/dev/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/docker/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/backtest/performance/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/indicator/1.talib/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/indicator/2.freqtrade_technical/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/indicator/3.pandas_ta/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/indicator/9.bukosabino_ta/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/indicator/lettrade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/indicator/vendor/1.qtpylib/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/install/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/install/metatrader/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/live/ccxt/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/live/metatrader/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/live/metatrader/datafeed/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/live/metatrader/feeder/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/live/metatrader/trade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/optimize/0.lettrade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/optimize/1.optuna/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/optimize/2.hyperopt/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/optimize/3.ray/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/optimize/7.bayesopt/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/optimize/8.blackbox/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/optimize/9.hyperactive/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/SUMMARY/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/all/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/bot/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/lettrade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/account/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/account/account/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/account/error/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/base/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/base/error/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/base/flag/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/brain/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/brain/brain/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/calendar/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/calendar/calendar/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/commander/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/commander/commander/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/commander/telegram/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/data/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/error/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/feeder/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/resample/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/timeframe/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/wrapper/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/extra/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/data/extra/csv/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/base/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/error/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/exchange/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/execution/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/order/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/position/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/account/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/backtest/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/commander/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/data/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/exchange/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/feeder/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/plot/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/stats/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/trade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/extra/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/extra/ray/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/extra/ray/ray/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/extra/yfinance/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/extra/yfinance/yfinance/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/plotly/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/backtest/plotly/optimize/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/ccxt/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/ccxt/api/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/ccxt/ccxt/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/ccxt/trade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/account/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/api/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/data/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/error/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/exchange/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/feeder/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/live/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/live/trade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/metatrader/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/metatrader/api/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/metatrader/metatrader/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/exchange/metatrader/trade/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/dataframe/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/plot/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/series/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/utils/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/candlestick/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/candlestick/candlestick/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/candlestick/talib/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/momentum/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/momentum/rsi/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/trend/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/trend/ichimoku/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/trend/ma/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/trend/parabolic_sar/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/vendor/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/vendor/qtpylib/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/vendor/qtpylib/inject/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/vendor/qtpylib/qtpylib/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/volatility/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/volatility/atr/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/volatility/bollinger_bands/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/indicator/volatility/keltner_channel/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/bot/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/color/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/helper/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/plot/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/plotly/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/plotly/indicator/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/plot/plotly/plotly/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/stats/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/stats/stats/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/strategy/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/strategy/strategy/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/utils/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/utils/docs/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/reference/utils/notebook/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/tut-001/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/data/csv/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
     <url>
          <loc>https://AwesomeTrading.github.io/LetTrade/tutorial/plot/candlestick/</loc>
-         <lastmod>2024-09-08</lastmod>
+         <lastmod>2024-10-25</lastmod>
     </url>
 </urlset>

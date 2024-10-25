@@ -5465,7 +5465,7 @@
     <span class="n">feeder</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeeder" href="../../../data/feeder/#lettrade.data.feeder.DataFeeder">DataFeeder</a></span><span class="p">],</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">],</span>
     <span class="n">account</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.account.Account" href="../../../account/account/#lettrade.account.account.Account">Account</a></span><span class="p">],</span>
-    <span class="n">commander</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.commander.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">commander</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.commander.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.commander.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.stats.BotStatistic" href="../../../stats/stats/#lettrade.stats.stats.BotStatistic">BotStatistic</a></span><span class="p">]</span> <span class="o">=</span> <span class="n">BotStatistic</span><span class="p">,</span>
     <span class="n">plotter</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.plot.Plotter" href="../../../plot/plot/#lettrade.plot.plot.Plotter">Plotter</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5525,7 +5525,7 @@
         </li>
         <li class="doc-section-item field-body">
           <b><code>commander</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.commander.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a>] | None</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.commander.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a>] | <a class="autorefs autorefs-internal" title="lettrade.commander.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -5623,7 +5623,7 @@
     <span class="n">feeder</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">DataFeeder</span><span class="p">],</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Exchange</span><span class="p">],</span>
     <span class="n">account</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Account</span><span class="p">],</span>
-    <span class="n">commander</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Commander</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">commander</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Commander</span><span class="p">]</span> <span class="o">|</span> <span class="n">Commander</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BotStatistic</span><span class="p">]</span> <span class="o">=</span> <span class="n">BotStatistic</span><span class="p">,</span>
     <span class="n">plotter</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Plotter</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5638,7 +5638,7 @@
 <span class="sd">        feeder (type[DataFeeder]): _description_</span>
 <span class="sd">        exchange (type[Exchange]): _description_</span>
 <span class="sd">        account (type[Account]): _description_</span>
-<span class="sd">        commander (type[Commander] | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        commander (type[Commander] | Commander | None, optional): _description_. Defaults to None.</span>
 <span class="sd">        stats (type[BotStatistic], optional): _description_. Defaults to BotStatistic.</span>
 <span class="sd">        plotter (type[Plotter] | None, optional): _description_. Defaults to None.</span>
 <span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
@@ -5709,7 +5709,8 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/backtest/backtest.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
+<span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
@@ -5741,8 +5742,7 @@
 <span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span>
+<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">multiprocessing</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;fork&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
     <span class="n">workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5814,7 +5814,8 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/backtest/backtest.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">400</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">399</span>
+<span class="normal">400</span>
 <span class="normal">401</span>
 <span class="normal">402</span>
 <span class="normal">403</span>
@@ -5845,8 +5846,7 @@
 <span class="normal">428</span>
 <span class="normal">429</span>
 <span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;data/optimize&quot;</span><span class="p">):</span>
+<span class="normal">431</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;data/optimize&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load optimize results from cache</span>
 
 <span class="sd">    Args:</span>
@@ -5902,9 +5902,9 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/backtest/backtest.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize_done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize_done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean and close optimize handlers&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -6020,7 +6020,8 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/backtest/backtest.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">280</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">279</span>
+<span class="normal">280</span>
 <span class="normal">281</span>
 <span class="normal">282</span>
 <span class="normal">283</span>
@@ -6063,8 +6064,7 @@
 <span class="normal">320</span>
 <span class="normal">321</span>
 <span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize_model</span><span class="p">(</span>
+<span class="normal">323</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">optimize_model</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params_parser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">result_parser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6156,15 +6156,7 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 </details>
             <details class="quote">
               <summary>Source code in <code>lettrade/lettrade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
@@ -6190,7 +6182,15 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
-<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot strategy/optimize result</span>
 
 <span class="sd">    BotPlotter:</span>
@@ -6248,12 +6248,12 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
             <details class="quote">
               <summary>Source code in <code>lettrade/lettrade.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">185</span>
 <span class="normal">186</span>
 <span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop LetTrade&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bot</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
@@ -6821,10 +6821,7 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
 <span class="normal">208</span>
@@ -6863,7 +6860,10 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">241</span>
 <span class="normal">242</span>
 <span class="normal">243</span>
-<span class="normal">244</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">new_bot</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">datas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DataFeed</span><span class="p">],</span>
@@ -6929,15 +6929,15 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot bot result&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.utils.docs</span> <span class="kn">import</span> <span class="n">is_docs_session</span>
@@ -6969,10 +6969,7 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
@@ -6980,7 +6977,10 @@ Plotly implement <a href="/LetTrade/reference/exchange/backtest/plotly/optimize/
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run bot&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">commander</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commander</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -7094,10 +7094,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
@@ -7138,7 +7135,10 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 <span class="normal">307</span>
 <span class="normal">308</span>
 <span class="normal">309</span>
-<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">run_bot</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -7197,7 +7197,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
 
 <a href="#lettrade.exchange.backtest.backtest.LetTradeBackTestBot.start" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">()</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">start</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7206,20 +7206,20 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start bot&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;brain&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Bot </span><span class="si">%s</span><span class="s2"> started with </span><span class="si">%d</span><span class="s2"> datas&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">))</span>
@@ -7279,10 +7279,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
 <span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
@@ -7297,7 +7294,10 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
-<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">start_bot</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -7313,8 +7313,8 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">bot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">bot</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">new_bot</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">bot</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;init_kwargs&quot;</span><span class="p">,</span> <span class="p">{}))</span>
-    <span class="n">bot</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_kwargs&quot;</span><span class="p">,</span> <span class="p">{}))</span>
     <span class="k">return</span> <span class="n">bot</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -7339,11 +7339,11 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Stop bot&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -7378,7 +7378,9 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
     <span class="n">feeder</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.DataFeeder" href="../../../data/feeder/#lettrade.data.feeder.DataFeeder">DataFeeder</a></span><span class="p">]</span> <span class="o">=</span> <span class="n">BackTestDataFeeder</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">]</span> <span class="o">=</span> <span class="n">BackTestExchange</span><span class="p">,</span>
     <span class="n">account</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Account" href="../../../account/account/#lettrade.account.account.Account">Account</a></span><span class="p">]</span> <span class="o">=</span> <span class="n">BackTestAccount</span><span class="p">,</span>
-    <span class="n">commander</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">BackTestCommander</span><span class="p">,</span>
+    <span class="n">commander</span><span class="p">:</span> <span class="p">(</span>
+        <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">BackTestCommander</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.BotStatistic" href="../../../stats/stats/#lettrade.stats.stats.BotStatistic">BotStatistic</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">BotStatistic</span><span class="p">,</span>
     <span class="n">optimize_stats</span><span class="p">:</span> <span class="p">(</span>
         <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.stats.OptimizeStatistic" href="../stats/#lettrade.exchange.backtest.stats.OptimizeStatistic">OptimizeStatistic</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
@@ -7390,6 +7392,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
     <span class="n">bot</span><span class="p">:</span> <span class="p">(</span>
         <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.backtest.LetTradeBackTestBot" href="#lettrade.exchange.backtest.backtest.LetTradeBackTestBot">LetTradeBackTestBot</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">=</span> <span class="n">LetTradeBackTestBot</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">balance</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
     <span class="n">commission</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
     <span class="n">leverage</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
@@ -7414,7 +7417,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
         </li>
         <li class="doc-section-item field-body">
           <b><code>strategy</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a>]</code>)
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a>]</code>)
           –
           <div class="doc-md-description">
             <p>The Strategy implement class</p>
@@ -7422,7 +7425,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
         </li>
         <li class="doc-section-item field-body">
           <b><code>feeder</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.DataFeeder" href="../../../data/feeder/#lettrade.data.feeder.DataFeeder">DataFeeder</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.DataFeeder" href="../../../data/feeder/#lettrade.data.feeder.DataFeeder">DataFeeder</a>]</code>, default:
                   <code><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.feeder.BackTestDataFeeder" href="../feeder/#lettrade.exchange.backtest.feeder.BackTestDataFeeder">BackTestDataFeeder</a></code>
 )
           –
@@ -7432,7 +7435,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
         </li>
         <li class="doc-section-item field-body">
           <b><code>exchange</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a>]</code>, default:
                   <code><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.exchange.BackTestExchange" href="../exchange/#lettrade.exchange.backtest.exchange.BackTestExchange">BackTestExchange</a></code>
 )
           –
@@ -7442,7 +7445,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
         </li>
         <li class="doc-section-item field-body">
           <b><code>account</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Account" href="../../../account/account/#lettrade.account.account.Account">Account</a>]</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.Account" href="../../../account/account/#lettrade.account.account.Account">Account</a>]</code>, default:
                   <code><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.account.BackTestAccount" href="../account/#lettrade.exchange.backtest.account.BackTestAccount">BackTestAccount</a></code>
 )
           –
@@ -7452,7 +7455,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
         </li>
         <li class="doc-section-item field-body">
           <b><code>commander</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a>] | None</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a>] | <a class="autorefs autorefs-internal" title="lettrade.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a> | None</code>, default:
                   <code><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.commander.BackTestCommander" href="../commander/#lettrade.exchange.backtest.commander.BackTestCommander">BackTestCommander</a></code>
 )
           –
@@ -7461,25 +7464,93 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
           </div>
         </li>
         <li class="doc-section-item field-body">
+          <b><code>stats</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.BotStatistic" href="../../../stats/stats/#lettrade.stats.stats.BotStatistic">BotStatistic</a>] | None</code>, default:
+                  <code><a class="autorefs autorefs-internal" title="lettrade.BotStatistic" href="../../../stats/stats/#lettrade.stats.stats.BotStatistic">BotStatistic</a></code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to BotStatistic.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>optimize_stats</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.stats.OptimizeStatistic" href="../stats/#lettrade.exchange.backtest.stats.OptimizeStatistic">OptimizeStatistic</a>] | None</code>, default:
+                  <code><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.stats.OptimizeStatistic" href="../stats/#lettrade.exchange.backtest.stats.OptimizeStatistic">OptimizeStatistic</a></code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to OptimizeStatistic.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
           <b><code>plotter</code></b>
-              (<code>Type[<a class="autorefs autorefs-internal" title="lettrade.plot.Plotter" href="../../../plot/plot/#lettrade.plot.plot.Plotter">Plotter</a>] | None</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.BotPlotter" href="../../../plot/bot/#lettrade.plot.bot.BotPlotter">BotPlotter</a>] | None</code>, default:
                   <code>&#39;PlotlyBotPlotter&#39;</code>
 )
           –
           <div class="doc-md-description">
-            <p><em>description</em>. Defaults to PlotlyBotPlotter.</p>
+            <p><em>description</em>. Defaults to "PlotlyBotPlotter".</p>
           </div>
         </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError">RuntimeError</a></code>
-            –
+          <b><code>optimize_plotter</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.plot.OptimizePlotter" href="../plot/#lettrade.exchange.backtest.plot.OptimizePlotter">OptimizePlotter</a>] | None</code>, default:
+                  <code>&#39;PlotlyOptimizePlotter&#39;</code>
+)
+          –
           <div class="doc-md-description">
-            <p>The validate parameter error</p>
+            <p><em>description</em>. Defaults to "PlotlyOptimizePlotter".</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>bot</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a>[<a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.backtest.LetTradeBackTestBot" href="#lettrade.exchange.backtest.backtest.LetTradeBackTestBot">LetTradeBackTestBot</a>] | None</code>, default:
+                  <code><a class="autorefs autorefs-internal" title="lettrade.exchange.backtest.backtest.LetTradeBackTestBot" href="#lettrade.exchange.backtest.backtest.LetTradeBackTestBot">LetTradeBackTestBot</a></code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to LetTradeBackTestBot.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>balance</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
+                  <code>10000</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to 10_000.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>commission</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
+                  <code>0.2</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to 0.2.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>leverage</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
+                  <code>20</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to 20.</p>
           </div>
         </li>
     </ul>
@@ -7498,7 +7569,9 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/backtest/backtest.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">577</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
 <span class="normal">578</span>
 <span class="normal">579</span>
 <span class="normal">580</span>
@@ -7555,19 +7628,26 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 <span class="normal">631</span>
 <span class="normal">632</span>
 <span class="normal">633</span>
-<span class="normal">634</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_backtest</span><span class="p">(</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span>
+<span class="normal">640</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">let_backtest</span><span class="p">(</span>
     <span class="n">datas</span><span class="p">:</span> <span class="n">DataFeed</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">DataFeed</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">strategy</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Strategy</span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">feeder</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">DataFeeder</span><span class="p">]</span> <span class="o">=</span> <span class="n">BackTestDataFeeder</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Exchange</span><span class="p">]</span> <span class="o">=</span> <span class="n">BackTestExchange</span><span class="p">,</span>
     <span class="n">account</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Account</span><span class="p">]</span> <span class="o">=</span> <span class="n">BackTestAccount</span><span class="p">,</span>
-    <span class="n">commander</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Commander</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">BackTestCommander</span><span class="p">,</span>
+    <span class="n">commander</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Commander</span><span class="p">]</span> <span class="o">|</span> <span class="n">Commander</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">BackTestCommander</span><span class="p">,</span>
     <span class="n">stats</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BotStatistic</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">BotStatistic</span><span class="p">,</span>
     <span class="n">optimize_stats</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OptimizeStatistic</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimizeStatistic</span><span class="p">,</span>
     <span class="n">plotter</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BotPlotter</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;PlotlyBotPlotter&quot;</span><span class="p">,</span>
     <span class="n">optimize_plotter</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OptimizePlotter</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;PlotlyOptimizePlotter&quot;</span><span class="p">,</span>
     <span class="n">bot</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">LetTradeBackTestBot</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">LetTradeBackTestBot</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1"># Account kwargs</span>
     <span class="n">balance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">10_000</span><span class="p">,</span>
     <span class="n">commission</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
@@ -7578,19 +7658,25 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
 
 <span class="sd">    Args:</span>
 <span class="sd">        datas (DataFeed | list[DataFeed] | str | list[str]): _description_</span>
-<span class="sd">        strategy (Type[Strategy]): The Strategy implement class</span>
-<span class="sd">        feeder (Type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.</span>
-<span class="sd">        exchange (Type[Exchange], optional): _description_. Defaults to BackTestExchange.</span>
-<span class="sd">        account (Type[Account], optional): _description_. Defaults to BackTestAccount.</span>
-<span class="sd">        commander (Type[Commander] | None, optional): _description_. Defaults to BackTestCommander.</span>
-<span class="sd">        plotter (Type[Plotter] | None, optional): _description_. Defaults to PlotlyBotPlotter.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        RuntimeError: The validate parameter error</span>
+<span class="sd">        strategy (type[Strategy]): The Strategy implement class</span>
+<span class="sd">        feeder (type[DataFeeder], optional): _description_. Defaults to BackTestDataFeeder.</span>
+<span class="sd">        exchange (type[Exchange], optional): _description_. Defaults to BackTestExchange.</span>
+<span class="sd">        account (type[Account], optional): _description_. Defaults to BackTestAccount.</span>
+<span class="sd">        commander (type[Commander] | Commander | None, optional): _description_. Defaults to BackTestCommander.</span>
+<span class="sd">        stats (type[BotStatistic] | None, optional): _description_. Defaults to BotStatistic.</span>
+<span class="sd">        optimize_stats (type[OptimizeStatistic] | None, optional): _description_. Defaults to OptimizeStatistic.</span>
+<span class="sd">        plotter (type[BotPlotter] | None, optional): _description_. Defaults to &quot;PlotlyBotPlotter&quot;.</span>
+<span class="sd">        optimize_plotter (type[OptimizePlotter] | None, optional): _description_. Defaults to &quot;PlotlyOptimizePlotter&quot;.</span>
+<span class="sd">        bot (type[LetTradeBackTestBot] | None, optional): _description_. Defaults to LetTradeBackTestBot.</span>
+<span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        balance (float | None, optional): _description_. Defaults to 10_000.</span>
+<span class="sd">        commission (float | None, optional): _description_. Defaults to 0.2.</span>
+<span class="sd">        leverage (float | None, optional): _description_. Defaults to 20.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        LetTradeBackTest: The LetTrade backtesting object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">account_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;account_kwargs&quot;</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">account_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="n">balance</span><span class="o">=</span><span class="n">balance</span><span class="p">,</span>
@@ -7608,6 +7694,7 @@ The cost higher from <code>str</code>, <code>stats</code> object, <code>bot</cod
         <span class="n">stats</span><span class="o">=</span><span class="n">stats</span><span class="p">,</span>
         <span class="n">plotter</span><span class="o">=</span><span class="n">plotter</span><span class="p">,</span>
         <span class="n">bot</span><span class="o">=</span><span class="n">bot</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="c1"># Backtest</span>
         <span class="n">optimize_stats_cls</span><span class="o">=</span><span class="n">optimize_stats</span><span class="p">,</span>
         <span class="n">optimize_plotter_cls</span><span class="o">=</span><span class="n">optimize_plotter</span><span class="p">,</span>

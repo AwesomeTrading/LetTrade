@@ -2501,6 +2501,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#lettrade.exchange.backtest.commander.StorageBackTestCommander" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;StorageBackTestCommander
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" StorageBackTestCommander">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.backtest.commander.StorageBackTestCommander.init" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;init
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4983,6 +5007,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#lettrade.exchange.backtest.commander.StorageBackTestCommander" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;StorageBackTestCommander
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" StorageBackTestCommander">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lettrade.exchange.backtest.commander.StorageBackTestCommander.init" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;init
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5063,6 +5111,151 @@
 
 
 <a href="#lettrade.exchange.backtest.commander.BackTestCommander.init" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">init</span><span class="p">(</span>
+    <span class="n">bot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.LetTradeBot" href="../../../bot/#lettrade.bot.LetTradeBot">LetTradeBot</a></span><span class="p">,</span>
+    <span class="n">brain</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.brain.Brain" href="../../../brain/brain/#lettrade.brain.brain.Brain">Brain</a></span><span class="p">,</span>
+    <span class="n">exchange</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></span><span class="p">,</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Init commander dependencies</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>bot</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.LetTradeBot" href="../../../bot/#lettrade.bot.LetTradeBot">LetTradeBot</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>LetTradeBot object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>brain</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.brain.Brain" href="../../../brain/brain/#lettrade.brain.brain.Brain">Brain</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Brain of bot</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>exchange</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Manage bot trading</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>strategy</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.strategy.Strategy" href="../../../strategy/strategy/#lettrade.strategy.strategy.Strategy">Strategy</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Strategy of bot</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>lettrade/commander/commander.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">init</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">,</span>
+    <span class="n">brain</span><span class="p">:</span> <span class="s2">&quot;Brain&quot;</span><span class="p">,</span>
+    <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;Exchange&quot;</span><span class="p">,</span>
+    <span class="n">strategy</span><span class="p">:</span> <span class="s2">&quot;Strategy&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Init commander dependencies</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bot (LetTradeBot): LetTradeBot object</span>
+<span class="sd">        brain (Brain): Brain of bot</span>
+<span class="sd">        exchange (Exchange): Manage bot trading</span>
+<span class="sd">        strategy (Strategy): Strategy of bot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">bot</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">brain</span> <span class="o">=</span> <span class="n">brain</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">exchange</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">_name</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="lettrade.exchange.backtest.commander.StorageBackTestCommander" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">StorageBackTestCommander</span>
+
+
+<a href="#lettrade.exchange.backtest.commander.StorageBackTestCommander" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="lettrade.commander.Commander" href="../../../commander/commander/#lettrade.commander.commander.Commander">Commander</a></code></p>
+
+
+        <p>BackTest Commander to debug commander notify</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lettrade.exchange.backtest.commander.StorageBackTestCommander.init" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">init</span>
+
+
+<a href="#lettrade.exchange.backtest.commander.StorageBackTestCommander.init" class="headerlink" title="Permanent link">¤</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">init</span><span class="p">(</span>
     <span class="n">bot</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.LetTradeBot" href="../../../bot/#lettrade.bot.LetTradeBot">LetTradeBot</a></span><span class="p">,</span>
     <span class="n">brain</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.brain.Brain" href="../../../brain/brain/#lettrade.brain.brain.Brain">Brain</a></span><span class="p">,</span>

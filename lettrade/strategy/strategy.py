@@ -105,12 +105,12 @@ class Strategy:
                 fn = getattr(self, fn_name)
             else:
                 fn = self.indicators
-            object.__setattr__(data, "indicators_load", fn)
+            object.__setattr__(data, "lt_indicators_load", fn)
 
     @final
     def _indicators_load(self):
         for data in self.datas:
-            data.indicators_load(data)
+            data.lt_indicators_load(data)
 
     @final
     def _start(self):

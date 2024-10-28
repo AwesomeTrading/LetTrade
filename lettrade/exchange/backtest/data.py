@@ -72,11 +72,6 @@ class BackTestDataFeed(DataFeed):
             while True:
                 try:
                     dt_next = self.l.index[size + 1]
-                    # No more next data
-                    # if not dt_next:
-                    #     has_next = False
-                    #     break
-
                     if dt_next > next:
                         break
                     size += 1
@@ -84,14 +79,15 @@ class BackTestDataFeed(DataFeed):
                     has_next = False
                     break
 
-            # validate
-            now = self.l.index[size]
-            floor = self.timeframe.floor(next)
-            if now != floor and missing != "bypass":
-                raise RuntimeError(
-                    f"DataFeed {self.name}: jump from [{now} to {self.l.index[size+1]}]"
-                    f" missing range [{floor} to {next}]",
-                )
+            # Validate
+            if missing != "bypass":
+                now = self.l.index[size]
+                floor = self.timeframe.floor(next)
+                if now != floor:
+                    raise RuntimeError(
+                        f"DataFeed {self.name}: jump from [{now} to {self.l.index[size+1]}]"
+                        f" missing range [{floor} to {next}]",
+                    )
 
         if size > 0:
             super().next(size=size)

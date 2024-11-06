@@ -278,7 +278,7 @@ class MetaTraderAPI(LiveAPI):
         return self._market_parse_response(raw)
 
     @mt5_connection
-    def markets(self, search: str | None = None, **kwargs) -> list[dict]:
+    def markets(self, search: str | None = "*", **kwargs) -> list[dict]:
         """The filter for arranging a group of necessary symbols.
         If the group is specified, the function returns only symbols meeting a specified criteria.
 

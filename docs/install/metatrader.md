@@ -13,10 +13,10 @@ wget https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5ubuntu.sh
 ### Python
 
 ```sh
-wget https://www.python.org/ftp/python/3.10.11/python-3.10.11.exe
+wget https://www.python.org/ftp/python/3.12.7/python-3.12.7-amd64.exe
 
 export WINEPREFIX=$HOME/.mt5
-wine python-3.10.11.exe
+wine python-3.12.7-amd64.exe
 ```
 
 ### Python requirements
@@ -24,7 +24,7 @@ wine python-3.10.11.exe
 ```sh
 export WINEPREFIX=$HOME/.mt5
 
-cd $HOME/.mt5/dosdevices/c:/users/$USER/AppData/Local/Programs/Python/Python310-32/
+cd $HOME/.mt5/dosdevices/c:/users/$USER/AppData/Local/Programs/Python/Python312/
 
 wine python.exe -m pip install --upgrade pip
 wine python.exe -m pip install MetaTrader5
@@ -37,7 +37,7 @@ wine python.exe -m pip install https://github.com/AwesomeTrading/mt5linux/archiv
 ```sh
 export WINEPREFIX=$HOME/.mt5
 
-python -m mt5linux "$HOME/.mt5/dosdevices/c:/users/$USER/AppData/Local/Programs/Python/Python310-32/python.exe"
+python -m mt5linux "$HOME/.mt5/dosdevices/c:/users/$USER/AppData/Local/Programs/Python/Python312/python.exe"
 ```
 
 ## MetaTrader Terminal

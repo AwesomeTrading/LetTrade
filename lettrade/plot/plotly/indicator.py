@@ -1,5 +1,6 @@
 import pandas as pd
 
+from lettrade.plot.color import PlotColor
 from lettrade.plot.helper import plot_merge
 
 
@@ -235,7 +236,7 @@ def plot_parabolic_sar(
 
 def plot_line(
     series: pd.Series | str,
-    color: str = "#ffee58",
+    color: str = PlotColor.PURPLE,
     width: int = 1,
     name: str | None = None,
     mode: str = "lines",
@@ -248,7 +249,7 @@ def plot_line(
 
     Args:
         series (pd.Series | str): _description_
-        color (str, optional): _description_. Defaults to "#ffee58".
+        color (str, optional): _description_. Defaults to PlotColor.PURPLE.
         width (int, optional): _description_. Defaults to 1.
         name (str | None, optional): _description_. Defaults to None.
         mode (str, optional): _description_. Defaults to "lines".
@@ -287,7 +288,7 @@ def plot_line(
 
 def plot_lines(
     *serieses: list[pd.Series | str],
-    color: str = "#ffee58",
+    color: str = PlotColor.PURPLE,
     width: int = 1,
     name: str | None = None,
     mode: str = "lines",
@@ -298,7 +299,7 @@ def plot_lines(
     """_summary_
 
     Args:
-        color (str, optional): _description_. Defaults to "#ffee58".
+        color (str, optional): _description_. Defaults to PlotColor.PURPLE.
         width (int, optional): _description_. Defaults to 1.
         name (str | None, optional): _description_. Defaults to None.
         mode (str, optional): _description_. Defaults to "lines".
@@ -328,7 +329,7 @@ def plot_lines(
 
 def plot_mark(
     series: pd.Series | str,
-    color: str = "#ffee58",
+    color: str = PlotColor.YELLOW,
     width: int = 1,
     mode: str = "markers",
     name: str | None = None,
@@ -341,7 +342,7 @@ def plot_mark(
 
     Args:
         series (pd.Series | str): _description_
-        color (str, optional): _description_. Defaults to "#ffee58".
+        color (str, optional): _description_. Defaults to PlotColor.YELLOW.
         width (int, optional): _description_. Defaults to 1.
         mode (str, optional): _description_. Defaults to "markers".
         name (str | None, optional): _description_. Defaults to None.
@@ -370,8 +371,8 @@ def plot_candlestick(
     dataframe: pd.DataFrame,
     name: str = "Candlestick",
     width: int = 1,
-    increasing_line_color="#26c6da",
-    decreasing_line_color="#ab47bc",
+    increasing_line_color=PlotColor.LIGHT_GREEN,
+    decreasing_line_color=PlotColor.LIGHT_RED,
     row: int = 1,
     col: int = 1,
     filter: pd.Series | None = None,
@@ -383,8 +384,8 @@ def plot_candlestick(
         dataframe (pd.DataFrame): _description_
         name (str, optional): _description_. Defaults to "Candlestick".
         width (int, optional): _description_. Defaults to 1.
-        increasing_line_color (str, optional): _description_. Defaults to "#26c6da".
-        decreasing_line_color (str, optional): _description_. Defaults to "#ab47bc".
+        increasing_line_color (str, optional): _description_. Defaults to PlotColor.LIGHT_GREEN.
+        decreasing_line_color (str, optional): _description_. Defaults to PlotColor.LIGHT_RED.
         row (int, optional): _description_. Defaults to 1.
         col (int, optional): _description_. Defaults to 1.
         filter (pd.Series | None, optional): _description_. Defaults to None.

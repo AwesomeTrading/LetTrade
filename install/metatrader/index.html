@@ -5185,15 +5185,15 @@
 <div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5ubuntu.sh<span class="w"> </span><span class="p">;</span><span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>mt5ubuntu.sh<span class="w"> </span><span class="p">;</span><span class="w"> </span>./mt5ubuntu.sh
 </code></pre></div>
 <h3 id="python">Python<a class="headerlink" href="#python" title="Permanent link">¤</a></h3>
-<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://www.python.org/ftp/python/3.10.11/python-3.10.11.exe
+<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://www.python.org/ftp/python/3.12.7/python-3.12.7-amd64.exe
 
 <span class="nb">export</span><span class="w"> </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="nv">$HOME</span>/.mt5
-wine<span class="w"> </span>python-3.10.11.exe
+wine<span class="w"> </span>python-3.12.7-amd64.exe
 </code></pre></div>
 <h3 id="python-requirements">Python requirements<a class="headerlink" href="#python-requirements" title="Permanent link">¤</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="nv">$HOME</span>/.mt5
 
-<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/.mt5/dosdevices/c:/users/<span class="nv">$USER</span>/AppData/Local/Programs/Python/Python310-32/
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/.mt5/dosdevices/c:/users/<span class="nv">$USER</span>/AppData/Local/Programs/Python/Python312/
 
 wine<span class="w"> </span>python.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
 wine<span class="w"> </span>python.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>MetaTrader5
@@ -5203,7 +5203,7 @@ wine<span class="w"> </span>python.exe<span class="w"> </span>-m<span class="w">
 <h3 id="start-server">Start Server<a class="headerlink" href="#start-server" title="Permanent link">¤</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="nv">$HOME</span>/.mt5
 
-python<span class="w"> </span>-m<span class="w"> </span>mt5linux<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.mt5/dosdevices/c:/users/</span><span class="nv">$USER</span><span class="s2">/AppData/Local/Programs/Python/Python310-32/python.exe&quot;</span>
+python<span class="w"> </span>-m<span class="w"> </span>mt5linux<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.mt5/dosdevices/c:/users/</span><span class="nv">$USER</span><span class="s2">/AppData/Local/Programs/Python/Python312/python.exe&quot;</span>
 </code></pre></div>
 <h2 id="metatrader-terminal">MetaTrader Terminal<a class="headerlink" href="#metatrader-terminal" title="Permanent link">¤</a></h2>
 <h3 id="load-broker-information">Load broker information<a class="headerlink" href="#load-broker-information" title="Permanent link">¤</a></h3>

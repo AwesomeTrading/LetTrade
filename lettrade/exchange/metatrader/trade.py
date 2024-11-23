@@ -16,7 +16,6 @@ from lettrade import (
 from lettrade.exchange import PositionResult
 from lettrade.exchange.live import (
     LetLiveOrderInvalidException,
-    LiveDataFeed,
     LiveExecution,
     LiveOrder,
     LivePosition,
@@ -25,7 +24,8 @@ from lettrade.exchange.live import (
 from .api import MetaTraderAPI
 
 if TYPE_CHECKING:
-    from .metatrader import MetaTraderExchange
+    from .metatrader import MetaTraderDataFeed, MetaTraderExchange
+
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,7 @@ class MetaTraderExecution(LiveExecution):
         cls,
         raw,
         exchange: "MetaTraderExchange",
-        data: "LiveDataFeed | None" = None,
+        data: "MetaTraderDataFeed | None" = None,
         api: MetaTraderAPI | None = None,
     ) -> "MetaTraderExecution | None":
         """Building new MetaTraderExecution from live api raw object
@@ -221,7 +221,7 @@ class MetaTraderOrder(LiveOrder):
         cls,
         raw: Any,
         exchange: "MetaTraderExchange",
-        data: "LiveDataFeed | None" = None,
+        data: "MetaTraderDataFeed | None" = None,
         api: MetaTraderAPI | None = None,
     ) -> "MetaTraderOrder | None":
         """_summary_
@@ -229,7 +229,7 @@ class MetaTraderOrder(LiveOrder):
         Args:
             raw (Any): _description_
             exchange (MetaTraderExchange): _description_
-            data (LiveDataFeed | None, optional): _description_. Defaults to None.
+            data (MetaTraderDataFeed | None, optional): _description_. Defaults to None.
             api (MetaTraderAPI | None, optional): _description_. Defaults to None.
 
         Raises:
@@ -477,7 +477,7 @@ class MetaTraderPosition(LivePosition):
         raw,
         exchange: "MetaTraderExchange",
         state: PositionState = PositionState.Open,
-        data: "LiveDataFeed | None" = None,
+        data: "MetaTraderDataFeed | None" = None,
         api: MetaTraderAPI = None,
     ) -> "MetaTraderPosition":
         """_summary_
@@ -485,7 +485,7 @@ class MetaTraderPosition(LivePosition):
         Args:
             raw (_type_): _description_
             exchange (MetaTraderExchange): _description_
-            data (LiveDataFeed, optional): _description_. Defaults to None.
+            data (MetaTraderDataFeed, optional): _description_. Defaults to None.
             api (MetaTraderAPI, optional): _description_. Defaults to None.
 
         Raises:
@@ -568,7 +568,7 @@ class MetaTraderPosition(LivePosition):
     #     cls,
     #     id: str,
     #     exchange: "MetaTraderExchange",
-    #     data: LiveDataFeed = None,
+    #     data: "MetaTraderDataFeed | None" = None,
     #     api: MetaTraderAPI = None,
     # ) -> "MetaTraderPosition":
     #     if api is None:

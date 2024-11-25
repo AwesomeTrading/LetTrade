@@ -158,7 +158,7 @@ class DataFeed(pd.DataFrame):
         since: int | str | pd.Timestamp | None = None,
         to: int | str | pd.Timestamp | None = None,
         **kwargs,
-    ) -> None:
+    ) -> "None | DataFeed":
         """_summary_
 
         Args:
@@ -169,8 +169,7 @@ class DataFeed(pd.DataFrame):
             RuntimeError: _description_
         """
         if since is None and to is None:
-            super().drop(*args, **kwargs)
-            return
+            return super().drop(*args, **kwargs)
 
         condiction = None
 

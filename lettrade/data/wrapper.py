@@ -3,8 +3,6 @@ from typing import Any
 import pandas as pd
 from pandas.core.indexing import _iLocIndexer
 
-__LET_WRAPPER_KEY__ = "_lt_wrapper"
-
 
 class LetILocWrapper:
     """Wrap iloc object from DataFeed"""
@@ -141,6 +139,7 @@ class LetDataFeedWrapper:
     _data: pd.DataFrame
     _pointer: int
     _iloc: LetILocWrapper | _iLocIndexer
+    _wrappers: dict[str, LetIndexWapper | LetSeriesWapper]
 
     def __init__(self, data: pd.DataFrame) -> None:
         """_summary_
@@ -151,39 +150,33 @@ class LetDataFeedWrapper:
         Raises:
             RuntimeError: _description_
         """
-        # Validate new instance not load an existed wrapper
-        if hasattr(data.index, __LET_WRAPPER_KEY__):
-            raise RuntimeError("DataFeed.index reuses a loaded wrapper")
-        for column in data.columns:
-            if hasattr(data[column], __LET_WRAPPER_KEY__):
-                raise RuntimeError(f"DataFeed.{column} reuses a loaded wrapper")
-
         self._pointer = 0
         self._data = data
         self._iloc = LetILocWrapper(self._data, self)
+        self._wrappers = dict()
 
     def __getattr__(
         self, name: str
     ) -> pd.Series | pd.Index | pd.DatetimeIndex | LetSeriesWapper | LetIndexWapper:
         # if hasattr(self._data, name):
-        result = getattr(self._data, name)
+        attr = getattr(self._data, name)
 
         # Exist
-        if hasattr(result, __LET_WRAPPER_KEY__):
-            return getattr(result, __LET_WRAPPER_KEY__)
+        if name in self._wrappers:
+            return self._wrappers[name]
 
         # Set wrapper
-        if isinstance(result, pd.Series):
-            wrapper = LetSeriesWapper(result, self)
-            setattr(result, __LET_WRAPPER_KEY__, wrapper)
+        if isinstance(attr, pd.Series):
+            wrapper = LetSeriesWapper(attr, self)
+            self._wrappers[name] = wrapper
             return wrapper
 
-        if isinstance(result, pd.DatetimeIndex):
-            wrapper = LetIndexWapper(result, self)
-            setattr(result, __LET_WRAPPER_KEY__, wrapper)
+        if isinstance(attr, pd.DatetimeIndex):
+            wrapper = LetIndexWapper(attr, self)
+            self._wrappers[name] = wrapper
             return wrapper
 
-        return result
+        return attr
 
         # raise NotImplementedError(f"Method {name} is not implement yet")
 

@@ -2,11 +2,10 @@ import pandas as pd
 
 
 def series_init(
-    series: pd.Series | str = "close",
+    series: pd.Series | list[str] | str = "close",
     dataframe: pd.DataFrame | None = None,
     inplace: bool = False,
 ):
-
     if dataframe is None:
         if __debug__:
             if not isinstance(series, pd.Series):
@@ -15,7 +14,7 @@ def series_init(
                 )
 
             if inplace:
-                raise RuntimeError("DataFrame isnot set when inplace=True")
+                raise RuntimeError("DataFrame is not set when inplace=True")
     else:
         if __debug__:
             if not isinstance(dataframe, pd.DataFrame):
@@ -24,10 +23,13 @@ def series_init(
                     "is not instance of pandas.DataFrame"
                 )
 
-            if not isinstance(series, str):
+            if not isinstance(series, str | list):
                 raise RuntimeError(
                     f"Series type {type(series)} is not string of column name"
                 )
+
+        if isinstance(series, list):
+            return [dataframe[s] for s in series]
 
         series = dataframe[series]
     return series

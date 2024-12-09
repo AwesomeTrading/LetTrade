@@ -287,18 +287,20 @@ def plot_line(
 
 
 def plot_lines(
-    *serieses: list[pd.Series | str],
+    serieses: list[pd.Series | str],
     color: str = PlotColor.PURPLE,
     width: int = 1,
     name: str | None = None,
     mode: str = "lines",
     fullfill: bool = False,
     dataframe: pd.DataFrame | None = None,
+    plots_kwargs: list[dict] | None = None,
     **kwargs,
 ) -> dict:
     """_summary_
 
     Args:
+        serieses (list[pd.Series  |  str]): _description_
         color (str, optional): _description_. Defaults to PlotColor.PURPLE.
         width (int, optional): _description_. Defaults to 1.
         name (str | None, optional): _description_. Defaults to None.
@@ -309,21 +311,22 @@ def plot_lines(
     Returns:
         dict: _description_
     """
+    kwargs.update(
+        color=color,
+        width=width,
+        name=name,
+        mode=mode,
+        fullfill=fullfill,
+        dataframe=dataframe,
+    )
+
     result = {}
     for series in serieses:
-        plot_merge(
-            result,
-            plot_line(
-                series=series,
-                color=color,
-                width=width,
-                name=name,
-                mode=mode,
-                fullfill=fullfill,
-                dataframe=dataframe,
-                **kwargs,
-            ),
-        )
+        series_kwargs = kwargs.copy()
+        if plots_kwargs:
+            series_kwargs.update(**plots_kwargs.pop())
+
+        plot_merge(result, plot_line(series=series, **series_kwargs))
     return result
 
 

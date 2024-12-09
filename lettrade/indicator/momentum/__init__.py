@@ -1,4 +1,5 @@
 from .rsi import rsi
+from .stochastic import stochastic
 
 
 def pandas_inject(obj: object | None = None):
@@ -10,3 +11,4 @@ def pandas_inject(obj: object | None = None):
     from ..series import series_indicator_inject
 
     obj.rsi = series_indicator_inject(rsi)
+    obj.stochastic = series_indicator_inject(stochastic)

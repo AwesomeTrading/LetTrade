@@ -1,3 +1,4 @@
+import random
 from enum import Enum
 
 
@@ -42,3 +43,7 @@ class PlotColor(str, Enum):
     """"""
     DEEP_ORANGE = "#ff6e42"
     """"""
+
+
+def random_color():
+    return random.choice(list(PlotColor))

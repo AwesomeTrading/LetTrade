@@ -2,6 +2,8 @@ from typing import Literal
 
 import pandas as pd
 
+from lettrade import random_color
+
 from ..series import series_init
 from ..utils import talib_ma
 
@@ -149,21 +151,26 @@ def ma(
     ma_fn = talib_ma(mode)
     i = ma_fn(series, timeperiod=window, **kwargs)
 
+    # Plot
+    if plot:
+        if plot_kwargs is None:
+            plot_kwargs = dict()
+
+        plot_kwargs.update(series=pd.Series(i, index=dataframe.index), name=name)
+        plot_kwargs.setdefault("color", random_color())
+
+        from lettrade.indicator.plot import IndicatorPlotter
+        from lettrade.plot.plotly import plot_line
+
+        IndicatorPlotter(
+            dataframe=dataframe,
+            plotter=plot_line,
+            **plot_kwargs,
+        )
+
     if inplace:
         name = name or f"{prefix}{mode}"
         dataframe[name] = i
-
-        # Plot
-        if plot:
-            if plot_kwargs is None:
-                plot_kwargs = dict()
-
-            plot_kwargs.update(series=name, name=name)
-
-            from lettrade.indicator.plot import IndicatorPlotter
-            from lettrade.plot.plotly import plot_line
-
-            IndicatorPlotter(dataframe=dataframe, plotter=plot_line, **plot_kwargs)
 
         return dataframe
 

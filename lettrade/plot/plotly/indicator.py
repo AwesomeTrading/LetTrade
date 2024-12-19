@@ -324,7 +324,7 @@ def plot_lines(
     for series in serieses:
         series_kwargs = kwargs.copy()
         if plots_kwargs:
-            series_kwargs.update(**plots_kwargs.pop())
+            series_kwargs.update(**plots_kwargs.pop(0))
 
         plot_merge(result, plot_line(series=series, **series_kwargs))
     return result

@@ -15,30 +15,31 @@ def stochastic(
     slowd_window=3,
     slowd_matype="sma",
     dataframe: pd.DataFrame | None = None,
-    name: str | None = None,
-    prefix: str = "",
+    prefix: str = "stoch_",
     inplace: bool = False,
     plot: bool | list[str] = False,
-    plot_kwargs: dict | None = None,
+    plot_slowk_kwargs: dict | None = None,
+    plot_slowd_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """_summary_
 
     Args:
-        series (pd.Series | str, optional): _description_. Defaults to "close".
-        window (int, optional): _description_. Defaults to None.
-        dataframe (pd.DataFrame, optional): _description_. Defaults to None.
-        name (str | None, optional): _description_. Defaults to None.
+        series (pd.Series | list[str] | str, optional): _description_. Defaults to "close".
+        fastk_window (int, optional): _description_. Defaults to 14.
+        slowk_window (int, optional): _description_. Defaults to 1.
+        slowk_matype (str, optional): _description_. Defaults to "sma".
+        slowd_window (int, optional): _description_. Defaults to 3.
+        slowd_matype (str, optional): _description_. Defaults to "sma".
+        dataframe (pd.DataFrame | None, optional): _description_. Defaults to None.
         prefix (str, optional): _description_. Defaults to "".
         inplace (bool, optional): _description_. Defaults to False.
-        plot (bool | list, optional): _description_. Defaults to False.
-        plot_kwargs (dict | None, optional): _description_. Defaults to None.
-
-    Raises:
-        RuntimeError: _description_
+        plot (bool | list[str], optional): _description_. Defaults to False.
+        plot_slowk_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot_slowd_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Returns:
-        pd.Series | pd.DataFrame: {stochastic}
+        pd.Series | pd.DataFrame: _description_
     """
     # # Validation & init
     # if __debug__:
@@ -59,41 +60,63 @@ def stochastic(
         **kwargs,
     )
 
-    if inplace:
-        name = name or f"{prefix}stochastic"
-        dataframe[f"{name}_slowk"] = slowk
-        dataframe[f"{name}_slowd"] = slowd
+    result = dataframe if inplace else {}
+    result[f"{prefix}slowk"] = slowk
+    result[f"{prefix}slowd"] = slowd
 
-        # Plot
-        if plot:
-            if plot_kwargs is None:
-                plot_kwargs = dict()
+    # Plot
+    if plot:
+        from lettrade.indicator.plot import IndicatorPlotter
+        from lettrade.plot.plotly import plot_lines
 
-            # plot_kwargs.update(series=name, name=name)
-            plot_kwargs.setdefault("row", 2)
-            plot_kwargs.setdefault("row_height", 0.5)
+        # Enable lines
+        if isinstance(plot, list):
+            # SlowK
+            if f"{prefix}slowk" in plot:
+                if plot_slowk_kwargs is None:
+                    plot_slowk_kwargs = dict()
+            else:
+                plot_slowk_kwargs = None
 
-            from lettrade.indicator.plot import IndicatorPlotter
-            from lettrade.plot.plotly import plot_lines
+            # SlowD
+            if f"{prefix}slowd" in plot:
+                if plot_slowd_kwargs is None:
+                    plot_slowd_kwargs = dict()
+            else:
+                plot_slowd_kwargs = None
+        else:
+            if plot_slowk_kwargs is None:
+                plot_slowk_kwargs = dict()
+            if plot_slowd_kwargs is None:
+                plot_slowd_kwargs = dict()
 
-            IndicatorPlotter(
-                serieses=[f"{name}_slowk", f"{name}_slowd"],
-                dataframe=dataframe,
-                plotter=plot_lines,
-                name=name,
-                plots_kwargs=[
-                    dict(
-                        name=f"{name}_slowk",
-                        color=PlotColor.AMBER,
-                    ),
-                    dict(
-                        name=f"{name}_slowd",
-                        color=PlotColor.BLUE,
-                    ),
-                ],
-                **plot_kwargs,
-            )
+        serieses = []
+        plots_kwargs = []
 
-        return dataframe
+        # SlowK
+        if plot_slowk_kwargs is not None:
+            plot_slowk_kwargs.setdefault("name", f"{prefix}slowk")
+            plot_slowk_kwargs.setdefault("row", 2)
+            plot_slowk_kwargs.setdefault("row_height", 0.5)
+            plot_slowk_kwargs.setdefault("color", PlotColor.AMBER)
+            serieses.append(slowk)
+            plots_kwargs.append(plot_slowk_kwargs)
 
-    return slowk, slowd
+        # SlowD
+        if plot_slowd_kwargs is not None:
+            plot_slowd_kwargs.setdefault("name", f"{prefix}slowd")
+            plot_slowd_kwargs.setdefault("row", 2)
+            plot_slowd_kwargs.setdefault("row_height", 0.5)
+            plot_slowd_kwargs.setdefault("color", PlotColor.PINK)
+            serieses.append(slowd)
+            plots_kwargs.append(plot_slowd_kwargs)
+
+        IndicatorPlotter(
+            serieses=serieses,
+            dataframe=dataframe,
+            plotter=plot_lines,
+            name=prefix,
+            plots_kwargs=plots_kwargs,
+        )
+
+    return result

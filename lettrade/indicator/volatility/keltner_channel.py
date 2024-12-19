@@ -3,6 +3,8 @@ from typing import Literal
 import pandas as pd
 import talib.abstract as ta
 
+from lettrade.plot import PlotColor
+
 from ..utils import talib_ma
 
 
@@ -10,27 +12,39 @@ def keltner_channel(
     dataframe: pd.DataFrame,
     ma: int = 20,
     ma_mode: Literal[
-        "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"
+        "sma",
+        "ema",
+        "wma",
+        "dema",
+        "tema",
+        "trima",
+        "kama",
+        "mama",
+        "t3",
     ] = "ema",
     atr: int = 20,
     shift: float = 1.6,
     prefix: str = "kc_",
     inplace: bool = False,
     plot: bool | list[str] = False,
-    plot_kwargs: dict | None = None,
+    plot_upper_kwargs: dict | None = None,
+    plot_basis_kwargs: dict | None = None,
+    plot_lower_kwargs: dict | None = None,
 ) -> dict[str, pd.Series] | pd.DataFrame:
     """_summary_
 
     Args:
         dataframe (pd.DataFrame): _description_
         ma (int, optional): _description_. Defaults to 20.
-        ma_mode (Literal[ "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3" ], optional): _description_. Defaults to "ema".
+        ma_mode (Literal[ "sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3", ], optional): _description_. Defaults to "ema".
         atr (int, optional): _description_. Defaults to 20.
         shift (float, optional): _description_. Defaults to 1.6.
         prefix (str, optional): _description_. Defaults to "kc_".
         inplace (bool, optional): _description_. Defaults to False.
-        plot (bool | list, optional): _description_. Defaults to False.
-        plot_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot (bool | list[str], optional): _description_. Defaults to False.
+        plot_upper_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot_basis_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot_lower_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Example:
         ```python
@@ -67,30 +81,71 @@ def keltner_channel(
 
     # Plot
     if plot:
-        if plot_kwargs is None:
-            plot_kwargs = dict()
-
-        if isinstance(plot, list):
-            if f"{prefix}upper" in plot:
-                plot_kwargs.update(upper=f"{prefix}upper")
-            if f"{prefix}basis" in plot:
-                plot_kwargs.update(basis=f"{prefix}basis")
-            if f"{prefix}lower" in plot:
-                plot_kwargs.update(lower=f"{prefix}lower")
-        else:
-            plot_kwargs.update(
-                upper=f"{prefix}upper",
-                basis=f"{prefix}basis",
-                lower=f"{prefix}lower",
-            )
-
         from lettrade.indicator.plot import IndicatorPlotter
-        from lettrade.plot.plotly import plot_keltner_channel
+        from lettrade.plot.plotly import plot_lines
+
+        # Enable lines
+        if isinstance(plot, list):
+            # Upper
+            if f"{prefix}upper" in plot:
+                if plot_upper_kwargs is None:
+                    plot_upper_kwargs = dict()
+            else:
+                plot_upper_kwargs = None
+
+            # Basis
+            if f"{prefix}basis" in plot:
+                if plot_basis_kwargs is None:
+                    plot_basis_kwargs = dict()
+            else:
+                plot_basis_kwargs = None
+
+            # Lower
+            if f"{prefix}lower" in plot:
+                if plot_lower_kwargs is None:
+                    plot_lower_kwargs = dict()
+            else:
+                plot_lower_kwargs = None
+
+        else:
+            if plot_upper_kwargs is None:
+                plot_upper_kwargs = dict()
+            if plot_basis_kwargs is None:
+                plot_basis_kwargs = dict()
+            if plot_lower_kwargs is None:
+                plot_lower_kwargs = dict()
+
+        #
+        serieses = []
+        plots_kwargs = []
+
+        # Upper
+        if plot_upper_kwargs is not None:
+            plot_upper_kwargs.setdefault("name", f"{prefix}upper")
+            plot_upper_kwargs.setdefault("color", PlotColor.CYAN)
+            serieses.append(i_upper)
+            plots_kwargs.append(plot_upper_kwargs)
+
+        # Basis
+        if plot_basis_kwargs is not None:
+            plot_basis_kwargs.setdefault("name", f"{prefix}basis")
+            plot_basis_kwargs.setdefault("color", PlotColor.AMBER)
+            serieses.append(i_basis)
+            plots_kwargs.append(plot_basis_kwargs)
+
+        # Lower
+        if plot_lower_kwargs is not None:
+            plot_lower_kwargs.setdefault("name", f"{prefix}lower")
+            plot_lower_kwargs.setdefault("color", PlotColor.PURPLE)
+            serieses.append(i_lower)
+            plots_kwargs.append(plot_lower_kwargs)
 
         IndicatorPlotter(
+            serieses=serieses,
             dataframe=dataframe,
-            plotter=plot_keltner_channel,
-            **plot_kwargs,
+            plotter=plot_lines,
+            name=prefix,
+            plots_kwargs=plots_kwargs,
         )
 
     return result

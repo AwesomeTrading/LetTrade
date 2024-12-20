@@ -66,9 +66,9 @@ def parabolic_sar(
 
     sar = dataframe.close.iloc[0]
 
-    i_long = pd.Series(np.nan, index=dataframe.high.index)
+    i_long = pd.Series(np.nan, index=dataframe.index)
     i_short = i_long.copy()
-    i_reversal = pd.Series(0, index=dataframe.high.index)
+    i_reversal = pd.Series(0, index=dataframe.index)
     i_af = i_long.copy()
     i_af.iloc[0:2] = af0
 
@@ -129,13 +129,13 @@ def parabolic_sar(
 
         if isinstance(plot, list):
             if f"{prefix}long" in plot:
-                plot_kwargs.update(long=f"{prefix}long")
+                plot_kwargs.update(long=i_long)
             if f"{prefix}short" in plot:
-                plot_kwargs.update(short=f"{prefix}short")
+                plot_kwargs.update(short=i_short)
         else:
             plot_kwargs.update(
-                long=f"{prefix}long",
-                short=f"{prefix}short",
+                long=i_long,
+                short=i_short,
             )
 
         from lettrade.indicator.plot import IndicatorPlotter

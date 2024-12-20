@@ -2,6 +2,7 @@ from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
+from lettrade import PlotColor, random_color
 
 
 def pandas_inject(obj: object | None = None):
@@ -18,14 +19,15 @@ def signal_direction(
     dataframe: pd.DataFrame,
     up: pd.Series,
     down: pd.Series,
-    name: str,
+    name: str = "direction",
     value: int = 0,
     value_up: int = 100,
     value_down: int = -100,
     inplace: bool = False,
     plot: bool | list[str] = False,
-    plot_type: Literal["line", "mark"] = "line",
-    plot_kwargs: dict | None = None,
+    plot_type: Literal["line", "mark"] = "mark",
+    plot_up_kwargs: dict | None = None,
+    plot_down_kwargs: dict | None = None,
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """Define a signal with 2 direction Up and Down with fixed value
@@ -39,43 +41,65 @@ def signal_direction(
         value_up (int, optional): _description_. Defaults to 100.
         value_down (int, optional): _description_. Defaults to -100.
         inplace (bool, optional): Whether to add to the DataFrame and return DataFrame rather than return result. Defaults to False.
-        plot (bool | list, optional): _description_. Defaults to False.
-        plot_type (Literal[&quot;line&quot;, &quot;mark&quot;], optional): _description_. Defaults to "line".
-        plot_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot (bool | list[str], optional): _description_. Defaults to False.
+        plot_type (Literal["line", "mark"], optional): _description_. Defaults to "mark".
+        plot_up_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot_down_kwargs (dict | None, optional): _description_. Defaults to None.
 
     Returns:
         pd.Series | pd.DataFrame: _description_
     """
+
+    # Up
+    if plot_up_kwargs is None:
+        plot_up_kwargs = dict()
+    plot_up_kwargs.setdefault("color", PlotColor.CYAN)
+
+    # Down
+    if plot_down_kwargs is None:
+        plot_down_kwargs = dict()
+    plot_down_kwargs.setdefault("color", PlotColor.PINK)
+
     return signal_condiction(
-        dataframe,
-        [up, value_up],
-        [down, value_down],
+        dataframe=dataframe,
+        condictions=[
+            dict(
+                series=up,
+                value=value_up,
+                name=f"{name}_up",
+                plot_kwargs=plot_up_kwargs,
+            ),
+            dict(
+                series=down,
+                value=value_down,
+                name=f"{name}_down",
+                plot_kwargs=plot_down_kwargs,
+            ),
+        ],
         name=name,
         value=value,
         inplace=inplace,
         plot=plot,
         plot_type=plot_type,
-        plot_kwargs=plot_kwargs,
         **kwargs,
     )
 
 
 def signal_condiction(
     dataframe: pd.DataFrame,
-    *condictions: list[list[pd.Series | Any]],
+    condictions: list[dict],
     name: str,
     value: int | float = np.nan,
     inplace: bool = False,
     plot: bool | list[str] = False,
-    plot_type: Literal["line", "mark"] = "line",
-    plot_kwargs: dict | None = None,
+    plot_type: Literal["line", "mark"] = "mark",
     **kwargs,
 ) -> pd.Series | pd.DataFrame:
     """Define a signal with multiple condiction
 
     Args:
         dataframe (pd.DataFrame): _description_
-        *condictions (list[list[pd.Series | Any]]): Pairs of condiction [`<pandas.Series condiction>`, `<value>`]
+        condictions (list[list[pd.Series | Any]]): Pairs of condiction [`<pandas.Series condiction>`, `<value>`]
         name (str): Name of signal, column name when add to DataFrame with inplace=True.
         value (int, optional): Default value when condiction is not matched. Defaults to 0.
         inplace (bool, optional): _description_. Defaults to False.
@@ -103,33 +127,42 @@ def signal_condiction(
     """
     if __debug__:
         if not isinstance(dataframe, pd.DataFrame):
-            raise RuntimeError(
-                f"dataframe type '{type(dataframe)}' "
-                "is not instance of pandas.DataFrame"
-            )
-        if plot and not inplace:
-            raise RuntimeError("Cannot plot when inplace=False")
+            raise RuntimeError(f"dataframe type '{type(dataframe)}' " "is not instance of pandas.DataFrame")
 
-    s = pd.Series(value, index=dataframe.index, name=name, **kwargs)
+    # Series
+    indicators = []
+    plots = {}
     for condiction in condictions:
-        s.loc[condiction[0]] = pd.to_numeric(condiction[1], errors='coerce')
+        series_value = pd.to_numeric(condiction["value"], errors="coerce")
+        series_index = dataframe.loc[condiction["series"]].index
+        series = pd.Series(series_value, index=series_index, name=condiction["name"], **kwargs)
+        indicators.append(series)
 
-    if inplace:
-        dataframe[name] = s
+        if plot and "plot_kwargs" in condiction:
+            plots[condiction["name"]] = condiction["plot_kwargs"]
 
-        # Plot
-        if plot:
-            if plot_kwargs is None:
-                plot_kwargs = dict()
+    # Plot
+    if plot:
+        from lettrade.indicator.plot import IndicatorPlotter
+        from lettrade.plot.plotly import plot_line, plot_mark
 
-            plot_kwargs.update(series=name, name=name)
+        for series in indicators:
+            if series.name not in plots:
+                continue
 
-            from lettrade.indicator.plot import IndicatorPlotter
-            from lettrade.plot.plotly import plot_line, plot_mark
+            plot_kwargs = plots[series.name]
+            plot_kwargs.update(series=series, name=series.name)
 
             plotter = plot_mark if plot_type == "mark" else plot_line
             IndicatorPlotter(dataframe=dataframe, plotter=plotter, **plot_kwargs)
 
+    # Merge
+    series = pd.Series(value, index=dataframe.index, name=name, **kwargs)
+    for s in indicators:
+        series.update(s)
+
+    if inplace:
+        dataframe[name] = series
         return dataframe
 
-    return s
+    return series

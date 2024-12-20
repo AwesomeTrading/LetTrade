@@ -1,8 +1,9 @@
-from typing import Any, Literal
+from typing import Literal
 
 import numpy as np
 import pandas as pd
-from lettrade import PlotColor, random_color
+
+from lettrade import PlotColor
 
 
 def pandas_inject(obj: object | None = None):
@@ -127,7 +128,10 @@ def signal_condiction(
     """
     if __debug__:
         if not isinstance(dataframe, pd.DataFrame):
-            raise RuntimeError(f"dataframe type '{type(dataframe)}' " "is not instance of pandas.DataFrame")
+            raise RuntimeError(
+                f"dataframe type '{type(dataframe)}' "
+                "is not instance of pandas.DataFrame"
+            )
 
     # Series
     indicators = []
@@ -135,7 +139,12 @@ def signal_condiction(
     for condiction in condictions:
         series_value = pd.to_numeric(condiction["value"], errors="coerce")
         series_index = dataframe.loc[condiction["series"]].index
-        series = pd.Series(series_value, index=series_index, name=condiction["name"], **kwargs)
+        series = pd.Series(
+            series_value,
+            index=series_index,
+            name=condiction["name"],
+            **kwargs,
+        )
         indicators.append(series)
 
         if plot and "plot_kwargs" in condiction:

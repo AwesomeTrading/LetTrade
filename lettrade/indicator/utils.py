@@ -5,7 +5,7 @@ import talib.abstract as taa
 
 
 def talib_ma_mode(
-    name: Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"]
+    name: Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"],
 ) -> int:
     """Helper Function that returns the Enum value for TA Lib's MA Type"""
     if isinstance(name, str) and len(name) > 1:
@@ -28,11 +28,11 @@ def talib_ma_mode(
             return ta.MA_Type.MAMA  # 7
         elif name == "t3":
             return ta.MA_Type.T3  # 8
-    return 0  # Default: SMA -> 0
+    return ta.MA_Type.SMA  # Default: SMA -> 0
 
 
 def talib_ma(
-    name: Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"]
+    name: Literal["sma", "ema", "wma", "dema", "tema", "trima", "kama", "mama", "t3"],
 ) -> Callable:
     """Helper Function that returns the Enum value for TA Lib's MA Type"""
     if isinstance(name, str) and len(name) > 1:

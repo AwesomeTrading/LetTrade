@@ -58,7 +58,7 @@ def signal_direction(
     # Down
     if plot_down_kwargs is None:
         plot_down_kwargs = dict()
-    plot_down_kwargs.setdefault("color", PlotColor.PINK)
+    plot_down_kwargs.setdefault("color", PlotColor.ORANGE)
 
     return signal_condiction(
         dataframe=dataframe,

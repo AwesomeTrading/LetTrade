@@ -14,6 +14,7 @@ def pandas_inject(obj: object | None = None):
 
     obj.signal_direction = signal_direction
     obj.signal_condiction = signal_condiction
+    obj.signal_direction_exist = signal_direction_exist
 
 
 def signal_direction(
@@ -175,3 +176,56 @@ def signal_condiction(
         return dataframe
 
     return series
+
+
+def signal_direction_exist(
+    dataframe: pd.DataFrame,
+    series: pd.Series,
+    window: int,
+    value_exist_up: int = 100,
+    value_exist_down: int = 100,
+    name: str = "exist",
+    value_up: int = 100,
+    value_down: int = -100,
+    inplace: bool = False,
+    plot: bool | list[str] = False,
+    plot_up_kwargs: dict | None = None,
+    plot_down_kwargs: dict | None = None,
+    **kwargs,
+) -> pd.Series | pd.DataFrame:
+    """_summary_
+
+    Args:
+        dataframe (pd.DataFrame): _description_
+        series (pd.Series): _description_
+        window (int): _description_
+        value_exist_up (int, optional): _description_. Defaults to 100.
+        value_exist_down (int, optional): _description_. Defaults to 100.
+        name (str, optional): _description_. Defaults to "exist".
+        value_up (int, optional): _description_. Defaults to 100.
+        value_down (int, optional): _description_. Defaults to -100.
+        inplace (bool, optional): _description_. Defaults to False.
+        plot (bool | list[str], optional): _description_. Defaults to False.
+        plot_up_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot_down_kwargs (dict | None, optional): _description_. Defaults to None.
+
+    Returns:
+        pd.Series | pd.DataFrame: _description_
+    """
+    up_rolling_max = series.rolling(window=window).max()
+    down_rolling_min = series.rolling(window=window).min()
+
+    signal = signal_direction(
+        dataframe=dataframe,
+        up=(up_rolling_max >= value_exist_up),
+        down=(down_rolling_min <= -value_exist_down),
+        name=name,
+        value_up=value_up,
+        value_down=value_down,
+        inplace=inplace,
+        plot=plot,
+        plot_up_kwargs=plot_up_kwargs,
+        plot_down_kwargs=plot_down_kwargs,
+        **kwargs,
+    )
+    return signal

@@ -49,7 +49,8 @@ class LiveDataFeed(DataFeed):
         elif api_kwargs is not None:
             self._api = self._api_cls(**api_kwargs)
         else:
-            raise RuntimeError("Parameter: api or api_kwargs cannot missing")
+            # raise RuntimeError("Parameter: api or api_kwargs cannot missing")
+            logger.info("Parameter: api or api_kwargs cannot missing")
 
     # Properties
     @property

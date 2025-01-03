@@ -2,7 +2,7 @@ from typing import Literal
 
 import numpy as np
 import pandas as pd
-from lettrade import PlotColor
+from lettrade.plot import PlotColor
 
 
 def pandas_inject(obj: object | None = None):

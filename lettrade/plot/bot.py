@@ -2,15 +2,14 @@ from typing import TYPE_CHECKING
 
 import pandas as pd
 
-from lettrade.account import Account
-from lettrade.data import DataFeed, DataFeeder
-from lettrade.exchange import Exchange
-from lettrade.strategy import Strategy
-
 from .plot import Plotter
 
 if TYPE_CHECKING:
+    from lettrade.account import Account
     from lettrade.bot import LetTradeBot
+    from lettrade.data import DataFeed, DataFeeder
+    from lettrade.exchange import Exchange
+    from lettrade.strategy import Strategy
 
 DATAFRAME_PLOTTERS_NAME = "_lt_plotters"
 
@@ -21,15 +20,15 @@ class BotPlotter(Plotter):
     """
 
     bot: "LetTradeBot"
-    feeder: DataFeeder
-    exchange: Exchange
-    account: Account
-    strategy: Strategy
+    feeder: "DataFeeder"
+    exchange: "Exchange"
+    account: "Account"
+    strategy: "Strategy"
 
-    datas: list[DataFeed]
+    datas: "list[DataFeed]"
     """All plotting datafeeds"""
 
-    _datas_stored: list[DataFeed] | None = None
+    _datas_stored: "list[DataFeed] | None" = None
 
     def __init__(self, bot: "LetTradeBot") -> None:
         self.bot = bot
@@ -41,7 +40,7 @@ class BotPlotter(Plotter):
         self.datas = self.feeder.datas
 
     @property
-    def data(self) -> DataFeed:
+    def data(self) -> "DataFeed":
         """Get plotting main datafeed
 
         Returns:
@@ -50,11 +49,11 @@ class BotPlotter(Plotter):
         return self.datas[0]
 
     @data.setter
-    def data(self, value: DataFeed) -> None:
+    def data(self, value: "DataFeed") -> None:
         self.datas[0] = value
 
     @property
-    def _data_stored(self) -> DataFeed:
+    def _data_stored(self) -> "DataFeed":
         return self._datas_stored[0]
 
     def jump(

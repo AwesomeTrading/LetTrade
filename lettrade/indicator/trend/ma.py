@@ -1,8 +1,7 @@
 from typing import Literal
 
 import pandas as pd
-
-from lettrade import random_color
+from lettrade.plot import random_color
 
 from ..series import series_init
 from ..utils import talib_ma

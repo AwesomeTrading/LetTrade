@@ -60,3 +60,9 @@ def indicator_load_plotters(dataframe: pd.DataFrame) -> dict:
         plot_merge(config, plotter.config(dataframe=dataframe))
 
     return config
+
+
+def indicator_clear_plotters(dataframe: pd.DataFrame) -> dict:
+    if not hasattr(dataframe, DATAFRAME_PLOTTERS_NAME):
+        return
+    object.__delattr__(dataframe, DATAFRAME_PLOTTERS_NAME)

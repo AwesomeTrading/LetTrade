@@ -13,6 +13,7 @@ from lettrade.exchange import (
     Position,
     TradeSide,
 )
+from lettrade.indicator.plot import indicator_clear_plotters
 
 if TYPE_CHECKING:
     from lettrade.exchange.backtest import BackTestOrder, BackTestPosition
@@ -113,6 +114,11 @@ class Strategy:
             data.lt_indicators_load(data)
 
     @final
+    def _indicators_clear(self):
+        for data in self.datas:
+            indicator_clear_plotters(data)
+
+    @final
     def _start(self):
         self._indicators_loader_inject()
         self._indicators_load()
@@ -131,6 +137,7 @@ class Strategy:
     @final
     def _next(self) -> None:
         if self.is_live:
+            self._indicators_clear()
             self._indicators_load()
         self.next(*self.datas)
 

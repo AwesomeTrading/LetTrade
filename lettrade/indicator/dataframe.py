@@ -2,7 +2,6 @@ from typing import Literal
 
 import numpy as np
 import pandas as pd
-
 from lettrade import PlotColor
 
 
@@ -14,7 +13,8 @@ def pandas_inject(obj: object | None = None):
 
     obj.signal_direction = signal_direction
     obj.signal_condiction = signal_condiction
-    obj.signal_direction_exist = signal_direction_exist
+    obj.signal_exist = signal_exist
+    obj.signal_repeat = signal_repeat
 
 
 def signal_direction(
@@ -178,12 +178,12 @@ def signal_condiction(
     return series
 
 
-def signal_direction_exist(
+def signal_exist(
     dataframe: pd.DataFrame,
     series: pd.Series,
     window: int,
     value_exist_up: int = 100,
-    value_exist_down: int = 100,
+    value_exist_down: int = -100,
     name: str = "exist",
     value_up: int = 100,
     value_down: int = -100,
@@ -200,7 +200,7 @@ def signal_direction_exist(
         series (pd.Series): _description_
         window (int): _description_
         value_exist_up (int, optional): _description_. Defaults to 100.
-        value_exist_down (int, optional): _description_. Defaults to 100.
+        value_exist_down (int, optional): _description_. Defaults to -100.
         name (str, optional): _description_. Defaults to "exist".
         value_up (int, optional): _description_. Defaults to 100.
         value_down (int, optional): _description_. Defaults to -100.
@@ -218,7 +218,60 @@ def signal_direction_exist(
     signal = signal_direction(
         dataframe=dataframe,
         up=(up_rolling_max >= value_exist_up),
-        down=(down_rolling_min <= -value_exist_down),
+        down=(down_rolling_min <= value_exist_down),
+        name=name,
+        value_up=value_up,
+        value_down=value_down,
+        inplace=inplace,
+        plot=plot,
+        plot_up_kwargs=plot_up_kwargs,
+        plot_down_kwargs=plot_down_kwargs,
+        **kwargs,
+    )
+    return signal
+
+
+def signal_repeat(
+    dataframe: pd.DataFrame,
+    series: pd.Series,
+    window: int,
+    value_repeat_up: int = 100,
+    value_repeat_down: int = -100,
+    name: str = "repeat",
+    value_up: int = 100,
+    value_down: int = -100,
+    inplace: bool = False,
+    plot: bool | list[str] = False,
+    plot_up_kwargs: dict | None = None,
+    plot_down_kwargs: dict | None = None,
+    **kwargs,
+) -> pd.Series | pd.DataFrame:
+    """_summary_
+
+    Args:
+        dataframe (pd.DataFrame): _description_
+        series (pd.Series): _description_
+        window (int): _description_
+        value_repeat_up (int, optional): _description_. Defaults to 100.
+        value_repeat_down (int, optional): _description_. Defaults to -100.
+        name (str, optional): _description_. Defaults to "repeat".
+        value_up (int, optional): _description_. Defaults to 100.
+        value_down (int, optional): _description_. Defaults to -100.
+        inplace (bool, optional): _description_. Defaults to False.
+        plot (bool | list[str], optional): _description_. Defaults to False.
+        plot_up_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot_down_kwargs (dict | None, optional): _description_. Defaults to None.
+
+    Returns:
+        pd.Series | pd.DataFrame: _description_
+    """
+    up_rolling_min = series.rolling(window=window).min()
+    down_rolling_max = series.rolling(window=window).max()
+
+    signal = signal_direction(
+        up=(up_rolling_min >= value_repeat_up),
+        down=(down_rolling_max <= value_repeat_down),
+        dataframe=dataframe,
         name=name,
         value_up=value_up,
         value_down=value_down,

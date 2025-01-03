@@ -90,6 +90,9 @@ class LetIndexWapper:
         loc = self._data.get_loc(dt)
         return loc - self._owner._pointer
 
+    def set_data(self, data: pd.DatetimeIndex):
+        self._data = data
+
     # Property
     @property
     def pointer(self):
@@ -131,6 +134,10 @@ class LetSeriesWapper:
     def pointer(self):
         return self._owner._pointer
 
+    def set_data(self, data: pd.DatetimeIndex):
+        self._data = data
+        self._iloc._data = data
+
 
 # @pd.api.extensions.register_dataframe_accessor("l")
 class LetDataFeedWrapper:
@@ -163,7 +170,10 @@ class LetDataFeedWrapper:
 
         # Exist
         if name in self._wrappers:
-            return self._wrappers[name]
+            wrapper = self._wrappers[name]
+            if wrapper._data is not attr:
+                wrapper.set_data(attr)
+            return wrapper
 
         # Set wrapper
         if isinstance(attr, pd.Series):

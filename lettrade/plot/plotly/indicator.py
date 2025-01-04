@@ -321,10 +321,10 @@ def plot_lines(
     )
 
     result = {}
-    for series in serieses:
+    for i, series in enumerate(serieses):
         series_kwargs = kwargs.copy()
-        if plots_kwargs:
-            series_kwargs.update(**plots_kwargs.pop(0))
+        if i < len(plots_kwargs):
+            series_kwargs.update(**plots_kwargs[i])
 
         plot_merge(result, plot_line(series=series, **series_kwargs))
     return result

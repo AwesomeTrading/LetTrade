@@ -28,7 +28,8 @@ class BotPlotter(Plotter):
     datas: "list[DataFeed]"
     """All plotting datafeeds"""
 
-    _datas_stored: "list[DataFeed] | None" = None
+    _jump_since: pd.Timestamp | None = None
+    _jump_to: pd.Timestamp | None = None
 
     def __init__(self, bot: "LetTradeBot") -> None:
         self.bot = bot
@@ -38,23 +39,7 @@ class BotPlotter(Plotter):
         self.strategy = bot.strategy
 
         self.datas = self.feeder.datas
-
-    @property
-    def data(self) -> "DataFeed":
-        """Get plotting main datafeed
-
-        Returns:
-            DataFeed: _description_
-        """
-        return self.datas[0]
-
-    @data.setter
-    def data(self, value: "DataFeed") -> None:
-        self.datas[0] = value
-
-    @property
-    def _data_stored(self) -> "DataFeed":
-        return self._datas_stored[0]
+        self.data = self.feeder.datas[0]
 
     def jump(
         self,
@@ -76,9 +61,6 @@ class BotPlotter(Plotter):
         Raises:
             RuntimeError: _description_
         """
-        if self._datas_stored is None:
-            self._datas_stored = self.datas.copy()
-
         if since is None:
             if order_id is not None:  # Jump to order id
                 if not isinstance(order_id, str):
@@ -91,7 +73,7 @@ class BotPlotter(Plotter):
                 else:
                     raise RuntimeError(f"Order id {order_id} not found")
 
-                loc = self._data_stored.l.index.get_loc(order.placed_at)
+                loc = self.data.l.index.get_loc(order.placed_at)
                 since = loc - int(range / 2)
 
             elif position_id is not None:  # Jump to position id
@@ -105,7 +87,7 @@ class BotPlotter(Plotter):
                 else:
                     raise RuntimeError(f"Position id {position_id} not found")
 
-                loc = self._data_stored.l.index.get_loc(position.entry_at)
+                loc = self.data.l.index.get_loc(position.entry_at)
                 since = loc - int(range / 2)
             else:  # Reset
                 self.jump_reset()
@@ -113,55 +95,25 @@ class BotPlotter(Plotter):
 
         elif isinstance(since, str):  # Parse string to pd.Timestamp, then since=index
             since = pd.to_datetime(since, utc=True)
-            since = self._data_stored.l.index.get_loc(since)
+            since = self.data.l.index.get_loc(since)
         elif isinstance(since, pd.Timestamp):  # Get index of Timestamp
-            since = self._data_stored.l.index.get_loc(since)
-
-        if name is None:
-            name = self._data_stored.name
+            since = self.data.l.index.get_loc(since)
 
         # Since min at pointer_start
-        if since < self._data_stored.l.pointer_start:
-            since = self._data_stored.l.pointer_start
+        if since < self.data.l.pointer_start:
+            since = self.data.l.pointer_start
         # Since max at pointer_stop
-        if since > self._data_stored.l.pointer_stop - range:
-            since = self._data_stored.l.pointer_stop - range
+        if since > self.data.l.pointer_stop - range:
+            since = self.data.l.pointer_stop - range
 
-        # Jump
-        jump_start_dt = None
-        jump_stop_dt = None
-        for i, data in enumerate(self._datas_stored):
-            if i == 0:
-                self.datas[i] = data.__class__(
-                    data=data.l[since : since + range],
-                    name=data.name,
-                    timeframe=data.timeframe,
-                )
-                jump_start_dt = self.data.index[0]
-                jump_stop_dt = self.data.index[-1]
-            else:
-                self.datas[i] = data.__class__(
-                    data=data.loc[
-                        (data.index >= jump_start_dt) & (data.index <= jump_stop_dt)
-                    ],
-                    name=data.name,
-                    timeframe=data.timeframe,
-                )
-
-            if hasattr(data, DATAFRAME_PLOTTERS_NAME):
-                object.__setattr__(
-                    self.datas[i],
-                    DATAFRAME_PLOTTERS_NAME,
-                    getattr(data, DATAFRAME_PLOTTERS_NAME),
-                )
+        self._jump_since = self.data.l.index[since]
+        self._jump_to = self.data.l.index[since + range]
 
         # Reload data
         self.load()
 
     def jump_reset(self) -> bool:
         """Reset jump datafeeds back to bot datafeeds"""
-        if not self._datas_stored or self.data is self._data_stored:
-            return False
-
-        self.datas = self._datas_stored.copy()
+        self._jump_since = None
+        self._jump_to = None
         return True

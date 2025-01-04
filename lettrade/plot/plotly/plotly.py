@@ -398,6 +398,11 @@ class PlotlyBotPlotter(BotPlotter):
         type: str | None = None,
         **kwargs,
     ):
+        if self._jump_since is not None:
+            data = data.loc[
+                (data.index >= self._jump_since) & (data.index <= self._jump_to)
+            ]
+
         self.figure.add_trace(
             go.Candlestick(
                 x=x if x is not None else data.index,
@@ -437,6 +442,9 @@ class PlotlyBotPlotter(BotPlotter):
             x = s.index
             y = s
 
+        if self._jump_since is not None:
+            x = x.where((x >= self._jump_since) & (x <= self._jump_to))
+
         self.figure.add_scatter(x=x, y=y, row=row, col=col, **kwargs)
 
     def _plot_equity(
@@ -449,8 +457,9 @@ class PlotlyBotPlotter(BotPlotter):
         equities = self.account._equities
 
         # Filter equities in data range only
-        start_dt = self.data.index[0]
-        stop_dt = self.data.index[-1]
+        start_dt = self._jump_since if self._jump_since else self.data.index[0]
+        stop_dt = self._jump_to if self._jump_to else self.data.index[-1]
+
         equities = {k: e for k, e in equities.items() if k > start_dt and k < stop_dt}
 
         if len(equities) == 0:
@@ -491,6 +500,7 @@ class PlotlyBotPlotter(BotPlotter):
         # Filter order in data range only
         start_dt = data.index[0]
         stop_dt = data.index[-1]
+
         orders = [o for o in orders if o.placed_at > start_dt and o.placed_at < stop_dt]
 
         # TODO: test using order/sl/tp line for performance
@@ -540,6 +550,7 @@ class PlotlyBotPlotter(BotPlotter):
         # Filter equities in data range only
         start_dt = data.index[0]
         stop_dt = data.index[-1]
+
         _positions = []
         for p in positions:
             if p.entry_at < start_dt or p.entry_at > stop_dt:

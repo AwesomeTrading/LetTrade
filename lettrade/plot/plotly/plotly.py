@@ -384,11 +384,11 @@ class PlotlyBotPlotter(BotPlotter):
     def _plot_candlestick(
         self,
         data: DataFeed,
-        x=None,
-        open=None,
-        high=None,
-        low=None,
-        close=None,
+        x: pd.Series | None = None,
+        open: pd.Series | None = None,
+        high: pd.Series | None = None,
+        low: pd.Series | None = None,
+        close: pd.Series | None = None,
         update_xaxes: dict | None = None,
         update_yaxes: dict | None = None,
         show_orders: bool = False,
@@ -443,7 +443,10 @@ class PlotlyBotPlotter(BotPlotter):
             y = s
 
         if self._jump_since is not None:
-            x = x.where((x >= self._jump_since) & (x <= self._jump_to))
+            series = pd.Series(y, index=x)
+            series = series.loc[(x >= self._jump_since) & (x <= self._jump_to)]
+            x = series.index
+            y = series
 
         self.figure.add_scatter(x=x, y=y, row=row, col=col, **kwargs)
 

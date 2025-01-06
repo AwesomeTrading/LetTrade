@@ -2,6 +2,7 @@ import logging
 import re
 
 import pandas as pd
+
 from lettrade.data import DataFeed
 
 logger = logging.getLogger(__name__)
@@ -150,6 +151,8 @@ class CSVBackTestDataFeed(BackTestDataFeed):
 
             if not isinstance(data.index, pd.DatetimeIndex):
                 data.index = data.index.astype("datetime64[ns, UTC]")
+
+            data.sort_index(inplace=True)
 
         super().__init__(
             data=data,

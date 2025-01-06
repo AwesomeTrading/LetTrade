@@ -11372,7 +11372,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        OrderResult: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
 
     <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">:</span>
@@ -11394,8 +11394,8 @@ Set state to <code>ExchangeState.Start</code>.</p>
     <span class="p">)</span>
     <span class="n">ok</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">place</span><span class="p">()</span>
 
-    <span class="c1"># if __debug__:</span>
-    <span class="c1">#     logger.info(&quot;New order %s at %s&quot;, order, self.data.now)</span>
+    <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;New order </span><span class="si">%s</span><span class="s2"> at </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ok</span>
 </code></pre></div></td></tr></table></div>
@@ -11759,7 +11759,16 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
-<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_orders</span><span class="p">(</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_orders</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">orders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Order</span><span class="p">],</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -11785,6 +11794,9 @@ Set state to <code>ExchangeState.Start</code>.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">history_orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span>
             <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Order closed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_orders</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order </span><span class="si">{</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> closed&quot;</span><span class="p">)</span>
@@ -11795,8 +11807,14 @@ Set state to <code>ExchangeState.Start</code>.</p>
                 <span class="c1"># and object will be automatic update directly</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
                 <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Order updated: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Order placed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">!=</span> <span class="n">ExchangeState</span><span class="o">.</span><span class="n">Run</span><span class="p">:</span>
         <span class="k">return</span>
@@ -11865,22 +11883,22 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">228</span>
 <span class="normal">229</span>
 <span class="normal">230</span>
 <span class="normal">231</span>
 <span class="normal">232</span>
 <span class="normal">233</span>
-<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_position</span><span class="p">(</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_position</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">position</span><span class="p">:</span> <span class="n">Position</span><span class="p">,</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -11958,16 +11976,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">245</span>
 <span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
@@ -12005,7 +12014,16 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">280</span>
 <span class="normal">281</span>
 <span class="normal">282</span>
-<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Position</span><span class="p">],</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -18243,7 +18261,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        OrderResult: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
 
     <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">Market</span><span class="p">:</span>
@@ -18265,8 +18283,8 @@ Set state to <code>ExchangeState.Start</code>.</p>
     <span class="p">)</span>
     <span class="n">ok</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">place</span><span class="p">()</span>
 
-    <span class="c1"># if __debug__:</span>
-    <span class="c1">#     logger.info(&quot;New order %s at %s&quot;, order, self.data.now)</span>
+    <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;New order </span><span class="si">%s</span><span class="s2"> at </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ok</span>
 </code></pre></div></td></tr></table></div>
@@ -18630,7 +18648,16 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
-<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_orders</span><span class="p">(</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_orders</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">orders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Order</span><span class="p">],</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -18656,6 +18683,9 @@ Set state to <code>ExchangeState.Start</code>.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">history_orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span>
             <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Order closed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_orders</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order </span><span class="si">{</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> closed&quot;</span><span class="p">)</span>
@@ -18666,8 +18696,14 @@ Set state to <code>ExchangeState.Start</code>.</p>
                 <span class="c1"># and object will be automatic update directly</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
                 <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Order updated: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Order placed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">!=</span> <span class="n">ExchangeState</span><span class="o">.</span><span class="n">Run</span><span class="p">:</span>
         <span class="k">return</span>
@@ -18736,22 +18772,22 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">228</span>
 <span class="normal">229</span>
 <span class="normal">230</span>
 <span class="normal">231</span>
 <span class="normal">232</span>
 <span class="normal">233</span>
-<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_position</span><span class="p">(</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_position</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">position</span><span class="p">:</span> <span class="n">Position</span><span class="p">,</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -18829,16 +18865,7 @@ Set state to <code>ExchangeState.Start</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/exchange.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">245</span>
 <span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
@@ -18876,7 +18903,16 @@ Set state to <code>ExchangeState.Start</code>.</p>
 <span class="normal">280</span>
 <span class="normal">281</span>
 <span class="normal">282</span>
-<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">on_positions</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Position</span><span class="p">],</span>
     <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>

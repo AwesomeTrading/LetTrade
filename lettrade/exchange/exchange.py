@@ -197,6 +197,9 @@ class Exchange(metaclass=ABCMeta):
                 self.history_orders[order.id] = order
                 if order.id in self.orders:
                     del self.orders[order.id]
+
+                if __debug__:
+                    logger.info("Order closed: %s", order)
             else:
                 if order.id in self.history_orders:
                     raise RuntimeError(f"Order {order.id} closed")
@@ -207,8 +210,14 @@ class Exchange(metaclass=ABCMeta):
                     # and object will be automatic update directly
                     self.orders[order.id].merge(order)
                     order = self.orders[order.id]
+
+                    if __debug__:
+                        logger.info("Order updated: %s", order)
                 else:
                     self.orders[order.id] = order
+
+                    if __debug__:
+                        logger.info("Order placed: %s", order)
 
         if self._state != ExchangeState.Run:
             return

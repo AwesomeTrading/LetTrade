@@ -487,6 +487,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tutorial/data/histdata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSVDataFeed for Histdata.com
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3840,6 +3861,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../momentum/stochastic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> stochastic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -5224,8 +5266,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/indicator/trend/ma.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
-<span class="normal">55</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
@@ -5266,7 +5307,8 @@
 <span class="normal">93</span>
 <span class="normal">94</span>
 <span class="normal">95</span>
-<span class="normal">96</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ema</span><span class="p">(</span>
+<span class="normal">96</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ema</span><span class="p">(</span>
     <span class="n">series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;close&quot;</span><span class="p">,</span>
     <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5478,8 +5520,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/indicator/trend/ma.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
-<span class="normal">100</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
@@ -5549,7 +5590,13 @@
 <span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
-<span class="normal">170</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ma</span><span class="p">(</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ma</span><span class="p">(</span>
     <span class="n">series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;close&quot;</span><span class="p">,</span>
     <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
@@ -5602,21 +5649,26 @@
     <span class="n">ma_fn</span> <span class="o">=</span> <span class="n">talib_ma</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">ma_fn</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">timeperiod</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+    <span class="c1"># Plot</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">plot_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plot_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">series</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">dataframe</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="n">random_color</span><span class="p">())</span>
+
+        <span class="kn">from</span> <span class="nn">lettrade.indicator.plot</span> <span class="kn">import</span> <span class="n">IndicatorPlotter</span>
+        <span class="kn">from</span> <span class="nn">lettrade.plot.plotly</span> <span class="kn">import</span> <span class="n">plot_line</span>
+
+        <span class="n">IndicatorPlotter</span><span class="p">(</span>
+            <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
+            <span class="n">plotter</span><span class="o">=</span><span class="n">plot_line</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
     <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">dataframe</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
-
-        <span class="c1"># Plot</span>
-        <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">plot_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">plot_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-
-            <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">series</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-            <span class="kn">from</span> <span class="nn">lettrade.indicator.plot</span> <span class="kn">import</span> <span class="n">IndicatorPlotter</span>
-            <span class="kn">from</span> <span class="nn">lettrade.plot.plotly</span> <span class="kn">import</span> <span class="n">plot_line</span>
-
-            <span class="n">IndicatorPlotter</span><span class="p">(</span><span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">plotter</span><span class="o">=</span><span class="n">plot_line</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dataframe</span>
 
@@ -5757,8 +5809,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/indicator/trend/ma.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
-<span class="normal">10</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
@@ -5799,7 +5850,8 @@
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sma</span><span class="p">(</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sma</span><span class="p">(</span>
     <span class="n">series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;close&quot;</span><span class="p">,</span>
     <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

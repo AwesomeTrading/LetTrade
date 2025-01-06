@@ -487,6 +487,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/data/histdata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSVDataFeed for Histdata.com
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3840,6 +3861,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../momentum/stochastic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> stochastic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -5128,7 +5170,7 @@
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">talib_ma</span><span class="p">(</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sma&quot;</span><span class="p">,</span> <span class="s2">&quot;ema&quot;</span><span class="p">,</span> <span class="s2">&quot;wma&quot;</span><span class="p">,</span> <span class="s2">&quot;dema&quot;</span><span class="p">,</span> <span class="s2">&quot;tema&quot;</span><span class="p">,</span> <span class="s2">&quot;trima&quot;</span><span class="p">,</span> <span class="s2">&quot;kama&quot;</span><span class="p">,</span> <span class="s2">&quot;mama&quot;</span><span class="p">,</span> <span class="s2">&quot;t3&quot;</span><span class="p">]</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sma&quot;</span><span class="p">,</span> <span class="s2">&quot;ema&quot;</span><span class="p">,</span> <span class="s2">&quot;wma&quot;</span><span class="p">,</span> <span class="s2">&quot;dema&quot;</span><span class="p">,</span> <span class="s2">&quot;tema&quot;</span><span class="p">,</span> <span class="s2">&quot;trima&quot;</span><span class="p">,</span> <span class="s2">&quot;kama&quot;</span><span class="p">,</span> <span class="s2">&quot;mama&quot;</span><span class="p">,</span> <span class="s2">&quot;t3&quot;</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper Function that returns the Enum value for TA Lib&#39;s MA Type&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -5212,7 +5254,7 @@
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">talib_ma_mode</span><span class="p">(</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sma&quot;</span><span class="p">,</span> <span class="s2">&quot;ema&quot;</span><span class="p">,</span> <span class="s2">&quot;wma&quot;</span><span class="p">,</span> <span class="s2">&quot;dema&quot;</span><span class="p">,</span> <span class="s2">&quot;tema&quot;</span><span class="p">,</span> <span class="s2">&quot;trima&quot;</span><span class="p">,</span> <span class="s2">&quot;kama&quot;</span><span class="p">,</span> <span class="s2">&quot;mama&quot;</span><span class="p">,</span> <span class="s2">&quot;t3&quot;</span><span class="p">]</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sma&quot;</span><span class="p">,</span> <span class="s2">&quot;ema&quot;</span><span class="p">,</span> <span class="s2">&quot;wma&quot;</span><span class="p">,</span> <span class="s2">&quot;dema&quot;</span><span class="p">,</span> <span class="s2">&quot;tema&quot;</span><span class="p">,</span> <span class="s2">&quot;trima&quot;</span><span class="p">,</span> <span class="s2">&quot;kama&quot;</span><span class="p">,</span> <span class="s2">&quot;mama&quot;</span><span class="p">,</span> <span class="s2">&quot;t3&quot;</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper Function that returns the Enum value for TA Lib&#39;s MA Type&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -5235,7 +5277,7 @@
             <span class="k">return</span> <span class="n">ta</span><span class="o">.</span><span class="n">MA_Type</span><span class="o">.</span><span class="n">MAMA</span>  <span class="c1"># 7</span>
         <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;t3&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ta</span><span class="o">.</span><span class="n">MA_Type</span><span class="o">.</span><span class="n">T3</span>  <span class="c1"># 8</span>
-    <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># Default: SMA -&gt; 0</span>
+    <span class="k">return</span> <span class="n">ta</span><span class="o">.</span><span class="n">MA_Type</span><span class="o">.</span><span class="n">SMA</span>  <span class="c1"># Default: SMA -&gt; 0</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

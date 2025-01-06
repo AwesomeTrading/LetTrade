@@ -487,6 +487,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/data/histdata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSVDataFeed for Histdata.com
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3838,6 +3859,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../indicator/momentum/stochastic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> stochastic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4483,15 +4525,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lettrade.plot.bot.BotPlotter.data" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#lettrade.plot.bot.BotPlotter.datas" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;datas
@@ -5085,15 +5118,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lettrade.plot.bot.BotPlotter.data" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#lettrade.plot.bot.BotPlotter.datas" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;datas
@@ -5221,7 +5245,8 @@
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">bot</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">feeder</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">exchange</span>
@@ -5229,6 +5254,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">strategy</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">datas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">datas</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -5241,42 +5267,6 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="lettrade.plot.bot.BotPlotter.data" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">data</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
-  </span>
-
-<a href="#lettrade.plot.bot.BotPlotter.data" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Get plotting main datafeed</p>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<b><code>DataFeed</code></b> (              <code><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></code>
-)          –
-          <div class="doc-md-description">
-            <p><em>description</em></p>
-          </div>
-        </li>
-    </ul>
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -5393,7 +5383,23 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 60</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
 <span class="normal"> 61</span>
 <span class="normal"> 62</span>
 <span class="normal"> 63</span>
@@ -5446,54 +5452,7 @@
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump</span><span class="p">(</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">since</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5513,9 +5472,6 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
     <span class="k">if</span> <span class="n">since</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Jump to order id</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -5528,7 +5484,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order id </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">placed_at</span><span class="p">)</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">placed_at</span><span class="p">)</span>
             <span class="n">since</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="nb">range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">position_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Jump to position id</span>
@@ -5542,7 +5498,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Position id </span><span class="si">{</span><span class="n">position_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">entry_at</span><span class="p">)</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">entry_at</span><span class="p">)</span>
             <span class="n">since</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="nb">range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Reset</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">jump_reset</span><span class="p">()</span>
@@ -5550,47 +5506,19 @@
 
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># Parse string to pd.Timestamp, then since=index</span>
         <span class="n">since</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">):</span>  <span class="c1"># Get index of Timestamp</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
 
     <span class="c1"># Since min at pointer_start</span>
-    <span class="k">if</span> <span class="n">since</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span><span class="p">:</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span>
+    <span class="k">if</span> <span class="n">since</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span><span class="p">:</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span>
     <span class="c1"># Since max at pointer_stop</span>
-    <span class="k">if</span> <span class="n">since</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span><span class="p">:</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span>
+    <span class="k">if</span> <span class="n">since</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span><span class="p">:</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span>
 
-    <span class="c1"># Jump</span>
-    <span class="n">jump_start_dt</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">jump_stop_dt</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="p">[</span><span class="n">since</span> <span class="p">:</span> <span class="n">since</span> <span class="o">+</span> <span class="nb">range</span><span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">timeframe</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">jump_start_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">jump_stop_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">jump_start_dt</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="n">jump_stop_dt</span><span class="p">)</span>
-                <span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">timeframe</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">):</span>
-            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">,</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">),</span>
-            <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">since</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">since</span> <span class="o">+</span> <span class="nb">range</span><span class="p">]</span>
 
     <span class="c1"># Reload data</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
@@ -5617,18 +5545,14 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset jump datafeeds back to bot datafeeds&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">datas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_since</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_to</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
             </details>

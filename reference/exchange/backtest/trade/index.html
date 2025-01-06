@@ -487,6 +487,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tutorial/data/histdata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSVDataFeed for Histdata.com
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4215,6 +4236,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../indicator/momentum/stochastic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> stochastic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -6088,8 +6130,8 @@
     <span class="n">sl_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tp_price</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.Position" href="../../position/#lettrade.exchange.position.Position">Position</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">expiration</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tag</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">placed_at</span><span class="p">:</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -6101,10 +6143,137 @@
 
         <p>Order for backtesting</p>
 
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>id</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>exchange</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.Exchange" href="../../exchange/#lettrade.exchange.exchange.Exchange">Exchange</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>data</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.DataFeed" href="../../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>size</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>state</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.base.OrderState" href="../../base/#lettrade.exchange.base.OrderState">OrderState</a></code>, default:
+                  <code><a class="autorefs autorefs-internal" title="lettrade.exchange.base.OrderState.Pending" href="../../base/#lettrade.exchange.base.OrderState.Pending">Pending</a></code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to OrderState.Pending.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>type</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.exchange.base.OrderType" href="../../base/#lettrade.exchange.base.OrderType">OrderType</a></code>, default:
+                  <code><a class="autorefs autorefs-internal" title="lettrade.exchange.base.OrderType.Market" href="../../base/#lettrade.exchange.base.OrderType.Market">Market</a></code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to OrderType.Market.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>limit_price</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>stop_price</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>sl_price</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>tp_price</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>parent</code></b>
+              (<code><a class="autorefs autorefs-internal" title="lettrade.Position" href="../../position/#lettrade.exchange.position.Position">Position</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>expiration</code></b>
+              (<code><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>tag</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em>. Defaults to None.</p>
+          </div>
+        </li>
+    </ul>
+
                   <details class="quote">
                     <summary>Source code in <code>lettrade/exchange/order.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
-<span class="normal">17</span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -6138,7 +6307,26 @@
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="s2">&quot;Exchange&quot;</span><span class="p">,</span>
@@ -6151,10 +6339,27 @@
     <span class="n">sl_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tp_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">expiration</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">placed_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        id (str): _description_</span>
+<span class="sd">        exchange (Exchange): _description_</span>
+<span class="sd">        data (DataFeed): _description_</span>
+<span class="sd">        size (float): _description_</span>
+<span class="sd">        state (OrderState, optional): _description_. Defaults to OrderState.Pending.</span>
+<span class="sd">        type (OrderType, optional): _description_. Defaults to OrderType.Market.</span>
+<span class="sd">        limit_price (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        stop_price (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        sl_price (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        tp_price (float | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        parent (Position | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        expiration (datetime | None, optional): _description_. Defaults to None.</span>
+<span class="sd">        tag (str | None, optional): _description_. Defaults to None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
         <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span>
         <span class="n">exchange</span><span class="o">=</span><span class="n">exchange</span><span class="p">,</span>
@@ -6170,8 +6375,9 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">sl_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">sl_price</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tp_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tp_price</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Position | None&quot;</span> <span class="o">=</span> <span class="n">parent</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">expiration</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">expiration</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">tag</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">placed_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">placed_at</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">placed_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">filled_at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">filled_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
@@ -6284,7 +6490,7 @@
 <b><code>bool</code></b> (              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
 )          –
           <div class="doc-md-description">
-            <p>True if <code>state</code> in [OrderState.Pending, OrderState.Placed, OrderState.Partial]</p>
+            <p>True if <code>state</code> in [OrderState.Placed, OrderState.Partial]</p>
           </div>
         </li>
     </ul>
@@ -6844,26 +7050,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/order.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
 <span class="normal">249</span>
@@ -6876,7 +7063,26 @@
 <span class="normal">256</span>
 <span class="normal">257</span>
 <span class="normal">258</span>
-<span class="normal">259</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span><span class="p">):</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Order&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update current `Order` variables by other `Order`</span>
 
 <span class="sd">    Args:</span>
@@ -6960,33 +7166,33 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/order.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">place</span><span class="p">(</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">place</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">at</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -7099,26 +7305,7 @@ Send event to <code>Exchange</code></p>
 
             <details class="quote">
               <summary>Source code in <code>lettrade/exchange/order.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
@@ -7133,7 +7320,26 @@ Send event to <code>Exchange</code></p>
 <span class="normal">175</span>
 <span class="normal">176</span>
 <span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">limit_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">stop_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

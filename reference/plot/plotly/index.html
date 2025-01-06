@@ -487,6 +487,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/data/histdata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSVDataFeed for Histdata.com
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3838,6 +3859,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../indicator/momentum/stochastic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> stochastic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4604,15 +4646,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lettrade.plot.plotly.BotPlotter.data" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#lettrade.plot.plotly.BotPlotter.datas" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;datas
@@ -4989,15 +5022,6 @@
   
     <nav class="md-nav" aria-label=" PlotlyBotPlotter">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#lettrade.plot.plotly.PlotlyBotPlotter.data" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;data
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#lettrade.plot.plotly.PlotlyBotPlotter.datas" class="md-nav__link">
@@ -5537,15 +5561,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lettrade.plot.plotly.BotPlotter.data" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#lettrade.plot.plotly.BotPlotter.datas" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;datas
@@ -5924,15 +5939,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lettrade.plot.plotly.PlotlyBotPlotter.data" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#lettrade.plot.plotly.PlotlyBotPlotter.datas" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;datas
@@ -6123,7 +6129,8 @@
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">bot</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">feeder</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">exchange</span>
@@ -6131,6 +6138,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">strategy</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">datas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">datas</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -6143,42 +6151,6 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="lettrade.plot.plotly.BotPlotter.data" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">data</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
-  </span>
-
-<a href="#lettrade.plot.plotly.BotPlotter.data" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Get plotting main datafeed</p>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<b><code>DataFeed</code></b> (              <code><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></code>
-)          –
-          <div class="doc-md-description">
-            <p><em>description</em></p>
-          </div>
-        </li>
-    </ul>
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -6295,7 +6267,23 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 60</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
 <span class="normal"> 61</span>
 <span class="normal"> 62</span>
 <span class="normal"> 63</span>
@@ -6348,54 +6336,7 @@
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump</span><span class="p">(</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">since</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6415,9 +6356,6 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
     <span class="k">if</span> <span class="n">since</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Jump to order id</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -6430,7 +6368,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order id </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">placed_at</span><span class="p">)</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">placed_at</span><span class="p">)</span>
             <span class="n">since</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="nb">range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">position_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Jump to position id</span>
@@ -6444,7 +6382,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Position id </span><span class="si">{</span><span class="n">position_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">entry_at</span><span class="p">)</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">entry_at</span><span class="p">)</span>
             <span class="n">since</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="nb">range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Reset</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">jump_reset</span><span class="p">()</span>
@@ -6452,47 +6390,19 @@
 
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># Parse string to pd.Timestamp, then since=index</span>
         <span class="n">since</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">):</span>  <span class="c1"># Get index of Timestamp</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
 
     <span class="c1"># Since min at pointer_start</span>
-    <span class="k">if</span> <span class="n">since</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span><span class="p">:</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span>
+    <span class="k">if</span> <span class="n">since</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span><span class="p">:</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span>
     <span class="c1"># Since max at pointer_stop</span>
-    <span class="k">if</span> <span class="n">since</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span><span class="p">:</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span>
+    <span class="k">if</span> <span class="n">since</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span><span class="p">:</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span>
 
-    <span class="c1"># Jump</span>
-    <span class="n">jump_start_dt</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">jump_stop_dt</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="p">[</span><span class="n">since</span> <span class="p">:</span> <span class="n">since</span> <span class="o">+</span> <span class="nb">range</span><span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">timeframe</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">jump_start_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">jump_stop_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">jump_start_dt</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="n">jump_stop_dt</span><span class="p">)</span>
-                <span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">timeframe</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">):</span>
-            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">,</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">),</span>
-            <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">since</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">since</span> <span class="o">+</span> <span class="nb">range</span><span class="p">]</span>
 
     <span class="c1"># Reload data</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
@@ -6519,18 +6429,14 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset jump datafeeds back to bot datafeeds&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">datas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_since</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_to</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -7129,7 +7035,7 @@
     <span class="n">since</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">to</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><span title="pandas.Timestamp">Timestamp</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7229,14 +7135,13 @@
 <span class="normal">206</span>
 <span class="normal">207</span>
 <span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">drop</span><span class="p">(</span>
+<span class="normal">209</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">drop</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="n">args</span><span class="p">,</span>
     <span class="n">since</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">to</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;None | DataFeed&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
@@ -7247,8 +7152,7 @@
 <span class="sd">        RuntimeError: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">since</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">condiction</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -8004,7 +7908,8 @@
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bot</span><span class="p">:</span> <span class="s2">&quot;LetTradeBot&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">bot</span> <span class="o">=</span> <span class="n">bot</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">feeder</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">exchange</span>
@@ -8012,6 +7917,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">bot</span><span class="o">.</span><span class="n">strategy</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">datas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">datas</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feeder</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -8024,42 +7930,6 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="lettrade.plot.plotly.PlotlyBotPlotter.data" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">data</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
-  </span>
-
-<a href="#lettrade.plot.plotly.PlotlyBotPlotter.data" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">data</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Get plotting main datafeed</p>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<b><code>DataFeed</code></b> (              <code><a class="autorefs autorefs-internal" title="lettrade.data.DataFeed" href="../../data/data/#lettrade.data.data.DataFeed">DataFeed</a></code>
-)          –
-          <div class="doc-md-description">
-            <p><em>description</em></p>
-          </div>
-        </li>
-    </ul>
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -8176,7 +8046,23 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 60</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
 <span class="normal"> 61</span>
 <span class="normal"> 62</span>
 <span class="normal"> 63</span>
@@ -8229,54 +8115,7 @@
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump</span><span class="p">(</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">since</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -8296,9 +8135,6 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        RuntimeError: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
     <span class="k">if</span> <span class="n">since</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Jump to order id</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -8311,7 +8147,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order id </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">placed_at</span><span class="p">)</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">placed_at</span><span class="p">)</span>
             <span class="n">since</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="nb">range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">position_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Jump to position id</span>
@@ -8325,7 +8161,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Position id </span><span class="si">{</span><span class="n">position_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">entry_at</span><span class="p">)</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">entry_at</span><span class="p">)</span>
             <span class="n">since</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="nb">range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Reset</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">jump_reset</span><span class="p">()</span>
@@ -8333,47 +8169,19 @@
 
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># Parse string to pd.Timestamp, then since=index</span>
         <span class="n">since</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">):</span>  <span class="c1"># Get index of Timestamp</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">since</span><span class="p">)</span>
 
     <span class="c1"># Since min at pointer_start</span>
-    <span class="k">if</span> <span class="n">since</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span><span class="p">:</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span>
+    <span class="k">if</span> <span class="n">since</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span><span class="p">:</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_start</span>
     <span class="c1"># Since max at pointer_stop</span>
-    <span class="k">if</span> <span class="n">since</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span><span class="p">:</span>
-        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span>
+    <span class="k">if</span> <span class="n">since</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span><span class="p">:</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">pointer_stop</span> <span class="o">-</span> <span class="nb">range</span>
 
-    <span class="c1"># Jump</span>
-    <span class="n">jump_start_dt</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">jump_stop_dt</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="p">[</span><span class="n">since</span> <span class="p">:</span> <span class="n">since</span> <span class="o">+</span> <span class="nb">range</span><span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">timeframe</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">jump_start_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">jump_stop_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">jump_start_dt</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="n">jump_stop_dt</span><span class="p">)</span>
-                <span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">timeframe</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">timeframe</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">):</span>
-            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">,</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DATAFRAME_PLOTTERS_NAME</span><span class="p">),</span>
-            <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_since</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">since</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">since</span> <span class="o">+</span> <span class="nb">range</span><span class="p">]</span>
 
     <span class="c1"># Reload data</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
@@ -8400,18 +8208,14 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/bot.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">jump_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset jump datafeeds back to bot datafeeds&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stored</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">datas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datas_stored</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_since</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_jump_to</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -8436,19 +8240,19 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/plotly.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">593</span>
-<span class="normal">594</span>
-<span class="normal">595</span>
-<span class="normal">596</span>
-<span class="normal">597</span>
-<span class="normal">598</span>
-<span class="normal">599</span>
-<span class="normal">600</span>
-<span class="normal">601</span>
-<span class="normal">602</span>
-<span class="normal">603</span>
-<span class="normal">604</span>
-<span class="normal">605</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load plot config from `Strategy.plot()` and setup candlestick/equity&quot;&quot;&quot;</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_default</span><span class="p">()</span>
@@ -8499,25 +8303,25 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/plotly.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">607</span>
-<span class="normal">608</span>
-<span class="normal">609</span>
-<span class="normal">610</span>
-<span class="normal">611</span>
-<span class="normal">612</span>
-<span class="normal">613</span>
-<span class="normal">614</span>
-<span class="normal">615</span>
-<span class="normal">616</span>
-<span class="normal">617</span>
-<span class="normal">618</span>
-<span class="normal">619</span>
-<span class="normal">620</span>
-<span class="normal">621</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">621</span>
 <span class="normal">622</span>
 <span class="normal">623</span>
 <span class="normal">624</span>
-<span class="normal">625</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">625</span>
+<span class="normal">626</span>
+<span class="normal">627</span>
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span>
+<span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jump</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plotly show figure</span>
 
 <span class="sd">    Args:</span>
@@ -8709,8 +8513,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/indicator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
-<span class="normal">109</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
@@ -8776,7 +8579,8 @@
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
-<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_bollinger_bands</span><span class="p">(</span>
+<span class="normal">175</span>
+<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_bollinger_bands</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">upper</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;upper&quot;</span><span class="p">,</span>
     <span class="n">basis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;basis&quot;</span><span class="p">,</span>
@@ -8862,8 +8666,8 @@
     <span class="n">dataframe</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;Candlestick&quot;</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">increasing_line_color</span><span class="o">=</span><span class="s2">&quot;#26c6da&quot;</span><span class="p">,</span>
-    <span class="n">decreasing_line_color</span><span class="o">=</span><span class="s2">&quot;#ab47bc&quot;</span><span class="p">,</span>
+    <span class="n">increasing_line_color</span><span class="o">=</span><span class="n">PlotColor</span><span class="o">.</span><span class="n">LIGHT_GREEN</span><span class="p">,</span>
+    <span class="n">decreasing_line_color</span><span class="o">=</span><span class="n">PlotColor</span><span class="o">.</span><span class="n">LIGHT_RED</span><span class="p">,</span>
     <span class="n">row</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">col</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="nb">filter</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -8909,21 +8713,21 @@
         <li class="doc-section-item field-body">
           <b><code>increasing_line_color</code></b>
               (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;#26c6da&#39;</code>
+                  <code><a class="autorefs autorefs-internal" title="lettrade.plot.color.PlotColor.LIGHT_GREEN" href="../color/#lettrade.plot.color.PlotColor.LIGHT_GREEN">LIGHT_GREEN</a></code>
 )
           –
           <div class="doc-md-description">
-            <p><em>description</em>. Defaults to "#26c6da".</p>
+            <p><em>description</em>. Defaults to PlotColor.LIGHT_GREEN.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
           <b><code>decreasing_line_color</code></b>
               (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;#ab47bc&#39;</code>
+                  <code><a class="autorefs autorefs-internal" title="lettrade.plot.color.PlotColor.LIGHT_RED" href="../color/#lettrade.plot.color.PlotColor.LIGHT_RED">LIGHT_RED</a></code>
 )
           –
           <div class="doc-md-description">
-            <p><em>description</em>. Defaults to "#ab47bc".</p>
+            <p><em>description</em>. Defaults to PlotColor.LIGHT_RED.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -8972,11 +8776,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/indicator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">369</span>
-<span class="normal">370</span>
-<span class="normal">371</span>
-<span class="normal">372</span>
-<span class="normal">373</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">373</span>
 <span class="normal">374</span>
 <span class="normal">375</span>
 <span class="normal">376</span>
@@ -9025,12 +8825,16 @@
 <span class="normal">419</span>
 <span class="normal">420</span>
 <span class="normal">421</span>
-<span class="normal">422</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_candlestick</span><span class="p">(</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_candlestick</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Candlestick&quot;</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">increasing_line_color</span><span class="o">=</span><span class="s2">&quot;#26c6da&quot;</span><span class="p">,</span>
-    <span class="n">decreasing_line_color</span><span class="o">=</span><span class="s2">&quot;#ab47bc&quot;</span><span class="p">,</span>
+    <span class="n">increasing_line_color</span><span class="o">=</span><span class="n">PlotColor</span><span class="o">.</span><span class="n">LIGHT_GREEN</span><span class="p">,</span>
+    <span class="n">decreasing_line_color</span><span class="o">=</span><span class="n">PlotColor</span><span class="o">.</span><span class="n">LIGHT_RED</span><span class="p">,</span>
     <span class="n">row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">col</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="nb">filter</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -9042,8 +8846,8 @@
 <span class="sd">        dataframe (pd.DataFrame): _description_</span>
 <span class="sd">        name (str, optional): _description_. Defaults to &quot;Candlestick&quot;.</span>
 <span class="sd">        width (int, optional): _description_. Defaults to 1.</span>
-<span class="sd">        increasing_line_color (str, optional): _description_. Defaults to &quot;#26c6da&quot;.</span>
-<span class="sd">        decreasing_line_color (str, optional): _description_. Defaults to &quot;#ab47bc&quot;.</span>
+<span class="sd">        increasing_line_color (str, optional): _description_. Defaults to PlotColor.LIGHT_GREEN.</span>
+<span class="sd">        decreasing_line_color (str, optional): _description_. Defaults to PlotColor.LIGHT_RED.</span>
 <span class="sd">        row (int, optional): _description_. Defaults to 1.</span>
 <span class="sd">        col (int, optional): _description_. Defaults to 1.</span>
 <span class="sd">        filter (pd.Series | None, optional): _description_. Defaults to None.</span>
@@ -9261,8 +9065,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/indicator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  6</span>
-<span class="normal">  7</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  7</span>
 <span class="normal">  8</span>
 <span class="normal">  9</span>
 <span class="normal"> 10</span>
@@ -9360,7 +9163,8 @@
 <span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
-<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ichimoku</span><span class="p">(</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_ichimoku</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">tenkan_sen</span><span class="o">=</span><span class="s2">&quot;tenkan_sen&quot;</span><span class="p">,</span>
     <span class="n">kijun_sen</span><span class="o">=</span><span class="s2">&quot;kijun_sen&quot;</span><span class="p">,</span>
@@ -9476,7 +9280,7 @@
 <a href="#lettrade.plot.plotly.plot_line" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">plot_line</span><span class="p">(</span>
     <span class="n">series</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;#ffee58&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="n">PlotColor</span><span class="o">.</span><span class="n">PURPLE</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;lines&quot;</span><span class="p">,</span>
@@ -9505,11 +9309,11 @@
         <li class="doc-section-item field-body">
           <b><code>color</code></b>
               (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;#ffee58&#39;</code>
+                  <code><a class="autorefs autorefs-internal" title="lettrade.plot.color.PlotColor.PURPLE" href="../color/#lettrade.plot.color.PlotColor.PURPLE">PURPLE</a></code>
 )
           –
           <div class="doc-md-description">
-            <p><em>description</em>. Defaults to "#ffee58".</p>
+            <p><em>description</em>. Defaults to PlotColor.PURPLE.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -9588,8 +9392,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/indicator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
-<span class="normal">237</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
@@ -9637,9 +9440,10 @@
 <span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
-<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_line</span><span class="p">(</span>
+<span class="normal">285</span>
+<span class="normal">286</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_line</span><span class="p">(</span>
     <span class="n">series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#ffee58&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PlotColor</span><span class="o">.</span><span class="n">PURPLE</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lines&quot;</span><span class="p">,</span>
@@ -9652,7 +9456,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        series (pd.Series | str): _description_</span>
-<span class="sd">        color (str, optional): _description_. Defaults to &quot;#ffee58&quot;.</span>
+<span class="sd">        color (str, optional): _description_. Defaults to PlotColor.PURPLE.</span>
 <span class="sd">        width (int, optional): _description_. Defaults to 1.</span>
 <span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
 <span class="sd">        mode (str, optional): _description_. Defaults to &quot;lines&quot;.</span>
@@ -9702,13 +9506,14 @@
 
 <a href="#lettrade.plot.plotly.plot_lines" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">plot_lines</span><span class="p">(</span>
-    <span class="o">*</span><span class="n">serieses</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">],</span>
-    <span class="n">color</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;#ffee58&quot;</span><span class="p">,</span>
+    <span class="n">serieses</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">],</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="n">PlotColor</span><span class="o">.</span><span class="n">PURPLE</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;lines&quot;</span><span class="p">,</span>
     <span class="n">fullfill</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">plots_kwargs</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span>
 </code></pre></div>
@@ -9721,13 +9526,21 @@
 <p><span class="doc-section-title">Parameters:</span></p>
     <ul>
         <li class="doc-section-item field-body">
+          <b><code>serieses</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<span title="pandas.Series">Series</span> | <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p><em>description</em></p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
           <b><code>color</code></b>
               (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;#ffee58&#39;</code>
+                  <code><a class="autorefs autorefs-internal" title="lettrade.plot.color.PlotColor.PURPLE" href="../color/#lettrade.plot.color.PlotColor.PURPLE">PURPLE</a></code>
 )
           –
           <div class="doc-md-description">
-            <p><em>description</em>. Defaults to "#ffee58".</p>
+            <p><em>description</em>. Defaults to PlotColor.PURPLE.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -9796,8 +9609,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/indicator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">288</span>
-<span class="normal">289</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
 <span class="normal">292</span>
@@ -9834,20 +9646,26 @@
 <span class="normal">323</span>
 <span class="normal">324</span>
 <span class="normal">325</span>
-<span class="normal">326</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_lines</span><span class="p">(</span>
-    <span class="o">*</span><span class="n">serieses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="nb">str</span><span class="p">],</span>
-    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#ffee58&quot;</span><span class="p">,</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_lines</span><span class="p">(</span>
+    <span class="n">serieses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PlotColor</span><span class="o">.</span><span class="n">PURPLE</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lines&quot;</span><span class="p">,</span>
     <span class="n">fullfill</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">plots_kwargs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        color (str, optional): _description_. Defaults to &quot;#ffee58&quot;.</span>
+<span class="sd">        serieses (list[pd.Series  |  str]): _description_</span>
+<span class="sd">        color (str, optional): _description_. Defaults to PlotColor.PURPLE.</span>
 <span class="sd">        width (int, optional): _description_. Defaults to 1.</span>
 <span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
 <span class="sd">        mode (str, optional): _description_. Defaults to &quot;lines&quot;.</span>
@@ -9857,21 +9675,22 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+        <span class="n">fullfill</span><span class="o">=</span><span class="n">fullfill</span><span class="p">,</span>
+        <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">serieses</span><span class="p">:</span>
-        <span class="n">plot_merge</span><span class="p">(</span>
-            <span class="n">result</span><span class="p">,</span>
-            <span class="n">plot_line</span><span class="p">(</span>
-                <span class="n">series</span><span class="o">=</span><span class="n">series</span><span class="p">,</span>
-                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
-                <span class="n">fullfill</span><span class="o">=</span><span class="n">fullfill</span><span class="p">,</span>
-                <span class="n">dataframe</span><span class="o">=</span><span class="n">dataframe</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">serieses</span><span class="p">):</span>
+        <span class="n">series_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plots_kwargs</span><span class="p">):</span>
+            <span class="n">series_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">plots_kwargs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="n">plot_merge</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">plot_line</span><span class="p">(</span><span class="n">series</span><span class="o">=</span><span class="n">series</span><span class="p">,</span> <span class="o">**</span><span class="n">series_kwargs</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -9889,7 +9708,7 @@
 <a href="#lettrade.plot.plotly.plot_mark" class="headerlink" title="Permanent link">¤</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">plot_mark</span><span class="p">(</span>
     <span class="n">series</span><span class="p">:</span> <span class="n"><span title="pandas.Series">Series</span></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;#ffee58&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="n">PlotColor</span><span class="o">.</span><span class="n">YELLOW</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;markers&quot;</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -9918,11 +9737,11 @@
         <li class="doc-section-item field-body">
           <b><code>color</code></b>
               (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;#ffee58&#39;</code>
+                  <code><a class="autorefs autorefs-internal" title="lettrade.plot.color.PlotColor.YELLOW" href="../color/#lettrade.plot.color.PlotColor.YELLOW">YELLOW</a></code>
 )
           –
           <div class="doc-md-description">
-            <p><em>description</em>. Defaults to "#ffee58".</p>
+            <p><em>description</em>. Defaults to PlotColor.YELLOW.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -10001,11 +9820,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/indicator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">333</span>
 <span class="normal">334</span>
 <span class="normal">335</span>
 <span class="normal">336</span>
@@ -10038,9 +9853,13 @@
 <span class="normal">363</span>
 <span class="normal">364</span>
 <span class="normal">365</span>
-<span class="normal">366</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_mark</span><span class="p">(</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_mark</span><span class="p">(</span>
     <span class="n">series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#ffee58&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PlotColor</span><span class="o">.</span><span class="n">YELLOW</span><span class="p">,</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;markers&quot;</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -10053,7 +9872,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        series (pd.Series | str): _description_</span>
-<span class="sd">        color (str, optional): _description_. Defaults to &quot;#ffee58&quot;.</span>
+<span class="sd">        color (str, optional): _description_. Defaults to PlotColor.YELLOW.</span>
 <span class="sd">        width (int, optional): _description_. Defaults to 1.</span>
 <span class="sd">        mode (str, optional): _description_. Defaults to &quot;markers&quot;.</span>
 <span class="sd">        name (str | None, optional): _description_. Defaults to None.</span>
@@ -10192,8 +10011,7 @@
 
             <details class="quote">
               <summary>Source code in <code>lettrade/plot/plotly/indicator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">181</span>
-<span class="normal">182</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">182</span>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
@@ -10244,7 +10062,8 @@
 <span class="normal">230</span>
 <span class="normal">231</span>
 <span class="normal">232</span>
-<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_parabolic_sar</span><span class="p">(</span>
+<span class="normal">233</span>
+<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_parabolic_sar</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">long</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;long&quot;</span><span class="p">,</span>
     <span class="n">short</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;short&quot;</span><span class="p">,</span>

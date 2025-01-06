@@ -48,10 +48,10 @@ class SmaCross(Strategy):
 
     def next(self, df: DataFeed):
         if df.l.crossover[-1] >= 100:
-            self.positions_exit()
+            self.exit_positions()
             self.buy(size=0.1)
         elif df.l.crossunder[-1] <= -100:
-            self.positions_exit()
+            self.exit_positions()
             self.sell(size=0.1)
 
 

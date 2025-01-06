@@ -2,6 +2,7 @@ from typing import Literal
 
 import numpy as np
 import pandas as pd
+
 from lettrade.plot import PlotColor
 
 
@@ -106,8 +107,7 @@ def signal_condiction(
         value (int, optional): Default value when condiction is not matched. Defaults to 0.
         inplace (bool, optional): _description_. Defaults to False.
         plot (bool | list, optional): _description_. Defaults to False.
-        plot_type (Literal[&quot;line&quot;, &quot;mark&quot;], optional): _description_. Defaults to "line".
-        plot_kwargs (dict | None, optional): _description_. Defaults to None.
+        plot_type (Literal["line", "mark"], optional): _description_. Defaults to "line".
 
     Usage:
         ```python
@@ -117,7 +117,6 @@ def signal_condiction(
             name="cdl_direction",
             inplace=True,
             plot=True,
-            plot_kwargs=dict(color="green", width=5),
         )
         ```
 

@@ -2,7 +2,6 @@ import logging
 import re
 
 import pandas as pd
-
 from lettrade.data import DataFeed
 
 logger = logging.getLogger(__name__)

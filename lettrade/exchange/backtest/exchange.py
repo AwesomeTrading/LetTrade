@@ -1,7 +1,8 @@
 import logging
+from datetime import datetime
 
 from lettrade.data import DataFeed
-from lettrade.exchange import Exchange, OrderResult, OrderType
+from lettrade.exchange import Exchange, OrderResult, OrderState, OrderType
 
 from .trade import BackTestOrder
 
@@ -45,6 +46,7 @@ class BackTestExchange(Exchange):
         tp: float | None = None,
         tag: object | None = None,
         data: DataFeed | None = None,
+        expiration: datetime | None = None,
         **kwargs,
     ) -> OrderResult:
         """Place new order.
@@ -64,7 +66,7 @@ class BackTestExchange(Exchange):
         Returns:
             OrderResult: Result when place new `Order`
         """
-        if not data:
+        if data is None:
             data = self.data
 
         order = BackTestOrder(
@@ -77,6 +79,7 @@ class BackTestExchange(Exchange):
             stop_price=stop,
             sl_price=sl,
             tp_price=tp,
+            expiration=expiration,
             tag=tag,
         )
         ok = order.place(at=self.data.bar())
@@ -89,9 +92,20 @@ class BackTestExchange(Exchange):
 
     def _simulate_orders(self):
         for order in list(self.orders.values()):
-            self._simulate_order(order)
+            self._simulate_order_expire(order)
+            self._simulate_order_fill(order)
 
-    def _simulate_order(self, order: BackTestOrder):
+    def _simulate_order_expire(self, order: BackTestOrder):
+        if order.expiration is None:
+            return
+        if order.state != OrderState.Pending and not order.is_opening:
+            return
+
+        if self.now >= order.expiration:
+            order.cancel()
+            logger.info("Order %s expired", order.id)
+
+    def _simulate_order_fill(self, order: BackTestOrder):
         if not order.is_opening:
             return
 

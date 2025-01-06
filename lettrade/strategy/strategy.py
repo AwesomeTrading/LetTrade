@@ -1,6 +1,8 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Any, final
+
+import pandas as pd
 
 from lettrade.account import Account
 from lettrade.commander import Commander
@@ -10,6 +12,7 @@ from lettrade.exchange import (
     Execution,
     Order,
     OrderResult,
+    OrderType,
     Position,
     TradeSide,
 )
@@ -205,13 +208,20 @@ class Strategy:
         return dict()
 
     @final
-    def order_buy(
+    def place_buy_order(
         self,
         size: float | None = None,
+        type: OrderType = OrderType.Market,
         limit: float | None = None,
         stop: float | None = None,
         sl: float | None = None,
         tp: float | None = None,
+        expiration: int
+        | datetime
+        | timedelta
+        | pd.Timestamp
+        | pd.Timedelta
+        | None = None,
         tag: str | None = None,
         **kwargs,
     ) -> OrderResult:
@@ -219,6 +229,7 @@ class Strategy:
 
         Args:
             size (float | None, optional): _description_. Defaults to None.
+            type (OrderType, optional): _description_. Defaults to OrderType.Market.
             limit (float | None, optional): _description_. Defaults to None.
             stop (float | None, optional): _description_. Defaults to None.
             sl (float | None, optional): _description_. Defaults to None.
@@ -227,29 +238,38 @@ class Strategy:
             **kwargs (dict | None, optional): Extra-parameters send to `Exchange.new_order`
 
         Returns:
-            OrderResult: order result information
+            OrderResult: Order result information
         """
-        return self.order_place(
+        return self.place_order(
             side=TradeSide.Buy,
             size=size,
+            type=type,
             limit=limit,
             stop=stop,
             sl=sl,
             tp=tp,
+            expiration=expiration,
             tag=tag,
             **kwargs,
         )
 
-    buy = order_buy
+    buy = place_buy_order
 
     @final
-    def order_sell(
+    def place_sell_order(
         self,
         size: float | None = None,
+        type: OrderType = OrderType.Market,
         limit: float | None = None,
         stop: float | None = None,
         sl: float | None = None,
         tp: float | None = None,
+        expiration: int
+        | datetime
+        | timedelta
+        | pd.Timestamp
+        | pd.Timedelta
+        | None = None,
         tag: str | None = None,
         **kwargs,
     ) -> OrderResult:
@@ -257,6 +277,7 @@ class Strategy:
 
         Args:
             size (float | None, optional): _description_. Defaults to None.
+            type (OrderType, optional): _description_. Defaults to OrderType.Market.
             limit (float | None, optional): _description_. Defaults to None.
             stop (float | None, optional): _description_. Defaults to None.
             sl (float | None, optional): _description_. Defaults to None.
@@ -265,31 +286,41 @@ class Strategy:
             **kwargs (dict | None, optional): Extra-parameters send to `Exchange.new_order`
 
         Returns:
-            OrderResult: order result information
+            OrderResult: Order result information
         """
-        return self.order_place(
+        return self.place_order(
             side=TradeSide.Sell,
             size=size,
+            type=type,
             limit=limit,
             stop=stop,
             sl=sl,
             tp=tp,
+            expiration=expiration,
             tag=tag,
             **kwargs,
         )
 
-    sell = order_sell
+    sell = place_sell_order
 
     @final
-    def order_place(
+    def place_order(
         self,
         side: TradeSide,
         size: float | None = None,
+        type: OrderType = OrderType.Market,
         limit: float | None = None,
         stop: float | None = None,
         sl: float | None = None,
         tp: float | None = None,
+        expiration: int
+        | datetime
+        | timedelta
+        | pd.Timestamp
+        | pd.Timedelta
+        | None = None,
         tag: str | None = None,
+        data: DataFeed | None = None,
         **kwargs,
     ) -> OrderResult:
         """_summary_
@@ -297,29 +328,43 @@ class Strategy:
         Args:
             side (TradeSide): _description_
             size (float | None, optional): _description_. Defaults to None.
+            type (OrderType, optional): _description_. Defaults to OrderType.Market.
             limit (float | None, optional): _description_. Defaults to None.
             stop (float | None, optional): _description_. Defaults to None.
             sl (float | None, optional): _description_. Defaults to None.
             tp (float | None, optional): _description_. Defaults to None.
+            expiration (int | datetime | timedelta | pd.Timestamp | pd.Timedelta | None, optional): _description_. Defaults to None.
             tag (str | None, optional): _description_. Defaults to None.
+            data (DataFeed | None, optional): _description_. Defaults to None.
 
         Returns:
             OrderResult: _description_
         """
+        if data is None:
+            data = self.data
+
+        if isinstance(expiration, int):
+            expiration = self.now + data.timeframe.delta * expiration
+        elif isinstance(expiration, timedelta):
+            expiration = self.now + expiration
+
         params = dict(
             size=size,
+            type=type,
             limit=limit,
             stop=stop,
             sl=sl,
             tp=tp,
+            expiration=expiration,
             tag=tag,
+            data=data,
             **kwargs,
         )
         params["size"] = side * abs(self.__account.risk(side=side, **params))
         return self.__exchange.new_order(**params)
 
     @final
-    def positions_exit(self, side: TradeSide | None = None):
+    def exit_positions(self, side: TradeSide | None = None):
         for p in list(self.positions.values()):
             if side is not None and p.side != side:
                 continue

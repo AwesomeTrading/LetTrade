@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import TYPE_CHECKING
 
 import pandas as pd
@@ -26,10 +27,27 @@ class Order(BaseTransaction):
         sl_price: float | None = None,
         tp_price: float | None = None,
         parent: "Position | None" = None,
+        expiration: datetime | None = None,
         tag: str | None = None,
-        placed_at: pd.Timestamp | None = None,
         **kwargs,
     ):
+        """_summary_
+
+        Args:
+            id (str): _description_
+            exchange (Exchange): _description_
+            data (DataFeed): _description_
+            size (float): _description_
+            state (OrderState, optional): _description_. Defaults to OrderState.Pending.
+            type (OrderType, optional): _description_. Defaults to OrderType.Market.
+            limit_price (float | None, optional): _description_. Defaults to None.
+            stop_price (float | None, optional): _description_. Defaults to None.
+            sl_price (float | None, optional): _description_. Defaults to None.
+            tp_price (float | None, optional): _description_. Defaults to None.
+            parent (Position | None, optional): _description_. Defaults to None.
+            expiration (datetime | None, optional): _description_. Defaults to None.
+            tag (str | None, optional): _description_. Defaults to None.
+        """
         super().__init__(
             id=id,
             exchange=exchange,
@@ -45,8 +63,9 @@ class Order(BaseTransaction):
         self.sl_price: float | None = sl_price
         self.tp_price: float | None = tp_price
         self.parent: "Position | None" = parent
+        self.expiration: datetime | None = expiration
         self.tag: str | None = tag
-        self.placed_at: pd.Timestamp | None = placed_at
+        self.placed_at: pd.Timestamp | None = None
         self.filled_at: pd.Timestamp | None = None
         self.filled_price: float | None = None
 
@@ -55,8 +74,6 @@ class Order(BaseTransaction):
             f"id='{self.id}'"
             f", type='{self.type}'"
             f", state='{self.state}'"
-            f", placed_at={self.placed_at}"
-            # f", place_price={round(self.place_price, 5)}"
             f", size={round(self.size, 5)}"
         )
         if self.limit:
@@ -67,6 +84,8 @@ class Order(BaseTransaction):
             params += f", sl={round(self.sl, 5)}"
         if self.tp:
             params += f", tp={round(self.tp, 5)}"
+        if self.placed_at:
+            params += f", placed_at={self.placed_at}"
 
         if self.filled_at:
             params += (
@@ -332,9 +351,9 @@ class Order(BaseTransaction):
         """Flag to check `Order` still alive
 
         Returns:
-            bool: True if `state` in [OrderState.Pending, OrderState.Placed, OrderState.Partial]
+            bool: True if `state` in [OrderState.Placed, OrderState.Partial]
         """
-        return self.state in [OrderState.Pending, OrderState.Placed, OrderState.Partial]
+        return self.state in [OrderState.Placed, OrderState.Partial]
 
     @property
     def is_closed(self) -> bool:

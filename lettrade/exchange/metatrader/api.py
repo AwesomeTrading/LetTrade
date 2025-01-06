@@ -431,6 +431,7 @@ class MetaTraderAPI(LiveAPI):
 
         return [self._order_parse_response(raw) for raw in raws]
 
+    @mt5_connection
     def order_open(self, order: "MetaTraderOrder") -> dict:
         """_summary_
 
@@ -445,6 +446,7 @@ class MetaTraderAPI(LiveAPI):
         """
         match order.type:
             case OrderType.Limit:
+                action = MT5.TRADE_ACTION_PENDING
                 price = order.limit_price
                 type = (
                     MT5.ORDER_TYPE_BUY_LIMIT
@@ -452,6 +454,7 @@ class MetaTraderAPI(LiveAPI):
                     else MT5.ORDER_TYPE_SELL_LIMIT
                 )
             case OrderType.Stop:
+                action = MT5.TRADE_ACTION_PENDING
                 price = order.stop_price
                 type = (
                     MT5.ORDER_TYPE_BUY_STOP
@@ -459,6 +462,7 @@ class MetaTraderAPI(LiveAPI):
                     else MT5.ORDER_TYPE_SELL_STOP
                 )
             case OrderType.Market:
+                action = MT5.TRADE_ACTION_DEAL
                 tick = self.tick_get(order.data.symbol)
                 price = tick.ask if order.is_long else tick.bid
                 type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
@@ -467,53 +471,15 @@ class MetaTraderAPI(LiveAPI):
                     f"Open order type {order.type} is not implement yet"
                 )
 
-        return self.do_order_open(
+        request = self._parse_trade_request(
+            action=action,
             symbol=order.data.symbol,
-            type=type,
             size=order.size,
+            type=type,
             price=price,
             sl=order.sl,
             tp=order.tp,
             tag=order.tag,
-        )
-
-    @mt5_connection
-    def do_order_open(
-        self,
-        symbol: str,
-        size: float,
-        type: int,
-        price: float,
-        sl: float = None,
-        tp: float = None,
-        tag: str | None = None,
-        deviation: int = 10,
-        **kwargs,
-    ) -> dict:
-        """_summary_
-
-        Args:
-            symbol (str): _description_
-            size (float): _description_
-            type (int): _description_
-            price (float): _description_
-            sl (float, optional): _description_. Defaults to None.
-            tp (float, optional): _description_. Defaults to None.
-            tag (str, optional): _description_. Defaults to "".
-            deviation (int, optional): _description_. Defaults to 10.
-
-        Returns:
-            dict: _description_
-        """
-        request = self._parse_trade_request(
-            symbol=symbol,
-            size=size,
-            type=type,
-            price=price,
-            sl=sl,
-            tp=tp,
-            tag=tag,
-            deviation=deviation,
         )
         raw = self._mt5.order_send(request)
 

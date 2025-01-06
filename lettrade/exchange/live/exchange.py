@@ -65,7 +65,7 @@ class LiveExchange(Exchange):
         Returns:
             OrderResult: _description_
         """
-        if not data:
+        if data is None:
             data = self.data
 
         if type == OrderType.Market:
@@ -87,8 +87,8 @@ class LiveExchange(Exchange):
         )
         ok = order.place()
 
-        # if __debug__:
-        #     logger.info("New order %s at %s", order, self.data.now)
+        if __debug__:
+            logger.info("New order %s at %s", order, data.now)
 
         return ok
 

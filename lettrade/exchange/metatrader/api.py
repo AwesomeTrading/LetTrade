@@ -471,6 +471,7 @@ class MetaTraderAPI(LiveAPI):
                     f"Open order type {order.type} is not implement yet"
                 )
 
+        # Request
         request = self._parse_trade_request(
             action=action,
             symbol=order.data.symbol,
@@ -480,6 +481,7 @@ class MetaTraderAPI(LiveAPI):
             sl=order.sl,
             tp=order.tp,
             tag=order.tag,
+            expiration=order.expiration,
         )
         raw = self._mt5.order_send(request)
 
@@ -504,6 +506,7 @@ class MetaTraderAPI(LiveAPI):
         tag: str | None = None,
         position: int | None = None,
         deviation: int = 10,
+        expiration: datetime | None = None,
         action: int = MT5.TRADE_ACTION_DEAL,
         type_time: int = MT5.ORDER_TIME_GTC,
         type_filling: int = MT5.ORDER_FILLING_IOC,
@@ -532,6 +535,12 @@ class MetaTraderAPI(LiveAPI):
             request["comment"] = tag
         if position is not None:
             request["position"] = position
+
+        # Pending order
+        if action is MT5.TRADE_ACTION_PENDING and expiration is not None:
+            request["type_time"] = MT5.ORDER_TIME_SPECIFIED
+            request["type_filling"] = MT5.ORDER_FILLING_FOK
+            request["expiration"] = int(expiration.timestamp())
 
         if __debug__:
             logger.info("New trade request: %s", request)
@@ -1010,12 +1019,19 @@ class MetaTraderAPI(LiveAPI):
         if raws is None:
             raise _RetryException()
 
+        # Remove orders
         tickets = [raw.ticket for raw in raws]
-
-        removed_orders = [
-            raw for raw in self._orders_stored.values() if raw.ticket not in tickets
+        removed_tickets = [
+            raw.ticket
+            for raw in self._orders_stored.values()
+            if raw.ticket not in tickets
         ]
+        removed_orders = []
+        for ticket in removed_tickets:
+            histories = self._mt5.history_orders_get(ticket=ticket)
+            removed_orders.append(histories[0])
 
+        # Added orders
         added_orders = []
         for raw in raws:
             if raw.ticket in self._orders_stored:
@@ -1028,8 +1044,9 @@ class MetaTraderAPI(LiveAPI):
                     and raw.price_stoplimit == stored.price_stoplimit
                 ):
                     continue
-
             added_orders.append(raw)
+
+        # Store
         self._orders_stored = {raw.ticket: raw for raw in raws}
         return added_orders, removed_orders
 

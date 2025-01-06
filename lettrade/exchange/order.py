@@ -29,6 +29,7 @@ class Order(BaseTransaction):
         parent: "Position | None" = None,
         expiration: datetime | None = None,
         tag: str | None = None,
+        placed_at: datetime | None = None,
         **kwargs,
     ):
         """_summary_
@@ -47,6 +48,7 @@ class Order(BaseTransaction):
             parent (Position | None, optional): _description_. Defaults to None.
             expiration (datetime | None, optional): _description_. Defaults to None.
             tag (str | None, optional): _description_. Defaults to None.
+            placed_at (datetime | None, optional): _description_. Defaults to None.
         """
         super().__init__(
             id=id,
@@ -65,7 +67,7 @@ class Order(BaseTransaction):
         self.parent: "Position | None" = parent
         self.expiration: datetime | None = expiration
         self.tag: str | None = tag
-        self.placed_at: pd.Timestamp | None = None
+        self.placed_at: pd.Timestamp | None = placed_at
         self.filled_at: pd.Timestamp | None = None
         self.filled_price: float | None = None
 

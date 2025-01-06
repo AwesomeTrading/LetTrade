@@ -60,6 +60,7 @@ def mt5_connection(api_function):
                 "Retry to reconnect MetaTrader 5 RPC for functon %s", api_function
             )
             if not self._refresh_environments():
+                logger.error("Cannot reconnect MetaTrader 5 RPC")
                 return None
 
             time.sleep(1)
@@ -445,17 +446,26 @@ class MetaTraderAPI(LiveAPI):
         match order.type:
             case OrderType.Limit:
                 price = order.limit_price
+                type = (
+                    MT5.ORDER_TYPE_BUY_LIMIT
+                    if order.is_long
+                    else MT5.ORDER_TYPE_SELL_LIMIT
+                )
             case OrderType.Stop:
                 price = order.stop_price
+                type = (
+                    MT5.ORDER_TYPE_BUY_STOP
+                    if order.is_long
+                    else MT5.ORDER_TYPE_SELL_STOP
+                )
             case OrderType.Market:
                 tick = self.tick_get(order.data.symbol)
                 price = tick.ask if order.is_long else tick.bid
+                type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
             case _:
                 raise NotImplementedError(
                     f"Open order type {order.type} is not implement yet"
                 )
-
-        type = MT5.ORDER_TYPE_BUY if order.is_long else MT5.ORDER_TYPE_SELL
 
         return self.do_order_open(
             symbol=order.data.symbol,
@@ -961,19 +971,28 @@ class MetaTraderAPI(LiveAPI):
             return
 
         # Deals
-        deals = self._check_deals()
-        if deals:
-            self._exchange.on_executions_event(deals)
+        try:
+            deals = self._check_deals()
+            if deals:
+                self._exchange.on_executions_event(deals)
+        except Exception as e:
+            logger.error("Check deals error: %s", e)
 
         # Orders
-        orders_new, orders_old = self._check_orders()
-        if orders_new or orders_old:
-            self._exchange.on_orders_event(new=orders_new, old=orders_old)
+        try:
+            orders_new, orders_old = self._check_orders()
+            if orders_new or orders_old:
+                self._exchange.on_orders_event(new=orders_new, old=orders_old)
+        except Exception as e:
+            logger.error("Check orders error: %s", e)
 
         # Positions
-        positions_new, positions_old = self._check_positions()
-        if positions_new or positions_old:
-            self._exchange.on_positions_event(new=positions_new, old=positions_old)
+        try:
+            positions_new, positions_old = self._check_positions()
+            if positions_new or positions_old:
+                self._exchange.on_positions_event(new=positions_new, old=positions_old)
+        except Exception as e:
+            logger.error("Check positions error: %s", e)
 
     # Deal
     @mt5_connection

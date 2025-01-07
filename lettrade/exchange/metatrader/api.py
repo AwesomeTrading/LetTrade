@@ -504,6 +504,7 @@ class MetaTraderAPI(LiveAPI):
         sl: float | None = None,
         tp: float | None = None,
         tag: str | None = None,
+        order: int | None = None,
         position: int | None = None,
         deviation: int = 10,
         expiration: datetime | None = None,
@@ -533,6 +534,8 @@ class MetaTraderAPI(LiveAPI):
             request["tp"] = tp
         if tag is not None:
             request["comment"] = tag
+        if order is not None:
+            request["order"] = order
         if position is not None:
             request["position"] = position
 
@@ -551,7 +554,18 @@ class MetaTraderAPI(LiveAPI):
         raise NotImplementedError
 
     def order_close(self, order: "MetaTraderOrder", **kwargs):
-        raise NotImplementedError
+        request = self._parse_trade_request(
+            order=order.id,
+            action=MT5.TRADE_ACTION_REMOVE,
+            **kwargs,
+        )
+        raw = self._mt5.order_send(request)
+
+        # Retry
+        if raw is None:
+            raise _RetryException()
+
+        return self._parse_trade_send_response(raw)
 
     def _parse_trade_send_response(self, raw) -> dict:
         if raw is None:

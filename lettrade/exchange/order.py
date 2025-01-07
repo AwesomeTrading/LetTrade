@@ -366,6 +366,15 @@ class Order(BaseTransaction):
         """
         return self.state in [OrderState.Filled, OrderState.Canceled]
 
+    @property
+    def is_main(self) -> bool:
+        """Flag to check `Order` is main, not sl or tp
+
+        Returns:
+            bool: True if `Order` is not stop-loss or take-profit order
+        """
+        return not self.parent
+
 
 class OrderResult:
     """Result of `Order`"""

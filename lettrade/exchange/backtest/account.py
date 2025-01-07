@@ -68,8 +68,21 @@ class BackTestAccount(Account):
 class ForexBackTestAccount(BackTestAccount):
     """Forex backtest account helps to handle lot size"""
 
+    def __init__(
+        self,
+        risk: float = 0.02,
+        balance: float = 10000,
+        commission: float = 0.2,
+        margin: float = 1,
+        leverage: float = 1,
+        lot_units: int = 100_000,
+        **kwargs,
+    ):
+        self.lot_units: int = lot_units
+        super().__init__(risk, balance, commission, margin, leverage, **kwargs)
+
     def __repr__(self):
         return "<ForexBackTestAccount " + str(self) + ">"
 
     def pl(self, size, entry_price: float, exit_price: float | None = None) -> float:
-        return super().pl(size, entry_price, exit_price) * 100_000
+        return super().pl(size, entry_price, exit_price) * self.lot_units

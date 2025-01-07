@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 from lettrade.data import DataFeeder, TimeFrame
 
@@ -62,16 +62,25 @@ class LiveDataFeeder(DataFeeder):
             size = self._start_size
 
         for data in self.datas:
-            data.next(size=size, tick=self._tick)
+            data.next(size=size)
 
     def next(self):
         if self._tick > 0:
-            time.sleep(self._wait_duration())
+            wait_seconds = self._wait_duration()
+            if wait_seconds > 0:
+                time.sleep(wait_seconds)
+
         for data in self.datas:
-            data.next(tick=self._tick)
+            data.next()
 
     def _wait_duration(self) -> float:
-        now = datetime.now()
+        # TODO: dynamic timezones
+        now = datetime.now(tz=timezone.utc)
+
+        # TODO: flag to enable/disable wait for new bar
+        if now >= self.data.timeframe.ceil(self.data.now):
+            return 0
+
         delta = self._wait_timeframe.ceil(now) - now
         return delta.total_seconds()
 

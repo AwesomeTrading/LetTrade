@@ -105,13 +105,13 @@ class BackTestExchange(Exchange):
             order.cancel()
             logger.info("Order %s expired", order.id)
 
-    def _simulate_order_fill(self, order: BackTestOrder):
+    def _simulate_order_fill(self, order: BackTestOrder, index=0):
         if not order.is_opening:
             return
 
         if order.type == OrderType.Market:
             order.fill(
-                price=self.data.l.open[0],
+                price=self.data.l.close[index],
                 at=self.data.bar(),
             )
             return
@@ -119,26 +119,26 @@ class BackTestExchange(Exchange):
         if order.type == OrderType.Limit:
             if order.is_long:
                 # Buy Limit
-                price = self.data.l.low[-1]
+                price = self.data.l.low[index]
                 if order.limit_price > price:
-                    order.fill(price=order.limit_price, at=self.data.bar(-1))
+                    order.fill(price=order.limit_price, at=self.data.bar(index))
                     return
             else:
                 # Sell Limit
-                price = self.data.l.high[-1]
+                price = self.data.l.high[index]
                 if order.limit_price < price:
-                    order.fill(price=order.limit_price, at=self.data.bar(-1))
+                    order.fill(price=order.limit_price, at=self.data.bar(index))
                     return
         elif order.type == OrderType.Stop:
             if order.is_long:
                 # Buy Stop
-                price = self.data.l.high[-1]
+                price = self.data.l.high[index]
                 if order.stop_price < price:
-                    order.fill(price=order.stop_price, at=self.data.bar(-1))
+                    order.fill(price=order.stop_price, at=self.data.bar(index))
                     return
             else:
                 # Sell Stop
-                price = self.data.l.low[-1]
+                price = self.data.l.low[index]
                 if order.stop_price > price:
-                    order.fill(price=order.stop_price, at=self.data.bar(-1))
+                    order.fill(price=order.stop_price, at=self.data.bar(index))
                     return

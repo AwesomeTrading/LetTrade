@@ -78,12 +78,11 @@ class LiveDataFeed(DataFeed):
     def copy(self, deep: bool = False, **kwargs) -> DataFeed:
         return super().copy(deep, symbol=self.symbol, **kwargs)
 
-    def next(self, size=1, tick=0) -> bool:
+    def next(self, size=1) -> bool:
         """Drop extra columns and load next DataFeed
 
         Args:
             size (int, optional): _description_. Defaults to 1.
-            tick (int, optional): _description_. Defaults to 0.
 
         Returns:
             bool: _description_
@@ -114,6 +113,14 @@ class LiveDataFeed(DataFeed):
         if bars is None or len(bars) == 0:
             logger.warning("No bars data for %s", self.name)
             return False
+
+        if since == 0:
+            if not self.empty and bars[-1][0] == int(self.now.timestamp()):
+                logger.error("Building bar", bars[-1][0], self.now.timestamp())
+                return False
+            if len(bars) < 2:
+                return False
+            bars = bars[:-1]
 
         self.push(bars, unit=self._bar_datetime_unit)
         return True

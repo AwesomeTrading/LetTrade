@@ -207,7 +207,7 @@ class MetaTraderOrder(LiveOrder):
         Returns:
             OrderResult: _description_
         """
-        if not self.parent:
+        if self.parent is None:
             # Abandon order
             result = self._api.order_close(order=self, **kwargs)
         else:

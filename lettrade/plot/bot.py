@@ -45,6 +45,7 @@ class BotPlotter(Plotter):
         self,
         since: int | str | pd.Timestamp | None = None,
         order_id: str | None = None,
+        position: str | None = None,
         position_id: str | None = None,
         range: int = 300,
         name: str | None = None,
@@ -54,8 +55,9 @@ class BotPlotter(Plotter):
         Args:
             since (int | str | pd.Timestamp | None, optional): Jump to index/datetime. Defaults to None.
             order_id (str | None, optional): Jump to order id. Defaults to None.
+            position (str | None, optional): Jump to position index. Defaults to None.
             position_id (str | None, optional): Jump to position id. Defaults to None.
-            range (int, optional): number of candle plot. Defaults to 300.
+            range (int, optional): Number of bars will be plot. Defaults to 300.
             name (str | None, optional): _description_. Defaults to None.
 
         Raises:
@@ -75,7 +77,10 @@ class BotPlotter(Plotter):
 
                 loc = self.data.l.index.get_loc(order.placed_at)
                 since = loc - int(range / 2)
-
+            elif position is not None:  # Jump to position index
+                position = list(self.exchange.history_positions.values())[position]
+                loc = self.data.l.index.get_loc(position.entry_at)
+                since = loc - int(range / 2)
             elif position_id is not None:  # Jump to position id
                 if not isinstance(position_id, str):
                     position_id = str(position_id)

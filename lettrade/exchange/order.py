@@ -103,10 +103,53 @@ class Order(BaseTransaction):
 
     def validate(self):
         # Validate
-        price = self.place_price or self.data.l.open[0]
+        # TODO: validate on "end of bar" or "open of bar"
+        validate_price = self.data.l.close[0]
 
         # Buy side
         if self.size > 0:
+            match self.type:
+                case OrderType.Limit:
+                    if self.limit_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY limit price is None"
+                        )
+                    if self.limit_price >= validate_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY limit price {self.limit_price} >= price {validate_price}"
+                        )
+                    price = self.limit_price
+                case OrderType.Stop:
+                    if self.stop_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY stop price is None"
+                        )
+                    if self.stop_price <= validate_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY stop price {self.stop_price} <= price {validate_price}"
+                        )
+                    price = self.stop_price
+                case OrderType.StopLimit:
+                    if self.limit_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY StopLimit: Limit price is None"
+                        )
+                    if self.stop_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY StopLimit: Stop price is None"
+                        )
+                    if self.limit_price >= self.stop_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY StopLimit: Limit price {self.limit_price} >= stop price {self.stop_price}"
+                        )
+                    if self.stop_price <= validate_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} BUY StopLimit: Stop price {self.stop_price} <= price {validate_price}"
+                        )
+                    price = self.stop_price
+                case OrderType.Market:
+                    price = self.place_price or validate_price
+
             if self.sl_price is not None:
                 if self.sl_price >= price:
                     raise LetOrderValidateException(
@@ -119,6 +162,48 @@ class Order(BaseTransaction):
                     )
         # Sell side
         elif self.size < 0:
+            match self.type:
+                case OrderType.Limit:
+                    if self.limit_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL limit price is None"
+                        )
+                    if self.limit_price <= validate_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL limit price {self.limit_price} <= price {validate_price}"
+                        )
+                    price = self.limit_price
+                case OrderType.Stop:
+                    if self.stop_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL stop price is None"
+                        )
+                    if self.stop_price >= validate_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL stop price {self.stop_price} >= price {validate_price}"
+                        )
+                    price = self.stop_price
+                case OrderType.StopLimit:
+                    if self.limit_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL StopLimit: Limit price is None"
+                        )
+                    if self.stop_price is None:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL StopLimit: Stop price is None"
+                        )
+                    if self.limit_price <= self.stop_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL StopLimit: Limit price {self.limit_price} <= stop price {self.stop_price}"
+                        )
+                    if self.stop_price >= validate_price:
+                        raise LetOrderValidateException(
+                            f"Order {self.id} SELL StopLimit: Stop price {self.stop_price} >= price {validate_price}"
+                        )
+                    price = self.stop_price
+                case OrderType.Market:
+                    price = self.place_price or validate_price
+
             if self.sl_price is not None:
                 if self.sl_price <= price:
                     raise LetOrderValidateException(

@@ -223,18 +223,25 @@ class Order(BaseTransaction):
         self,
         at: pd.Timestamp,
         raw: object | None = None,
+        validate=True,
     ) -> "OrderResult":
-        """Place `Order`
-        Set `status` to `OrderState.Placed`.
-        Send event to `Exchange`
+        """Place an order.
+
+        This method sets the order status to `OrderState.Placed` and sends an event to the `Exchange`.
+
+        Args:
+            at (pd.Timestamp): The timestamp when the order is placed.
+            raw (object | None, optional): Additional raw data associated with the order. Defaults to None.
+            validate (bool, optional): Whether to validate the order before placing it. Defaults to True.
 
         Raises:
-            RuntimeError: _description_
+            RuntimeError: If the order state is not `OrderState.Pending`.
 
         Returns:
-            OrderResult: result of `Order`
+            OrderResult: The result of placing the order.
         """
-        self.validate()
+        if validate:
+            self.validate()
 
         if self.state != OrderState.Pending:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Pending")

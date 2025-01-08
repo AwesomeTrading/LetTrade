@@ -2,7 +2,14 @@ import logging
 from datetime import datetime
 
 from lettrade.data import DataFeed
-from lettrade.exchange import Exchange, OrderResult, OrderState, OrderType
+from lettrade.exchange import (
+    Exchange,
+    LetOrderValidateException,
+    OrderResult,
+    OrderResultError,
+    OrderState,
+    OrderType,
+)
 
 from .trade import BackTestOrder
 
@@ -82,7 +89,11 @@ class BackTestExchange(Exchange):
             expiration=expiration,
             tag=tag,
         )
-        ok = order.place(at=self.data.bar())
+        try:
+            ok = order.place(at=self.data.bar())
+        except LetOrderValidateException as e:
+            logger.error("Error when place order: %s %s", order, e)
+            return OrderResultError(error=str(e), order=order)
 
         if type == OrderType.Market:
             # Simulate market order will send event before return order result
@@ -91,8 +102,19 @@ class BackTestExchange(Exchange):
         return ok
 
     def _simulate_orders(self):
+        simulated = []
         for order in list(self.orders.values()):
             self._simulate_order_expire(order)
+            self._simulate_order_fill(order)
+            simulated.append(order.id)
+
+        # Simulate new orders created by position SL/TP in this bar, and being executed in current bar
+        for order in list(self.orders.values()):
+            if order.id in simulated:
+                continue
+            # TP order may be canceled by SL order of position
+            if not order.is_opening:
+                continue
             self._simulate_order_fill(order)
 
     def _simulate_order_expire(self, order: BackTestOrder):

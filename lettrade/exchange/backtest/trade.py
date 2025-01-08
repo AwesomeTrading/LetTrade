@@ -248,7 +248,11 @@ class BackTestPosition(Position):
             stop_price=stop_price,
         )
         self.sl_order = sl_order
-        sl_order.place(at=self.data.bar())
+
+        # Place SL order skip validate because it's could be lower/higher than current price
+        # and will be executed immediately by exchange
+        sl_order.place(at=self.data.bar(), validate=False)
+
         return sl_order
 
     def _new_tp_order(self, limit_price: float) -> BackTestOrder:
@@ -263,7 +267,11 @@ class BackTestPosition(Position):
         )
 
         self.tp_order = tp_order
-        tp_order.place(at=self.data.bar())
+
+        # Place TP order skip validate because it's could be higher/lower than current price
+        # and will be executed immediately by exchange
+        tp_order.place(at=self.data.bar(), validate=False)
+
         return tp_order
 
     @classmethod

@@ -582,10 +582,6 @@ def let_backtest(
     optimize_plotter: type[OptimizePlotter] | None = "PlotlyOptimizePlotter",
     bot: type[LetTradeBackTestBot] | None = LetTradeBackTestBot,
     name: str | None = None,
-    # Account kwargs
-    balance: float | None = 10_000,
-    commission: float | None = 0.2,
-    leverage: float | None = 20,
     **kwargs,
 ) -> "LetTradeBackTest":
     """Complete `lettrade` backtest depenencies
@@ -603,21 +599,10 @@ def let_backtest(
         optimize_plotter (type[OptimizePlotter] | None, optional): _description_. Defaults to "PlotlyOptimizePlotter".
         bot (type[LetTradeBackTestBot] | None, optional): _description_. Defaults to LetTradeBackTestBot.
         name (str | None, optional): _description_. Defaults to None.
-        balance (float | None, optional): _description_. Defaults to 10_000.
-        commission (float | None, optional): _description_. Defaults to 0.2.
-        leverage (float | None, optional): _description_. Defaults to 20.
 
     Returns:
         LetTradeBackTest: The LetTrade backtesting object
     """
-
-    account_kwargs: dict = kwargs.setdefault("account_kwargs", {})
-    account_kwargs.update(
-        balance=balance,
-        commission=commission,
-        leverage=leverage,
-    )
-
     return LetTradeBackTest(
         strategy=strategy,
         datas=datas,

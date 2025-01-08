@@ -79,7 +79,14 @@ class ForexBackTestAccount(BackTestAccount):
         **kwargs,
     ):
         self.lot_units: int = lot_units
-        super().__init__(risk, balance, commission, margin, leverage, **kwargs)
+        super().__init__(
+            risk=risk,
+            balance=balance,
+            commission=commission,
+            margin=margin,
+            leverage=leverage,
+            **kwargs,
+        )
 
     def __repr__(self):
         return "<ForexBackTestAccount " + str(self) + ">"

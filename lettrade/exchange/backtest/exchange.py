@@ -112,7 +112,7 @@ class BackTestExchange(Exchange):
         if order.type == OrderType.Market:
             order.fill(
                 price=self.data.l.close[index],
-                at=self.data.bar(),
+                at=self.data.bar(index),
             )
             return
 

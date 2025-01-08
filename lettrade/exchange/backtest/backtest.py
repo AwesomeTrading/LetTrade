@@ -45,19 +45,15 @@ def logging_filter_optimize():
 class LetTradeBackTestBot(LetTradeBot):
     """LetTradeBot for backtest"""
 
-    def init(self, optimize: dict[str, Any] = None, **kwargs):
-        strategy_kwargs = self._kwargs.setdefault("strategy_kwargs", {})
-        strategy_kwargs.update(is_optimize=optimize is not None)
+    def init(self, **kwargs):
+        if "optimize" in self._kwargs:
+            optimize: dict = self._kwargs["optimize"]
+
+            strategy_kwargs: dict = self._kwargs.setdefault("strategy_kwargs", {})
+            strategy_kwargs.update(is_optimize=True)
+            strategy_kwargs.update(**optimize)
 
         super().init()
-
-        # Optimize
-        if not optimize:
-            return
-
-        # Set optimize params
-        for attr, value in optimize.items():
-            setattr(self.strategy, attr, value)
 
 
 class LetTradeBackTest(LetTrade):
@@ -117,7 +113,7 @@ class LetTradeBackTest(LetTrade):
 
         return super().run(worker, **kwargs)
 
-    def _optimize_init(self, cache: str, total: int, process_bar: bool):
+    def _optimize_init(self, cache: str | None, total: int, process_bar: bool):
         # Disable logging
         logging_filter_optimize()
 
@@ -163,7 +159,7 @@ class LetTradeBackTest(LetTrade):
         multiprocessing: Literal["auto", "fork"] = "auto",
         workers: int | None = None,
         process_bar: bool = True,
-        cache: str = "data/optimize",
+        cache: str | None = "data/optimize",
         **kwargs,
     ):
         """Backtest optimization
@@ -281,7 +277,7 @@ class LetTradeBackTest(LetTrade):
         params_parser: Callable[[Any], list[set[str, Any]]] = None,
         result_parser: Callable[[pd.Series], float] = None,
         total: int = 0,
-        cache: str = "data/optimize",
+        cache: str | None = "data/optimize",
         process_bar: bool = False,
         dumper: Callable[[dict, "LetTradeBackTest"], None] | None = None,
     ) -> Callable[[Any], Any]:

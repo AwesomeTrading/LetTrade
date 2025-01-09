@@ -16,8 +16,8 @@ def indicators_inject_pandas(obj: object | None = None):
 
     # Flag to mark indicators injected
     if hasattr(obj, "_lt_indicators_injected"):
-        if __debug__:
-            print("[WARN] Re-injected indicators")
+        # if __debug__:
+        #     print("[WARN] Re-injected indicators")
         return
 
     from .candlestick import pandas_inject as candlestick_pandas_inject

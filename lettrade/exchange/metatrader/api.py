@@ -222,7 +222,7 @@ class MetaTraderAPI(LiveAPI):
                 logger.warning("Terminal trading mode is not allowed")
 
             # Account
-            logger.info("Login success: %s %s", kwargs, self._mt5.version())
+            logger.info("Login success: %s %s", kwargs["login"], self._mt5.version())
 
             # Preload trading data
             now = datetime.now()

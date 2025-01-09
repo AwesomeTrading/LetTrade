@@ -145,6 +145,8 @@ def signal_condiction(
             name=condiction["name"],
             **kwargs,
         )
+        # Drop duplicate indices
+        series = series[~series.index.duplicated(keep="first")]
         indicators.append(series)
 
         if plot and "plot_kwargs" in condiction:

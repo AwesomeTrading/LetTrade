@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-_data_name_pattern = re.compile(r"^[\w\_]+$")
+_data_name_pattern = re.compile(r"^[\w\_\-\.]+$")
 
 
 class DataFeed(pd.DataFrame):

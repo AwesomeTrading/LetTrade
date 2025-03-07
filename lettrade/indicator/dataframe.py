@@ -2,7 +2,6 @@ from typing import Literal
 
 import numpy as np
 import pandas as pd
-
 from lettrade.plot import PlotColor
 
 
@@ -213,6 +212,9 @@ def signal_exist(
     Returns:
         pd.Series | pd.DataFrame: _description_
     """
+    if isinstance(series, str):
+        series = dataframe[series]
+    
     up_rolling_max = series.rolling(window=window).max()
     down_rolling_min = series.rolling(window=window).min()
 
@@ -266,6 +268,9 @@ def signal_repeat(
     Returns:
         pd.Series | pd.DataFrame: _description_
     """
+    if isinstance(series, str):
+        series = dataframe[series]
+
     up_rolling_min = series.rolling(window=window).min()
     down_rolling_max = series.rolling(window=window).max()
 

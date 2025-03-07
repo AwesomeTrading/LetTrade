@@ -2,7 +2,6 @@ from typing import Literal
 
 import pandas as pd
 import talib.abstract as ta
-
 from lettrade.plot import PlotColor
 
 from ..utils import talib_ma
@@ -55,7 +54,7 @@ def keltner_channel(
         RuntimeError: _description_
 
     Returns:
-        dict[str, pd.Series] | pd.DataFrame: {kc_upper, kc_middle, kc_lower}
+        dict[str, pd.Series] | pd.DataFrame: {kc_upper, kc_basis, kc_lower}
     """
     if __debug__:
         if not isinstance(dataframe, pd.DataFrame):

@@ -39,6 +39,7 @@ class Account(metaclass=ABCMeta):
         margin: float = 1.0,
         leverage: float = 1.0,
         type: AccountType = AccountType.Hedging,
+        equity_snapshot: bool = True,
         **kwargs,
     ) -> None:
         """_summary_
@@ -59,7 +60,7 @@ class Account(metaclass=ABCMeta):
 
         self._equities = dict()
 
-        self._do_equity_snapshot = True  # Snapshot balance
+        self._do_equity_snapshot = equity_snapshot  # Snapshot balance
 
     def init(self, exchange: "Exchange"):
         self._exchange = exchange

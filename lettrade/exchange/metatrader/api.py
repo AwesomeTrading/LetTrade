@@ -3,7 +3,7 @@ import logging
 import time
 from datetime import datetime, timedelta
 from subprocess import Popen
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 from box import Box
 from mt5linux import MetaTrader5 as MT5
@@ -264,7 +264,9 @@ class MetaTraderAPI(LiveAPI):
     # ----- Public
     # --- Market
     @mt5_connection
-    def market(self, symbol: str, **kwargs) -> dict:
+    def market(
+        self, symbol: str, type_parser: Callable | None = None, **kwargs
+    ) -> dict:
         """_summary_
 
         Args:
@@ -276,10 +278,15 @@ class MetaTraderAPI(LiveAPI):
         raw = self._mt5.symbol_info(symbol)
         if raw is None:
             raise _RetryException()
-        return self._market_parse_response(raw)
+        return self._market_parse_response(raw=raw, type_parser=type_parser)
 
     @mt5_connection
-    def markets(self, search: str | None = "*", **kwargs) -> list[dict]:
+    def markets(
+        self,
+        search: str | None = "*",
+        type_parser: Callable | None = None,
+        **kwargs,
+    ) -> list[dict]:
         """The filter for arranging a group of necessary symbols.
         If the group is specified, the function returns only symbols meeting a specified criteria.
 
@@ -296,11 +303,20 @@ class MetaTraderAPI(LiveAPI):
         raws = self._mt5.symbols_get(search)
         if raws is None:
             raise _RetryException()
-        return [self._market_parse_response(raw) for raw in raws]
+        return [
+            self._market_parse_response(raw=raw, type_parser=type_parser)
+            for raw in raws
+        ]
 
-    def _market_parse_response(self, raw):
+    def _market_parse_response(self, raw, type_parser: Callable | None = None) -> dict:
         raw = Box(dict(raw._asdict()))
-        type = raw.path.split("\\", 1)[0]
+
+        type = (
+            type_parser(raw)
+            if type_parser is not None
+            else raw.path.split("\\")[0].lower()
+        )
+
         return Box(
             symbol=raw.name,
             type=type,

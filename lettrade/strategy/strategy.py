@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Any, final
 
 import pandas as pd
-
 from lettrade.account import Account
 from lettrade.commander import Commander
 from lettrade.data import DataFeed, DataFeeder
@@ -76,7 +75,7 @@ class Strategy:
     def init(self) -> None:
         """Init strategy variables"""
 
-    def indicators(self, df: DataFeed) -> None:
+    def indicators(self, df: DataFeed, *others: list[DataFeed]) -> None:
         """All indicator and signal should implement here to cacheable.
         Because of `lettrade` will cache/pre-load all `DataFeed`.
 

@@ -119,6 +119,13 @@ class TimeFrame:
     def __repr__(self) -> str:
         return self.string
 
+    def __eq__(self, other) -> bool:
+        if isinstance(other, TimeFrame):
+            return self.value == other.value and self.unit == other.unit
+        if isinstance(other, str):
+            return self.string == other
+        return False
+
     @property
     def string(self):
         """TimeFrame as lettrade string"""

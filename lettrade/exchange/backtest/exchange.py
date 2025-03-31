@@ -88,6 +88,7 @@ class BackTestExchange(Exchange):
             tp_price=tp,
             expiration=expiration,
             tag=tag,
+            **kwargs,
         )
         try:
             ok = order.place(at=self.data.bar())

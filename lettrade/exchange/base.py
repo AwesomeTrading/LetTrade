@@ -69,6 +69,7 @@ class BaseTransaction:
         exchange: "Exchange",
         data: "DataFeed",
         size: float,
+        # **kwargs: dict,
     ) -> None:
         """_summary_
 
@@ -115,11 +116,9 @@ if __debug__:
     from lettrade.base.flag import validate_strategy_trade
 
     if validate_strategy_trade:
-
         import inspect
 
         def base_transaction__setattr__(self, name: str, value: Any) -> None:
-
             stack = inspect.stack()[1]
             caller_cls = stack[0].f_locals["self"].__class__
 

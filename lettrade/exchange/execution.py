@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from .base import BaseTransaction
 
 if TYPE_CHECKING:
+    import pandas as pd
     from lettrade.data import DataFeed
 
     from .exchange import Exchange
@@ -23,7 +24,7 @@ class Execution(BaseTransaction):
         data: "DataFeed",
         size: float,
         price: float,
-        at: float,
+        at: "pd.Timestamp | float",
         order_id: str | None = None,
         order: "Order | None" = None,
         position_id: str | None = None,
@@ -42,7 +43,7 @@ class Execution(BaseTransaction):
         self.position_id = position_id
         self.position: "Position" = position
         self.price = price
-        self.at = at
+        self.at: "pd.Timestamp | float" = at
 
     def __repr__(self):
         return f"<{self.__class__.__name__} id={self.id} size={self.size}>"

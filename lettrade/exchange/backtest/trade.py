@@ -68,11 +68,7 @@ class BackTestOrder(Order):
 
     parent: "BackTestPosition"
 
-    def cancel(
-        self,
-        caller: Order | Position | None = None,
-        **kwargs,
-    ) -> "OrderResult":
+    def cancel(self, **kwargs) -> "OrderResult":
         """Cancel the Order and notify Exchange"""
         if self.state != OrderState.Placed:
             raise RuntimeError(f"Order {self.id} state {self.state} is not Placed")

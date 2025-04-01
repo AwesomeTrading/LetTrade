@@ -5,6 +5,7 @@ from .base import BaseTransaction
 
 if TYPE_CHECKING:
     import pandas as pd
+
     from lettrade.data import DataFeed
 
     from .exchange import Exchange
@@ -27,8 +28,6 @@ class Execution(BaseTransaction):
         at: "pd.Timestamp | float",
         order_id: str | None = None,
         order: "Order | None" = None,
-        position_id: str | None = None,
-        position: "Position | None" = None,
         **kwargs,
     ):
         super().__init__(
@@ -38,12 +37,26 @@ class Execution(BaseTransaction):
             size=size,
             **kwargs,
         )
-        self.order_id = order_id
         self.order: "Order" = order
-        self.position_id = position_id
-        self.position: "Position" = position
+        self.order_id = self.order.id if self.order is not None else order_id
         self.price = price
         self.at: "pd.Timestamp | float" = at
+
+    @property
+    def position(self) -> "Position | None":
+        if self.order is None:
+            return
+        if self.order.parent is None:
+            return
+
+        return self.order.parent
+
+    @property
+    def position_id(self) -> "Position | None":
+        position = self.position
+        if position is None:
+            return
+        return position.id
 
     def __repr__(self):
         return f"<{self.__class__.__name__} id={self.id} size={self.size}>"

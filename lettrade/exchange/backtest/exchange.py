@@ -144,24 +144,20 @@ class BackTestExchange(Exchange):
                 # Buy Limit
                 price = self.data.l.low[index]
                 if order.limit_price > price:
-                    order.fill(price=order.limit_price, at=self.data.bar(index))
-                    return
+                    return order.fill(price=order.limit_price, at=self.data.bar(index))
             else:
                 # Sell Limit
                 price = self.data.l.high[index]
                 if order.limit_price < price:
-                    order.fill(price=order.limit_price, at=self.data.bar(index))
-                    return
+                    return order.fill(price=order.limit_price, at=self.data.bar(index))
         elif order.type == OrderType.Stop:
             if order.is_long:
                 # Buy Stop
                 price = self.data.l.high[index]
                 if order.stop_price < price:
-                    order.fill(price=order.stop_price, at=self.data.bar(index))
-                    return
+                    return order.fill(price=order.stop_price, at=self.data.bar(index))
             else:
                 # Sell Stop
                 price = self.data.l.low[index]
                 if order.stop_price > price:
-                    order.fill(price=order.stop_price, at=self.data.bar(index))
-                    return
+                    return order.fill(price=order.stop_price, at=self.data.bar(index))

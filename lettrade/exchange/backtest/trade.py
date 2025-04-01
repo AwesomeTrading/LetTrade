@@ -97,15 +97,15 @@ class BackTestOrder(Order):
         if self.state != OrderState.Placed:
             raise RuntimeError(f"Execution a {self.state} order")
 
-        # Order
-        ok = super().fill(price=price, at=at)
-
         # Execution is enable
         if self.exchange.executions is not None:
             execution = BackTestExecution.from_order(order=self, price=price, at=at)
             execution._on_execution()
 
-        # Position hit SL/TP
+        # Order
+        ok = super().fill(price=price, at=at)
+
+        # Position hit SL/TP or Exit
         if self.parent:
             self.parent.exit(price=price, at=at, caller=self)
         else:
@@ -186,21 +186,20 @@ class BackTestPosition(Position):
             at (object): Exit bar
             caller (Order | Position, optional): Skip caller to prevent infinite recursion loop. Defaults to None.
         """
-        if self.state == PositionState.Exit:
-            if caller is None:
-                # Call by user
-                raise RuntimeError(f"Call exited position {self}")
-            return
-
         if caller is None:
             # Call by user
+            if self.state == PositionState.Exit:
+                raise RuntimeError(f"Call exited position {self}")
             if price is not None:
                 raise RuntimeError(f"Price set {price} is not available")
             if at is not None:
                 raise RuntimeError(f"At set {at} is not available")
 
-            price = self.data.l.open[0]
+            # price = self.data.l.open[0]
             at = self.data.l.index[0]
+
+            self._exit_order(at=at)
+            return
         else:
             # Call by SL/TP order
             if price is None or at is None:
@@ -232,6 +231,14 @@ class BackTestPosition(Position):
                 self.tp_order.cancel(caller=caller)
 
         return ok
+
+    def _exit_order(self, at, **kwargs):
+        order = BackTestOrder.from_position(
+            position=self,
+            id=f"{self.id}-close",
+            type=OrderType.Market,
+        )
+        order.place(at=at)
 
     def _new_sl_order(self, stop_price: float) -> BackTestOrder:
         if self.sl_order:

@@ -60,38 +60,35 @@ class BackTestDataFeed(DataFeed):
     def next(
         self,
         size: int = 1,
-        next: pd.Timestamp | None = None,
+        to: pd.Timestamp | None = None,
         missing="bypass",
     ) -> bool:
-        has_next = True
-        if not self.is_main:
-            if next is None:
-                raise RuntimeError("DataFeed parameter next is None")
-
+        has_to = True
+        if to is not None:
             size = 0
             while True:
                 try:
-                    dt_next = self.l.index[size + 1]
-                    if dt_next > next:
+                    dt_to = self.l.index[size + 1]
+                    if dt_to > to:
                         break
                     size += 1
                 except (KeyError, IndexError):
-                    has_next = False
+                    has_to = False
                     break
 
             # Validate
             if missing != "bypass":
                 now = self.l.index[size]
-                floor = self.timeframe.floor(next)
+                floor = self.timeframe.floor(to)
                 if now != floor:
                     raise RuntimeError(
-                        f"DataFeed {self.name}: jump from [{now} to {self.l.index[size+1]}]"
-                        f" missing range [{floor} to {next}]",
+                        f"DataFeed {self.name}: jump from [{now} to {self.l.index[size + 1]}]"
+                        f" missing range [{floor} to {to}]",
                     )
 
         if size > 0:
             super().next(size=size)
-        return has_next
+        return has_to
 
 
 _data_name_pattern = re.compile(r"^([\w\_]+)")

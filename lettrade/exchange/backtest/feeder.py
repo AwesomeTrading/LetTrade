@@ -1,5 +1,7 @@
 import logging
 
+import pandas as pd
+
 from lettrade.data import DataFeeder, LetNoMoreDataFeedException
 
 from .data import BackTestDataFeed
@@ -33,7 +35,7 @@ class BackTestDataFeeder(DataFeeder):
         for data in self.datas:
             data.next(
                 size=size,
-                next=next,
+                to=next,
                 missing="bypass",
             )
 
@@ -59,17 +61,18 @@ class BackTestDataFeeder(DataFeeder):
     #         data.drop(index=df.index, inplace=True)
     #         data.reset_index(inplace=True)
 
-    def next(self):
-        next = self.data.l.index[1]
+    def next(self, to: pd.Timestamp | None = None):
+        if to is None:
+            to = self.data.l.index[1]
 
-        no_next = 0
+        no_to = 0
         for data in self.datas:
-            if not data.next(next=next):
+            if not data.next(to=to):
                 if data is self.data:
                     raise LetNoMoreDataFeedException()
-                no_next += 1
+                no_to += 1
 
-        if no_next >= len(self.datas):
+        if no_to >= len(self.datas):
             # Skip lastest available bar, because if next some data feeded some are not
             raise LetNoMoreDataFeedException()
 

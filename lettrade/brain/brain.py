@@ -50,11 +50,7 @@ class Brain:
         # self.datas = self.feeder.datas
         self.data = self.feeder.data
 
-    def start(
-        self,
-        feed_size: int = 0,
-        **kwargs,
-    ):
+    def start(self, feed_size: int = 0, **kwargs):
         """_summary_
 
         Args:

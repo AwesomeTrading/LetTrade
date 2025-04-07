@@ -26,7 +26,7 @@ if __name__ == "__main__":
             "Topic :: Scientific/Engineering :: Visualization",
         ],
         packages=find_packages(),
-        python_requires=">=3.10,<3.13",
+        python_requires=">=3.10",
         install_requires=["pandas>=2.0", "numpy", "numexpr", "TA-Lib>=0.4"],
         extras_require={
             "plot": ["plotly"],

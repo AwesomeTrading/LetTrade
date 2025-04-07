@@ -42,7 +42,7 @@ class LiveDataFeed(DataFeed):
             **kwargs,
         )
 
-        self.meta.update(symbol=symbol, base_columns=self.columns.array.copy())
+        self.meta.update(symbol=symbol, base_columns=self.columns.array.tolist())
 
         if api is not None:
             self._api = api

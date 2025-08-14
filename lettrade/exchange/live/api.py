@@ -21,7 +21,7 @@ class LiveAPI(ABC):
     def init(self, **kwargs):
         """"""
 
-    def start(self, exchange: "LiveExchange"):
+    def start(self, exchange: "LiveExchange | None" = None):
         """"""
 
     def next(self):
@@ -67,7 +67,7 @@ class LiveAPI(ABC):
         """"""
 
     #  Order
-    @abstractmethod
+    # @abstractmethod
     def orders_total(
         self,
         since: datetime | None = None,

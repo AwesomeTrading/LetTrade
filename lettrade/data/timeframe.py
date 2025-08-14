@@ -203,10 +203,9 @@ class TimeFrame:
 
         if isinstance(at, pd.Timestamp):
             if self.unit == "d":
-                return pd.Timestamp(at.date() + pd.Timedelta(days=1))
+                return pd.Timestamp(at.date() + pd.Timedelta(days=1), tz=at.tz)
             if self.unit == "w":
-                return pd.Timestamp(at.date() + pd.Timedelta(days=7 - at.day_of_week))
-
+                return pd.Timestamp(at.date() + pd.Timedelta(days=7 - at.day_of_week), tz=at.tz)
         elif isinstance(at, pd.Timedelta):
             if self.unit == "d":
                 return pd.Timedelta(days=at.days + (0 if at.seconds == 0 else 1))

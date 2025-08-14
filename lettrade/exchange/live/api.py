@@ -52,6 +52,7 @@ class LiveAPI(ABC):
         timeframe,
         since: int | datetime | None = 0,
         to: int | datetime | None = 1_000,
+        **kwargs
     ) -> list[list]:
         """"""
 

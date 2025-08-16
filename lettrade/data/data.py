@@ -130,6 +130,22 @@ class DataFeed(pd.DataFrame):
             unit (str | None, optional): pandas.Timestamp parsing unit. Defaults to None.
             utc (bool, optional): _description_. Defaults to True.
         """
+
+        # from datetime import datetime
+        # begin = datetime.now()
+        
+        # bars = dict(datetime=[], open=[], high=[], low=[], close=[], volume=[])
+        # for row in rows:
+        #     dt = pd.to_datetime(row[0], unit=unit, utc=utc, **kwargs)
+        #     bars["datetime"].append(dt)
+        #     bars["open"].append(row[1])
+        #     bars["high"].append(row[2])
+        #     bars["low"].append(row[3])
+        #     bars["close"].append(row[4])
+        #     bars["volume"].append(row[5])
+        
+        # self.update(bars)
+
         for row in rows:
             dt = pd.to_datetime(row[0], unit=unit, utc=utc, **kwargs)
             self.at[
@@ -148,7 +164,9 @@ class DataFeed(pd.DataFrame):
                 row[4],  # close
                 row[5],  # volume
             )
-
+        # end = datetime.now()
+        # print(f"--------------_>push delay {end - begin}: {len(rows)}")
+        
         if __debug__:
             logger.debug("[%s] Update bar: \n%s \n%s", self.name, self.head(), self.tail())
 

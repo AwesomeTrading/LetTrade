@@ -93,7 +93,7 @@ class BackTestExchange(Exchange):
         try:
             ok = order.place(at=self.data.bar())
         except LetOrderValidateException as e:
-            logger.error("Error when place order: %s %s", order, e)
+            logger.error("Error when place order: %s %s", order, e, exc_info=e)
             return OrderResultError(error=str(e), order=order)
 
         if type == OrderType.Market:

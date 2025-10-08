@@ -146,12 +146,13 @@ class LetTradeBot:
         )
 
         # Stats
-        self.stats = self._stats_cls(
-            feeder=self.feeder,
-            exchange=self.exchange,
-            strategy=self.strategy,
-            **self._kwargs.get("stats_kwargs", {}),
-        )
+        if self._stats_cls:
+            self.stats = self._stats_cls(
+                feeder=self.feeder,
+                exchange=self.exchange,
+                strategy=self.strategy,
+                **self._kwargs.get("stats_kwargs", {}),
+            )
 
         # Plotter
         if self._plotter_cls:

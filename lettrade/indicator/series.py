@@ -9,24 +9,17 @@ def series_init(
     if dataframe is None:
         if __debug__:
             if not isinstance(series, pd.Series):
-                raise RuntimeError(
-                    f"Series type '{type(series)}' is not instance of pandas.Series"
-                )
+                raise RuntimeError(f"Series type '{type(series)}' is not instance of pandas.Series")
 
             if inplace:
                 raise RuntimeError("DataFrame is not set when inplace=True")
     else:
         if __debug__:
             if not isinstance(dataframe, pd.DataFrame):
-                raise RuntimeError(
-                    f"DataFrame type '{type(dataframe)}' "
-                    "is not instance of pandas.DataFrame"
-                )
+                raise RuntimeError(f"DataFrame type '{type(dataframe)}' " "is not instance of pandas.DataFrame")
 
             if not isinstance(series, str | list):
-                raise RuntimeError(
-                    f"Series type {type(series)} is not string of column name"
-                )
+                raise RuntimeError(f"Series type {type(series)} is not string of column name")
 
         if isinstance(series, list):
             return [dataframe[s] for s in series]
@@ -61,6 +54,7 @@ def pandas_inject(obj: object | None = None):
     obj.rolling_above = series_indicator_inject(rolling_above)
     obj.rolling_below = series_indicator_inject(rolling_below)
     obj.rolling_direction = series_indicator_inject(rolling_direction)
+    obj.rolling_direction2 = series_indicator_inject(rolling_direction2)
     obj.rolling_min = series_indicator_inject(rolling_min)
     obj.rolling_max = series_indicator_inject(rolling_max)
     obj.rolling_mean = series_indicator_inject(rolling_mean)
@@ -388,12 +382,89 @@ def rolling_direction(
 
     if inplace:
         name = name or f"{prefix}rolling_direction"
+        if name in dataframe.columns:
+            raise ValueError(f"Column {name} already exists")
+        
         dataframe[name] = i
 
         if plot:
             _plot_mark(dataframe=dataframe, name=name, plot_kwargs=plot_kwargs)
 
     return i
+
+
+def rolling_direction2(
+    series1: pd.Series,
+    series2: pd.Series,
+    window: int = 20,
+    min_periods: int | None = None,
+    dataframe: pd.DataFrame = None,
+    name_up: str | None = None,
+    name_down: str | None = None,
+    prefix: str = "",
+    inplace: bool = False,
+    plot: bool | list[str] = False,
+    plot_up_kwargs: dict | None = None,
+    plot_down_kwargs: dict | None = None,
+    # **kwargs,
+) -> pd.Series:
+    """Check a Series is rolling on one side with another Series
+
+    Args:
+        series1 (pd.Series): first Series
+        series2 (pd.Series): second Series
+
+    Returns:
+        pd.Series:  100 mean series1 keep consistences above series2 at least `window` bars
+                    -100 mean series1 keep consistences below series2 at least `window` bars
+                    0 else cases
+    """
+    if __debug__:
+        if plot and not inplace:
+            raise RuntimeError("Cannot plot when inplace=False")
+
+    if isinstance(series1, str):
+        series1 = dataframe[series1]
+    if isinstance(series2, str):
+        series2 = dataframe[series2]
+
+    if name_up is None:
+        name_up = f"{prefix}rolling_direction_up"
+    if name_down is None:
+        name_down = f"{prefix}rolling_direction_down"
+
+    min_periods = window if min_periods is None else min_periods
+
+    i_up = (
+        (series1 > series2)
+        .map(lambda v: 100 if v is True else 0)
+        .rolling(window=window, min_periods=min_periods)
+        .min()
+    )
+    i_up.name = name_up
+
+    i_down = (
+        (series1 < series2)
+        .map(lambda v: -100 if v is True else 0)
+        .rolling(window=window, min_periods=min_periods)
+        .max()
+    )
+    i_down.name = name_down
+
+    if inplace:
+        if name_up in dataframe.columns:
+            raise RuntimeError(f"{name_up} already exists in dataframe")
+        if name_down in dataframe.columns:
+            raise RuntimeError(f"{name_down} already exists in dataframe")
+
+        dataframe[name_up] = i_up
+        dataframe[name_down] = i_down
+
+        if plot:
+            _plot_mark(dataframe=dataframe, name=name_up, plot_kwargs=plot_up_kwargs)
+            _plot_mark(dataframe=dataframe, name=name_down, plot_kwargs=plot_down_kwargs)
+
+    return i_up, i_down
 
 
 def rolling_min(

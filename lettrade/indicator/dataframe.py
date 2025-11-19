@@ -172,6 +172,9 @@ def signal_condiction(
         series.update(s)
 
     if inplace:
+        if name in dataframe.columns:
+            raise RuntimeError(f"Column '{name}' already exist")
+        
         dataframe[name] = series
         return dataframe
 
@@ -233,7 +236,24 @@ def signal_exist(
     )
     return signal
 
-
+def signal_exist2(
+    dataframe: pd.DataFrame,
+    series1: pd.Series,
+    series2: pd.Series,
+    window: int,
+    value_exist_up: int = 100,
+    value_exist_down: int = -100,
+    name: str = "exist",
+    value_up: int = 100,
+    value_down: int = -100,
+    inplace: bool = False,
+    plot: bool | list[str] = False,
+    plot_up_kwargs: dict | None = None,
+    plot_down_kwargs: dict | None = None,
+    **kwargs,
+) -> pd.Series | pd.DataFrame:
+    pass
+    
 def signal_repeat(
     dataframe: pd.DataFrame,
     series: pd.Series,

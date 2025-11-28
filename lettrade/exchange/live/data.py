@@ -98,6 +98,7 @@ class LiveDataFeed(DataFeed):
         self,
         since: int | str | pd.Timestamp,
         to: int | str | pd.Timestamp,
+        **kwargs
     ) -> bool:
         """Get bar from API and push to DataFeed
 
@@ -108,7 +109,7 @@ class LiveDataFeed(DataFeed):
         Returns:
             bool: True if has data, False if no data
         """
-        bars = self.bars(since=since, to=to)
+        bars = self.bars(since=since, to=to, **kwargs)
 
         if bars is None or len(bars) == 0:
             logger.warning("No bars data for %s", self.name)
@@ -129,6 +130,7 @@ class LiveDataFeed(DataFeed):
         self,
         since: int | str | pd.Timestamp,
         to: int | str | pd.Timestamp,
+        **kwargs
     ) -> list:
         """Get bars from LiveAPI
 
@@ -144,6 +146,7 @@ class LiveDataFeed(DataFeed):
             timeframe=self.timeframe.string,
             since=since,
             to=to,
+            **kwargs
         )
 
     ### Extend

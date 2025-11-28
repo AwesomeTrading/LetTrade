@@ -160,6 +160,53 @@ class CSVBackTestDataFeed(BackTestDataFeed):
         )
 
 
+class ParquetBackTestDataFeed(BackTestDataFeed):
+    """Implement help to load DataFeed from parquet file"""
+
+    def __init__(
+        self,
+        path: str | None = None,
+        parquet: dict | None = None,
+        name: str | None = None,
+        timeframe: str | int | pd.Timedelta | None = None,
+        meta: dict | None = None,
+        data: DataFeed | None = None,
+        **kwargs: dict,
+    ) -> None:
+        """_summary_
+
+        Args:
+            path (str | None, optional): Path to parquet file. Defaults to None.
+            parquet (dict | None, optional): Reflect of `pandas.read_parquet()` parameters. Defaults to None.
+            name (str | None, optional): _description_. Defaults to None.
+            timeframe (str | int | pd.Timedelta | None, optional): _description_. Defaults to None.
+            meta (dict | None, optional): _description_. Defaults to None.
+            data (DataFeed | None, optional): _description_. Defaults to None.
+            **kwargs (dict): [DataFeed](../../data/data.md#lettrade.data.data.DataFeed) dict parameters
+        """
+        if name is None:
+            name = _path_to_name(path)
+
+        if data is None:
+            parquet_params = dict()
+            if parquet is not None:
+                parquet_params.update(**parquet)
+
+            data = pd.read_parquet(path, **parquet_params)
+
+            if not isinstance(data.index, pd.DatetimeIndex):
+                data.index = data.index.astype("datetime64[ns, UTC]")
+
+            data.sort_index(inplace=True)
+
+        super().__init__(
+            data=data,
+            name=name,
+            timeframe=timeframe,
+            meta=meta,
+            **kwargs,
+        )
+
 class YFBackTestDataFeed(BackTestDataFeed):
     """YahooFinance DataFeed"""
 
